@@ -29,8 +29,8 @@ function mcm_pdf($attr)
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr);
 
     $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
-    $pdfHTML = "<a href='$pdfURL'>";
-    $pdfHTML .= "MSX Computer Magazine " . $mcm_nr;
+    $pdfHTML = "<a href='$pdfURL' target='_blank'>";
+    $pdfHTML .= "MSX Computer Magazine " . ($mcm_nr + 0);
     $pdfHTML .= "</a>";
     return $pdfHTML;
 }
@@ -46,7 +46,7 @@ function mcm_disk($attr)
 
     $diskURL = $mcm_emulatorUrl . '?DISKA_URL=';
     $diskURL .= $mcm_baseDiskUrl . 'mcmd' . mcm_disknr($mcm_nr) . ".di1";
-    $diskHTML = "<a href='$diskURL'>";
+    $diskHTML = "<a href='$diskURL' target='_blank'>";
     $diskHTML .= "disk";
     $diskHTML .= "</a>";
     return $diskHTML;
@@ -67,9 +67,7 @@ function mcm_listings($attr)
         $listing = $mcm_listings[$i];
         $nr = $listing[0];
         if ($nr == $mcm_nr) {
-            if ($nr < 10) {
-                $nr = '0' . $nr;
-            }
+
             $pag = $listing[1];
             $filename = $listing[2];
             $name = $listing[3];
@@ -88,7 +86,7 @@ function mcm_listings($attr)
                 default: // none
                     $listingURL .= 'MACHINE=';
             }
-            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . $nr . '.di1/' . urlencode($filename);
+            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
             $listingURL .= '&BASIC_RUN=' . urlencode($filename);
             $listHTML .= "<li><a href='$listingURL' target='_blank'>$name (pag: $pag)</a></li>";
         }
