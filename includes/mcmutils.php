@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * Extracts the mcm nr from pagename, formatted as ''
+ *
+ *
+ * @param $pagename
+ * @return int
+ */
+function mcm_nr_from_pagename($pagename)
+{
+    preg_match('/nr\. (\d+) - ... \d{4}/', $pagename, $matches);
+    if (sizeof($matches) > 1 && $matches[1]) {
+        return $matches[1];
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * get the mcm nr from shortcode attr (or from pagename)
+ *
+ * @param $attr
+ * @return int the mcm_nr, formatted in 2 digits
+ */
+function mcm_nr_from_attr_or_pagename($attr)
+{
+    $mcm_nr = $attr['mcm'];
+    if (!mcm_nr) {
+        $mcm_nr = mcm_nr_from_pagename(get_query_var('pagename'));
+    }
+    return sprintf("%02d", $mcm_nr);
+}
+
+/**
+ * gets the correct disknr for a certain mcm issue...
+ * listings for nr 1 & 2 are on disk 1 ;-)
+ *
+ * @param $nr
+ * @return int the mcm disk_nr, formatted in 2 digits
+ */
+function mcm_disknr($nr)
+{
+    if ($nr == 1) {
+        return "01";
+    }
+    if ($nr > 1) {
+        return sprintf("%02d", $nr - 1);
+    }
+}
+
+/**
+ * Returns the basename for the pdf for a certain issue
+ *
+ * MCM was renamed to include msdos too for a while and finally merged with MSX Club Magazine
+ *
+ * @param $nr
+ * @return string
+ */
+function mcm_pdfbasename($nr)
+{
+    $basename = 'UNKNOWNPDF';
+    if ($nr >= 1 && $nr <= 21) {
+        $basename = 'msx_computer_magazine_';
+    }
+    if ($nr >= 22 && $nr <= 35) {
+        $basename = 'ms(x)dos_computer_magazine_';
+    }
+    if ($nr >= 36 && $nr <= 57) {
+        $basename = 'msx_computer_magazine_';
+    }
+    if ($nr >= 58 && $nr <= 90) {
+        $basename = 'msx_computer_club_magazine_';
+    }
+    return urlencode($basename);
+}
+
+?>
