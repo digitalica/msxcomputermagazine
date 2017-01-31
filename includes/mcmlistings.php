@@ -177,12 +177,13 @@ $mcm_listings = array(
     // array(10, 0, 'mcmd9', 'beschrijving', 1), // het menu
     array(10, 0, 'supmrg', 'Supdir-reparatie', 1),
 
-    array(11, 0, 'sprite', 'beschrijving', 1),
-    array(11, 0, 'joysor', 'beschrijving', 1),
-    array(11, 0, 'icp4', 'beschrijving', 1),
-    array(11, 0, 'keuken', 'beschrijving', 1),
-    array(11, 0, 'sclptr', 'beschrijving', 1),
-    array(11, 0, 'strkls', 'beschrijving', 1),
+    array(11, 8, 'icp4', 'Invoer Controle Programma 4', 1),
+    array(11, 12, 'joysor', 'Joysor', 1),
+    array(11, 41, 'strkls', 'Strkls', 1),
+    array(11, 53, 'keuken', 'beschrijving', 1),
+    array(11, 64, 'sclptr', 'Sclptr', 1),
+    array(11, 0, 'sprite', 'Sprite', 1),
+
     array(12, 0, 'tstbld', 'beschrijving', 1),
     array(12, 0, 'teller', 'beschrijving', 1),
     array(12, 0, 'msxmem', 'beschrijving', 1),
