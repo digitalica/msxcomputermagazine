@@ -24,7 +24,7 @@ $mcm_listings = array(
     array(21, 46, 'dsort', 'Dsort', 1),
     array(21, 46, 'kalend', 'Kalender', 1),
     array(21, 54, 'laserb', 'Laserbikes', 1),
-    array(22, 22, 'drwms2', 'DRWMS 2: Drawmuis', 1),
+    array(22, 22, 'drwms2', 'DRWMS 2: Drawmuis', 2),
     array(22, 33, 'stackp', 'STACKP: Stackpointer', 1),
     array(22, 34, 'subst', 'SUBST', 1),
     array(22, 34, 'stkft1', 'STKFT: Stackfout 1', 1),
