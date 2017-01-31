@@ -36,6 +36,9 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals("01", mcm_disknr(1));
         $this->assertEquals("01", mcm_disknr(2));
         $this->assertEquals("22", mcm_disknr(23));
+        $this->assertEquals("53", mcm_disknr(54));
+        $this->assertEquals("55", mcm_disknr(55));
+        $this->assertEquals("55", mcm_disknr(56));
     }
 
 
