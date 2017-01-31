@@ -91,7 +91,12 @@ function mcm_listings($attr)
             }
             $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
             $listingURL .= '&BASIC_RUN=' . urlencode($filename);
-            $listHTML .= "<li><a href='$listingURL' target='_blank'>$name (pag: $pag)</a></li>";
+            if ($pag == 0) {
+                $pagText = "";
+            } else {
+                $pagText = " (pag: $pag)";
+            }
+            $listHTML .= "<li><a href='$listingURL' target='_blank'>$name$pagText</a></li>";
         }
     }
     $listHTML .= "</ul>";
