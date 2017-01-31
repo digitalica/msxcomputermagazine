@@ -180,7 +180,7 @@ $mcm_listings = array(
     array(11, 8, 'icp4', 'Invoer Controle Programma 4', 1),
     array(11, 12, 'joysor', 'Joysor', 1),
     array(11, 41, 'strkls', 'Strkls', 1),
-    array(11, 53, 'keuken', 'beschrijving', 1),
+    array(11, 53, 'keuken', 'Keuken', 1),
     array(11, 64, 'sclptr', 'Sclptr', 1),
     array(11, 0, 'sprite', 'Sprite', 1),
 
