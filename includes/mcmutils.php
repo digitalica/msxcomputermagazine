@@ -46,6 +46,9 @@ function mcm_disknr($nr)
     if ($nr == 1) {
         return "01";
     }
+    if ($nr ==55) {
+        return 55; // disk 54 is vergeten, zie mcm56, p42.  (thanks manuel)
+    }
     if ($nr > 1) {
         return sprintf("%02d", $nr - 1);
     }
