@@ -9,7 +9,7 @@
  */
 function mcm_nr_from_pagename($pagename)
 {
-    preg_match('/nr\. (\d+) - ... \d{4}/', $pagename, $matches);
+    preg_match('/nr\. (\d+)/', $pagename, $matches);
     if (sizeof($matches) > 1 && $matches[1]) {
         return $matches[1];
     } else {
@@ -23,11 +23,13 @@ function mcm_nr_from_pagename($pagename)
  * @param $attr
  * @return int the mcm_nr, formatted in 2 digits
  */
-function mcm_nr_from_attr_or_pagename($attr)
+function mcm_nr_from_attr_or_pagename($attr, $pagename)
 {
+    global $post;
+
     $mcm_nr = $attr['mcm'];
-    if (!mcm_nr) {
-        $mcm_nr = mcm_nr_from_pagename(get_query_var('pagename'));
+    if (empty($mcm_nr)) {
+        $mcm_nr = mcm_nr_from_pagename($pagename);
     }
     return sprintf("%02d", $mcm_nr);
 }

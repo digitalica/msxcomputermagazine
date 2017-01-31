@@ -2,7 +2,7 @@
 /*
 Plugin name: MSX Computer Magazine
 Description: Voor de links naar de listings, disks en pdfs van MSX Computer Magazine
-Version: 0.2
+Version: 0.22
 Author: Digitalica
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -24,9 +24,10 @@ add_shortcode('pdf', 'mcm_pdf');
 
 function mcm_pdf($attr)
 {
+    global $post;
     global $mcm_basePdfUrl;
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr);
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
     $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
     $pdfHTML = "<a href='$pdfURL' target='_blank'>";
@@ -39,10 +40,11 @@ add_shortcode('disk', 'mcm_disk');
 
 function mcm_disk($attr)
 {
+    global $post;
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr);
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
     $diskURL = $mcm_emulatorUrl . '?DISKA_URL=';
     $diskURL .= $mcm_baseDiskUrl . 'mcmd' . mcm_disknr($mcm_nr) . ".di1";
@@ -56,11 +58,12 @@ add_shortcode('listings', 'mcm_listings');
 
 function mcm_listings($attr)
 {
+    global $post;
     global $mcm_emulatorUrl;
     global $mcm_baseListingUrl;
     global $mcm_listings;
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr);
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
     $listHTML = "<ul>";
     for ($i = 0; $i < sizeof($mcm_listings); $i++) {
