@@ -6,7 +6,16 @@
  * Time: 0:00
  */
 
-
+/**
+ * Alle listings in MCM, om links te kunnen maken naar files op de disk
+ *
+ * 1: het bladnummer (dus NIET het nummer van de disk, dat is meestal 1 lager
+ * 2: het paginanummer (van de eerste regel van de listing) of 0 als listing niet in blad staat
+ * 3: de filenaam van het bestand op de disk
+ * 4: de naam in leesbare vorm (titel van het artikel, opschrijving op disk)
+ * 5: minimale MSX versie nodig (1: MSX1, 2: MSX2, 3: MSX2+)
+ *
+ */
 $mcm_listings = array(
     array(1, 18, 'invoerco', 'Invoer Controle Programma', 1),
     array(1, 40, 'lampjes', 'Lampjes', 1),
