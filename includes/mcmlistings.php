@@ -329,7 +329,7 @@ $mcm_listings = array(
     array(21, 18, 'manga3', 'manga3', 1),
     array(21, 34, 'prstat', 'PRSTAT - Printer klaar?', 1),
     array(21, 35, 'setdrv', 'SETDRV - Andere drive', 1),
-    array(21, 40, 'taoopl', 'Tao puzzle oplossing', 1),
+    array(21, 40, 'taoopl', 'Tao puzzle oplossing', 2),
     array(21, 46, 'dsortb', 'DSORT', 1), // bin versie
 //    array(21, 46, 'dsortc', 'DSORT', 1), // com versie. heeft geen zin.
     array(21, 51, 'kalend', 'Kalender', 1),
@@ -351,33 +351,33 @@ $mcm_listings = array(
 //    array(21, 0, 'msxbios.var', 'msxbios.var', 1), // Om bios bruikbaar te maken in turbo pascal
 //     array(21, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
-    array(22, 0, 'balwrp', 'balwrp', 1),
-    array(22, 0, 'drwms2', 'drwms2', 1),
-    array(22, 0, 'icp6', 'Invoer Controle Programma 6', 1),
-    array(22, 0, 'score', 'score', 1),
-    array(22, 0, 'stackp', 'stackp', 1),
-    array(22, 0, 'stkft1', 'stkft1', 1),
-    array(22, 0, 'stkft2', 'stkft2', 1),
-    array(22, 0, 'subtst', 'subtst', 1),
-    /** Autoexec start-up/menu files
-     * array(22, 0, 'autoexec.bas', 'autoexec.bas', 1),
+    /**
+     * Below here back to MS(X)DOS Computer Magazine.
+     * MSX combined with MS-DOS
      */
+    array(22, 24, 'drwms2', 'Drawmuis 2', 2),
+    array(22, 29, 'score', 'Score', 1),
+    array(22, 33, 'stackp', 'STACKP - hou de stack in de gaten', 1),
+    array(22, 34, 'subtst', 'SUBTST - test de nest-diepte', 1),
+    array(22, 34, 'stkft1', 'STKFT - fout in stack-huishouding', 1),
+    array(22, 35, 'stkft2', 'STKFT2 - schijn-stackfout', 1),
+    array(22, 37, 'balwrp', 'Balwerp', 1),
+    array(22, 87, 'icp6', 'Invoer Controle Programma 6', 1),
+//    array(22, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
-    array(23, 0, 'alarm', 'alarm', 1),
-    array(23, 0, 'batrun', 'batrun', 1),
-    array(23, 0, 'buffer', 'buffer', 1),
-    array(23, 0, 'icp6', 'Invoer Controle Programma 6', 1),
-    array(23, 0, 'mccre', 'mccre', 1),
-    array(23, 0, 'misamc', 'misamc', 1),
-    array(23, 0, 'misat', 'misat', 1),
-    array(23, 0, 'ml23', 'ml23', 1),
-    array(23, 0, 'shell', 'shell', 1),
-    array(23, 0, 'tao1', 'tao1', 1),
-    array(23, 0, 'taoopl', 'taoopl', 1),
-    array(23, 0, 'y-z', 'y-z', 1),
-    /** Autoexec start-up/menu files
-     * array(23, 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+    array(23, 27, 'misat', 'Missile Attack', 1),
+    array(23, 29, 'mccre', 'Missile Attack Sprite & ML loader', 1),
+    array(23, 0, 'misamc', 'Missile Attack machine code', 1),
+    array(23, 36, 'ml23', 'Cursus Z80 machinetaal voorbeeld 23', 1),
+    array(23, 42, 'tao1', 'Tao puzzle oplossing voor MSX 1', 1),
+    array(23, 42, 'taoopl', 'Snelste oplossing voor Tao Puzzle', 1),
+    array(23, 0, 'alarm', 'Alarm testprogramma voor Digiprop IO module', 1),
+    array(23, 68, 'batrun', 'BATRUN - Buffer 1', 1),
+    array(23, 68, 'buffer', 'BUFFER - Buffer 2', 1),
+    array(23, 69, 'shell', 'SHELL - Buffer 3', 1),
+    array(23, 69, 'y-z', 'Y-Z - Buffer 4', 1),
+    array(23, 95, 'icp6', 'Invoer Controle Programma 6', 1),
+//    array(23, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
     array(24, 0, 'crkls1', 'crkls1', 1),
     array(24, 0, 'crkls2', 'crkls2', 1),
@@ -641,6 +641,11 @@ $mcm_listings = array(
     array(35, 0, 'wewish', 'wewish', 1),
     /** Autoexec start-up/menu files
      * array(35, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
+
+    /**
+     * Below here back to MSX Computer Magazine again.
+     * No more MSDOS
      */
 
     array(36, 0, 'alpine', 'alpine', 1),
