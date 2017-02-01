@@ -2,7 +2,7 @@
 /*
 Plugin name: MSX Computer Magazine
 Description: Voor de links naar de listings, disks en pdfs van MSX Computer Magazine
-Version: 0.25
+Version: 0.30
 Author: Digitalica
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -16,6 +16,7 @@ include(plugin_dir_path(__FILE__) . 'includes/mcmlistings.php');
 $mcm_emulatorUrl = 'http://webmsx.org';
 $mcm_baseUrl = 'http://www.msxcomputermagazine.nl';
 $mcm_baseListingUrl = $mcm_baseUrl . '/archief/listings/';
+$mcm_baseDiskZipUrl = $mcm_baseUrl . '/archief/diskzips/';
 $mcm_baseDiskUrl = $mcm_baseUrl . '/archief/disks/';
 $mcm_basePdfUrl = $mcm_baseUrl . '/archief/bladen/';
 
@@ -30,9 +31,11 @@ function mcm_pdf($attr)
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
     $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
-    $pdfHTML = "<a href='$pdfURL' target='_blank'>";
+    $pdfHTML = "<div class='mcmpdf'>";
+    $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
     $pdfHTML .= "MSX Computer Magazine " . ($mcm_nr + 0);
     $pdfHTML .= "</a>";
+    $pdfHTML .= "</div>";
     return $pdfHTML;
 }
 
@@ -48,9 +51,11 @@ function mcm_disk($attr)
 
     $diskURL = $mcm_emulatorUrl . '?DISKA_URL=';
     $diskURL .= $mcm_baseDiskUrl . 'mcmd' . mcm_disknr($mcm_nr) . ".di1";
+    $diskHTML = "<div class='mcmdisk'>";
     $diskHTML = "<a href='$diskURL' target='_blank'>";
     $diskHTML .= "disk";
     $diskHTML .= "</a>";
+    $diskHTML .= "</div>";
     return $diskHTML;
 }
 
@@ -61,11 +66,13 @@ function mcm_listings($attr)
     global $post;
     global $mcm_emulatorUrl;
     global $mcm_baseListingUrl;
+    global $mcm_baseDiskZipUrl;
     global $mcm_listings;
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    $listHTML = "<ul>";
+    $listHTML .= "<div class='mcmlistings'>";
+    $listHTML .= "<ul>";
     for ($i = 0; $i < sizeof($mcm_listings); $i++) {
         $listing = $mcm_listings[$i];
         $nr = $listing[0];
@@ -89,7 +96,8 @@ function mcm_listings($attr)
                 default: // none
                     $listingURL .= 'MACHINE=';
             }
-            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
+//            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
+            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
             $listingURL .= '&BASIC_RUN=' . urlencode($filename);
             if ($pag == 0) {
                 $pagText = "";
@@ -100,6 +108,7 @@ function mcm_listings($attr)
         }
     }
     $listHTML .= "</ul>";
+    $listHTML .= "</div>";
     return $listHTML;
 }
 
