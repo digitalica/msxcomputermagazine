@@ -16,6 +16,7 @@ include(plugin_dir_path(__FILE__) . 'includes/mcmlistings.php');
 $mcm_emulatorUrl = 'http://webmsx.org';
 $mcm_baseUrl = 'http://www.msxcomputermagazine.nl';
 $mcm_baseListingUrl = $mcm_baseUrl . '/archief/listings/';
+$mcm_baseDiskZipUrl = $mcm_baseUrl . '/archief/diskzips/';
 $mcm_baseDiskUrl = $mcm_baseUrl . '/archief/disks/';
 $mcm_basePdfUrl = $mcm_baseUrl . '/archief/bladen/';
 
@@ -65,6 +66,7 @@ function mcm_listings($attr)
     global $post;
     global $mcm_emulatorUrl;
     global $mcm_baseListingUrl;
+    global $mcm_baseDiskZipUrl;
     global $mcm_listings;
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
@@ -94,7 +96,8 @@ function mcm_listings($attr)
                 default: // none
                     $listingURL .= 'MACHINE=';
             }
-            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
+//            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
+            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
             $listingURL .= '&BASIC_RUN=' . urlencode($filename);
             if ($pag == 0) {
                 $pagText = "";
