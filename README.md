@@ -23,8 +23,14 @@ phpunit mcmutilstest.php
 
 ## Contributors
 
-Hayo Rubingh, Robbert Wethmar
+Hayo Rubingh, Manuel Bilderbeek, Robbert Wethmar
 
 ## License
 
 GPL
+
+## TODO
+- fix situations where one file loads another (MCM 9, like portet Wammes)
+- maybe start all disk links in MSX 2+?
+- make 'extra' stuff (pag 0) show in separate section
+- add auto-update feature
