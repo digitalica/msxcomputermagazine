@@ -292,49 +292,50 @@ $mcm_listings = array(
     array(18, 0, 'mcm2b1', 'Database deel 1', 2),
     array(18, 50, 'koppie', 'Koppie diskcopy', 2),
     array(18, 55, 'disass', 'Disass', 1),
-    
-    array(19, 0, 'blast', 'blast', 1),
-    array(19, 0, 'bm1', 'bm1', 1),
-    array(19, 0, 'bm2', 'bm2', 1),
-    array(19, 0, 'bm3', 'bm3', 1),
-    array(19, 0, 'boer1', 'boer1', 1),
-    array(19, 0, 'boer2', 'boer2', 1),
-    array(19, 0, 'draak', 'draak', 1),
-    array(19, 0, 'gosper', 'gosper', 1),
-    array(19, 0, 'icp5', 'Invoer Controle Programma 5', 1),
-    array(19, 0, 'kochln', 'kochln', 1),
-    array(19, 0, 'kochrc', 'kochrc', 1),
-    array(19, 0, 'midnac', 'midnac', 1),
-    array(19, 0, 'nuzijt', 'nuzijt', 1),
-    array(19, 0, 'schaak', 'schaak', 1),
-    array(19, 0, 'stilna', 'stilna', 1),
-/** Autoexec start-up/menu files
-    array(19, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
 
-    array(20, 0, 'fisc40', 'fisc40', 1),
-    array(20, 0, 'fisc80', 'fisc80', 1),
-    array(20, 0, 'icp5', 'Invoer Controle Programma 5', 1),
-    array(20, 0, 'ml21', 'ml21', 1),
-    array(20, 0, 'ml22', 'ml22', 1),
-    array(20, 0, 'ml22a', 'ml22a', 1),
+    array(19, 9, 'icp5', 'Invoer Controle Programma 5', 1),
+    array(19, 22, 'kochrc', 'Koch\'s sneeuwvlok recursief', 1),
+    array(19, 23, 'kochln', 'Koch\'s sneeuwvlok iteratief', 1),
+    array(19, 24, 'draak', 'Draak', 1),
+    array(19, 26, 'gosper', 'Gosper\'s sneeuwvlok', 1),
+    array(19, 27, 'boer1', 'Boer 1', 1),
+    array(19, 27, 'boer2', 'Boer 2', 1),
+    array(19, 49, 'midnac', 'Midden in de winternacht', 1),
+    array(19, 50, 'stilna', 'Stille nacht', 1),
+    array(19, 50, 'nuzijt', 'Nu zijt wellekome', 1),
+    array(19, 51, 'schaak', 'Schaak', 1),
+    array(19, 55, 'blast', 'Blast', 1),
+    array(19, 0, 'bm1', 'Turbo Pascal benchmark 1', 1),
+    array(19, 0, 'bm2', 'Turbo Pascal benchmark 2', 1),
+    array(19, 0, 'bm3', 'Turbo Pascal benchmark 3', 1),
+//    array(19, 0, 'autoexec.bas', 'autoexec.bas', 1),
+
+    array(20, 9, 'icp5', 'Invoer Controle Programma 5', 1),
+    array(20, 10, 'ml21', 'Cursus Z80 machinetaal voorbeeld 21', 1),
+    array(20, 11, 'ml22', 'Cursus Z80 machinetaal voorbeeld 22', 1),
+    array(20, 15, 'ml22a', 'Cursus Z80 machinetaal voorbeeld 22a', 1),
+    array(20, 41, 'tao', 'Tao puzzle', 1),
+    array(20, 47, 'sal88', 'Sal 88', 1),
+    array(20, 53, 'teken', 'Teken', 1),
+    array(20, 0, 'fisc40', 'Belastingprogramma 40 koloms', 1),
+    array(20, 0, 'fisc80', 'Belastingprogramma 80 koloms', 2),
+    array(20, 0, 'schaats', 'Competitie standen schaatsen', 1),
     array(20, 0, 'records.new', 'records.new', 1),
-    array(20, 0, 'sal88', 'sal88', 1),
-    array(20, 0, 'schaats', 'schaats', 1),
-    array(20, 0, 'tao', 'tao', 1),
-    array(20, 0, 'teken', 'teken', 1),
-/** Autoexec start-up/menu files
-    array(20, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+//    array(20, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
-    array(21, 0, 'demo.pas', 'demo.pas', 1),
-    array(21, 0, 'dsortb', 'dsortb', 1),
-    array(21, 0, 'dsortc', 'dsortc', 1),
-    array(21, 0, 'graph.lib', 'graph.lib', 1),
-    array(21, 0, 'graph.typ', 'graph.typ', 1),
-    array(21, 0, 'graph.var', 'graph.var', 1),
-    array(21, 0, 'icp5', 'Invoer Controle Programma 5', 1),
-    array(21, 0, 'kalend', 'kalend', 1),
+    array(21, 9, 'icp5', 'Invoer Controle Programma 5', 1),
+    array(21, 12, 'manga1', 'manga1', 1),
+    array(21, 15, 'manga2', 'manga2', 1),
+    array(21, 18, 'manga3', 'manga3', 1),
+    array(21, 34, 'prstat', 'PRSTAT - Printer klaar?', 1),
+    array(21, 35, 'setdrv', 'SETDRV - Andere drive', 1),
+    array(21, 40, 'taoopl', 'Tao puzzle oplossing', 1),
+    array(21, 46, 'dsortb', 'DSORT', 1), // bin versie
+//    array(21, 46, 'dsortc', 'DSORT', 1), // com versie. heeft geen zin.
+    array(21, 51, 'kalend', 'Kalender', 1),
+    array(21, 54, 'laserb', 'Laserbikes', 1),
+
+    array(21, 0, 'kondem', 'Konami demo', 1),
     array(21, 0, 'konamus1.mus', 'konamus1.mus', 1),
     array(21, 0, 'konamus2.mus', 'konamus2.mus', 1),
     array(21, 0, 'konamus3.mus', 'konamus3.mus', 1),
@@ -342,19 +343,13 @@ $mcm_listings = array(
     array(21, 0, 'konapic2.sc8', 'konapic2.sc8', 1),
     array(21, 0, 'konapic3.sc8', 'konapic3.sc8', 1),
     array(21, 0, 'konapic4.sc8', 'konapic4.sc8', 1),
-    array(21, 0, 'kondem', 'kondem', 1),
-    array(21, 0, 'laserb', 'laserb', 1),
-    array(21, 0, 'manga1', 'manga1', 1),
-    array(21, 0, 'manga2', 'manga2', 1),
-    array(21, 0, 'manga3', 'manga3', 1),
-    array(21, 0, 'msxbios.lib', 'msxbios.lib', 1),
-    array(21, 0, 'msxbios.var', 'msxbios.var', 1),
-    array(21, 0, 'prstat', 'prstat', 1),
-    array(21, 0, 'setdrv', 'setdrv', 1),
-    array(21, 0, 'taoopl', 'taoopl', 1),
-/** Autoexec start-up/menu files
-    array(21, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+//    array(21, 0, 'demo.pas', 'demo.pas', 1), // Om bios bruikbaar te maken in turbo pascal
+//    array(21, 0, 'graph.lib', 'graph.lib', 1), // Om bios bruikbaar te maken in turbo pascal
+//    array(21, 0, 'graph.typ', 'graph.typ', 1), // Om bios bruikbaar te maken in turbo pascal
+//    array(21, 0, 'graph.var', 'graph.var', 1), // Om bios bruikbaar te maken in turbo pascal
+//    array(21, 0, 'msxbios.lib', 'msxbios.lib', 1), // Om bios bruikbaar te maken in turbo pascal
+//    array(21, 0, 'msxbios.var', 'msxbios.var', 1), // Om bios bruikbaar te maken in turbo pascal
+//     array(21, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
     array(22, 0, 'balwrp', 'balwrp', 1),
     array(22, 0, 'drwms2', 'drwms2', 1),
@@ -364,9 +359,9 @@ $mcm_listings = array(
     array(22, 0, 'stkft1', 'stkft1', 1),
     array(22, 0, 'stkft2', 'stkft2', 1),
     array(22, 0, 'subtst', 'subtst', 1),
-/** Autoexec start-up/menu files
-    array(22, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(22, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(23, 0, 'alarm', 'alarm', 1),
     array(23, 0, 'batrun', 'batrun', 1),
@@ -380,9 +375,9 @@ $mcm_listings = array(
     array(23, 0, 'tao1', 'tao1', 1),
     array(23, 0, 'taoopl', 'taoopl', 1),
     array(23, 0, 'y-z', 'y-z', 1),
-/** Autoexec start-up/menu files
-    array(23, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(23, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(24, 0, 'crkls1', 'crkls1', 1),
     array(24, 0, 'crkls2', 'crkls2', 1),
@@ -401,9 +396,9 @@ $mcm_listings = array(
     array(24, 0, 'scrlll', 'scrlll', 1),
     array(24, 0, 'tol', 'tol', 1),
     array(24, 0, 'vrtgem', 'vrtgem', 1),
-/** Autoexec start-up/menu files
-    array(24, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(24, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(25, 0, 'datmak', 'datmak', 1),
     array(25, 0, 'enqt', 'enqt', 1),
@@ -417,9 +412,9 @@ $mcm_listings = array(
     array(25, 0, 'show2', 'show2', 1),
     array(25, 0, 'show8', 'show8', 1),
     array(25, 0, 'teken', 'teken', 1),
-/** Autoexec start-up/menu files
-    array(25, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(25, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(26, 0, 'clrspr', 'clrspr', 1),
     array(26, 0, 'fctuur', 'fctuur', 1),
@@ -438,9 +433,9 @@ $mcm_listings = array(
     array(26, 0, 'show8c', 'show8c', 1),
     array(26, 0, 'tvdp24', 'tvdp24', 1),
     array(26, 0, 'typmac', 'typmac', 1),
-/** Autoexec start-up/menu files
-    array(26, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(26, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(27, 0, 'beep1', 'beep1', 1),
     array(27, 0, 'beep2', 'beep2', 1),
@@ -456,9 +451,9 @@ $mcm_listings = array(
     array(27, 0, 'tutor1', 'tutor1', 1),
     array(27, 0, 'tutor2', 'tutor2', 1),
     array(27, 0, 'vamp2.pic', 'vamp2.pic', 1),
-/** Autoexec start-up/menu files
-    array(27, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(27, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(28, 0, 'cstutr', 'cstutr', 1),
     array(28, 0, 'fdate', 'fdate', 1),
@@ -482,9 +477,9 @@ $mcm_listings = array(
     array(28, 0, 'mcm2o3', 'mcm2o3', 1),
     array(28, 0, 'mcm2o4', 'mcm2o4', 1),
     array(28, 0, 'sal89', 'sal89', 1),
-/** Autoexec start-up/menu files
-    array(28, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(28, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(29, 0, 'fisc89', 'fisc89', 1),
     array(29, 0, 'fsc89h', 'fsc89h', 1),
@@ -503,9 +498,9 @@ $mcm_listings = array(
     array(29, 0, 'rmdbin', 'rmdbin', 1),
     array(29, 0, 'vertoon', 'vertoon', 1),
     array(29, 0, 'vuurwerk.pic', 'vuurwerk.pic', 1),
-/** Autoexec start-up/menu files
-    array(29, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(29, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(30, 0, 'blokjs', 'blokjs', 1),
     array(30, 0, 'dmsxmag.pic', 'dmsxmag.pic', 1),
@@ -524,9 +519,9 @@ $mcm_listings = array(
     array(30, 0, 'sterrn', 'sterrn', 1),
     array(30, 0, 'truck.pic', 'truck.pic', 1),
     array(30, 0, 'vertoon', 'vertoon', 1),
-/** Autoexec start-up/menu files
-    array(30, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(30, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(31, 0, 'columbia.pic', 'columbia.pic', 1),
     array(31, 0, 'diskvw', 'diskvw', 1),
@@ -546,9 +541,9 @@ $mcm_listings = array(
     array(31, 0, 'tank.pic', 'tank.pic', 1),
     array(31, 0, 'thecreep.pic', 'thecreep.pic', 1),
     array(31, 0, 'vertoon', 'vertoon', 1),
-/** Autoexec start-up/menu files
-    array(31, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(31, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(32, 0, 'blkjs1', 'blkjs1', 1),
     array(32, 0, 'blkjs2', 'blkjs2', 1),
@@ -563,9 +558,9 @@ $mcm_listings = array(
     array(32, 0, 'trnsfr', 'trnsfr', 1),
     array(32, 0, 'uil.pic', 'uil.pic', 1),
     array(32, 0, 'vertoon', 'vertoon', 1),
-/** Autoexec start-up/menu files
-    array(32, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(32, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(33, 0, '4096', '4096', 1),
     array(33, 0, 'ascasm', 'ascasm', 1),
@@ -595,9 +590,9 @@ $mcm_listings = array(
     array(33, 0, 'space.pic', 'space.pic', 1),
     array(33, 0, 'tydmnu', 'tydmnu', 1),
     array(33, 0, 'vertoon', 'vertoon', 1),
-/** Autoexec start-up/menu files
-    array(33, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(33, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(34, 0, 'crlan100.pic', 'crlan100.pic', 1),
     array(34, 0, 'crvir21.pic', 'crvir21.pic', 1),
@@ -615,9 +610,9 @@ $mcm_listings = array(
     array(34, 0, 'smile2', 'smile2', 1),
     array(34, 0, 'sntkst', 'sntkst', 1),
     array(34, 0, 'tydmnu', 'tydmnu', 1),
-/** Autoexec start-up/menu files
-    array(34, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(34, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(35, 0, 'balkensp.pic', 'balkensp.pic', 1),
     array(35, 0, 'dynasta5.pic', 'dynasta5.pic', 1),
@@ -644,9 +639,9 @@ $mcm_listings = array(
     array(35, 0, 'show34', 'show34', 1),
     array(35, 0, 'vuurwk', 'vuurwk', 1),
     array(35, 0, 'wewish', 'wewish', 1),
-/** Autoexec start-up/menu files
-    array(35, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(35, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(36, 0, 'alpine', 'alpine', 1),
     array(36, 0, 'brdr1', 'brdr1', 1),
@@ -666,9 +661,9 @@ $mcm_listings = array(
     array(36, 0, 'supprt', 'supprt', 1),
     array(36, 0, 'wandel', 'wandel', 1),
     array(36, 0, 'wu_shu.pic', 'wu_shu.pic', 1),
-/** Autoexec start-up/menu files
-    array(36, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(36, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(37, 0, 'axelf', 'axelf', 1),
     array(37, 0, 'beeper', 'beeper', 1),
@@ -698,9 +693,9 @@ $mcm_listings = array(
     array(37, 0, 'simpel', 'simpel', 1),
     array(37, 0, 'tstprt', 'tstprt', 1),
     array(37, 0, 'zoomlens.pic', 'zoomlens.pic', 1),
-/** Autoexec start-up/menu files
-    array(37, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(37, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(38, 0, 'abhstr', 'abhstr', 1),
     array(38, 0, 'autoexec.bat', 'autoexec.bat', 1),
@@ -740,9 +735,9 @@ $mcm_listings = array(
     array(38, 0, 'vb-bas', 'vb-bas', 1),
     array(38, 0, 'vb-lst', 'vb-lst', 1),
     array(38, 0, 'zasbas', 'zasbas', 1),
-/** Autoexec start-up/menu files
-    array(38, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(38, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(39, 0, 'abstrakt.sc7', 'abstrakt.sc7', 1),
     array(39, 0, 'atari', 'atari', 1),
@@ -775,9 +770,9 @@ $mcm_listings = array(
     array(39, 0, 'vdp4', 'vdp4', 1),
     array(39, 0, 'vdp5', 'vdp5', 1),
     array(39, 0, 'zadel', 'zadel', 1),
-/** Autoexec start-up/menu files
-    array(39, 0, 'autoexec.bas', 'autoexec.bas', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(39, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     */
 
     array(40, 0, 'adelaar.pic', 'adelaar.pic', 1),
     array(40, 0, 'bk.com', 'bk.com', 1),
@@ -799,13 +794,13 @@ $mcm_listings = array(
     array(40, 0, 'swap.com', 'swap.com', 1),
     array(40, 0, 'swap2', 'swap2', 1),
     array(40, 0, 'tafel.asm', 'tafel.asm', 1),
-/** Autoexec start-up/menu files
-    array(40, 0, 'autoexe1', 'autoexe1', 1),
-    array(40, 0, 'autoexe2', 'autoexe2', 1),
-    array(40, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(40, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(40, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(40, 0, 'autoexe1', 'autoexe1', 1),
+     * array(40, 0, 'autoexe2', 'autoexe2', 1),
+     * array(40, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(40, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(40, 0, 'autotx', 'autotx', 1),
+     */
 
     array(41, 0, '10fkey', '10fkey', 1),
     array(41, 0, 'bootx', 'bootx', 1),
@@ -850,13 +845,13 @@ $mcm_listings = array(
     array(41, 0, 'permut', 'permut', 1),
     array(41, 0, 'swaptype', 'swaptype', 1),
     array(41, 0, 'swaptypl', 'swaptypl', 1),
-/** Autoexec start-up/menu files
-    array(41, 0, 'autoexe1', 'autoexe1', 1),
-    array(41, 0, 'autoexe2', 'autoexe2', 1),
-    array(41, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(41, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(41, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(41, 0, 'autoexe1', 'autoexe1', 1),
+     * array(41, 0, 'autoexe2', 'autoexe2', 1),
+     * array(41, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(41, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(41, 0, 'autotx', 'autotx', 1),
+     */
 
     array(42, 0, 'artsc2', 'artsc2', 1),
     array(42, 0, 'baskey', 'baskey', 1),
@@ -886,13 +881,13 @@ $mcm_listings = array(
     array(42, 0, 'tschai8.pic', 'tschai8.pic', 1),
     array(42, 0, 'vdp', 'vdp', 1),
     array(42, 0, 'vdpasm', 'vdpasm', 1),
-/** Autoexec start-up/menu files
-    array(42, 0, 'autoexe1', 'autoexe1', 1),
-    array(42, 0, 'autoexe2', 'autoexe2', 1),
-    array(42, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(42, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(42, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(42, 0, 'autoexe1', 'autoexe1', 1),
+     * array(42, 0, 'autoexe2', 'autoexe2', 1),
+     * array(42, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(42, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(42, 0, 'autotx', 'autotx', 1),
+     */
 
     array(43, 0, 'agame', 'agame', 1),
     array(43, 0, 'breakout.pic', 'breakout.pic', 1),
@@ -915,13 +910,13 @@ $mcm_listings = array(
     array(43, 0, 'printat', 'printat', 1),
     array(43, 0, 'witch.sc8', 'witch.sc8', 1),
     array(43, 0, 'yswinter.sc8', 'yswinter.sc8', 1),
-/** Autoexec start-up/menu files
-    array(43, 0, 'autoexe1', 'autoexe1', 1),
-    array(43, 0, 'autoexe2', 'autoexe2', 1),
-    array(43, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(43, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(43, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(43, 0, 'autoexe1', 'autoexe1', 1),
+     * array(43, 0, 'autoexe2', 'autoexe2', 1),
+     * array(43, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(43, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(43, 0, 'autotx', 'autotx', 1),
+     */
 
     array(44, 0, '(herfst).pic', '(herfst).pic', 1),
     array(44, 0, 'anidat', 'anidat', 1),
@@ -945,13 +940,13 @@ $mcm_listings = array(
     array(44, 0, 'scroll.bin', 'scroll.bin', 1),
     array(44, 0, 'scrollbi', 'scrollbi', 1),
     array(44, 0, 'smidse.pic', 'smidse.pic', 1),
-/** Autoexec start-up/menu files
-    array(44, 0, 'autoexe1', 'autoexe1', 1),
-    array(44, 0, 'autoexe2', 'autoexe2', 1),
-    array(44, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(44, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(44, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(44, 0, 'autoexe1', 'autoexe1', 1),
+     * array(44, 0, 'autoexe2', 'autoexe2', 1),
+     * array(44, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(44, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(44, 0, 'autotx', 'autotx', 1),
+     */
 
     array(45, 0, 'balk', 'balk', 1),
     array(45, 0, 'bk.com', 'bk.com', 1),
@@ -1002,13 +997,13 @@ $mcm_listings = array(
     array(45, 0, 'tk.com', 'tk.com', 1),
     array(45, 0, 'tl.com', 'tl.com', 1),
     array(45, 0, 'tv.com', 'tv.com', 1),
-/** Autoexec start-up/menu files
-    array(45, 0, 'autoexe1', 'autoexe1', 1),
-    array(45, 0, 'autoexe2', 'autoexe2', 1),
-    array(45, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(45, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(45, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(45, 0, 'autoexe1', 'autoexe1', 1),
+     * array(45, 0, 'autoexe2', 'autoexe2', 1),
+     * array(45, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(45, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(45, 0, 'autotx', 'autotx', 1),
+     */
 
     array(46, 0, '8245a', '8245a', 1),
     array(46, 0, '8245b', '8245b', 1),
@@ -1053,13 +1048,13 @@ $mcm_listings = array(
     array(46, 0, 'zas5l2.asm', 'zas5l2.asm', 1),
     array(46, 0, 'zas5l3.asm', 'zas5l3.asm', 1),
     array(46, 0, 'zas5l4.asm', 'zas5l4.asm', 1),
-/** Autoexec start-up/menu files
-    array(46, 0, 'autoexe1', 'autoexe1', 1),
-    array(46, 0, 'autoexe2', 'autoexe2', 1),
-    array(46, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(46, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(46, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(46, 0, 'autoexe1', 'autoexe1', 1),
+     * array(46, 0, 'autoexe2', 'autoexe2', 1),
+     * array(46, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(46, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(46, 0, 'autotx', 'autotx', 1),
+     */
 
     array(47, 0, 'bardemo.bas', 'bardemo.bas', 1),
     array(47, 0, 'caps.tsr', 'caps.tsr', 1),
@@ -1094,13 +1089,13 @@ $mcm_listings = array(
     array(47, 0, 'tk.com', 'tk.com', 1),
     array(47, 0, 'tl.com', 'tl.com', 1),
     array(47, 0, 'tv.com', 'tv.com', 1),
-/** Autoexec start-up/menu files
-    array(47, 0, 'autoexe1', 'autoexe1', 1),
-    array(47, 0, 'autoexe2', 'autoexe2', 1),
-    array(47, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(47, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(47, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(47, 0, 'autoexe1', 'autoexe1', 1),
+     * array(47, 0, 'autoexe2', 'autoexe2', 1),
+     * array(47, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(47, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(47, 0, 'autotx', 'autotx', 1),
+     */
 
     array(48, 0, 'calsub.asc', 'calsub.asc', 1),
     array(48, 0, 'cnvgif', 'cnvgif', 1),
@@ -1118,13 +1113,13 @@ $mcm_listings = array(
     array(48, 0, 'mem3l2.asc', 'mem3l2.asc', 1),
     array(48, 0, 'showem', 'showem', 1),
     array(48, 0, 'showem.com', 'showem.com', 1),
-/** Autoexec start-up/menu files
-    array(48, 0, 'autoexe1', 'autoexe1', 1),
-    array(48, 0, 'autoexe2', 'autoexe2', 1),
-    array(48, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(48, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(48, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(48, 0, 'autoexe1', 'autoexe1', 1),
+     * array(48, 0, 'autoexe2', 'autoexe2', 1),
+     * array(48, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(48, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(48, 0, 'autotx', 'autotx', 1),
+     */
 
     array(49, 0, '4096-2', '4096-2', 1),
     array(49, 0, '4096-2.asc', '4096-2.asc', 1),
@@ -1156,13 +1151,13 @@ $mcm_listings = array(
     array(49, 0, 'vlkrl', 'vlkrl', 1),
     array(49, 0, 'zas6l1.asc', 'zas6l1.asc', 1),
     array(49, 0, 'zas6l2.asc', 'zas6l2.asc', 1),
-/** Autoexec start-up/menu files
-    array(49, 0, 'autoexe1', 'autoexe1', 1),
-    array(49, 0, 'autoexe2', 'autoexe2', 1),
-    array(49, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(49, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(49, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(49, 0, 'autoexe1', 'autoexe1', 1),
+     * array(49, 0, 'autoexe2', 'autoexe2', 1),
+     * array(49, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(49, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(49, 0, 'autotx', 'autotx', 1),
+     */
 
     array(50, 0, 'bal', 'bal', 1),
     array(50, 0, 'bal2', 'bal2', 1),
@@ -1195,13 +1190,13 @@ $mcm_listings = array(
     array(50, 0, 'sampblk2.smp', 'sampblk2.smp', 1),
     array(50, 0, 'sampblk3.smp', 'sampblk3.smp', 1),
     array(50, 0, 'samptr', 'samptr', 1),
-/** Autoexec start-up/menu files
-    array(50, 0, 'autoexe1', 'autoexe1', 1),
-    array(50, 0, 'autoexe2', 'autoexe2', 1),
-    array(50, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(50, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(50, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(50, 0, 'autoexe1', 'autoexe1', 1),
+     * array(50, 0, 'autoexe2', 'autoexe2', 1),
+     * array(50, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(50, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(50, 0, 'autotx', 'autotx', 1),
+     */
 
     array(51, 0, 'ansi', 'ansi', 1),
     array(51, 0, 'ansinit', 'ansinit', 1),
@@ -1245,14 +1240,14 @@ $mcm_listings = array(
     array(51, 0, 'tv.bas', 'tv.bas', 1),
     array(51, 0, 'tv.com', 'tv.com', 1),
     array(51, 0, 'usas', 'usas', 1),
-/** Autoexec start-up/menu files
-    array(51, 0, 'autoexe1', 'autoexe1', 1),
-    array(51, 0, 'autoexe2', 'autoexe2', 1),
-    array(51, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(51, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(51, 0, 'autotx', 'autotx', 1),
-    array(51, 0, 'autotx.txt', 'autotx.txt', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(51, 0, 'autoexe1', 'autoexe1', 1),
+     * array(51, 0, 'autoexe2', 'autoexe2', 1),
+     * array(51, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(51, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(51, 0, 'autotx', 'autotx', 1),
+     * array(51, 0, 'autotx.txt', 'autotx.txt', 1),
+     */
 
     array(52, 0, 'bloemen.pic', 'bloemen.pic', 1),
     array(52, 0, 'cant.pic', 'cant.pic', 1),
@@ -1296,13 +1291,13 @@ $mcm_listings = array(
     array(52, 0, 'vrbld', 'vrbld', 1),
     array(52, 0, 'web', 'web', 1),
     array(52, 0, 'web2', 'web2', 1),
-/** Autoexec start-up/menu files
-    array(52, 0, 'autoexe1', 'autoexe1', 1),
-    array(52, 0, 'autoexe2', 'autoexe2', 1),
-    array(52, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(52, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(52, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(52, 0, 'autoexe1', 'autoexe1', 1),
+     * array(52, 0, 'autoexe2', 'autoexe2', 1),
+     * array(52, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(52, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(52, 0, 'autotx', 'autotx', 1),
+     */
 
     array(53, 0, '5060hz.tsr', '5060hz.tsr', 1),
     array(53, 0, 'brug.pic', 'brug.pic', 1),
@@ -1334,13 +1329,13 @@ $mcm_listings = array(
     array(53, 0, 'switch2.bin', 'switch2.bin', 1),
     array(53, 0, 'toon5', 'toon5', 1),
     array(53, 0, 'uitleg.wp', 'uitleg.wp', 1),
-/** Autoexec start-up/menu files
-    array(53, 0, 'autoexe1', 'autoexe1', 1),
-    array(53, 0, 'autoexe2', 'autoexe2', 1),
-    array(53, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(53, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(53, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(53, 0, 'autoexe1', 'autoexe1', 1),
+     * array(53, 0, 'autoexe2', 'autoexe2', 1),
+     * array(53, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(53, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(53, 0, 'autotx', 'autotx', 1),
+     */
 
     array(54, 0, '65536!', '65536!', 1),
     array(54, 0, 'balk', 'balk', 1),
@@ -1374,13 +1369,13 @@ $mcm_listings = array(
     array(54, 0, 'synpar1.txt', 'synpar1.txt', 1),
     array(54, 0, 'viool.pic', 'viool.pic', 1),
     array(54, 0, 'vlieger.pic', 'vlieger.pic', 1),
-/** Autoexec start-up/menu files
-    array(54, 0, 'autoexe1', 'autoexe1', 1),
-    array(54, 0, 'autoexe2', 'autoexe2', 1),
-    array(54, 0, 'autoexec.bas', 'autoexec.bas', 1),
-    array(54, 0, 'autoexec.cop', 'autoexec.cop', 1),
-    array(54, 0, 'autotx', 'autotx', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(54, 0, 'autoexe1', 'autoexe1', 1),
+     * array(54, 0, 'autoexe2', 'autoexe2', 1),
+     * array(54, 0, 'autoexec.bas', 'autoexec.bas', 1),
+     * array(54, 0, 'autoexec.cop', 'autoexec.cop', 1),
+     * array(54, 0, 'autotx', 'autotx', 1),
+     */
 
     array(55, 10, 'trap', 'Recursie: ook in Basic! Trapprobleem', 1),
     array(55, 11, 'dec-bin', 'Recursie: ook in Basic! Decimaal naar binair', 1),
@@ -1465,12 +1460,12 @@ $mcm_listings = array(
     array(56, 0, 'animate.prg', 'beschrijving', 1),
     array(56, 0, 'paintiv.st8', 'beschrijving', 1),
     array(56, 0, 'standard.br5', 'beschrijving', 1),
-/** Autoexec start-up/menu files
-    array(56, 0, 'autotx', 'beschrijving', 1),
-    array(56, 0, 'autoexe1', 'beschrijving', 1),
-    array(56, 0, 'autoexe2', 'beschrijving', 1),
-    array(56, 0, 'autoexec.cop', 'beschrijving', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(56, 0, 'autotx', 'beschrijving', 1),
+     * array(56, 0, 'autoexe1', 'beschrijving', 1),
+     * array(56, 0, 'autoexe2', 'beschrijving', 1),
+     * array(56, 0, 'autoexec.cop', 'beschrijving', 1),
+     */
     array(57, 6, 'vbc1', 'Bestanden op cassette, voorbeeld 1', 1),
     array(57, 7, 'vbc2', 'Bestanden op cassette, voorbeeld 2', 1),
     array(57, 7, 'vbc3', 'Bestanden op cassette, voorbeeld 3', 1),
@@ -1492,7 +1487,7 @@ $mcm_listings = array(
     array(57, 55, 'wanwan', 'Wanwanliner (K&K57-7)', 2),
     array(57, 65, 'icp7', 'ICP/7 generator', 1),
     array(57, 0, 'icp7.bin', 'ICP/7', 1),
-/** Art Gallery files */
+    /** Art Gallery files */
     array(57, 0, 'diashw', 'Diashow', 2),
     array(57, 0, 'darkness', 'Instrument of Darkness intro', 2),
     array(57, 0, 'darkness.001', 'Instrument of Darkness 1', 2),
@@ -1501,7 +1496,7 @@ $mcm_listings = array(
     array(57, 0, 'futcity.ge5', 'Future City (?)', 2),
     array(57, 0, 'panda.pic', 'Panda', 2),
     array(57, 0, 'runner.ge5', 'Runner', 2),
-/** MemMan 2.4.2 files */
+    /** MemMan 2.4.2 files */
     array(57, 0, 'bk104man.txt', '', 1),
     array(57, 0, 'memman.com', '', 2),
     array(57, 0, 'memman.bin', '', 2),
@@ -1517,13 +1512,13 @@ $mcm_listings = array(
     array(57, 0, 'tk.com', '', 2),
     array(57, 0, 'tl.com', '', 2),
     array(57, 0, 'caps.tsr', '', 2)
-/** Autoexec start-up/menu files
-    array(57, 0, 'autotx', '', 1),
-    array(57, 0, 'autoexec', '', 1),
-    array(57, 0, 'autoexe1', '', 1),
-    array(57, 0, 'autoexe2', '', 1),
-    array(57, 0, 'autoexec.cop', '', 1),
-*/
+    /** Autoexec start-up/menu files
+     * array(57, 0, 'autotx', '', 1),
+     * array(57, 0, 'autoexec', '', 1),
+     * array(57, 0, 'autoexe1', '', 1),
+     * array(57, 0, 'autoexe2', '', 1),
+     * array(57, 0, 'autoexec.cop', '', 1),
+     */
 );
 
 
