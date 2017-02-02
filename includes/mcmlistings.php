@@ -1287,7 +1287,7 @@ $mcm_listings = array(
     array(52, 0, 'prtusr.asm', 'prtusr.asm', 1),
     array(52, 0, 'prtusr.bin', 'prtusr.bin', 1),
     array(52, 0, 'salber', 'salber', 1),
-    array(52, 0, 'stralen', 'stralen', 1),
+    array(52, 0, 'stralen', 'stralen', 2),
     array(52, 0, 'tikdit', 'tikdit', 1),
     array(52, 0, 'tk.com', 'tk.com', 1),
     array(52, 0, 'tl.com', 'tl.com', 1),

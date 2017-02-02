@@ -2,7 +2,7 @@
 /*
 Plugin name: MSX Computer Magazine
 Description: Voor de links naar de listings, disks en pdfs van MSX Computer Magazine
-Version: 0.32
+Version: 0.33
 Author: Digitalica
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
