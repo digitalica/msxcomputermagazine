@@ -92,7 +92,7 @@ function show_programs($progList)
             $pagText = "";
         } else {
             global $mcm_basePdfUrl;
-            $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($nr) . $nr . ".pdf";
+            $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($nr) . sprintf("%02d", $nr) . ".pdf";
             $pagText = " (<a href='$pdfURL#page=$pag' target='_blank'>pagina $pag</a>)";
         }
         $listHTML .= "<li><a href='$listingURL' target='_blank'>$name</a>$pagText</li>";
