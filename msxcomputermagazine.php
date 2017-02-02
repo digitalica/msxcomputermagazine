@@ -61,52 +61,76 @@ function mcm_disk($attr)
 
 add_shortcode('listings', 'mcm_listings');
 
-function mcm_listings($attr)
+function show_programs($progList)
 {
-    global $post;
     global $mcm_emulatorUrl;
     global $mcm_baseListingUrl;
     global $mcm_baseDiskZipUrl;
+
+    $listHTML = "";
+    for ($i = 0; $i < sizeof($progList); $i++) {
+        $listing = $progList[$i];
+        $nr = $listing[0];
+
+        $pag = $listing[1];
+        $filename = $listing[2];
+        $name = $listing[3];
+        $msx_version = $listing[4];
+        $listingURL = $mcm_emulatorUrl . '?';
+        switch ($msx_version) {
+            case 1:
+                $listingURL .= 'MACHINE=MSX1E';
+                break;
+            case 2:
+                $listingURL .= 'MACHINE=MSX2E';
+                break;
+            case 3: // msx 2+
+                $listingURL .= 'MACHINE=MSX2PE';
+                break;
+            default: // none
+                $listingURL .= 'MACHINE=';
+        }
+        //            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
+        $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
+        $listingURL .= '&BASIC_RUN=' . urlencode($filename);
+        if ($pag == 0) {
+            $pagText = "";
+        } else {
+            $pagText = " (pagina $pag)";
+        }
+        $listHTML .= "<li><a href='$listingURL' target='_blank'>$name$pagText</a></li>";
+    }
+    return $listHTML;
+
+}
+
+function mcm_listings($attr)
+{
+    global $post;
     global $mcm_listings;
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    $listHTML .= "<div class='mcmlistings'>";
-    $listHTML .= "<ul>";
-    for ($i = 0; $i < sizeof($mcm_listings); $i++) {
-        $listing = $mcm_listings[$i];
-        $nr = $listing[0];
-        if ($nr == $mcm_nr) {
-
-            $pag = $listing[1];
-            $filename = $listing[2];
-            $name = $listing[3];
-            $msx_version = $listing[4];
-            $listingURL = $mcm_emulatorUrl . '?';
-            switch ($msx_version) {
-                case 1:
-                    $listingURL .= 'MACHINE=MSX1E';
-                    break;
-                case 2:
-                    $listingURL .= 'MACHINE=MSX2E';
-                    break;
-                case 3: // msx 2+
-                    $listingURL .= 'MACHINE=MSX2PE';
-                    break;
-                default: // none
-                    $listingURL .= 'MACHINE=';
-            }
-//            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
-            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
-            $listingURL .= '&BASIC_RUN=' . urlencode($filename);
-            if ($pag == 0) {
-                $pagText = "";
-            } else {
-                $pagText = " (pag: $pag)";
-            }
-            $listHTML .= "<li><a href='$listingURL' target='_blank'>$name$pagText</a></li>";
+    $listings = array_values(array_filter(
+        $mcm_listings,
+        function($elem) use ($mcm_nr)  {
+            return $elem[0] == $mcm_nr and $elem[1] != 0;
         }
-    }
+    ));
+    $extras = array_values(array_filter(
+        $mcm_listings,
+        function($elem) use ($mcm_nr)  {
+            return $elem[0] == $mcm_nr and $elem[1] == 0;
+        }
+    ));
+    $listHTML  = "<div class='mcmlistings'>";
+    $listHTML .= "<p>Listings in dit nummer:</p>";
+    $listHTML .= "<ul>";
+    $listHTML .= show_programs($listings);
+    $listHTML .= "</ul>";
+    $listHTML .= "<p>Extra's op de disk:</p>";
+    $listHTML .= "<ul>";
+    $listHTML .= show_programs($extras);
     $listHTML .= "</ul>";
     $listHTML .= "</div>";
     return $listHTML;
