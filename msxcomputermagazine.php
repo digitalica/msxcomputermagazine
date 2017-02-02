@@ -49,11 +49,18 @@ function mcm_disk($attr)
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    $diskURL = $mcm_emulatorUrl . '?DISKA_URL=';
+    $msx_version = 1;
+    if ($mcm_nr > 6) { // first mention of MSX2 in nr 6, but in nr 7 first MSX2 programs on disk.
+        $msx_version = 2;
+    }
+
+    $diskURL = $mcm_emulatorUrl . '?';
+    $diskURL .= mcm_msx_version_url($msx_version);
+    $diskURL .= '&DISKA_URL=';
     $diskURL .= $mcm_baseDiskUrl . 'mcmd' . mcm_disknr($mcm_nr) . ".di1";
     $diskHTML = "<div class='mcmdisk'>";
     $diskHTML = "<a href='$diskURL' target='_blank'>";
-    $diskHTML .= "MCM-D".(int)mcm_disknr($mcm_nr);
+    $diskHTML .= "MCM-D" . (int)mcm_disknr($mcm_nr);
     $diskHTML .= "</a>";
     $diskHTML .= "</div>";
     return $diskHTML;
@@ -77,19 +84,7 @@ function show_programs($progList)
         $name = $listing[3];
         $msx_version = $listing[4];
         $listingURL = $mcm_emulatorUrl . '?';
-        switch ($msx_version) {
-            case 1:
-                $listingURL .= 'MACHINE=MSX1E';
-                break;
-            case 2:
-                $listingURL .= 'MACHINE=MSX2E';
-                break;
-            case 3: // msx 2+
-                $listingURL .= 'MACHINE=MSX2PE';
-                break;
-            default: // none
-                $listingURL .= 'MACHINE=';
-        }
+        $listingURL .= mcm_msx_version_url($msx_version);
         //            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
         $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
         $listingURL .= '&BASIC_RUN=' . urlencode($filename);
@@ -115,23 +110,23 @@ function mcm_listings($attr)
 
     $progsDitNr = array_values(array_filter(
         $mcm_listings,
-        function($elem) use ($mcm_nr)  {
+        function ($elem) use ($mcm_nr) {
             return $elem[0] == $mcm_nr;
         }
     ));
     $listings = array_values(array_filter(
         $progsDitNr,
-        function($elem) use ($mcm_nr)  {
+        function ($elem) use ($mcm_nr) {
             return $elem[1] != 0;
         }
     ));
     $extras = array_values(array_filter(
         $progsDitNr,
-        function($elem) use ($mcm_nr)  {
+        function ($elem) use ($mcm_nr) {
             return $elem[1] == 0;
         }
     ));
-    $listHTML  = "<div class='mcmlistings'>";
+    $listHTML = "<div class='mcmlistings'>";
     if (!empty($listings)) {
         $listHTML .= "<p>Listings in dit nummer:</p>";
         $listHTML .= "<ul>";
@@ -139,7 +134,7 @@ function mcm_listings($attr)
         $listHTML .= "</ul>";
     }
     if (!empty($extras)) {
-        $listHTML .= "<p>Extra's op MCM-D".(int)mcm_disknr($mcm_nr).":</p>";
+        $listHTML .= "<p>Extra's op MCM-D" . (int)mcm_disknr($mcm_nr) . ":</p>";
         $listHTML .= "<ul>";
         $listHTML .= show_programs($extras);
         $listHTML .= "</ul>";
