@@ -429,27 +429,25 @@ $mcm_listings = array(
     array(26, 70, 'lckrdt', 'lckrdt - verder verbeterd', 1),
     array(26, 70, 'lckrlg', 'lckrlg - verlengd', 1),
     array(26, 95, 'icp6', 'Invoer Controle Programma 6', 1),
-    /** Autoexec start-up/menu files
-     * array(26, 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+//    array(26, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
+    array(27, 12, 'keyin', 'Keyin', 1),
+    array(27, 87, 'icp6', 'Invoer Controle Programma 6', 1),
+
+//TODO: check disk!!! Files zijn stuk :-(
     array(27, 0, 'beep1', 'beep1', 1),
     array(27, 0, 'beep2', 'beep2', 1),
     array(27, 0, 'crsfn', 'crsfn', 1),
     array(27, 0, 'follow', 'follow', 1),
-    array(27, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(27, 0, 'intro.pic', 'intro.pic', 1),
     array(27, 0, 'kerst', 'kerst', 1),
     array(27, 0, 'kerst.pic', 'kerst.pic', 1),
-    array(27, 0, 'keyin', 'keyin', 1),
     array(27, 0, 'ranseq', 'ranseq', 1),
     array(27, 0, 'tank2.bas', 'tank2.bas', 1),
     array(27, 0, 'tutor1', 'tutor1', 1),
     array(27, 0, 'tutor2', 'tutor2', 1),
     array(27, 0, 'vamp2.pic', 'vamp2.pic', 1),
-    /** Autoexec start-up/menu files
-     * array(27, 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+//    array(27, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
     array(28, 0, 'cstutr', 'cstutr', 1),
     array(28, 0, 'fdate', 'fdate', 1),
