@@ -46,7 +46,7 @@ function mcm_disknr($nr)
     if ($nr == 1) {
         return "01";
     }
-    if ($nr ==55) {
+    if ($nr == 55) {
         return 55; // disk 54 is vergeten, zie mcm56, p42.  (thanks manuel)
     }
     if ($nr > 1) {
@@ -78,6 +78,25 @@ function mcm_pdfbasename($nr)
         $basename = 'msx_computer_club_magazine_';
     }
     return urlencode($basename);
+}
+
+
+function mcm_msx_version_url($msx_version)
+{
+    switch ($msx_version) {
+        case 1:
+            $url = 'MACHINE=MSX1E';
+            break;
+        case 2:
+            $url = 'MACHINE=MSX2E';
+            break;
+        case 3: // msx 2+
+            $url = 'MACHINE=MSX2PE';
+            break;
+        default: // none
+            $url = 'MACHINE=';
+    }
+    return $url;
 }
 
 ?>
