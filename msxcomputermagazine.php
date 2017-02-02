@@ -53,7 +53,7 @@ function mcm_disk($attr)
     $diskURL .= $mcm_baseDiskUrl . 'mcmd' . mcm_disknr($mcm_nr) . ".di1";
     $diskHTML = "<div class='mcmdisk'>";
     $diskHTML = "<a href='$diskURL' target='_blank'>";
-    $diskHTML .= "disk";
+    $diskHTML .= "MCM-D".(int)mcm_disknr($mcm_nr);
     $diskHTML .= "</a>";
     $diskHTML .= "</div>";
     return $diskHTML;
@@ -111,27 +111,37 @@ function mcm_listings($attr)
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    $listings = array_values(array_filter(
+    $progsDitNr = array_values(array_filter(
         $mcm_listings,
         function($elem) use ($mcm_nr)  {
-            return $elem[0] == $mcm_nr and $elem[1] != 0;
+            return $elem[0] == $mcm_nr;
+        }
+    ));
+    $listings = array_values(array_filter(
+        $progsDitNr,
+        function($elem) use ($mcm_nr)  {
+            return $elem[1] != 0;
         }
     ));
     $extras = array_values(array_filter(
-        $mcm_listings,
+        $progsDitNr,
         function($elem) use ($mcm_nr)  {
-            return $elem[0] == $mcm_nr and $elem[1] == 0;
+            return $elem[1] == 0;
         }
     ));
     $listHTML  = "<div class='mcmlistings'>";
-    $listHTML .= "<p>Listings in dit nummer:</p>";
-    $listHTML .= "<ul>";
-    $listHTML .= show_programs($listings);
-    $listHTML .= "</ul>";
-    $listHTML .= "<p>Extra's op de disk:</p>";
-    $listHTML .= "<ul>";
-    $listHTML .= show_programs($extras);
-    $listHTML .= "</ul>";
+    if (!empty($listings)) {
+        $listHTML .= "<p>Listings in dit nummer:</p>";
+        $listHTML .= "<ul>";
+        $listHTML .= show_programs($listings);
+        $listHTML .= "</ul>";
+    }
+    if (!empty($extras)) {
+        $listHTML .= "<p>Extra's op MCM-D".(int)mcm_disknr($mcm_nr).":</p>";
+        $listHTML .= "<ul>";
+        $listHTML .= show_programs($extras);
+        $listHTML .= "</ul>";
+    }
     $listHTML .= "</div>";
     return $listHTML;
 }
