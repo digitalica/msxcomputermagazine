@@ -475,7 +475,7 @@ $mcm_listings = array(
      * array(28, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
 
-    array(29, 0, 'fisc89', 'fisc89', 1),
+    array(29, 0, 'fisc89', 'fisc89', 2),
     array(29, 0, 'fsc89h', 'fsc89h', 1),
     array(29, 0, 'ftime', 'ftime', 1),
     array(29, 0, 'ftime.com', 'ftime.com', 1),
@@ -490,7 +490,7 @@ $mcm_listings = array(
     array(29, 0, 'ramdsk', 'ramdsk', 1),
     array(29, 0, 'rdinst', 'rdinst', 1),
     array(29, 0, 'rmdbin', 'rmdbin', 1),
-    array(29, 0, 'vertoon', 'vertoon', 1),
+    array(29, 0, 'vertoon', 'vertoon', 2),
     array(29, 0, 'vuurwerk.pic', 'vuurwerk.pic', 1),
     /** Autoexec start-up/menu files
      * array(29, 0, 'autoexec.bas', 'autoexec.bas', 1),
@@ -512,7 +512,7 @@ $mcm_listings = array(
     array(30, 0, 'spritmix.pic', 'spritmix.pic', 1),
     array(30, 0, 'sterrn', 'sterrn', 1),
     array(30, 0, 'truck.pic', 'truck.pic', 1),
-    array(30, 0, 'vertoon', 'vertoon', 1),
+    array(30, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(30, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
@@ -534,7 +534,7 @@ $mcm_listings = array(
     array(31, 0, 'system', 'system', 1),
     array(31, 0, 'tank.pic', 'tank.pic', 1),
     array(31, 0, 'thecreep.pic', 'thecreep.pic', 1),
-    array(31, 0, 'vertoon', 'vertoon', 1),
+    array(31, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(31, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
@@ -551,7 +551,7 @@ $mcm_listings = array(
     array(32, 0, 'transfer.com', 'transfer.com', 1),
     array(32, 0, 'trnsfr', 'trnsfr', 1),
     array(32, 0, 'uil.pic', 'uil.pic', 1),
-    array(32, 0, 'vertoon', 'vertoon', 1),
+    array(32, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(32, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
@@ -583,7 +583,7 @@ $mcm_listings = array(
     array(33, 0, 'sccvb', 'sccvb', 1),
     array(33, 0, 'space.pic', 'space.pic', 1),
     array(33, 0, 'tydmnu', 'tydmnu', 1),
-    array(33, 0, 'vertoon', 'vertoon', 1),
+    array(33, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(33, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
