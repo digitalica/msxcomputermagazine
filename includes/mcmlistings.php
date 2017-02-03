@@ -429,55 +429,55 @@ $mcm_listings = array(
     array(26, 70, 'lckrdt', 'lckrdt - verder verbeterd', 1),
     array(26, 70, 'lckrlg', 'lckrlg - verlengd', 1),
     array(26, 95, 'icp6', 'Invoer Controle Programma 6', 1),
-    /** Autoexec start-up/menu files
-     * array(26, 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+//    array(26, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
+    array(27, 12, 'keyin', 'Keyin', 1),
+    array(27, 87, 'icp6', 'Invoer Controle Programma 6', 1),
+
+//TODO: check disk!!! Files zijn stuk :-(
     array(27, 0, 'beep1', 'beep1', 1),
     array(27, 0, 'beep2', 'beep2', 1),
     array(27, 0, 'crsfn', 'crsfn', 1),
     array(27, 0, 'follow', 'follow', 1),
-    array(27, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(27, 0, 'intro.pic', 'intro.pic', 1),
     array(27, 0, 'kerst', 'kerst', 1),
     array(27, 0, 'kerst.pic', 'kerst.pic', 1),
-    array(27, 0, 'keyin', 'keyin', 1),
     array(27, 0, 'ranseq', 'ranseq', 1),
     array(27, 0, 'tank2.bas', 'tank2.bas', 1),
     array(27, 0, 'tutor1', 'tutor1', 1),
     array(27, 0, 'tutor2', 'tutor2', 1),
     array(27, 0, 'vamp2.pic', 'vamp2.pic', 1),
-    /** Autoexec start-up/menu files
-     * array(27, 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+//    array(27, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
-    array(28, 0, 'cstutr', 'cstutr', 1),
-    array(28, 0, 'fdate', 'fdate', 1),
-    array(28, 0, 'fsc89h', 'fsc89h', 1),
+
+    array(28, 14, 'sal89', 'sal89', 1), // 1 codebase voor GW/MSX1/MSX1
+    array(28, 23, 'gefeli', 'GEFELI - Muzikale gelukwens', 2),
+    array(28, 25, 'kpreld', 'KPRELD - Kleine prelude in D', 1),
+    array(28, 0, 'kprele', 'KREPELE - Kleine prelude in E', 1),
+    array(28, 0, 'kprelf', 'KPRELF - Kleine prelude in F', 1),
+    array(28, 42, 'fdate', 'Fdate  - File datum', 1),
+    array(28, 57, 'kk28-2', 'KK28-2 - Piepen', 1),
+    array(28, 57, 'kk28-3', 'KK28-3 - Keybrd', 1),
+    array(28, 58, 'kk28-4', 'KK28-4 - autoexec.bas', 1),
+    array(28, 58, 'kk28-5', 'KK28-5 - Sclone', 1),
+    array(28, 59, 'kk28-6', 'KK28-6 - flakkr', 1),
+    array(28, 59, 'kk28-7', 'KK28-7 - Osclok', 1),
+    array(28, 59, 'kk28-8', 'KK28-8 - GamOvr', 1),
+    array(28, 61, 'cstutr', 'CS-TUTOR', 1),
+    array(28, 71, 'icp6', 'Invoer Controle Programma 6', 1),
+
+    array(28, 0, 'fsc89h', 'fsc89h ', 1),
     array(28, 0, 'fsc89l', 'fsc89l', 1),
-    array(28, 0, 'gefeli', 'gefeli', 1),
-    array(28, 0, 'icp6', 'Invoer Controle Programma 6', 1),
-    array(28, 0, 'kk28-2', 'kk28-2', 1),
-    array(28, 0, 'kk28-3', 'kk28-3', 1),
-    array(28, 0, 'kk28-4', 'kk28-4', 1),
-    array(28, 0, 'kk28-5', 'kk28-5', 1),
-    array(28, 0, 'kk28-6', 'kk28-6', 1),
-    array(28, 0, 'kk28-7', 'kk28-7', 1),
-    array(28, 0, 'kk28-8', 'kk28-8', 1),
-    array(28, 0, 'kpreld', 'kpreld', 1),
-    array(28, 0, 'kprele', 'kprele', 1),
-    array(28, 0, 'kprelf', 'kprelf', 1),
-    array(28, 0, 'loon89', 'loon89', 1),
-    array(28, 0, 'mcm2o1', 'mcm2o1', 1),
-    array(28, 0, 'mcm2o2', 'mcm2o2', 1),
-    array(28, 0, 'mcm2o3', 'mcm2o3', 1),
-    array(28, 0, 'mcm2o4', 'mcm2o4', 1),
-    array(28, 0, 'sal89', 'sal89', 1),
+    array(28, 0, 'loon89', 'loon89', 1), // is MSX1, width kan aangepast voor MSX2
+//    array(28, 0, 'mcm2o1', 'mcm2o1', 1), // oeps rubriek p74
+//    array(28, 0, 'mcm2o2', 'mcm2o2', 1), // oeps rubriek p74
+//    array(28, 0, 'mcm2o3', 'mcm2o3', 1), // oeps rubriek p74
+//    array(28, 0, 'mcm2o4', 'mcm2o4', 1), // oeps rubriek p74
     /** Autoexec start-up/menu files
      * array(28, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
 
-    array(29, 0, 'fisc89', 'fisc89', 1),
+    array(29, 0, 'fisc89', 'fisc89', 2),
     array(29, 0, 'fsc89h', 'fsc89h', 1),
     array(29, 0, 'ftime', 'ftime', 1),
     array(29, 0, 'ftime.com', 'ftime.com', 1),
@@ -492,7 +492,7 @@ $mcm_listings = array(
     array(29, 0, 'ramdsk', 'ramdsk', 1),
     array(29, 0, 'rdinst', 'rdinst', 1),
     array(29, 0, 'rmdbin', 'rmdbin', 1),
-    array(29, 0, 'vertoon', 'vertoon', 1),
+    array(29, 0, 'vertoon', 'vertoon', 2),
     array(29, 0, 'vuurwerk.pic', 'vuurwerk.pic', 1),
     /** Autoexec start-up/menu files
      * array(29, 0, 'autoexec.bas', 'autoexec.bas', 1),
@@ -502,8 +502,8 @@ $mcm_listings = array(
     array(30, 0, 'dmsxmag.pic', 'dmsxmag.pic', 1),
     array(30, 0, 'haard1', 'haard1', 1),
     array(30, 0, 'haard2', 'haard2', 1),
-    array(30, 0, 'haard3', 'haard3', 1),
-    array(30, 0, 'haard4', 'haard4', 1),
+    array(30, 0, 'haard3', 'haard3', 2),
+    array(30, 0, 'haard4', 'haard4', 2),
     array(30, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(30, 0, 'intlac', 'intlac', 1),
     array(30, 0, 'legenda.pic', 'legenda.pic', 1),
@@ -514,7 +514,7 @@ $mcm_listings = array(
     array(30, 0, 'spritmix.pic', 'spritmix.pic', 1),
     array(30, 0, 'sterrn', 'sterrn', 1),
     array(30, 0, 'truck.pic', 'truck.pic', 1),
-    array(30, 0, 'vertoon', 'vertoon', 1),
+    array(30, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(30, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
@@ -536,7 +536,7 @@ $mcm_listings = array(
     array(31, 0, 'system', 'system', 1),
     array(31, 0, 'tank.pic', 'tank.pic', 1),
     array(31, 0, 'thecreep.pic', 'thecreep.pic', 1),
-    array(31, 0, 'vertoon', 'vertoon', 1),
+    array(31, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(31, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
@@ -553,7 +553,7 @@ $mcm_listings = array(
     array(32, 0, 'transfer.com', 'transfer.com', 1),
     array(32, 0, 'trnsfr', 'trnsfr', 1),
     array(32, 0, 'uil.pic', 'uil.pic', 1),
-    array(32, 0, 'vertoon', 'vertoon', 1),
+    array(32, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(32, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
@@ -566,8 +566,8 @@ $mcm_listings = array(
     array(33, 0, 'basicscc.003', 'basicscc.003', 1),
     array(33, 0, 'basicscc.004', 'basicscc.004', 1),
     array(33, 0, 'bergen.pic', 'bergen.pic', 1),
-    array(33, 0, 'haard5', 'haard5', 1),
-    array(33, 0, 'haard6', 'haard6', 1),
+    array(33, 0, 'haard5', 'haard5', 2),
+    array(33, 0, 'haard6', 'haard6', 2),
     array(33, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(33, 0, 'intlc2', 'intlc2', 1),
     array(33, 0, 'iotje.bas', 'iotje.bas', 1),
@@ -585,7 +585,7 @@ $mcm_listings = array(
     array(33, 0, 'sccvb', 'sccvb', 1),
     array(33, 0, 'space.pic', 'space.pic', 1),
     array(33, 0, 'tydmnu', 'tydmnu', 1),
-    array(33, 0, 'vertoon', 'vertoon', 1),
+    array(33, 0, 'vertoon', 'vertoon', 2),
     /** Autoexec start-up/menu files
      * array(33, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
@@ -615,12 +615,12 @@ $mcm_listings = array(
     array(35, 0, 'dynasta7.pic', 'dynasta7.pic', 1),
     array(35, 0, 'easpatch.com', 'easpatch.com', 1),
     array(35, 0, 'epson.doc', 'epson.doc', 1),
-    array(35, 0, 'haard7', 'haard7', 1),
-    array(35, 0, 'haard8', 'haard8', 1),
-    array(35, 0, 'haard9', 'haard9', 1),
-    array(35, 0, 'hard10', 'hard10', 1),
-    array(35, 0, 'hard9b', 'hard9b', 1),
-    array(35, 0, 'hrkang', 'hrkang', 1),
+    array(35, 0, 'haard7', 'haard7', 1), // MSX1 (!)
+    array(35, 0, 'haard8', 'haard8', 1), // MSX1 (!)
+    array(35, 0, 'haard9', 'haard9', 2),
+    array(35, 0, 'hard10', 'hard10', 2),
+    array(35, 0, 'hard9b', 'hard9b', 2),
+    array(35, 0, 'hrkang', 'hrkang', 1), // MSX1
     array(35, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(35, 0, 'id', 'id', 1),
     array(35, 0, 'jingbl', 'jingbl', 1),
@@ -632,7 +632,7 @@ $mcm_listings = array(
     array(35, 0, 'patch', 'patch', 1),
     array(35, 0, 'romein.pic', 'romein.pic', 1),
     array(35, 0, 'seppat', 'seppat', 1),
-    array(35, 0, 'show34', 'show34', 1),
+    array(35, 0, 'show34', 'show34', 2),
     array(35, 0, 'vuurwk', 'vuurwk', 1),
     array(35, 0, 'wewish', 'wewish', 1),
     /** Autoexec start-up/menu files
@@ -658,7 +658,7 @@ $mcm_listings = array(
     array(36, 0, 'pasmog', 'pasmog', 1),
     array(36, 0, 'rgnbg', 'rgnbg', 1),
     array(36, 0, 'sal90', 'sal90', 1),
-    array(36, 0, 'show35', 'show35', 1),
+    array(36, 0, 'show35', 'show35', 2),
     array(36, 0, 'supprt', 'supprt', 1),
     array(36, 0, 'wandel', 'wandel', 1),
     array(36, 0, 'wu_shu.pic', 'wu_shu.pic', 1),
@@ -690,7 +690,7 @@ $mcm_listings = array(
     array(37, 0, 'scrnl4', 'scrnl4', 1),
     array(37, 0, 'scrnl5', 'scrnl5', 1),
     array(37, 0, 'seppt2', 'seppt2', 1),
-    array(37, 0, 'show36', 'show36', 1),
+    array(37, 0, 'show36', 'show36', 2),
     array(37, 0, 'simpel', 'simpel', 1),
     array(37, 0, 'tstprt', 'tstprt', 1),
     array(37, 0, 'zoomlens.pic', 'zoomlens.pic', 1),
@@ -724,7 +724,7 @@ $mcm_listings = array(
     array(38, 0, 'potlod', 'potlod', 1),
     array(38, 0, 'scrpch', 'scrpch', 1),
     array(38, 0, 'scrsav', 'scrsav', 1),
-    array(38, 0, 'show37', 'show37', 1),
+    array(38, 0, 'show37', 'show37', 2),
     array(38, 0, 'storin', 'storin', 1),
     array(38, 0, 'strofz', 'strofz', 1),
     array(38, 0, 'tekst', 'tekst', 1),
@@ -761,7 +761,7 @@ $mcm_listings = array(
     array(39, 0, 'icp7b', 'Invoer Controle Programma 7', 1),
     array(39, 0, 'komputer.sc7', 'komputer.sc7', 1),
     array(39, 0, 'mcmmcm', 'mcmmcm', 1),
-    array(39, 0, 'show38', 'show38', 1),
+    array(39, 0, 'show38', 'show38', 2),
     array(39, 0, 'spinnen1.pic', 'spinnen1.pic', 1),
     array(39, 0, 'tikken', 'tikken', 1),
     array(39, 0, 'turmite.pic', 'turmite.pic', 1),
@@ -789,7 +789,7 @@ $mcm_listings = array(
     array(40, 0, 'mtype.gen', 'mtype.gen', 1),
     array(40, 0, 'queen.sc7', 'queen.sc7', 1),
     array(40, 0, 'rubklk', 'rubklk', 1),
-    array(40, 0, 'show39', 'show39', 1),
+    array(40, 0, 'show39', 'show39', 2),
     array(40, 0, 'space.pic', 'space.pic', 1),
     array(40, 0, 'swap', 'swap', 1),
     array(40, 0, 'swap.com', 'swap.com', 1),
