@@ -449,28 +449,30 @@ $mcm_listings = array(
     array(27, 0, 'vamp2.pic', 'vamp2.pic', 1),
 //    array(27, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
-    array(28, 0, 'cstutr', 'cstutr', 1),
-    array(28, 0, 'fdate', 'fdate', 1),
-    array(28, 0, 'fsc89h', 'fsc89h', 1),
+
+    array(28, 14, 'sal89', 'sal89', 1), // 1 codebase voor GW/MSX1/MSX1
+    array(28, 23, 'gefeli', 'GEFELI - Muzikale gelukwens', 2),
+    array(28, 25, 'kpreld', 'KPRELD - Kleine prelude in D', 1),
+    array(28, 0, 'kprele', 'KREPELE - Kleine prelude in E', 1),
+    array(28, 0, 'kprelf', 'KPRELF - Kleine prelude in F', 1),
+    array(28, 42, 'fdate', 'Fdate  - File datum', 1),
+    array(28, 57, 'kk28-2', 'KK28-2 - Piepen', 1),
+    array(28, 57, 'kk28-3', 'KK28-3 - Keybrd', 1),
+    array(28, 58, 'kk28-4', 'KK28-4 - autoexec.bas', 1),
+    array(28, 58, 'kk28-5', 'KK28-5 - Sclone', 1),
+    array(28, 59, 'kk28-6', 'KK28-6 - flakkr', 1),
+    array(28, 59, 'kk28-7', 'KK28-7 - Osclok', 1),
+    array(28, 59, 'kk28-8', 'KK28-8 - GamOvr', 1),
+    array(28, 61, 'cstutr', 'CS-TUTOR', 1),
+    array(28, 71, 'icp6', 'Invoer Controle Programma 6', 1),
+
+    array(28, 0, 'fsc89h', 'fsc89h ', 1),
     array(28, 0, 'fsc89l', 'fsc89l', 1),
-    array(28, 0, 'gefeli', 'gefeli', 1),
-    array(28, 0, 'icp6', 'Invoer Controle Programma 6', 1),
-    array(28, 0, 'kk28-2', 'kk28-2', 1),
-    array(28, 0, 'kk28-3', 'kk28-3', 1),
-    array(28, 0, 'kk28-4', 'kk28-4', 1),
-    array(28, 0, 'kk28-5', 'kk28-5', 1),
-    array(28, 0, 'kk28-6', 'kk28-6', 1),
-    array(28, 0, 'kk28-7', 'kk28-7', 1),
-    array(28, 0, 'kk28-8', 'kk28-8', 1),
-    array(28, 0, 'kpreld', 'kpreld', 1),
-    array(28, 0, 'kprele', 'kprele', 1),
-    array(28, 0, 'kprelf', 'kprelf', 1),
-    array(28, 0, 'loon89', 'loon89', 1),
-    array(28, 0, 'mcm2o1', 'mcm2o1', 1),
-    array(28, 0, 'mcm2o2', 'mcm2o2', 1),
-    array(28, 0, 'mcm2o3', 'mcm2o3', 1),
-    array(28, 0, 'mcm2o4', 'mcm2o4', 1),
-    array(28, 0, 'sal89', 'sal89', 1),
+    array(28, 0, 'loon89', 'loon89', 1), // is MSX1, width kan aangepast voor MSX2
+//    array(28, 0, 'mcm2o1', 'mcm2o1', 1), // oeps rubriek p74
+//    array(28, 0, 'mcm2o2', 'mcm2o2', 1), // oeps rubriek p74
+//    array(28, 0, 'mcm2o3', 'mcm2o3', 1), // oeps rubriek p74
+//    array(28, 0, 'mcm2o4', 'mcm2o4', 1), // oeps rubriek p74
     /** Autoexec start-up/menu files
      * array(28, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
