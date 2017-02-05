@@ -277,7 +277,7 @@ $mcm_listings = array(
     array(17, 18, 'ml16', 'Cursus Z80 machinetaal voorbeeld 16', 1),
     array(17, 39, 'hal', 'Hal', 1),
     array(17, 0, 'ldpic', 'Hi-res plaatjes', 2),
-    array(17, 0, 'carr16', 'Carrousel', 1),
+    array(17, 0, 'carr16', 'Carrousel', 2),
     array(17, 0, 'konami.pic', 'beschrijving', 1),
     array(17, 0, 'dtp.pic', 'beschrijving', 1),
     array(17, 0, 'motto.pic', 'beschrijving', 1),
