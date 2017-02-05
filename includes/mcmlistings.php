@@ -1015,7 +1015,7 @@ $mcm_listings = array(
     array(46, 15, 'zas5l4.asm', 'ML met ZAS listing 4', 1),
     array(46, 33, 'knppr2', 'KK46-1: KNPPR2', 2),
     array(46, 34, 'knppr2as.asc', 'KNPPR2 assembly listing', 1),
-    array(46, 34 'square', 'KK46-2: Blue Square', 2),
+    array(46, 34, 'square', 'KK46-2: Blue Square', 2),
     array(46, 35, 'gloei', 'KK46-3: Gloeiworm', 2),
     array(46, 35, 'cyclus', 'KK46-4: Kaleidocyclus', 2),
     array(46, 35, 'dr4kt1', 'KK46-5A: Draaiende Vierkanten 1', 1),
