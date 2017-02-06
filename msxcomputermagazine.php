@@ -83,11 +83,21 @@ function show_programs($progList)
         $filename = $listing[2];
         $name = $listing[3];
         $msx_version = $listing[4];
+        $runtype = 'R';
+        if (sizeof($listing) > 5) {
+            $runtype = $listing[5];
+        }
         $listingURL = $mcm_emulatorUrl . '?';
         $listingURL .= mcm_msx_version_url($msx_version);
         //            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
         $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
-        $listingURL .= '&BASIC_RUN=' . urlencode($filename);
+        if ($runtype == 'B') {
+            // we use BASIC ENTER to 'fake' BLOAD option.
+            // see https://github.com/ppeccin/WebMSX/issues/11
+            $listingURL .= '&BASIC_ENTER=BLOAD "' . urlencode($filename) . '",r';
+        } else { // use this as default, and even if an unknown option was used.
+            $listingURL .= '&BASIC_RUN=' . urlencode($filename);
+        }
         if ($pag == 0) {
             $pagText = "";
         } else {
@@ -95,7 +105,14 @@ function show_programs($progList)
             $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($nr) . sprintf("%02d", $nr) . ".pdf";
             $pagText = " (<a href='$pdfURL#page=$pag' target='_blank'>pagina $pag</a>)";
         }
-        $listHTML .= "<li><a href='$listingURL' target='_blank'>$name</a>$pagText</li>";
+        $listHTML .= "<li>";
+        if ($runtype != 'X') {
+            $listHTML .= "<a href='$listingURL' target='_blank'>";
+        }
+        $listHTML .= $name;
+        if ($runtype != 'X') {
+            $listHTML .= "</a>$pagText</li>";
+        }
     }
     return $listHTML;
 
