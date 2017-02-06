@@ -1315,13 +1315,11 @@ $mcm_listings = array(
      * array(53, 0, 'memview.tsr', 'memview.tsr', 1),
      * array(53, 0, 'sftreset.tsr', 'sftreset.tsr', 1),
      */
-    /** Art Gallery
-     * array(53, 0, 'brug.pic', 'brug.pic', 1, 'X'),
-     * array(53, 0, 'devildog.sc5', 'devildog.sc5', 1, 'X'),
-     * array(53, 0, 'ice.pic', 'ice.pic', 1, 'X'),
-     * array(53, 0, 'lantern.pic', 'lantern.pic', 1, 'X'),
-     * array(53, 0, 'mask.pic', 'mask.pic', 1, 'X'),
-     */
+    array(53, 0, 'brug.pic', 'brug.pic', 2, 'X'),
+    array(53, 0, 'devildog.sc5', 'devildog.sc5', 2, 'X'),
+    array(53, 0, 'ice.pic', 'ice.pic', 2, 'X'),
+    array(53, 0, 'lantern.pic', 'lantern.pic', 2, 'X'),
+    array(53, 0, 'mask.pic', 'mask.pic', 2, 'X'),
     array(53, 0, 'q8', 'Q8 (Art Gallery)', 2),
     array(53, 0, 'toon5', 'Duivelshond (Art Gallery)', 2),
     array(53, 0, 'diashw', 'Dia Show', 2),
@@ -1362,8 +1360,8 @@ $mcm_listings = array(
     /** Art Gallery files */
     array(54, 0, 'butfly.bas', 'butfly.bas', 2),
 //    array(54, 0, 'butter7.fly', 'butter7.fly', 1),
-//    array(54, 0, 'viool.pic', 'viool.pic', 1, 'X'),
-//    array(54, 0, 'vlieger.pic', 'vlieger.pic', 1, 'X'),
+//    array(54, 0, 'viool.pic', 'viool.pic', 2, 'X'),
+//    array(54, 0, 'vlieger.pic', 'vlieger.pic', 2, 'X'),
     array(54, 59, 'scr0dump.bas', 'Genereert SCR0DUMP.TSR', 2),
 //    array(54, 0, 'scr0dump.tsr', 'scr0dump.tsr', 1),
     array(54, 61, 'scr0inst.bas', 'Installatieprogramma voor SCR0DUMP.TSR', 2),
@@ -1465,12 +1463,10 @@ $mcm_listings = array(
      */
     array(56, 0, 'msxpaint.iv', 'msxpaint.iv', 2),
     array(56, 29, 'doolhof.asc', 'doolhof.asc', 2),
-    /** Art Gallery files
-     * array(56, 0, 'wolfmuti.cc7', 'wolfmuti.cc7', 1),
-     * array(56, 0, 'flycreep.cc7', 'flycreep.cc7', 1),
-     * array(56, 0, 'cacahu.sc8', 'cacahu.sc8', 1, 'X'),
-     * array(56, 0, 'brothers.cc7', 'brothers.cc7', 1),
-     */
+    array(56, 0, 'wolfmuti.cc7', 'wolfmuti.cc7', 2, 'X'),
+    array(56, 0, 'flycreep.cc7', 'flycreep.cc7', 2, 'X'),
+    array(56, 0, 'cacahu.sc8', 'cacahu.sc8', 2, 'X'),
+    array(56, 0, 'brothers.cc7', 'brothers.cc7', 2, 'X'),
     array(56, 52, 'master2', 'Mastermind (MSX2)', 2),
     array(56, 53, 'master1', 'Mastermind (MSX1)', 1),
     array(56, 65, 'icp7.bas', 'Invoer Controle Programma 7 generator', 1),
