@@ -599,45 +599,41 @@ $mcm_listings = array(
     array(34, 67, 'tydmnu', 'Tijdmenu', 1),
 
     array(34, 0, 'icp6', 'Invoer Controle Programma 6', 1),
-    array(34, 0, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(34, 0, 'icp7b', 'Invoer Controle Programma 7 - bin versie', 1, 'B'),
+    array(34, 0, 'icp7', 'Invoer Controle Programma 7 generator', 1), // huh??? op volgende niet meer?
+    array(34, 0, 'icp7b', 'Invoer Controle Programma 7 - bin versie', 1, 'B'), // huh??? op volgende niet meer?
     array(34, 0, 'm2b4ex', 'm2b4ex', 1),
     array(34, 0, 'show33', 'show33', 2),
     array(34, -45, 'crvir21.pic', 'crvir21.pic', 1, 'X'),
     array(34, -46, 'crvir69.pic', 'crvir69.pic', 1, 'X'),
     array(34, -46, 'crlan100.pic', 'crlan100.pic', 1, 'X'),
-    /** Autoexec start-up/menu files
-     * array(34, 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+    // array(34, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
-    array(35, 0, 'balkensp.pic', 'balkensp.pic', 1, 'X'),
-    array(35, 0, 'dynasta5.pic', 'dynasta5.pic', 1, 'X'),
-    array(35, 0, 'dynasta7.pic', 'dynasta7.pic', 1, 'X'),
+    array(35, 20, 'vuurwk', 'Vuurwerk', 1),
+    array(35, 25, 'wewish', 'We wish you a marry Christmas', 1),
+    array(35, 43, 'seppat', 'Patch voor Ease', 1),
     array(35, 0, 'easpatch.com', 'easpatch.com', 1, 'X'),
+    array(35, 52, 'kerst', 'Kerst', 1),
+    array(35, 55, 'kaars', 'kaars', 1),
+    array(35, 55, 'haard7', 'Haard 7', 1), // MSX1 (!)
+    array(35, 56, 'haard8', 'Haard 8', 1), // MSX1 (!)
+    array(35, 56, 'haard9', 'Haard 9', 2),
+    array(35, 57, 'hard10', 'Haard 10', 2),
+    array(35, 57, 'hard9b', 'Haard 9b', 2),
+    array(35, 61, 'life', 'life', 1),
     array(35, 0, 'epson.doc', 'epson.doc', 1),
-    array(35, 0, 'haard7', 'haard7', 1), // MSX1 (!)
-    array(35, 0, 'haard8', 'haard8', 1), // MSX1 (!)
-    array(35, 0, 'haard9', 'haard9', 2),
-    array(35, 0, 'hard10', 'hard10', 2),
-    array(35, 0, 'hard9b', 'hard9b', 2),
     array(35, 0, 'hrkang', 'hrkang', 1), // MSX1
     array(35, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(35, 0, 'id', 'id', 1),
     array(35, 0, 'jingbl', 'jingbl', 1),
-    array(35, 0, 'kaars', 'kaars', 1),
-    array(35, 0, 'kerst', 'kerst', 1),
-    array(35, 0, 'life', 'life', 1),
-    array(35, 0, 'lixenbg2.pic', 'lixenbg2.pic', 1, 'X'),
     array(35, 0, 'marybo', 'marybo', 1),
     array(35, 0, 'patch', 'patch', 1),
-    array(35, 0, 'romein.pic', 'romein.pic', 1, 'X'),
-    array(35, 0, 'seppat', 'seppat', 1),
     array(35, 0, 'show34', 'Show 34: laat de plaatjes zien van MCM-D34', 2),
-    array(35, 0, 'vuurwk', 'vuurwk', 1),
-    array(35, 0, 'wewish', 'wewish', 1),
-    /** Autoexec start-up/menu files
-     * array(35, 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+    array(35, -45, 'romein.pic', 'romein.pic', 1, 'X'),
+    array(35, -45, 'lixenbg2.pic', 'lixenbg2.pic', 1, 'X'),
+    array(35, -46, 'balkensp.pic', 'balkensp.pic', 1, 'X'),
+    array(35, -47, 'dynasta5.pic', 'dynasta5.pic', 1, 'X'),
+    array(35, -47, 'dynasta7.pic', 'dynasta7.pic', 1, 'X'),
+    array(35, 0, 'autoexec.bas', 'autoexec.bas', 1, 'X'),
 
     /**
      * Below here back to MSX Computer Magazine again.
