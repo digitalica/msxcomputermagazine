@@ -587,22 +587,24 @@ $mcm_listings = array(
      * array(33, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
 
-    array(34, 0, 'crlan100.pic', 'crlan100.pic', 1, 'X'),
-    array(34, 0, 'crvir21.pic', 'crvir21.pic', 1, 'X'),
-    array(34, 0, 'crvir69.pic', 'crvir69.pic', 1, 'X'),
-    array(34, 0, 'fmpak', 'fmpak', 1),
+    array(34, 13, 'rymele', 'Rymele', 1),
+    array(34, 14, 'klrsns', 'KLRSNS - Kleurensinus', 2),
+    array(34, 14, 'klrsn2', 'KLRSN2 - Kleurensinus 2', 2),
+    array(34, 15, 'smile2', 'Smile', 2),
+    array(34, 15, 'sntkst', 'SNTKST', 1),
+    // p20, msx2pc ??
+    array(34, 50, 'fmpak', 'FMPAK', 1),
+    array(34, 56, 'jungle', 'Jungle', 1),
+    array(34, 67, 'tydmnu', 'Tijdmenu', 1),
+
     array(34, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(34, 0, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(34, 0, 'icp7b', 'Invoer Controle Programma 7', 1),
-    array(34, 0, 'jungle', 'jungle', 1),
-    array(34, 0, 'klrsn2', 'klrsn2', 1),
-    array(34, 0, 'klrsns', 'klrsns', 1),
+    array(34, 0, 'icp7b', 'Invoer Controle Programma 7 - bin versie', 1, 'B'),
     array(34, 0, 'm2b4ex', 'm2b4ex', 1),
-    array(34, 0, 'rymele', 'rymele', 1),
-    array(34, 0, 'show33', 'show33', 1),
-    array(34, 0, 'smile2', 'smile2', 1),
-    array(34, 0, 'sntkst', 'sntkst', 1),
-    array(34, 0, 'tydmnu', 'tydmnu', 1),
+    array(34, 0, 'show33', 'show33', 2),
+    array(34, -45, 'crvir21.pic', 'crvir21.pic', 1, 'X'),
+    array(34, -46, 'crvir69.pic', 'crvir69.pic', 1, 'X'),
+    array(34, -46, 'crlan100.pic', 'crlan100.pic', 1, 'X'),
     /** Autoexec start-up/menu files
      * array(34, 0, 'autoexec.bas', 'autoexec.bas', 1),
      */

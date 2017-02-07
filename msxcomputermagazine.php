@@ -103,8 +103,9 @@ function show_programs($progList)
             $pagText = "";
         } else {
             global $mcm_basePdfUrl;
+            $abspag = abs($pag);
             $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($nr) . sprintf("%02d", $nr) . ".pdf";
-            $pagText = " (<a href='$pdfURL#page=$pag' target='_blank'>pagina $pag</a>)";
+            $pagText = " (<a href='$pdfURL#page=$abspag' target='_blank'>pagina $abspag</a>)";
         }
         $listHTML .= "<li>";
         if ($runtype != 'X') {
@@ -112,11 +113,12 @@ function show_programs($progList)
         }
         $listHTML .= $name;
         if ($runtype != 'X') {
-            $listHTML .= "</a>$pagText</li>";
+            $listHTML .= "</a>";
         }
+        $listHTML .= $pagText;
+        $listHTML .= "</li>";
     }
     return $listHTML;
-
 }
 
 function mcm_listings($attr)
@@ -135,13 +137,13 @@ function mcm_listings($attr)
     $listings = array_values(array_filter(
         $progsDitNr,
         function ($elem) use ($mcm_nr) {
-            return $elem[1] != 0;
+            return $elem[1] > 0;
         }
     ));
     $extras = array_values(array_filter(
         $progsDitNr,
         function ($elem) use ($mcm_nr) {
-            return $elem[1] == 0;
+            return $elem[1] <= 0;
         }
     ));
     $listHTML = "<div class='mcmlistings'>";
