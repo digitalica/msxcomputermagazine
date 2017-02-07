@@ -11,6 +11,7 @@
  *
  * 1: het bladnummer (dus NIET het nummer van de disk, dat is meestal 1 lager
  * 2: het paginanummer (van de eerste regel van de listing) of 0 als listing niet in blad staat
+ *    een negatief paginanummer zet de listing bij de extra's, maar wel met een pagina link. (bv voor art gallery plaatjes)
  * 3: de filenaam van het bestand op de disk
  * 4: de naam in leesbare vorm (titel van het artikel, opschrijving op disk)
  * 5: minimale MSX versie nodig (1: MSX1, 2: MSX2, 3: MSX2+)
@@ -534,10 +535,10 @@ $mcm_listings = array(
     array(31, 67, 'icp6', 'Invoer Controle Programma 6', 1),
     array(31, 0, 'schcor', 'schcor', 1),
     array(31, 44, 'vertoon', 'vertoon', 2), // niet echt op die pag, maar krijg nr ivm art gallery
-    array(31, 44, 'forest.pic', 'forest.pic', 2, 'X'),
-    array(31, 45, 'columbia.pic', 'columbia.pic', 2, 'X'),
-    array(31, 45, 'tank.pic', 'tank.pic', 2, 'X'),
-    array(31, 45, 'thecreep.pic', 'thecreep.pic', 2, 'X'),
+    array(31, -44, 'forest.pic', 'forest.pic', 2, 'X'),
+    array(31, -45, 'columbia.pic', 'columbia.pic', 2, 'X'),
+    array(31, -45, 'tank.pic', 'tank.pic', 2, 'X'),
+    array(31, -45, 'thecreep.pic', 'thecreep.pic', 2, 'X'),
 //    array(31, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
     array(32, 30, 'gordyn', 'Gordijn', 2),
@@ -550,9 +551,9 @@ $mcm_listings = array(
     array(32, 56, 'transfer.com', 'transfer.com', 1, 'X'),
     array(32, 67, 'icp6', 'Invoer Controle Programma 6', 1),
     array(32, 22, 'vertoon', 'vertoon', 2), // niet echt op die pag, maar krijg nr ivm art gallery
-    array(32, 22, 'flappy2.pic', 'flappy2.pic', 2, 'X'),
-    array(32, 22, 'rolls.pic', 'rolls.pic', 2, 'X'),
-    array(32, 23, 'leski.pic', 'leski.pic', 2, 'X'),
+    array(32, -22, 'flappy2.pic', 'flappy2.pic', 2, 'X'),
+    array(32, -22, 'rolls.pic', 'rolls.pic', 2, 'X'),
+    array(32, -23, 'leski.pic', 'leski.pic', 2, 'X'),
     array(32, 23, 'uil.pic', 'uil.pic', 2, 'X'),
 //    array(32, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
