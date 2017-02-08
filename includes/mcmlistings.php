@@ -717,7 +717,7 @@ $mcm_listings = array(
     array(38, 55, 'abhstr', 'KK38-1b: ABHSTR (alles behalve sterren), STROFZ uitgeschreven en aangepast', 2),
     array(38, 56, 'potlod', 'KK38-2: Potlood', 1),
     array(38, 56, 'tekst', 'KK38-3: Tekst', 1),
-    array(38, 57, 'cujomu', 'KK38-4" Cursor/Joystick/Muis-routine', 2),
+    array(38, 57, 'cujomu', 'KK38-4: Cursor/Joystick/Muis-routine', 2),
     array(38, 58, 'storin', 'KK38-5: Storing', 1),
     array(38, 60, 'linlen', 'Linlen (line length)', 1),
     array(38, 60, 'linprt', 'Linprt (line print)', 1),
