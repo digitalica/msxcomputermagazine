@@ -2,7 +2,7 @@
 /*
 Plugin name: MSX Computer Magazine
 Description: Voor de links naar de listings, disks en pdfs van MSX Computer Magazine
-Version: 0.42
+Version: 0.44
 Author: Digitalica
 GitHub Plugin URI: https://github.com/digitalica/msxcomputermagazine
 License: GPL2
@@ -37,7 +37,8 @@ $mcm_baseUrl = 'http://www.msxcomputermagazine.nl';
 $mcm_baseListingUrl = $mcm_baseUrl . '/archief/listings/';
 $mcm_baseDiskZipUrl = $mcm_baseUrl . '/archief/diskzips/';
 $mcm_baseDiskUrl = $mcm_baseUrl . '/archief/disks/';
-$mcm_basePdfUrl = $mcm_baseUrl . '/archief/bladen/';
+$mcm_baseMagazinePdfUrl = $mcm_baseUrl . '/archief/bladen/';
+$mcm_baseListingboekPdfUrl = $mcm_baseUrl . '/archief/lb/';
 
 
 add_shortcode('pdf', 'mcm_pdf');
@@ -45,15 +46,23 @@ add_shortcode('pdf', 'mcm_pdf');
 function mcm_pdf($attr)
 {
     global $post;
-    global $mcm_basePdfUrl;
+    global $mcm_baseMagazinePdfUrl;
+    global $mcm_baseListingboekPdfUrl;
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
-
-    $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
+    if (is_magazine($mcm_nr)) {
+        $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
+    } else if (is_listingboek($mcm_nr)) {
+        $pdfURL = $mcm_baseListingboekPdfUrl . mcm_pdfbasename($mcm_nr) . ".pdf";
+    }
     $pdfHTML = "<div class='mcmpdf'>";
-    $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
-    $pdfHTML .= "MSX Computer Magazine " . ($mcm_nr + 0);
-    $pdfHTML .= "</a>";
+    if (is_pdf_available($mcm_nr)) {
+        $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
+        $pdfHTML .= magazine_name($mcm_nr);
+        $pdfHTML .= "</a>";
+    } else {
+        $pdfHTML .= _("Geen pdf beschikbaar");
+    }
     $pdfHTML .= "</div>";
     return $pdfHTML;
 }
@@ -78,9 +87,13 @@ function mcm_disk($attr)
     $diskURL .= '&DISKA_URL=';
     $diskURL .= $mcm_baseDiskUrl . 'mcmd' . mcm_disknr($mcm_nr) . ".di1";
     $diskHTML = "<div class='mcmdisk'>";
-    $diskHTML = "<a href='$diskURL' target='_blank'>";
-    $diskHTML .= "MCM-D" . (int)mcm_disknr($mcm_nr);
-    $diskHTML .= "</a>";
+    if (is_disk_available($mcm_nr)) {
+        $diskHTML = "<a href='$diskURL' target='_blank'>";
+        $diskHTML .= "MCM-D" . (int)mcm_disknr($mcm_nr);
+        $diskHTML .= "</a>";
+    } else {
+        $diskHTML .= _("Geen disk beschikbaar");
+    }
     $diskHTML .= "</div>";
     return $diskHTML;
 }
@@ -120,9 +133,9 @@ function show_programs($progList)
         if ($pag == 0) {
             $pagText = "";
         } else {
-            global $mcm_basePdfUrl;
+            global $mcm_baseMagazinePdfUrl;
             $abspag = abs($pag);
-            $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($nr) . sprintf("%02d", $nr) . ".pdf";
+            $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($nr) . sprintf("%02d", $nr) . ".pdf";
             $pagText = " (<a href='$pdfURL#page=$abspag' target='_blank'>";
             $pagText .= _("pagina");
             $pagText .= " $abspag</a>)";

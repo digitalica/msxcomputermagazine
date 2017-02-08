@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 require('mcmutils.php');
 
-use PHPUnit_Framework_TestCase;
-
 /**
  * @covers mcmutils
  */
@@ -26,9 +24,66 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals("23", mcm_nr_from_pagename("nr. 23 – jun 1988 – MSX Computer Magazine"));
 
+        $this->assertEquals("101", mcm_nr_from_pagename("listingboek 1"));
+        $this->assertEquals("102", mcm_nr_from_pagename("listingboek 2"));
+
         $this->assertEquals(0, mcm_nr_from_pagename(""));
         $this->assertEquals(0, mcm_nr_from_pagename("xxxxxxx"));
         $this->assertEquals(0, mcm_nr_from_pagename("123456"));
+    }
+
+    public function testIs_listingboek()
+    {
+        $this->assertEquals(false, is_listingboek(0));
+        $this->assertEquals(false, is_listingboek(1));
+        $this->assertEquals(false, is_listingboek(100));
+        $this->assertEquals(false, is_listingboek(103));
+        $this->assertEquals(false, is_listingboek(999));
+
+        $this->assertEquals(true, is_listingboek(101));
+        $this->assertEquals(true, is_listingboek(102));
+    }
+
+    public function testIs_magazine()
+    {
+        $this->assertEquals(false, is_magazine(0));
+        $this->assertEquals(false, is_magazine(91));
+        $this->assertEquals(false, is_magazine(100));
+        $this->assertEquals(false, is_magazine(101));
+        $this->assertEquals(false, is_magazine(102));
+        $this->assertEquals(false, is_magazine(999));
+
+        $this->assertEquals(true, is_magazine(1));
+        $this->assertEquals(true, is_magazine(27));
+        $this->assertEquals(true, is_magazine(90));
+    }
+
+    public function testIs_pdf_available()
+    {
+        $this->assertEquals(false, is_pdf_available(0));
+        $this->assertEquals(false, is_pdf_available(91));
+        $this->assertEquals(false, is_pdf_available(100));
+        $this->assertEquals(false, is_pdf_available(103));
+        $this->assertEquals(false, is_pdf_available(999));
+
+        $this->assertEquals(true, is_pdf_available(1));
+        $this->assertEquals(true, is_pdf_available(27));
+        $this->assertEquals(true, is_pdf_available(90));
+        $this->assertEquals(true, is_pdf_available(101));
+        $this->assertEquals(true, is_pdf_available(102));
+    }
+
+    public function testIs_disk_available()
+    {
+        $this->assertEquals(false, is_disk_available(0));
+        $this->assertEquals(false, is_disk_available(91));
+        $this->assertEquals(false, is_disk_available(100));
+        $this->assertEquals(false, is_disk_available(103));
+        $this->assertEquals(false, is_disk_available(999));
+
+        $this->assertEquals(true, is_disk_available(1));
+        $this->assertEquals(true, is_disk_available(34));
+        $this->assertEquals(true, is_disk_available(57));
     }
 
     public function testUtil_mcm_disknr()
@@ -52,6 +107,34 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals("msx_computer_magazine_", mcm_pdfbasename(57));
         $this->assertEquals("msx_computer_club_magazine_", mcm_pdfbasename(58));
         $this->assertEquals("msx_computer_club_magazine_", mcm_pdfbasename(90));
+
+        $this->assertEquals("mcm_listing_boek_1", mcm_pdfbasename(101));
+        $this->assertEquals("mcm_listing_boek_2", mcm_pdfbasename(102));
+
+        $this->assertEquals("UNKNOWNPDF", mcm_pdfbasename(0));
+        $this->assertEquals("UNKNOWNPDF", mcm_pdfbasename(91));
+        $this->assertEquals("UNKNOWNPDF", mcm_pdfbasename(100));
+        $this->assertEquals("UNKNOWNPDF", mcm_pdfbasename(103));
+        $this->assertEquals("UNKNOWNPDF", mcm_pdfbasename(999));
+    }
+
+
+    public function testUtil_magazine_name()
+    {
+        $this->assertEquals("MSX Computer Magazine 1", magazine_name(1));
+        $this->assertEquals("MSX Computer Magazine 21", magazine_name(21));
+
+        $this->assertEquals("MS(X)DOS Computer Magazine 22", magazine_name(22));
+        $this->assertEquals("MS(X)DOS Computer Magazine 35", magazine_name(35));
+
+        $this->assertEquals("MSX Computer Magazine 36", magazine_name(36));
+        $this->assertEquals("MSX Computer Magazine 57", magazine_name(57));
+
+        $this->assertEquals("MSX Computer Club Magazine 58", magazine_name(58));
+        $this->assertEquals("MSX Computer Club Magazine 90", magazine_name(90));
+
+        $this->assertEquals("MCM listingboek 1", magazine_name(101));
+        $this->assertEquals("MCM listingboek 2", magazine_name(102));
     }
 
 
