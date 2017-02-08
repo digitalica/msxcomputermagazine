@@ -15,6 +15,18 @@ It creates some shortcodes to be used in Wordpress.
 
 As any Wordpress plugin
 
+## translation
+
+update POT file
+
+xgettext --from-code=UTF-8 -o languages/msxcomputermagazine.pot *.php
+
+generate MO files
+
+msgfmt nl/LC_MESSAGES/msxcomputermagazine.po -o nl/LC_MESSAGES/msxcomputermagazine.mo
+msgfmt en/LC_MESSAGES/msxcomputermagazine.po -o en/LC_MESSAGES/msxcomputermagazine.mo
+
+
 ## Tests
 
 phpunit mcmlistingstest.php
