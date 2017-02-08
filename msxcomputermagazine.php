@@ -2,7 +2,7 @@
 /*
 Plugin name: MSX Computer Magazine
 Description: Voor de links naar de listings, disks en pdfs van MSX Computer Magazine
-Version: 0.41
+Version: 0.42
 Author: Digitalica
 GitHub Plugin URI: https://github.com/digitalica/msxcomputermagazine
 License: GPL2
@@ -13,6 +13,24 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 include(plugin_dir_path(__FILE__) . 'includes/mcmutils.php');
 include(plugin_dir_path(__FILE__) . 'includes/mcmlistings.php');
+
+//$langdomain = 'msxcomputermagazine';
+//$langdir = plugin_dir_path(__FILE__) . "languages";
+////$locale = 'en_GB.utf8';
+//$locale = 'nl_NL.utf8';
+//
+//$results = putenv('LC_ALL=' . $locale);
+//if (!$results) {
+//    exit ('setlocale failed: locale function is not available on this platform, or the given local does not exist in this environment');
+//}
+//$results = setlocale(LC_ALL, $locale);
+//if (!$results) {
+//    exit ('setlocale failed: locale function is not available on this platform, or the given local does not exist in this environment');
+//}
+//$results = bindtextdomain($langdomain, $langdir);
+//echo 'new text domain is set: ' . $results. "\n";
+//$results = textdomain($langdomain);
+//echo 'current message domain is set: ' . $results. "\n";
 
 $mcm_emulatorUrl = 'http://webmsx.org';
 $mcm_baseUrl = 'http://www.msxcomputermagazine.nl';
@@ -105,7 +123,9 @@ function show_programs($progList)
             global $mcm_basePdfUrl;
             $abspag = abs($pag);
             $pdfURL = $mcm_basePdfUrl . mcm_pdfbasename($nr) . sprintf("%02d", $nr) . ".pdf";
-            $pagText = " (<a href='$pdfURL#page=$abspag' target='_blank'>pagina $abspag</a>)";
+            $pagText = " (<a href='$pdfURL#page=$abspag' target='_blank'>";
+            $pagText .= _("pagina");
+            $pagText .= " $abspag</a>)";
         }
         $listHTML .= "<li>";
         if ($runtype != 'X') {
@@ -148,13 +168,17 @@ function mcm_listings($attr)
     ));
     $listHTML = "<div class='mcmlistings'>";
     if (!empty($listings)) {
-        $listHTML .= "<p>Listings in dit nummer:</p>";
+        $listHTML .= "<p>";
+        $listHTML .= _("Listings in dit nummer:");
+        $listHTML .= "</p>";
         $listHTML .= "<ul>";
         $listHTML .= show_programs($listings);
         $listHTML .= "</ul>";
     }
     if (!empty($extras)) {
-        $listHTML .= "<p>Extra's op MCM-D" . (int)mcm_disknr($mcm_nr) . ":</p>";
+        $listHTML .= "<p>";
+        $listHTML .= _("Extra's op disk");
+        $listHTML .= " MCM-D" . (int)mcm_disknr($mcm_nr) . ":</p>";
         $listHTML .= "<ul>";
         $listHTML .= show_programs($extras);
         $listHTML .= "</ul>";
