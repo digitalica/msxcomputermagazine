@@ -11,7 +11,7 @@ define('ABSPATH','');
 require('msxcomputermagazine.php');
 
 
-$issue = 34;
+$issue = 38;
 
 $attr = array(
     'mcm' => $issue
