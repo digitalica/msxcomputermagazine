@@ -11,12 +11,12 @@
 function mcm_nr_from_pagename($pagename)
 {
     // first check regular
-    preg_match('/nr\. (\d+)/', $pagename, $matches);
+    preg_match('/nr\. (\d+)/i', $pagename, $matches);
     if (sizeof($matches) > 1 && $matches[1]) {
         return $matches[1];
     }
     // then test for listingboek
-    preg_match('/listingboek (\d+)/', $pagename, $matches);
+    preg_match('/listingboek (\d+)/i', $pagename, $matches);
     if (sizeof($matches) > 1 && $matches[1]) {
         return $matches[1] + 100;
     }
