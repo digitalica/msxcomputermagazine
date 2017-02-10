@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-require('mcmhtml.php');
-require('mcmlistings.php');
-require('mccmlistings.php');
+require_once('mcmhtml.php');
+require_once('mcmlistings.php');
+require_once('mccmlistings.php');
 
 /**
  * @covers mcmhtml

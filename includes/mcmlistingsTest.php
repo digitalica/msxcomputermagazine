@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-require('mcmlistings.php');
+require_once('mcmlistings.php');
 
 use PHPUnit_Framework_TestCase;
 

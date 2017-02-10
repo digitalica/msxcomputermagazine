@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-require('mccmlistings.php');
+require_once('mccmlistings.php');
 
 /**
  *
