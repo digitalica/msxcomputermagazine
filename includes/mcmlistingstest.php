@@ -6,6 +6,8 @@ require('mcmlistings.php');
 use PHPUnit_Framework_TestCase;
 
 /**
+ * tests the mcm listings (sanity check on the table)
+ *
  * @covers mcmlistings
  */
 final class mcmlistingstest extends PHPUnit_Framework_TestCase
@@ -20,6 +22,7 @@ final class mcmlistingstest extends PHPUnit_Framework_TestCase
         $lastnr = 0;
         foreach ($mcm_listings as $listing) {
             $nr = $listing[0];
+            $this->assertTrue(in_array(sizeof($listing), array(5, 6)));
             $this->assertTrue(is_numeric($nr));
             $this->assertLessThan($nr, $lastnr);
             $lastnr = $nr - 1;
@@ -34,6 +37,10 @@ final class mcmlistingstest extends PHPUnit_Framework_TestCase
             $msx_version = $listing[4];
             $this->assertLessThan($msx_version, 0);
             $this->assertGreaterThan($msx_version, 4);
+            if (sizeof($listing) > 5) { // optional
+                $runtype = $listing[5];
+                $this->assertTrue(in_array($runtype, array('X', 'B')));
+            }
         }
     }
 }

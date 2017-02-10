@@ -4,7 +4,10 @@ declare(strict_types = 1);
 require('mccmlistings.php');
 
 /**
- * @covers mcmlistings
+ *
+ * tests the mccm listings (sanity check on the table)
+ *
+ * @covers mccmlistings
  */
 final class mccmlistingstest extends PHPUnit_Framework_TestCase
 {
