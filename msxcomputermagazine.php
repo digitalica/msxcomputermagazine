@@ -120,6 +120,7 @@ function mccm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
 
 
     $diskHTML = "<div class='mcmdisk'>";
+    $diskHTML .= _("Diskabonnement bij dit nummer:");
     $diskHTML .= "<ul>";
 
     $nr = null;
@@ -237,7 +238,7 @@ function show_programs($progList)
  * @param $mcm_nr
  * @return string
  */
-function mcm_listings($mcm_listings, $mcm_nr)
+function mcm_listings($mcm_nr)
 {
     global $mcm_listings;
 
