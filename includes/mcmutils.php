@@ -199,8 +199,9 @@ function mcm_msx_version_url($msx_version)
  * @param $nr
  * @return string
  */
-function mcm_disk_name($nr) {
-    if ($nr ==101) {
+function mcm_disk_name($nr)
+{
+    if ($nr == 101) {
         return "MCM-L1"; // listing boek exception
     }
     return "MCM-D" . (int)mcm_disknr($nr);
@@ -212,15 +213,17 @@ function mcm_disk_name($nr) {
  * @param $nr
  * @return string
  */
-function msx_disk_filename($nr) {
+function msx_disk_filename($nr)
+{
     if ($nr == 101) {
         return 'lb/MCM-L1_MCM_Listingboekdiskette.dsk'; // for listingboek
     }
-    return 'mcm/mcmd' . mcm_disknr($nr) . ".di1";
+    $extension = "di1";
+    if ($nr == 55) {
+        $extension = "di2";
+    }
+    return 'mcm/mcmd' . mcm_disknr($nr) . "." . $extension;
 }
-
-
-
 
 
 ?>
