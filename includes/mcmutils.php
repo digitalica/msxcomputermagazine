@@ -35,6 +35,18 @@ function is_magazine($nr)
     return $nr > 0 && $nr < 91;
 }
 
+/**
+ * checks if the number corresponds to a mccm magazine
+ * (msx computer & club magazine)
+ *
+ * @param $nr
+ * @return bool
+ */
+function is_mccm($nr)
+{
+    return $nr >= 58 && $nr <= 90;
+}
+
 
 /**
  * checks if the number corresponds to a listing boek
@@ -99,6 +111,9 @@ function mcm_nr_from_attr_or_pagename($attr, $pagename)
  */
 function mcm_disknr($nr)
 {
+    if (is_mccm($nr)) {
+        return $nr; // for MCCM the numbers are equal
+    }
     if ($nr == 1) {
         return "01";
     }
@@ -106,7 +121,7 @@ function mcm_disknr($nr)
         return 55; // disk 54 is vergeten, zie mcm56, p42.  (thanks manuel)
     }
     if ($nr > 1) {
-        return sprintf("%02d", $nr - 1);
+        return sprintf("%02d", $nr - 1); // for MCM the disk nr is (usually) 1 less then the real nr.
     }
 }
 
@@ -196,11 +211,15 @@ function mcm_msx_version_url($msx_version)
 /**
  * Returns the (human readable) name of the disk for MCM nr
  *
- * @param $nr
+ * @param $nr nummer van het blad (dus NIET van de disk)
+ * @param $letter volgnummer (letter) van de disk, alleen voor MCCM
  * @return string
  */
-function mcm_disk_name($nr)
+function mcm_disk_name($nr, $letter = '')
 {
+    if (is_mccm($nr)) {
+        return "DA" . $nr . $letter;
+    }
     if ($nr == 101) {
         return "MCM-L1"; // listing boek exception
     }
@@ -213,13 +232,35 @@ function mcm_disk_name($nr)
  * @param $nr
  * @return string
  */
-function msx_disk_filename($nr)
+function msx_disk_filename($nr, $letter = '')
 {
+    if (is_mccm($nr)) {
+        switch ($nr . $letter) {
+            case '58e':
+            case '75c':
+            case '78c':
+            case '79c':
+            case '82c':
+            case '84c':
+            case '85c':
+            case '87c':
+            case '88c':
+            case '88c':
+            case '90f':
+            case '90h':
+                $extension = "di1";
+                break;
+            default:
+                $extension = "di2";
+                break;
+        }
+        return 'mccm/disk' . mcm_disknr($nr) . $letter . "." . $extension;
+    }
     if ($nr == 101) {
         return 'lb/MCM-L1_MCM_Listingboekdiskette.dsk'; // for listingboek
     }
     $extension = "di1";
-    if ($nr == 55) {
+    if ($nr == 56) {
         $extension = "di2";
     }
     return 'mcm/mcmd' . mcm_disknr($nr) . "." . $extension;

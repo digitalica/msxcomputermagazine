@@ -12,7 +12,7 @@ require('msxcomputermagazine.php');
 
 
 // note: in issue below, 101 is listingboek 1, 102 is listingboek 2
-$issue = 55;
+$issue = 64;
 
 $attr = array(
     'mcm' => $issue
@@ -42,11 +42,11 @@ function get_the_title() {
 
 <?php
 
-echo mcm_pdf($attr);
+echo shortcode_pdf($attr);
 
-echo mcm_disk($attr);
+echo shortcode_disk($attr);
 
-echo mcm_listings($attr);
+echo shortcode_listings($attr);
 
 ?>
 

@@ -60,6 +60,21 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, is_magazine(90));
     }
 
+    public function testIs_mccm()
+    {
+        $this->assertEquals(false, is_mccm(0));
+        $this->assertEquals(false, is_mccm(33));
+        $this->assertEquals(false, is_mccm(57));
+        $this->assertEquals(false, is_mccm(91));
+        $this->assertEquals(false, is_mccm(101));
+        $this->assertEquals(false, is_mccm(102));
+        $this->assertEquals(false, is_mccm(999));
+
+        $this->assertEquals(true, is_mccm(58));
+        $this->assertEquals(true, is_mccm(74));
+        $this->assertEquals(true, is_mccm(90));
+    }
+
     public function testIs_pdf_available()
     {
         $this->assertEquals(false, is_pdf_available(0));
@@ -98,8 +113,12 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals("53", mcm_disknr(54));
         $this->assertEquals("55", mcm_disknr(55));
         $this->assertEquals("55", mcm_disknr(56));
-    }
 
+        // for mccm disknrs are equal
+        $this->assertEquals("58", mcm_disknr(58));
+        $this->assertEquals("72", mcm_disknr(72));
+        $this->assertEquals("90", mcm_disknr(90));
+    }
 
     public function testUtil_mcm_pdfbasename()
     {
@@ -122,7 +141,6 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals("UNKNOWNPDF", mcm_pdfbasename(999));
     }
 
-
     public function testUtil_magazine_name()
     {
         $this->assertEquals("MSX Computer Magazine 1", magazine_name(1));
@@ -141,6 +159,17 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals("MCM listingboek 2", magazine_name(102));
     }
 
+    public function testUtil_disk_file_name() {
+        $this->assertEquals("mcm/mcmd01.di1", msx_disk_filename(2));
+        $this->assertEquals("mcm/mcmd20.di1", msx_disk_filename(21));
+        $this->assertEquals("mcm/mcmd55.di2", msx_disk_filename(56)); // dubbelzijdig
+
+
+        // for mccm
+        $this->assertEquals("mccm/disk58a.di2", msx_disk_filename(58,'a'));
+        $this->assertEquals("mccm/disk58b.di2", msx_disk_filename(58,'b'));
+        $this->assertEquals("mccm/disk58e.di1", msx_disk_filename(58,'e')); // single sided
+    }
 
 }
 

@@ -13,6 +13,7 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 include(plugin_dir_path(__FILE__) . 'includes/mcmutils.php');
 include(plugin_dir_path(__FILE__) . 'includes/mcmlistings.php');
+include(plugin_dir_path(__FILE__) . 'includes/mccmlistings.php');
 
 //$langdomain = 'msxcomputermagazine';
 //$langdir = plugin_dir_path(__FILE__) . "languages";
@@ -41,9 +42,9 @@ $mcm_baseMagazinePdfUrl = $mcm_baseUrl . '/archief/bladen/';
 $mcm_baseListingboekPdfUrl = $mcm_baseUrl . '/archief/lb/';
 
 
-add_shortcode('pdf', 'mcm_pdf');
+add_shortcode('pdf', 'shortcode_pdf');
 
-function mcm_pdf($attr)
+function shortcode_pdf($attr)
 {
     global $post;
     global $mcm_baseMagazinePdfUrl;
@@ -67,15 +68,20 @@ function mcm_pdf($attr)
     return $pdfHTML;
 }
 
-add_shortcode('disk', 'mcm_disk');
+add_shortcode('disk', 'shortcode_disk');
 
-function mcm_disk($attr)
+/**
+ * returns de HTML for the disk, for MCM
+ *
+ * @param $mcm_nr
+ * @param $mcm_emulatorUrl
+ * @param $mcm_baseDiskUrl
+ * @return string
+ */
+function mcm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
 {
-    global $post;
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
-
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
     $msx_version = 1;
     if ($mcm_nr > 6) { // first mention of MSX2 in nr 6, but in nr 7 first MSX2 programs on disk.
@@ -98,7 +104,72 @@ function mcm_disk($attr)
     return $diskHTML;
 }
 
-add_shortcode('listings', 'mcm_listings');
+/**
+ * returns de HTML for the disk, for MCM
+ *
+ * @param $mcm_nr
+ * @param $mcm_emulatorUrl
+ * @param $mcm_baseDiskUrl
+ * @return string
+ */
+function mccm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
+{
+    global $mcm_emulatorUrl;
+    global $mcm_baseDiskUrl;
+    global $mccm_listings;
+
+
+    $diskHTML = "<div class='mcmdisk'>";
+    $diskHTML .= "<ul>";
+
+    $nr = null;
+    $letter = null;
+
+    for ($i = 0; $i < sizeof($mccm_listings); $i++) {
+        $listing = $mccm_listings[$i];
+
+        if ($listing[0] == $mcm_nr) {
+            if ($listing[0] !== $nr || $listing[1] !== $letter) {
+                $nr = $listing[0];
+                $letter = $listing[1];
+                $diskHTML .= "<li>";
+                $diskURL = $mcm_emulatorUrl . '?';
+                $diskURL .= mcm_msx_version_url(2); // always MSX2
+                $diskURL .= '&DISKA_URL=';
+                $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mcm_nr, $letter);
+                $diskHTML .= "<a href='$diskURL' target='_blank'>";
+                $diskHTML .= mcm_disk_name($mcm_nr, $letter);
+                $diskHTML .= "</a>";
+                $diskHTML .= "</li>";
+            }
+        }
+    }
+    $diskHTML .= "</ul>";
+    $diskHTML .= "</div>";
+    return $diskHTML;
+
+}
+
+
+function shortcode_disk($attr)
+{
+    global $post;
+
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+
+
+    if (is_mccm($mcm_nr)) {
+        $diskHTML = mccm_disk($mcm_nr);
+    } else {
+        $diskHTML = mcm_disk($mcm_nr);
+    }
+
+
+    return $diskHTML;
+}
+
+
+add_shortcode('listings', 'shortcode_listings');
 
 function show_programs($progList)
 {
@@ -122,7 +193,7 @@ function show_programs($progList)
         $listingURL = $mcm_emulatorUrl . '?';
         $listingURL .= mcm_msx_version_url($msx_version);
         //            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
-        if ($nr==101) {
+        if ($nr == 101) {
             $listingURL .= '&DISKA_URL=' . $mcm_baseDiskUrl . 'lb/MCM-L1_MCM_Listingboekdiskette.dsk';
         } else {
             $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
@@ -158,12 +229,17 @@ function show_programs($progList)
     return $listHTML;
 }
 
-function mcm_listings($attr)
-{
-    global $post;
-    global $mcm_listings;
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+/**
+ * toon disk en listings in MCM formaat
+ *
+ * @param $mcm_listings
+ * @param $mcm_nr
+ * @return string
+ */
+function mcm_listings($mcm_listings, $mcm_nr)
+{
+    global $mcm_listings;
 
     $progsDitNr = array_values(array_filter(
         $mcm_listings,
@@ -201,6 +277,39 @@ function mcm_listings($attr)
         $listHTML .= "</ul>";
     }
     $listHTML .= "</div>";
+    return $listHTML;
+}
+
+/**
+ * toon disk en listings in MCCM formaat (zg. diskabonnement)
+ *
+ * @param $mcm_listings
+ * @param $mcm_nr
+ * @return string
+ */
+function mccm_listings($mcm_listings, $mcm_nr)
+{
+    global $mccm_listings;
+
+
+//    $listHTML = "<div class='mcmlistings'>";
+//    $listHTML .= "</div>";
+    return $listHTML;
+}
+
+
+function shortcode_listings($attr)
+{
+    global $post;
+
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+
+    if (is_mccm($mcm_nr)) {
+        $listHTML = mccm_listings($mcm_nr);
+    } else {
+        $listHTML = mcm_listings($mcm_nr);
+    }
+
     return $listHTML;
 }
 
