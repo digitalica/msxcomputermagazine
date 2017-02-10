@@ -66,6 +66,9 @@ function is_pdf_available($nr)
  */
 function is_disk_available($nr)
 {
+    if ($nr == 101) {
+        return true; // for listingboek 1
+    }
     return $nr > 0 && $nr < 58;
 }
 
@@ -166,7 +169,12 @@ function magazine_name($nr)
     return $magazine_name;
 }
 
-
+/**
+ * returns the correct url options to set the MSX version in the WebMSX url
+ *
+ * @param $msx_version
+ * @return string
+ */
 function mcm_msx_version_url($msx_version)
 {
     switch ($msx_version) {
@@ -184,5 +192,35 @@ function mcm_msx_version_url($msx_version)
     }
     return $url;
 }
+
+/**
+ * Returns the (human readable) name of the disk for MCM nr
+ *
+ * @param $nr
+ * @return string
+ */
+function mcm_disk_name($nr) {
+    if ($nr ==101) {
+        return "MCM-L1"; // listing boek exception
+    }
+    return "MCM-D" . (int)mcm_disknr($nr);
+}
+
+/**
+ * Returns the filename of the disk for MCM nr
+ *
+ * @param $nr
+ * @return string
+ */
+function msx_disk_filename($nr) {
+    if ($nr == 101) {
+        return 'lb/MCM-L1_MCM_Listingboekdiskette.dsk'; // for listingboek
+    }
+    return 'mcm/mcmd' . mcm_disknr($nr) . ".di1";
+}
+
+
+
+
 
 ?>

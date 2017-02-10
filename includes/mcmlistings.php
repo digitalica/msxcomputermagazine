@@ -1529,6 +1529,14 @@ $mcm_listings = array(
      * array(57, 0, 'autoexe2', '', 1),
      * array(57, 0, 'autoexec.cop', '', 1),
      */
+
+
+    //
+    // listing boek 1 NOTE: DISK BEVAT FILES VOOR LISTINGBOEK 2 ?????
+    //
+//    array(101, 11, 'icp7', 'Invoer Controle Programma 7 generator'),
+//    array(101, 13, 'f', 'Invoer Controle Programma 7 generator')
+
 );
 
 
