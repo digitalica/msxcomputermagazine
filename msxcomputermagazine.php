@@ -60,12 +60,12 @@ function shortcode_disk($attr)
 {
     global $post; // the Wordpress current post
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+    $msxmag_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    if (is_mccm($mcm_nr)) {
-        $diskHTML = mccm_disk($mcm_nr);
+    if (is_mccm($msxmag_nr)) {
+        $diskHTML = mccm_disk($msxmag_nr);
     } else {
-        $diskHTML = mcm_disk($mcm_nr);
+        $diskHTML = mcm_disk($msxmag_nr);
     }
 
     return $diskHTML;
@@ -79,12 +79,12 @@ function shortcode_listings($attr)
 {
     global $post; // the Wordpress current post
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+    $msxmag_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    if (is_mccm($mcm_nr)) {
-        $listHTML = mccm_listings($mcm_nr);
+    if (is_mccm($msxmag_nr)) {
+        $listHTML = mccm_listings($msxmag_nr);
     } else {
-        $listHTML = mcm_listings($mcm_nr);
+        $listHTML = mcm_listings($msxmag_nr);
     }
 
     return $listHTML;

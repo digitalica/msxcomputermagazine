@@ -248,11 +248,10 @@ function mcm_listings($mcm_nr)
 /**
  * toon disk en listings in MCCM formaat (zg. diskabonnement)
  *
- * @param $mcm_listings
- * @param $mcm_nr
+ * @param $mccm_nr
  * @return string
  */
-function mccm_listings($mcm_listings, $mcm_nr)
+function mccm_listings($mccm_nr)
 {
     global $mccm_listings;
 
