@@ -29,6 +29,8 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals("101", mcm_nr_from_pagename("Listingboek 1"));
         $this->assertEquals("102", mcm_nr_from_pagename("Listingboek 2"));
 
+        $this->assertEquals(0, mcm_nr_from_pagename("nr. 90 cd")); // voor: http://www.msxcomputermagazine.nl/archief/mccm-90cd/
+
         $this->assertEquals(0, mcm_nr_from_pagename(""));
         $this->assertEquals(0, mcm_nr_from_pagename("xxxxxxx"));
         $this->assertEquals(0, mcm_nr_from_pagename("123456"));
