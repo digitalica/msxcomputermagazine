@@ -97,11 +97,11 @@ function mcm_disk($mcm_nr)
  * @param $mcm_baseDiskUrl
  * @return string
  */
-function mccm_disk($mccm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
+function mccm_disk($mccm_nr)
 {
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
-    global $mccm_listings;
+    global $mccm_disks;
 
     $diskHTML = "<div class='mcmdisk'>\n";
     $diskHTML .= _("Diskabonnement bij dit nummer:");
@@ -113,26 +113,23 @@ function mccm_disk($mccm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
     $diskHTML .= "</a>\n";
     $diskHTML .= "<ul>\n";
 
-    $nr = null;
-    $letter = null;
+    for ($i = 0; $i < sizeof($mccm_disks); $i++) {
+        $disk = $mccm_disks[$i];
 
-    for ($i = 0; $i < sizeof($mccm_listings); $i++) {
-        $listing = $mccm_listings[$i];
-
-        if ($listing[0] == $mccm_nr) {
-            if ($listing[0] !== $nr || $listing[1] !== $letter) {
-                $nr = $listing[0];
-                $letter = $listing[1];
-                $diskHTML .= "<li>";
-                $diskURL = $mcm_emulatorUrl . '?';
-                $diskURL .= mcm_msx_version_url(2); // always MSX2
-                $diskURL .= '&DISKA_URL=';
-                $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mccm_nr, $letter);
-                $diskHTML .= "<a href='$diskURL' target='_blank'>";
-                $diskHTML .= mcm_disk_name($mccm_nr, $letter);
-                $diskHTML .= "</a>";
-                $diskHTML .= "</li>\n";
+        if ($disk[0] == $mccm_nr) {
+            $letter = $disk[1];
+            $diskHTML .= "<li>";
+            $diskURL = $mcm_emulatorUrl . '?';
+            $diskURL .= mcm_msx_version_url(2); // always MSX2
+            $diskURL .= '&DISKA_URL=';
+            $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mccm_nr, $letter);
+            $diskHTML .= "<a href='$diskURL' target='_blank'>";
+            $diskHTML .= mcm_disk_name($mccm_nr, $letter);
+            $diskHTML .= "</a>";
+            if ($disk[2]) {
+                $diskHTML .= " " . $disk[2];
             }
+            $diskHTML .= "</li>\n";
         }
     }
     $diskHTML .= "</ul>\n";
@@ -140,6 +137,7 @@ function mccm_disk($mccm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
     return $diskHTML;
 
 }
+
 
 function show_programs($progList)
 {
