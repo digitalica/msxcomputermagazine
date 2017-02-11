@@ -64,7 +64,7 @@ final class mcmlistingstest extends PHPUnit_Framework_TestCase
         global $mcm_listings;
         foreach ($mcm_listings as $lblisting) {
             $lnnr = $lblisting[0];
-            if ($lnnr == 101) { // only test listingboek 1
+            if ($lnnr == 101 || $lnnr == 102) {
                 $lbfile = $lblisting[2];
                 foreach ($mcm_listings as $bladlisting) {
                     $bladnr = $bladlisting[0];
