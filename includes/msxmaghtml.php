@@ -257,10 +257,45 @@ function mcm_listings($mcm_nr)
 function mccm_listings($mccm_nr)
 {
     global $mccm_listings;
+    global $mcm_baseDiskUrl;
 
+    $listings = array();
 
-//    $listHTML = "<div class='mcmlistings'>";
-//    $listHTML .= "</div>";
+    for ($i = 0; $i < sizeof($mccm_listings); $i++) {
+        $listing = $mccm_listings[$i];
+
+        if ($listing[0] == $mccm_nr) {
+            if (sizeof($listing <= 6 || $listing[6] != 'X')) {
+                $letter = $listing[1];
+                if (!array_key_exists($letter, $listings)) {
+                    $listings[$letter] = array();
+                }
+                if (sizeof($listing > 6)) {
+                    array_push($listings[$letter], array($listing[0], $listing[2], $listing[3], $listing[4], $listing[5], $listing[6]));
+                } else {
+                    array_push($listings[$letter], array($listing[0], $listing[2], $listing[3], $listing[4], $listing[5]));
+                }
+            }
+        }
+    }
+
+    $listHTML = "";
+    foreach ($listings as $letter => $programs) {
+        $listHTML .= "<div class='mcmdisk'>\n";
+        $diskURL = $mcm_emulatorUrl . '?';
+        $diskURL .= mcm_msx_version_url(2); // always MSX2
+        $diskURL .= '&DISKA_URL=';
+        $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mccm_nr, $letter);
+        $listHTML .= _("Disk ");
+//        $listHTML .= "<a href='$diskURL' target='_blank'>";
+        $listHTML .= mcm_disk_name($mccm_nr, $letter);
+//        $listHTML .= "</a>";
+        $listHTML .= "<ul>\n";
+        $listHTML .= show_programs($programs);
+        $listHTML .= "</ul>\n";
+        $listHTML .= "</div>\n";
+    }
+
     return $listHTML;
 }
 

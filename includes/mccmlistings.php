@@ -21,11 +21,11 @@
  */
 
 $mccm_disks = array(
-    array(58, 'a', ''),
-    array(58, 'b', ''),
-    array(58, 'c', ''),
+    array(58, 'a', 'Bestanden bij artikelen'),
+    array(58, 'b', 'Onmogelijke stempels'),
+    array(58, 'c', 'Herfst plaatjes'),
     array(58, 'd', ''),
-    array(58, 'e', ''),
+    array(58, 'e', 'Laatste twee plaatjes'),
     array(59, 'a', ''),
     array(59, 'b', ''),
     array(60, 'a', ''),
