@@ -78,10 +78,15 @@ function is_pdf_available($nr)
  */
 function is_disk_available($nr)
 {
-    if ($nr == 101) {
+    if ($nr >= 1 && $nr <= 57) {
+        return true; // for mcm
+    }
+    if ($nr >= 58 && $nr <= 90) {
+        return true; // for mccm
+    }
+    if ($nr == 101 || $nr==102) {
         return true; // for listingboek 1
     }
-    return $nr > 0 && $nr < 58;
 }
 
 

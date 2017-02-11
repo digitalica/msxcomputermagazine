@@ -95,14 +95,17 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, is_disk_available(0));
         $this->assertEquals(false, is_disk_available(91));
         $this->assertEquals(false, is_disk_available(100));
-        $this->assertEquals(false, is_disk_available(102)); // listingboek 2 nog geen disk
         $this->assertEquals(false, is_disk_available(103));
         $this->assertEquals(false, is_disk_available(999));
 
         $this->assertEquals(true, is_disk_available(1));
         $this->assertEquals(true, is_disk_available(34));
         $this->assertEquals(true, is_disk_available(57));
+        $this->assertEquals(true, is_disk_available(58)); // mccm
+        $this->assertEquals(true, is_disk_available(82)); // mccm
+        $this->assertEquals(true, is_disk_available(90)); // mccm
         $this->assertEquals(true, is_disk_available(101)); // listingboek 1
+        $this->assertEquals(true, is_disk_available(102)); // listingboek 2
     }
 
     public function testUtil_mcm_disknr()
