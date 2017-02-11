@@ -266,5 +266,82 @@ function msx_disk_filename($nr, $letter = '')
     return 'mcm/mcmd' . mcm_disknr($nr) . "." . $extension;
 }
 
+/**
+ * returns the page of the diskabo for MCCM
+ *
+ */
+function mccm_diskabopag($nr) {
+    switch($nr) {
+        case 58:
+            return 55;
+        case 59:
+            return 21;
+        case 60:
+            return 30;
+        case 61:
+            return 57;
+        case 62:
+            return 51;
+        case 63:
+            return 35;
+        case 64:
+            return 30;
+        case 65:
+            return 38;
+        case 66:
+            return 32;
+        case 67:
+            return 24;
+        case 68:
+            return 24;
+        case 69:
+            return 18;
+        case 70:
+            return 24;
+        case 71:
+            return 24;
+        case 72:
+            return 24;
+        case 73:
+            return 26;
+        case 74:
+            return 25;
+        case 75:
+            return 24;
+        case 76:
+            return 24;
+        case 77:
+            return 24;
+        case 78:
+            return 24;
+        case 79:
+            return 28;
+        case 80:
+            return 29;
+        case 81:
+            return 24;
+        case 82:
+            return 24;
+        case 83:
+            return 24;
+        case 84:
+            return 18;
+        case 85:
+            return 24;
+        case 86:
+            return 24;
+        case 87:
+            return 24;
+        case 88:
+            return 24;
+        case 89:
+            return 24;
+        case 90:
+            return 24;
+        default:
+            return 0;
+    }
+}
+
 
 ?>

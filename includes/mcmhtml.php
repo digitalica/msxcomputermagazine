@@ -48,13 +48,20 @@ function mcm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
  */
 function mccm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
 {
+    global $mcm_baseMagazinePdfUrl;
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
     global $mccm_listings;
 
-
     $diskHTML = "<div class='mcmdisk'>";
     $diskHTML .= _("Diskabonnement bij dit nummer:");
+    $diskHTML .= "<br>";
+    $diskHTML .= "Zie";
+    $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
+    $pdfURL .= "#page=" . mccm_diskabopag($mcm_nr);
+    $diskHTML .= " <a href='$pdfURL' target='_blank'>";
+    $diskHTML .= sprintf(_("pagina %s"), mccm_diskabopag($mcm_nr));
+    $diskHTML .= "</a>";
     $diskHTML .= "<ul>";
 
     $nr = null;

@@ -11,12 +11,12 @@
  *
  * 1: het bladnummer (dus NIET het nummer van de disk, dat is meestal 1 lager
  * 2: de letter van de disk (er zijn meerdere disks per nr)
- * 2: het paginanummer (van de eerste regel van de listing) of 0 als listing niet in blad staat
+ * 3: het paginanummer (van de eerste regel van de listing) of 0 als listing niet in blad staat
  *    een negatief paginanummer zet de listing bij de extra's, maar wel met een pagina link. (bv voor art gallery plaatjes)
- * 3: de filenaam van het bestand op de disk
- * 4: de naam in leesbare vorm (titel van het artikel, opschrijving op disk)
- * 5: minimale MSX versie nodig (1: MSX1, 2: MSX2, 3: MSX2+)
- * 6: hoe starten: R (BASIC RUN, default), B (BLOAD,r), 'X' (niet, bv voor plaatjes)
+ * 4: de filenaam van het bestand op de disk
+ * 5: de naam in leesbare vorm (titel van het artikel, opschrijving op disk)
+ * 6: minimale MSX versie nodig (1: MSX1, 2: MSX2, 3: MSX2+)
+ * 7: hoe starten: R (BASIC RUN, default), B (BLOAD,r), 'X' (niet, bv voor plaatjes)
  *
  */
 
