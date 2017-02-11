@@ -239,7 +239,7 @@ function mcm_listings($mcm_nr)
     if (!empty($extras)) {
         $listHTML .= "<p>";
         $listHTML .= _("Extra's op disk");
-        $listHTML .= " MCM-D" . (int)mcm_disknr($mcm_nr) . ":</p>\n";
+        $listHTML .= " " . mcm_disk_name($mcm_nr) . ":</p>\n";
         $listHTML .= "<ul>\n";
         $listHTML .= show_programs($extras);
         $listHTML .= "</ul>\n";

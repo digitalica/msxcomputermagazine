@@ -12,7 +12,7 @@ require('msxcomputermagazine.php');
 
 
 // note: in issue below, 101 is listingboek 1, 102 is listingboek 2
-$issue = 88;
+$issue = 102;
 $title = "nr. $issue - test";
 
 $attr = array(
