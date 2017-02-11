@@ -47,45 +47,26 @@ add_shortcode('pdf', 'shortcode_pdf');
 
 function shortcode_pdf($attr)
 {
-    global $post;
-    global $mcm_baseMagazinePdfUrl;
-    global $mcm_baseListingboekPdfUrl;
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
-    if (is_magazine($mcm_nr)) {
-        $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
-    } else if (is_listingboek($mcm_nr)) {
-        $pdfURL = $mcm_baseListingboekPdfUrl . mcm_pdfbasename($mcm_nr) . ".pdf";
-    }
-    $pdfHTML = "<div class='mcmpdf'>";
-    if (is_pdf_available($mcm_nr)) {
-        $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
-        $pdfHTML .= magazine_name($mcm_nr);
-        $pdfHTML .= "</a>";
-    } else {
-        $pdfHTML .= _("Geen pdf beschikbaar");
-    }
-    $pdfHTML .= "</div>";
+    $pdfHTML = msxmag_pdf($attr);
     return $pdfHTML;
 }
+
 
 add_shortcode('disk', 'shortcode_disk');
 
 
-
 function shortcode_disk($attr)
 {
-    global $post;
+    global $post; // the Wordpress current post
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
-
 
     if (is_mccm($mcm_nr)) {
         $diskHTML = mccm_disk($mcm_nr);
     } else {
         $diskHTML = mcm_disk($mcm_nr);
     }
-
 
     return $diskHTML;
 }
@@ -96,7 +77,7 @@ add_shortcode('listings', 'shortcode_listings');
 
 function shortcode_listings($attr)
 {
-    global $post;
+    global $post; // the Wordpress current post
 
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 

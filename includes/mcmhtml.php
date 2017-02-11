@@ -2,6 +2,52 @@
 
 require_once('mcmutils.php');
 
+
+function msxmag_pdf_url($msxmag_nr, $pag = 0)
+{
+    global $mcm_baseMagazinePdfUrl;
+    global $mcm_baseListingboekPdfUrl;
+
+    if (is_magazine($msxmag_nr)) {
+        $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . $msxmag_nr . ".pdf";
+    } else if (is_listingboek($msxmag_nr)) {
+        $pdfURL = $mcm_baseListingboekPdfUrl . mcm_pdfbasename($msxmag_nr) . ".pdf";
+    }
+    if ($pag) {
+        $pdfURL .= "#page=" . $pag;
+    }
+    return $pdfURL;
+}
+
+
+/**
+ * returns de html for the pdf link to mcm / mccm
+ *
+ * @param $attr
+ * @param $post
+ * @param $mcm_baseMagazinePdfUrl
+ * @param $mcm_baseListingboekPdfUrl
+ * @return string
+ */
+function msxmag_pdf($attr)
+{
+    global $post; // the Wordpress current post
+
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+
+    $pdfHTML = "<div class='mcmpdf'>";
+    if (is_pdf_available($mcm_nr)) {
+        $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
+        $pdfHTML .= magazine_name($mcm_nr);
+        $pdfHTML .= "</a>";
+    } else {
+        $pdfHTML .= _("Geen pdf beschikbaar");
+    }
+    $pdfHTML .= "</div>";
+    return $pdfHTML;
+}
+
+
 /**
  * returns de HTML for the disk, for MCM
  * just a single disk, containing the listings of an issue.
@@ -41,14 +87,13 @@ function mcm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
  * returns de HTML for the disk, for MCCM
  * multiple disks ('diskabonnement')
  *
- * @param $mcm_nr
+ * @param $mccm_nr
  * @param $mcm_emulatorUrl
  * @param $mcm_baseDiskUrl
  * @return string
  */
-function mccm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
+function mccm_disk($mccm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
 {
-    global $mcm_baseMagazinePdfUrl;
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
     global $mccm_listings;
@@ -57,10 +102,9 @@ function mccm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
     $diskHTML .= _("Diskabonnement bij dit nummer:");
     $diskHTML .= "<br>";
     $diskHTML .= "Zie";
-    $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($mcm_nr) . $mcm_nr . ".pdf";
-    $pdfURL .= "#page=" . mccm_diskabopag($mcm_nr);
+    $pdfURL = msxmag_pdf_url($mccm_nr, mccm_diskabopag($mccm_nr));
     $diskHTML .= " <a href='$pdfURL' target='_blank'>";
-    $diskHTML .= sprintf(_("pagina %s"), mccm_diskabopag($mcm_nr));
+    $diskHTML .= sprintf(_("pagina %s"), mccm_diskabopag($mccm_nr));
     $diskHTML .= "</a>";
     $diskHTML .= "<ul>";
 
@@ -70,7 +114,7 @@ function mccm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
     for ($i = 0; $i < sizeof($mccm_listings); $i++) {
         $listing = $mccm_listings[$i];
 
-        if ($listing[0] == $mcm_nr) {
+        if ($listing[0] == $mccm_nr) {
             if ($listing[0] !== $nr || $listing[1] !== $letter) {
                 $nr = $listing[0];
                 $letter = $listing[1];
@@ -78,9 +122,9 @@ function mccm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
                 $diskURL = $mcm_emulatorUrl . '?';
                 $diskURL .= mcm_msx_version_url(2); // always MSX2
                 $diskURL .= '&DISKA_URL=';
-                $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mcm_nr, $letter);
+                $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mccm_nr, $letter);
                 $diskHTML .= "<a href='$diskURL' target='_blank'>";
-                $diskHTML .= mcm_disk_name($mcm_nr, $letter);
+                $diskHTML .= mcm_disk_name($mccm_nr, $letter);
                 $diskHTML .= "</a>";
                 $diskHTML .= "</li>";
             }
@@ -97,6 +141,7 @@ function show_programs($progList)
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
     global $mcm_baseDiskZipUrl;
+    global $mcm_baseMagazinePdfUrl;
 
     $listHTML = "";
     for ($i = 0; $i < sizeof($progList); $i++) {
@@ -129,10 +174,9 @@ function show_programs($progList)
         if ($pag == 0) {
             $pagText = "";
         } else {
-            global $mcm_baseMagazinePdfUrl;
             $abspag = abs($pag);
-            $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($nr) . sprintf("%02d", $nr) . ".pdf";
-            $pagText = " (<a href='$pdfURL#page=$abspag' target='_blank'>";
+            $pdfURL = msxmag_pdf_url($nr, $abspag);
+            $pagText = " (<a href='$pdfURL' target='_blank'>";
             $pagText .= _("pagina");
             $pagText .= " $abspag</a>)";
         }
