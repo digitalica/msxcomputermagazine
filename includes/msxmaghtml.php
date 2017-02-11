@@ -1,6 +1,6 @@
 <?php
 
-require_once('mcmutils.php');
+require_once('msxmagutils.php');
 
 
 function msxmag_pdf_url($msxmag_nr, $pag = 0)

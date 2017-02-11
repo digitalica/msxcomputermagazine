@@ -11,8 +11,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 defined('ABSPATH') or die('No script kiddies please!');
 
-require_once(plugin_dir_path(__FILE__) . 'includes/mcmutils.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/mcmhtml.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/msxmagutils.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/msxmaghtml.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/mcmlistings.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/mccmlistings.php');
 

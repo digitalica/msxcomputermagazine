@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-require_once('mcmutils.php');
+require_once('msxmagutils.php');
 
 /**
  * @covers mcmutils
