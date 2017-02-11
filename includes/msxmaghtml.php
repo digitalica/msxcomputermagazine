@@ -80,7 +80,7 @@ function mcm_disk($mcm_nr)
         $diskHTML .= mcm_disk_name($mcm_nr);
         $diskHTML .= "</a>";
     } else {
-        $diskHTML .= _("Geen disk beschikbaar");
+        $diskHTML .= _(" Geen disk beschikbaar");
     }
     $diskHTML .= "</div>";
     return $diskHTML;
