@@ -226,6 +226,9 @@ function mcm_disk_name($nr, $letter = '')
         return "DA" . $nr . $letter;
     }
     if ($nr == 101) {
+        return "MCM-L0"; // listing boek exception... samengesteld door manuel dus geen echte naam...
+    }
+    if ($nr == 102) {
         return "MCM-L1"; // listing boek exception
     }
     return "MCM-D" . (int)mcm_disknr($nr);
