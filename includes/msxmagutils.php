@@ -230,6 +230,7 @@ function mcm_disk_name($nr, $letter = '')
  * Returns the filename of the disk for MCM nr
  *
  * @param $nr
+ * @param $letter
  * @return string
  */
 function msx_disk_filename($nr, $letter = '')
@@ -256,8 +257,11 @@ function msx_disk_filename($nr, $letter = '')
         }
         return 'mccm/disk' . mcm_disknr($nr) . $letter . "." . $extension;
     }
-    if ($nr == 101) {
-        return 'lb/MCM-L1_MCM_Listingboekdiskette.dsk'; // for listingboek
+    if ($nr == 101) { // note: gemaakt door Manuel, uit losse disks bij bladen
+        return 'lb/Listingboek1.dsk'; // for listingboek 1
+    }
+    if ($nr == 102) { // note: geen idee waarom ie L1 heet...
+        return 'lb/MCM-L1_MCM_Listingboekdiskette.dsk'; // for listingboek 2 (!)
     }
     $extension = "di1";
     if ($nr == 56) {
@@ -270,8 +274,9 @@ function msx_disk_filename($nr, $letter = '')
  * returns the page of the diskabo for MCCM
  *
  */
-function mccm_diskabopag($nr) {
-    switch($nr) {
+function mccm_diskabopag($nr)
+{
+    switch ($nr) {
         case 58:
             return 55;
         case 59:

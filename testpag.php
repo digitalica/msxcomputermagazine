@@ -6,28 +6,36 @@
  * Time: 18:46
  */
 
-define('ABSPATH','');
+define('ABSPATH', '');
 
 require('msxcomputermagazine.php');
 
 
 // note: in issue below, 101 is listingboek 1, 102 is listingboek 2
 $issue = 101;
+$title = "nr. $issue - test";
 
 $attr = array(
     'mcm' => $issue
 );
 
-function plugin_dir_path($var) {
-    return dirname($var).'/';
+$post = new stdClass();
+$post->ID = ''; // no page id for now
+
+function plugin_dir_path($var)
+{
+    return dirname($var) . '/';
 }
 
-function add_shortcode() {
+function add_shortcode()
+{
 
 }
 
-$title = "nr. $issue - test";
-function get_the_title() {
+function get_the_title()
+{
+    global $title;
+
     return $title;
 }
 

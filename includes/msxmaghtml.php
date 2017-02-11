@@ -36,6 +36,7 @@ function msxmag_pdf($attr)
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
     $pdfHTML = "<div class='mcmpdf'>";
+    $pdfURL = msxmag_pdf_url($mcm_nr);
     if (is_pdf_available($mcm_nr)) {
         $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
         $pdfHTML .= magazine_name($mcm_nr);
@@ -57,7 +58,7 @@ function msxmag_pdf($attr)
  * @param $mcm_baseDiskUrl
  * @return string
  */
-function mcm_disk($mcm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
+function mcm_disk($mcm_nr)
 {
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
@@ -159,8 +160,8 @@ function show_programs($progList)
         $listingURL = $mcm_emulatorUrl . '?';
         $listingURL .= mcm_msx_version_url($msx_version);
         //            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
-        if ($nr == 101) {
-            $listingURL .= '&DISKA_URL=' . $mcm_baseDiskUrl . 'lb/MCM-L1_MCM_Listingboekdiskette.dsk';
+        if ($nr == 101 || $nr == 102) {
+            $listingURL .= '&DISKA_URL=' . $mcm_baseDiskUrl . msx_disk_filename($nr);
         } else {
             $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
         }
