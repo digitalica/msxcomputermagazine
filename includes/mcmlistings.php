@@ -1607,12 +1607,35 @@ $mcm_listings = array(
     array(101, 133, 'k&k8-8', 'K&K: Stilstaande kantlijn', 1),
     array(101, 133, 'k&k8-9', 'K&K: Stilstaande kantlijn, gewijzigde versie', 1),
 
-
-    //
     // listing boek 2, gebaseerd op MCM-L1
-    //
-//    array(101, 11, 'icp7', 'Invoer Controle Programma 7 generator'),
-//    array(101, 13, 'f', 'Invoer Controle Programma 7 generator')
+    array(102, 0, 'icp7', 'Invoer Controle Programma 7 generator', 1), // moet eigenlijk ICP/5 zijn! Die staat op pagina 11
+    array(102, 16, 'msxmem', 'MSXmem', 1),
+    array(102, 19, 'hal', 'HAL', 1),
+    array(102, 29, 'msxbug', 'MSXbug', 1),
+    array(102, 33, 'print', 'Print', 1),
+    array(102, 37, 'pucky', 'Pucky', 1),
+    array(102, 42, 'watklk', 'Watklk: Waterklok', 1),
+    array(102, 0, 'watklk2', 'Waterklok MSX2-versie', 2),
+    array(102, 44, 'tstbld', 'Tstbld: testbeeld', 2),
+    array(102, 47, 'repwek', 'Repwek', 1),
+    array(102, 51, 'strkls', 'Sinterklaas', 1),
+    array(102, 0, 'strkls2', 'Sinterklaas MSX2-versie', 2),
+    array(102, 54, 'sclptr', 'Sculptor', 2),
+    array(102, 57, 'ijsfab', 'Ijsfabriek', 1),
+    array(102, 62, 'koppie', 'Koppie', 2),
+    array(102, 67, 'teller', 'Teller', 1),
+    array(102, 71, 'sprite', 'Sprite', 1),
+    array(102, 77, 'joysor', 'Joysor', 1),
+    array(102, 79, 'digklk', 'Digiklk', 1),
+    array(102, 80, 'mcm2bs', 'MCM2BS - MCM2B deel 1', 2),
+    array(102, 86, 'mcm2bm', 'MCM2BM - MCM2B deel 2', 2),
+    array(102, 88, 'mcm2b1', 'MCM2B1 - MCM2B deel 3', 2),
+    array(102, 91, 'disass', 'Disass', 1),
+    array(102, 96, 'varln2', 'Varln2', 1),
+    array(102, 98, 'blast', 'Blast', 1),
+    array(102, 103, 'linklk', 'Linklk', 1),
+    array(102, 105, 'jake', 'Jake', 1),
+    array(102, 112, 'keuken', 'Keuken', 1),
 
 );
 
