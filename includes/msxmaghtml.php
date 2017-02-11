@@ -12,6 +12,8 @@ function msxmag_pdf_url($msxmag_nr, $pag = 0)
         $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . $msxmag_nr . ".pdf";
     } else if (is_listingboek($msxmag_nr)) {
         $pdfURL = $mcm_baseListingboekPdfUrl . mcm_pdfbasename($msxmag_nr) . ".pdf";
+    } else if ($msxmag_nr == 91) { // special case, afsluitende cd
+        $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . ".pdf";
     }
     if ($pag) {
         $pdfURL .= "#page=" . $pag;
@@ -74,8 +76,8 @@ function mcm_disk($mcm_nr)
     $diskURL .= '&DISKA_URL=';
     $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mcm_nr);
     $diskHTML = "<div class='mcmdisk'>";
-    $diskHTML .= _("Start WebMSX met");
     if (is_disk_available($mcm_nr)) {
+        $diskHTML .= _("Start WebMSX met");
         $diskHTML .= " <a href='$diskURL' target='_blank'>";
         $diskHTML .= mcm_disk_name($mcm_nr);
         $diskHTML .= "</a>";

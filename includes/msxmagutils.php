@@ -11,8 +11,9 @@
 function mcm_nr_from_pagename($pagename)
 {
     // exception for 90 cd
-    if (preg_match('/nr\. \d+ cd/', $pagename)) {
-        return 0; // voor mccm90 cd pagina, http://www.msxcomputermagazine.nl/archief/mccm-90cd/
+    preg_match('/nr\. (\d+) cd/', $pagename, $matches);
+    if (sizeof($matches) > 1 && $matches[1]) {
+        return $matches[1] + 1; // voor mccm90 cd pagina, http://www.msxcomputermagazine.nl/archief/mccm-90cd/
     }
     // first check regular
     preg_match('/nr\. (\d+)/i', $pagename, $matches);
@@ -71,7 +72,7 @@ function is_listingboek($nr)
  */
 function is_pdf_available($nr)
 {
-    return is_magazine($nr) || is_listingboek($nr);
+    return is_magazine($nr) || is_listingboek($nr) || $nr == 91;
 }
 
 /**
@@ -88,7 +89,7 @@ function is_disk_available($nr)
     if ($nr >= 58 && $nr <= 90) {
         return true; // for mccm
     }
-    if ($nr == 101 || $nr==102) {
+    if ($nr == 101 || $nr == 102) {
         return true; // for listingboek 1
     }
 }
@@ -157,6 +158,9 @@ function mcm_pdfbasename($nr)
     if ($nr >= 58 && $nr <= 90) {
         $basename = 'msx_computer_club_magazine_';
     }
+    if ($nr == 91) {
+        $basename = 'msx_computer_club_magazine_90_cd';
+    }
     if ($nr >= 101 && $nr <= 102) {
         $basename = 'mcm_listing_boek_' . ($nr - 100); // hmmm... hier maar met nr ;-)
     }
@@ -185,6 +189,12 @@ function magazine_name($nr)
     }
     if ($nr >= 58 && $nr <= 90) {
         $magazine_name = 'MSX Computer Club Magazine ' . ($nr + 0);
+    }
+    if ($nr >= 58 && $nr <= 90) {
+        $magazine_name = 'MSX Computer Club Magazine ' . ($nr + 0);
+    }
+    if ($nr == 91) {
+        $magazine_name = 'MSX Computer Club Magazine 90 extra';
     }
     if ($nr >= 101 && $nr <= 102) {
         $magazine_name = 'MCM listingboek ' . ($nr - 100); // hmmm... hier maar met nr ;-)
