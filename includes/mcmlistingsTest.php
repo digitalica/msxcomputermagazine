@@ -43,4 +43,28 @@ final class mcmlistingstest extends PHPUnit_Framework_TestCase
             }
         }
     }
+
+    public function testlistingboek1()
+    {
+        global $mcm_listings;
+        foreach ($mcm_listings as $lblisting) {
+            $lnnr = $lblisting[0];
+            if ($lnnr == 101) { // only test listingboek 1
+                $lbfile = $lblisting[2];
+                foreach ($mcm_listings as $bladlisting) {
+                    $bladnr = $bladlisting[0];
+                    $bladfile = $bladlisting[2];
+                    if ($bladnr < 10 && $bladfile == $lbfile) {
+                        $lbdesc = $lblisting[3];
+                        $bladdesc = $bladlisting[3];
+                        $lb = $lbfile . ' / ' . $lbdesc;
+                        $blad = $bladfile . ' / ' . $bladdesc;
+                        $this->assertEquals($blad, $lb, "\nLB: $lb\nBLAD: $blad\n");
+                    }
+                }
+            }
+        }
+    }
+
+
 }
