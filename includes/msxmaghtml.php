@@ -36,6 +36,7 @@ function msxmag_pdf($attr)
     $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
     $pdfHTML = "<div class='mcmpdf'>";
+    $pdfHTML .= "Download: ";
     $pdfURL = msxmag_pdf_url($mcm_nr);
     if (is_pdf_available($mcm_nr)) {
         $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
@@ -73,8 +74,9 @@ function mcm_disk($mcm_nr)
     $diskURL .= '&DISKA_URL=';
     $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mcm_nr);
     $diskHTML = "<div class='mcmdisk'>";
+    $diskHTML .= _("Start WebMSX met");
     if (is_disk_available($mcm_nr)) {
-        $diskHTML .= "<a href='$diskURL' target='_blank'>";
+        $diskHTML .= " <a href='$diskURL' target='_blank'>";
         $diskHTML .= mcm_disk_name($mcm_nr);
         $diskHTML .= "</a>";
     } else {
@@ -99,15 +101,15 @@ function mccm_disk($mccm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
     global $mcm_baseDiskUrl;
     global $mccm_listings;
 
-    $diskHTML = "<div class='mcmdisk'>";
+    $diskHTML = "<div class='mcmdisk'>\n";
     $diskHTML .= _("Diskabonnement bij dit nummer:");
-    $diskHTML .= "<br>";
+    $diskHTML .= "<br>\n";
     $diskHTML .= "Zie";
     $pdfURL = msxmag_pdf_url($mccm_nr, mccm_diskabopag($mccm_nr));
     $diskHTML .= " <a href='$pdfURL' target='_blank'>";
     $diskHTML .= sprintf(_("pagina %s"), mccm_diskabopag($mccm_nr));
-    $diskHTML .= "</a>";
-    $diskHTML .= "<ul>";
+    $diskHTML .= "</a>\n";
+    $diskHTML .= "<ul>\n";
 
     $nr = null;
     $letter = null;
@@ -127,12 +129,12 @@ function mccm_disk($mccm_nr, $mcm_emulatorUrl, $mcm_baseDiskUrl)
                 $diskHTML .= "<a href='$diskURL' target='_blank'>";
                 $diskHTML .= mcm_disk_name($mccm_nr, $letter);
                 $diskHTML .= "</a>";
-                $diskHTML .= "</li>";
+                $diskHTML .= "</li>\n";
             }
         }
     }
-    $diskHTML .= "</ul>";
-    $diskHTML .= "</div>";
+    $diskHTML .= "</ul>\n";
+    $diskHTML .= "</div>\n";
     return $diskHTML;
 
 }
@@ -178,7 +180,7 @@ function show_programs($progList)
             $abspag = abs($pag);
             $pdfURL = msxmag_pdf_url($nr, $abspag);
             $pagText = " (<a href='$pdfURL' target='_blank'>";
-            $pagText .= _("pagina");
+            $pagText .= _("p. ");
             $pagText .= " $abspag</a>)";
         }
         $listHTML .= "<li>";
@@ -190,7 +192,7 @@ function show_programs($progList)
             $listHTML .= "</a>";
         }
         $listHTML .= $pagText;
-        $listHTML .= "</li>";
+        $listHTML .= "</li>\n";
     }
     return $listHTML;
 }
@@ -225,24 +227,24 @@ function mcm_listings($mcm_nr)
             return $elem[1] <= 0;
         }
     ));
-    $listHTML = "<div class='mcmlistings'>";
+    $listHTML = "<div class='mcmlistings'>\n";
     if (!empty($listings)) {
         $listHTML .= "<p>";
         $listHTML .= _("Listings in dit nummer:");
-        $listHTML .= "</p>";
-        $listHTML .= "<ul>";
+        $listHTML .= "</p>\n";
+        $listHTML .= "<ul>\n";
         $listHTML .= show_programs($listings);
-        $listHTML .= "</ul>";
+        $listHTML .= "</ul>\n";
     }
     if (!empty($extras)) {
         $listHTML .= "<p>";
         $listHTML .= _("Extra's op disk");
-        $listHTML .= " MCM-D" . (int)mcm_disknr($mcm_nr) . ":</p>";
-        $listHTML .= "<ul>";
+        $listHTML .= " MCM-D" . (int)mcm_disknr($mcm_nr) . ":</p>\n";
+        $listHTML .= "<ul>\n";
         $listHTML .= show_programs($extras);
-        $listHTML .= "</ul>";
+        $listHTML .= "</ul>\n";
     }
-    $listHTML .= "</div>";
+    $listHTML .= "</div>\n";
     return $listHTML;
 }
 
