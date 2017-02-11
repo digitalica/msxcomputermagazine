@@ -62,7 +62,7 @@ $mccm_disks = array(
     array(72, 'a', ''),
     array(72, 'b', ''),
     array(73, 'a', ''),
-    array(73, 'b', ''),
+    array(73, 'b', 'Broady demodisk 1'),
     array(73, 'c', ''),
     array(73, 'd', ''),
     array(74, 'a', ''),

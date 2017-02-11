@@ -139,7 +139,7 @@ function mccm_disk($mccm_nr)
 }
 
 
-function show_programs($progList)
+function show_programs($progList, $letter = '')
 {
     global $mcm_emulatorUrl;
     global $mcm_baseDiskUrl;
@@ -162,7 +162,9 @@ function show_programs($progList)
         $listingURL = $mcm_emulatorUrl . '?';
         $listingURL .= mcm_msx_version_url($msx_version);
         //            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
-        if ($nr == 101 || $nr == 102) {
+        if (is_mccm($nr)) {
+            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'disk' . $nr . $letter .  '.zip';
+        } else if ($nr == 101 || $nr == 102) {
             $listingURL .= '&DISKA_URL=' . $mcm_baseDiskUrl . msx_disk_filename($nr);
         } else {
             $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
@@ -291,7 +293,7 @@ function mccm_listings($mccm_nr)
         $listHTML .= mcm_disk_name($mccm_nr, $letter);
 //        $listHTML .= "</a>";
         $listHTML .= "<ul>\n";
-        $listHTML .= show_programs($programs);
+        $listHTML .= show_programs($programs, $letter);
         $listHTML .= "</ul>\n";
         $listHTML .= "</div>\n";
     }
