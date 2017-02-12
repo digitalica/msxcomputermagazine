@@ -67,7 +67,7 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, is_mccm(0));
         $this->assertEquals(false, is_mccm(33));
         $this->assertEquals(false, is_mccm(57));
-        $this->assertEquals(false, is_mccm(91));
+        $this->assertEquals(false, is_mccm(92));
         $this->assertEquals(false, is_mccm(101));
         $this->assertEquals(false, is_mccm(102));
         $this->assertEquals(false, is_mccm(999));
@@ -75,6 +75,7 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, is_mccm(58));
         $this->assertEquals(true, is_mccm(74));
         $this->assertEquals(true, is_mccm(90));
+        $this->assertEquals(true, is_mccm(91)); // special case: extension of 90, in pdf on cd only.
     }
 
     public function testIs_pdf_available()
