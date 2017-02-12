@@ -119,7 +119,7 @@ $mccm_disks = array(
     array(90, 'b', 'Game Special'),
     array(90, 'c', 'ArtGallery plaatjes: Death; King\'s Valley II-velden'),
     array(90, 'd', 'ArtGallery plaatjes; King\'s Valley II- en leprechaunvelden'),
-    array(90, 'e', 'Crackman; Demo Deltabasic, Meridian; Midry; Mission'),
+    array(90, 'e', 'Crackman; Demo Deltabasic; Meridian; Midry; Mission'),
     array(90, 'f', 'King\'s Valley II velden; muziek uit Twisted Reality 2 en Jaijruu; Multitrack-files'),
     array(90, 'g', 'The Incredible Micro Mirror Men demo'),
     array(90, 'h', 'Kerstdemo'),
