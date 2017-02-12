@@ -49,7 +49,7 @@ function is_magazine($nr)
  */
 function is_mccm($nr)
 {
-    return $nr >= 58 && $nr <= 90;
+    return $nr >= 58 && $nr <= 91; // 91 was extra after 90 (pdf on cd only, no paper)
 }
 
 
