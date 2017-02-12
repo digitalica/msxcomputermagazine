@@ -12,7 +12,7 @@ require('msxcomputermagazine.php');
 
 
 // note: in issue below, 101 is listingboek 1, 102 is listingboek 2
-$issue = 90;
+$issue = 9;
 $title = "nr. $issue - test";
 
 $attr = array(
@@ -56,8 +56,7 @@ echo shortcode_disk($attr);
 
 echo shortcode_listings($attr);
 
-
-echo mccm_disktemp();
+echo shortcode_info($attr);
 
 ?>
 

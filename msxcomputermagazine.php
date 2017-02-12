@@ -47,8 +47,11 @@ add_shortcode('pdf', 'shortcode_pdf');
 
 function shortcode_pdf($attr)
 {
+    global $post; // the Wordpress current post
 
-    $pdfHTML = msxmag_pdf($attr);
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+
+    $pdfHTML = msxmag_pdf($mcm_nr);
     return $pdfHTML;
 }
 
@@ -90,5 +93,17 @@ function shortcode_listings($attr)
     return $listHTML;
 }
 
+
+add_shortcode('info', 'shortcode_info');
+
+function shortcode_info($attr)
+{
+    global $post; // the Wordpress current post
+
+    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+
+    $pdfHTML = msxmag_info($mcm_nr);
+    return $pdfHTML;
+}
 
 ?>

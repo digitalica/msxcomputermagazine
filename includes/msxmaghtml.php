@@ -32,18 +32,14 @@ function msxmag_pdf_url($msxmag_nr, $pag = 0)
  * @param $mcm_baseListingboekPdfUrl
  * @return string
  */
-function msxmag_pdf($attr)
+function msxmag_pdf($msxmag_nr)
 {
-    global $post; // the Wordpress current post
-
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
-
     $pdfHTML = "<div class='mcmpdf'>";
     $pdfHTML .= "Download: ";
-    $pdfURL = msxmag_pdf_url($mcm_nr);
-    if (is_pdf_available($mcm_nr)) {
+    $pdfURL = msxmag_pdf_url($msxmag_nr);
+    if (is_pdf_available($msxmag_nr)) {
         $pdfHTML .= "<a href='$pdfURL' target='_blank'>";
-        $pdfHTML .= magazine_name($mcm_nr);
+        $pdfHTML .= magazine_name($msxmag_nr);
         $pdfHTML .= "</a>";
     } else {
         $pdfHTML .= _("Geen pdf beschikbaar");
@@ -167,7 +163,7 @@ function show_programs($progList, $letter = '')
         $listingURL .= mcm_msx_version_url($msx_version);
         //            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseListingUrl . 'mcmd' . mcm_disknr($nr) . '.di1/' . urlencode($filename);
         if (is_mccm($nr)) {
-            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'disk' . $nr . $letter .  '.zip';
+            $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'disk' . $nr . $letter . '.zip';
         } else if ($nr == 101 || $nr == 102) {
             $listingURL .= '&DISKA_URL=' . $mcm_baseDiskUrl . msx_disk_filename($nr);
         } else {
@@ -303,6 +299,29 @@ function mccm_listings($mccm_nr)
     }
 
     return $listHTML;
+}
+
+
+/**
+ * return infostring to show at bottom of a magazine
+ * TODO: make multilingual
+ *
+ * @param $msxmag_nr
+ * @return string
+ */
+function msxmag_info($msxmag_nr)
+{
+    $infoHTML = "";
+    if (is_mccm($msxmag_nr)) {
+        $infoHTML .= "<div class='mcminfo'>\n";
+        $infoHTML .= "Zoek je meer MCCM info? Zie ook de speciale";
+        $infoHTML .= " <a href=\"http://msxcomputermagazine.nl/mccm/\">website</a>";
+        $infoHTML .= " met product support (Millenium cd-roms, MSX4PC), correcties en ";
+        $infoHTML .= " <a href=\"http://msxcomputermagazine.nl/mccm/millennium/milc/index.htm\">MiLC</a>";
+        $infoHTML .= " (MSX Informatie &amp; Listings Collectie).";
+        $infoHTML .= "</div>\n";
+    }
+    return $infoHTML;
 }
 
 
