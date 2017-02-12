@@ -153,6 +153,9 @@ function show_programs($progList, $letter = '')
 
         $pag = $listing[1];
         $filename = $listing[2];
+        if (strtolower($filename) == 'autoexec.bas') {
+            $filename = 'autoexec.baz'; // all renamed in the zips to prevent execution on WebMSX
+        }
         $name = $listing[3];
         $msx_version = $listing[4];
         $runtype = 'R';
