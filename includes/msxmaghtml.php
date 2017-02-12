@@ -8,12 +8,13 @@ function msxmag_pdf_url($msxmag_nr, $pag = 0)
     global $mcm_baseMagazinePdfUrl;
     global $mcm_baseListingboekPdfUrl;
 
+    $pdfURL = 'https://docs.google.com/viewer?url=';
     if (is_magazine($msxmag_nr)) {
-        $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . $msxmag_nr . ".pdf";
+        $pdfURL .= $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . $msxmag_nr . ".pdf";
     } else if (is_listingboek($msxmag_nr)) {
-        $pdfURL = $mcm_baseListingboekPdfUrl . mcm_pdfbasename($msxmag_nr) . ".pdf";
+        $pdfURL .= $mcm_baseListingboekPdfUrl . mcm_pdfbasename($msxmag_nr) . ".pdf";
     } else if ($msxmag_nr == 91) { // special case, afsluitende cd
-        $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . ".pdf";
+        $pdfURL .= $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . ".pdf";
     }
     if ($pag) {
         $pdfURL .= "#page=" . $pag;
