@@ -237,7 +237,7 @@ function mcm_msx_version_url($msx_version)
 function mcm_disk_name($nr, $letter = '')
 {
     if (is_mccm($nr)) {
-        return "DA" . $nr . $letter;
+        return "DA" . $nr . strtoupper($letter);
     }
     if ($nr == 101) {
         return "MCM-L0"; // listing boek exception... samengesteld door manuel dus geen echte naam...
