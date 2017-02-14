@@ -600,7 +600,7 @@ $mcm_listings = array(
 
     array(34, 0, 'icp6', 'Invoer Controle Programma 6', 1),
     array(34, 0, 'icp7', 'Invoer Controle Programma 7 generator', 1), // huh??? op volgende niet meer?
-    array(34, 0, 'icp7b', 'Invoer Controle Programma 7 - bin versie', 1, 'B'), // huh??? op volgende niet meer?
+    array(34, 0, 'icp7b', 'Invoer Controle Programma 7 - bin versie', 2, 'B'), // huh??? op volgende niet meer?
     array(34, 0, 'm2b4ex', 'm2b4ex', 1),
     array(34, 0, 'show33', 'Show 33: laat de plaatjes zien van MCM-D33', 2),
     array(34, -45, 'crvir21.pic', 'crvir21.pic', 1, 'X'),
@@ -656,7 +656,7 @@ $mcm_listings = array(
     array(36, 55, 'hola', 'Hola: hoger-lager', 1),
     array(36, 69, 'icp6', 'Invoer Controle Programma 6', 1),
     array(36, -4, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(36, -4, 'icp7b', 'Invoer Controle Programma 7', 1, 'B'),
+    array(36, -4, 'icp7b', 'Invoer Controle Programma 7', 2, 'B'),
     array(36, 0, 'show35', 'Show 35: laat de plaatjes zien van MCM-D35', 2),
     /** Autoexec start-up/menu files
      * array(36, 0, 'autoexec.bas', 'autoexec.bas', 1),
@@ -689,7 +689,7 @@ $mcm_listings = array(
     array(37, -4, 'fiscus40.90', 'Fiscus90 - MSX1-versie', 1),
     array(37, -4, 'fstart', 'Fiscus90 starter', 2),
     array(37, 0, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(37, 0, 'icp7b', 'Invoer Controle Programma 7', 1, 'B'),
+    array(37, 0, 'icp7b', 'Invoer Controle Programma 7', 2, 'B'),
     array(37, 0, 'show36', 'Show 36: laat de plaatjes zien van MCM-D36', 2),
     /** Autoexec start-up/menu files
      * array(37, 0, 'autoexec.bas', 'autoexec.bas', 1),
@@ -728,7 +728,7 @@ $mcm_listings = array(
     array(38, 70, 'dvpat1', 'DiskView patch', 1),
 //    array(38, 0, 'autoexec.bat', 'autoexec.bat', 1),
     array(38, 0, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(38, 0, 'icp7b', 'Invoer Controle Programma 7', 1, 'B'),
+    array(38, 0, 'icp7b', 'Invoer Controle Programma 7', 2, 'B'),
     array(38, 0, 'mcbcmcm1.bas', 'MCM MCBC demo 1', 1),
 //    array(38, 0, 'mcbcmcm1.ldr', 'mcbcmcm1.ldr', 1), // mcbcmcm1.mem ontbreekt
     array(38, 0, 'mcbcmcm2.bas', 'MCM MCBC demo 2', 2),
@@ -751,7 +751,7 @@ $mcm_listings = array(
 //    array(39, 0, 'fprint.com', 'fprint.com', 1),
     array(39, 55, 'hdskl1', 'RUN Halos onder DOS2', 1),
     array(39, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(39, 0, 'icp7b', 'Invoer Controle Programma 7', 1, 'B'),
+    array(39, 0, 'icp7b', 'Invoer Controle Programma 7', 2, 'B'),
 //    array(39, 0, 'abstrakt.sc7', 'abstrakt.sc7', 1, 'X'),
     array(39, 0, 'atari', 'Atari plaatjes bekijken en printen', 2),
 //    array(39, 0, 'atari.asm', 'atari.asm', 2),
@@ -1327,7 +1327,7 @@ $mcm_listings = array(
     array(53, 0, 'switch2.bin', 'switch2.bin', 2, 'B'),  // MSX 2 to prevent date prompt
     array(53, 60, 'contrl.bas', 'CONTRL: demo MIDI controllers', 1),
     array(53, 61, 'midibios.inc', 'midibios.inc', 1),
-    array(53, 0, 'mididr.bin', 'Geassembleerde mididr.gen', 1, 'B'),
+    array(53, 0, 'mididr.bin', 'Geassembleerde mididr.gen', 2, 'B'), // MSX 2 to prevent date prompt
     array(53, 63, 'mididr.gen', 'mididr.gen', 1),
     array(53, 0, 'mididr.ldr', 'MIDIDR loader', 1),
     array(53, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
@@ -1431,11 +1431,11 @@ $mcm_listings = array(
      * array(56, 0, 'dtm.prg', 'dtm.prg', 1),
      * array(56, 0, 'fonted.prg', 'fonted.prg', 1),
      * array(56, 0, 'menu.prg', 'menu.prg', 1),
-     * array(56, 0, 'msxpnt1.bin', 'msxpnt1.bin', 1, 'B'),
-     * array(56, 0, 'msxpnt2.bin', 'msxpnt2.bin', 1, 'B'),
+     * array(56, 0, 'msxpnt1.bin', 'msxpnt1.bin', 2, 'B'), // msx 2 to prevent date prompt
+     * array(56, 0, 'msxpnt2.bin', 'msxpnt2.bin', 2, 'B'), // msx 2 to prevent date prompt
      * array(56, 0, 'paintiv.st8', 'paintiv.st8', 1),
      * array(56, 0, 'print.prg', 'print.prg', 1),
-     * array(56, 0, 'ramcopy.bin', 'ramcopy.bin', 1, 'B'),
+     * array(56, 0, 'ramcopy.bin', 'ramcopy.bin', 2, 'B'), // msx 2 to prevent date prompt
      * array(56, 0, 'rotate.prg', 'rotate.prg', 1),
      * array(56, 0, 'runani.bas', 'runani.bas', 1),
      * array(56, 0, 'sel-mode.prg', 'sel-mode.prg', 1),
