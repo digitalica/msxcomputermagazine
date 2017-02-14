@@ -880,7 +880,7 @@ $mccm_listings = array(
 //    array(64, 'a', 0, 'damocles.sec', 'damocles.sec', 2),
 
 // ML-Cursus
-    array(64, 'a', 20, 'mouse.gen', 'mouse.gen ML-listing', 'X'),
+    array(64, 'a', 20, 'mouse.gen', 'mouse.gen ML-listing', 1, 'X'),
 // ArtGallery
     array(64, 'a', -22, 'bootshow.bas', 'ArtGallery Bootshow', 2),
 //    array(64, 'a', 0, 'boot1.pic', 'boot1.pic', 2, 'X'),

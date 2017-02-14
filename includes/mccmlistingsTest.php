@@ -36,8 +36,8 @@ final class mccmlistingstest extends PHPUnit_Framework_TestCase
             $this->assertTrue(is_string($name));
             $this->assertNotEmpty($name);
             $msx_version = $listing[5];
-            $this->assertLessThan($msx_version, 0);
-            $this->assertGreaterThan($msx_version, 4);
+            $this->assertLessThan($msx_version, 0, "for $filename: $name");
+            $this->assertGreaterThan($msx_version, 4, "for $filename: $name");
         }
     }
 }
