@@ -41,6 +41,11 @@ final class mcmlistingstest extends PHPUnit_Framework_TestCase
                 $runtype = $listing[5];
                 $this->assertTrue(in_array($runtype, array('X', 'B')));
             }
+            if ($filename== 'icp7.bin') {
+                $this->assertEquals(2,$msx_version, "icp7 must be for MSX2, to allow typing MSX 2 listings (and prevert date prompt) for mcm " . $nr);
+                $this->assertEquals('B',$listing[5], "icp7 must be bloaded for mcm " . $nr);
+            }
+
         }
     }
 

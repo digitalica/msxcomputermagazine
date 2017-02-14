@@ -649,7 +649,7 @@ $mcm_listings = array(
     array(36, 31, 'sal90', 'Salarisberekening 1990', 1),
     array(36, -50, 'alpine', 'alpine', 2),
     array(36, -50, 'carrier', 'carrier', 2),
-//    array(36, 0, 'carrier.bin', 'carrier.bin', 1, 'B'),
+    array(36, -50, 'carrier.bin', 'carrier.bin', 2, 'X'), // screen 7 plaatje, bload,s ;-)
     array(36, -51, 'duif.pic', 'duif.pic', 1, 'X'),
     array(36, -51, 'wu_shu.pic', 'wu_shu.pic', 1, 'X'),
     array(36, -51, 'mask3.pic', 'mask3.pic', 1, 'X'),
@@ -778,11 +778,11 @@ $mcm_listings = array(
     array(40, 35, 'swap2', 'SWAP2: genereert SWAP.COM (MSX-DOS versie SWAP)', 1),
     array(40, 60, 'tafel.asm', 'Tafel (assembler listing)', 1),
     array(40, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(40, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(40, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'),
 //    array(40, 0, 'bk.com', 'bk.com', 1),
 //    array(40, 0, 'bk.txt', 'bk.txt', 1),
 //    array(40, 0, 'cfgmman.bas', 'cfgmman.bas', 1),
-    array(40, 0, 'memman.bin', 'MemMan 1.1 voor BASIC', 1, 'B'),
+    array(40, 0, 'memman.bin', 'MemMan 1.1 voor BASIC', 2, 'B'),
 //    array(40, 0, 'memman.com', 'memman.com', 1),
 //    array(40, 0, 'memman.txt', 'memman.txt', 1),
 //    array(40, 0, 'mtype.com', 'mtype.com', 1),
@@ -837,7 +837,7 @@ $mcm_listings = array(
     array(41, 37, 'pbna28', 'Computergeluid en muziek - listing 28', 1),
     array(41, 53, 'diashw', 'Dia Show', 2),
     array(41, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(41, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(41, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'),
     array(41, -46, 'fractal9.pic', 'fractal9.pic', 1, 'X'),
     array(41, -47, 'busbestu.pic', 'busbestu.pic', 1, 'X'),
     array(41, -47, 'buschauf.pic', 'buschauf.pic', 1, 'X'),
@@ -852,7 +852,7 @@ $mcm_listings = array(
      */
 
     array(42, 7, 'flstot', 'Generator voor FLSTOT.BIN', 1),
-//    array(42, 0, 'flstot.bin', 'flstot.bin', 1, 'B'),
+    array(42, 0, 'flstot.bin', 'flstot.bin', 2, 'B'),
     array(42, 12, 'vdp', 'Knipperende karakters', 2),
     array(42, 14, 'vdpasm', 'Knipperende karakters, assembly listing', 1),
     array(42, 38, 'casfil', 'CasFil: pas uw muziek optimaal op een cassette', 2),
@@ -900,7 +900,7 @@ $mcm_listings = array(
     array(43, 51, 'diskan', 'KK42-4: Diskan', 2),
     array(43, 52, 'agame', 'KK42-6: Just A Game', 1),
     array(43, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(43, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(43, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
     array(43, 66, 'casfil43.asc', 'Regel 890 van CASFIL van MCM 42', 1),
     array(43, 0, 'diashw', 'Dia Show', 2),
     array(43, -46, 'kunst2.pic', 'kunst2.pic', 1, 'X'),
@@ -932,7 +932,7 @@ $mcm_listings = array(
     array(44, 39, 'funed', 'FUNED: Funkietoetsen Editor', 1),
     array(44, 59, 'sal91', 'SAL91: Salarisberekening 1991', 2),
     array(44, 66, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(44, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(44, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
     array(44, 0, 'diashw', 'Dia Show', 2),
     array(44, -22, 'muur.pic', 'muur.pic', 1, 'X'),
     array(44, -22, 'paddestl.pic', 'paddestl.pic', 1, 'X'),
@@ -954,7 +954,7 @@ $mcm_listings = array(
 //    array(45, 0, 'caps.tsr', 'caps.tsr', 1),
 //    array(45, 0, 'color.tsr', 'color.tsr', 1),
 //    array(45, 0, 'cfgmman.com', 'cfgmman.com', 1),
-    array(45, 0, 'memman.bin', 'MemMan 2.0 voor BASIC', 1, 'B'),
+    array(45, 0, 'memman.bin', 'MemMan 2.0 voor BASIC', 2, 'B'), // MSX 2 to prevent date prompt & and give MemMan some RAM
 //    array(45, 0, 'memman.com', 'memman.com', 1),
 //    array(45, 0, 'memman2.arc', 'memman2.arc', 1),
 //    array(45, 0, 'tk.com', 'tk.com', 1),
@@ -993,7 +993,7 @@ $mcm_listings = array(
     array(45, 57, 'scr3vb6', 'Schermen op MSX, voorbeeld 6', 1),
     array(45, 57, 'scr3vb7', 'Schermen op MSX, voorbeeld 7', 1),
     array(45, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(45, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(45, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
 //    array(45, 0, 'mltabs.asc', 'mltabs.asc', 1),
     /** Autoexec start-up/menu files
      * array(45, 0, 'autoexe1', 'autoexe1', 1),
@@ -1033,13 +1033,13 @@ $mcm_listings = array(
     array(46, 0, 'diashw', 'Dia Show', 2),
 //    array(46, 0, 'ehbo45l2.asc', 'EHBO45l2.asc', 1), ?? staat niet in blad?
     array(46, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(46, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(46, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
     //array(46, 0, 'museum.pic', 'museum.pic', 1, 'X'),
     //array(46, 0, 'newstar.pic', 'newstar.pic', 1, 'X'),
     //array(46, 0, 'lanta.pic', 'lanta.pic', 1, 'X'),
     //array(46, 0, 'caps.tsr', 'caps.tsr', 1, 'X'),
     //array(46, 0, 'cfgmman.com', 'cfgmman.com', 1, 'X'),
-    array(46, 0, 'memman.bin', 'MemMan 2.2 voor BASIC', 1, 'B'),
+    array(46, 0, 'memman.bin', 'MemMan 2.2 voor BASIC', 2, 'B'), // MSX 2 to prevent date prompt & give MemMan some RAM
 //    array(46, 0, 'memman.com', 'memman.com', 1),
 //    array(46, 0, 'mm22spec.txt', 'mm22spec.txt', 1),
 //    array(46, 0, 'mm2intro.txt', 'mm2intro.txt', 1),
@@ -1071,13 +1071,13 @@ $mcm_listings = array(
     array(47, 41, 'scroll.bas', 'MSX2+: Diagonale scroll', 3),
     array(47, 48, 'bardemo.bas', 'Barcode demo', 1),
     array(47, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(47, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(47, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
 //    array(47, 0, 'cycloop.s12', 'cycloop.s12', 1),
 //    array(47, 0, 'hspel1.s08', 'hspel1.s08', 1),
 //    array(47, 0, 'hspel1.s12', 'hspel1.s12', 1),
     array(47, 0, 'showpic.bas', 'Show Pic', 3),
 //    array(47, 0, 'testbld.s12', 'testbld.s12', 1),
-    array(47, 0, 'memman.bin', 'MemMan 2.30 voor BASIC', 1),
+    array(47, 0, 'memman.bin', 'MemMan 2.30 voor BASIC', 2, 'B'), // MSX 2 to prevent date prompt & give MemMan some RAM
 //    array(47, 0, 'memman.com', 'memman.com', 1),
 //    array(47, 0, 'mm23intr.txt', 'mm23intr.txt', 1),
 //    array(47, 0, 'mm23spec.txt', 'mm23spec.txt', 1),
@@ -1107,7 +1107,7 @@ $mcm_listings = array(
 //    array(48, 0, 'calsub.asc', 'calsub.asc', 1), // zelfde als calsub.asc, maar je zou verwachten dat mem3l2.asc hetzelfde zou zijn als calsub.asc...?
     array(48, 62, 'gtslt2.asc', 'GTSLT2.ASC assembly listing', 1),
     array(48, 66, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(48, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(48, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
 //    array(48, 0, 'icp7.tsr', 'Invoer Controle Programma 7 TSR', 1),
 //    array(48, 0, 'kikkr.gif', 'kikkr.gif', 1),
 //    array(48, 0, 'lips.gif', 'lips.gif', 1),
@@ -1140,9 +1140,9 @@ $mcm_listings = array(
     array(49, 60, 'zas6l1.asc', 'ML met ZAS listing 1', 1),
     array(49, 60, 'zas6l2.asc', 'ML met ZAS listing 2', 1),
     array(49, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(49, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(49, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
 //    array(49, 0, 'cfgmman.com', 'cfgmman.com', 1),
-    array(49, 0, 'memman.bin', 'MemMan 2.30 voor BASIC', 1, 'B'),
+    array(49, 0, 'memman.bin', 'MemMan 2.30 voor BASIC', 2, 'B'), // MSX 2 to prevent date prompt & give MemMan some RAM
 //    array(49, 0, 'memman.com', 'MemMan 2.30', 1),
 //    array(49, 0, 'mm23intr.txt', 'mm23intr.txt', 1),
 //    array(49, 0, 'mm23spec.txt', 'mm23spec.txt', 1),
@@ -1179,7 +1179,7 @@ $mcm_listings = array(
     array(50, 60, 'hap', 'KK50-4: hap', 1),
     array(50, 60, 'piano', 'KK50-5: piano', 1),
     array(50, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(50, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(50, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
     array(50, 0, 'pucky', 'Pucky (origineel)', 1),
 //    array(50, 0, 'pucky.asc', 'pucky.asc', 1),
 //    array(50, 0, 'pucky.bas', 'pucky.bas', 1),
@@ -1213,7 +1213,7 @@ $mcm_listings = array(
     array(51, 59, 'turbbas3', 'Turbo-Basic voorbeeld 3', 2),
     array(51, 59, 'turbbas4', 'Turbo-Basic voorbeeld 4', 2),
     array(51, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(51, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(51, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
     array(51, 0, 'bpunch.lzh', 'bpunch.lzh', 1),
     /** MemMan 2.31
      * array(51, 0, 'bk-man.txt', 'bk-man.txt', 1),
@@ -1250,25 +1250,25 @@ $mcm_listings = array(
      */
 
     array(52, 7, 'filvr1.asm', 'FILVR1 assembly listing', 1),
-    array(52, 0, 'filvr1.bin', 'FILVR1 geassembleerd', 1, 'B'),
+    array(52, 0, 'filvr1.bin', 'FILVR1 geassembleerd', 2, 'B'), // MSX 2 to prevent date prompt
     array(52, 8, 'filvr2.asm', 'FILVR2 assembly listing', 2),
     array(52, 9, 'filvr2', 'FILVR2 loader voor FILVR2.BIN', 2),
-    array(52, 0, 'filvr2.bin', 'FILVR2 geassembleerd', 2, 'B'),
+    array(52, 0, 'filvr2.bin', 'FILVR2 geassembleerd', 2, 'B'), // MSX 2 to prevent date prompt
     array(52, 9, 'prtusr', 'PRTUSR voorbeeld', 1),
     array(52, 9, 'prtusr.asm', 'PRTUSR assembly listing', 1),
-    array(52, 0, 'prtusr.bin', 'PRTUSR geassembleerd', 1, 'B'),
+    array(52, 0, 'prtusr.bin', 'PRTUSR geassembleerd', 2, 'B'), // MSX 2 to prevent date prompt
     array(52, 12, 'tikdit', 'KK52-1: tikdit', 1),
     array(52, 13, 'stralen', 'KK52-2: stralen', 2),
     array(52, 14, 'web', 'KK52-3: web', 1),
     array(52, 14, 'web2', 'KK52-3b: web 2', 2),
     array(52, 15, 'molas', 'KK52-4: molas', 2),
     array(52, 15, 'molastig', 'KK52-4b: molastig', 2),
-//    array(52, 0, 'molastig.bin', 'molastig.bin', 2, 'B'),
+    array(52, 0, 'molastig.bin', 'molastig.bin', 2, 'B'), // MSX 2 to prevent date prompt
     array(52, 0, 'molastig.ldr', 'Molastig gecompileerd', 2),
     array(52, 16, 'olympic', 'KK52-4c: olympic', 2, 'X'),
     array(52, 16, 'draai', 'KK52-5a: draai', 2, 'X'),
     array(52, 16, 'draai2', 'KK52-5b: draai 2', 2, 'X'),
-    array(52, 0, 'memman.bin', 'MemMan 2.31 voor BASIC', 2, 'B'),
+    array(52, 0, 'memman.bin', 'MemMan 2.31 voor BASIC', 2, 'B'), // MSX 2 to prevent date prompt & give MemMan some RAM
 //    array(52, 0, 'memman.com', 'memman.com', 1),
 //    array(52, 0, 'mm23intr.txt', 'mm23intr.txt', 1),
 //    array(52, 0, 'mm23spec.txt', 'mm23spec.txt', 1),
@@ -1291,7 +1291,7 @@ $mcm_listings = array(
      */
     array(52, 62, 'vrbld', 'VRBLD: voorbeeldje voor beginners', 1),
     array(52, 65, 'icp7.bas', 'Invoer Controle Programma 7 generator', 1),
-    array(52, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(52, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX 2 listings
     array(52, 0, 'salber', 'Salarisberekeningen voor 1992', 1),
     /** Autoexec start-up/menu files
      * array(52, 0, 'autoexe1', 'autoexe1', 1),
@@ -1302,7 +1302,7 @@ $mcm_listings = array(
      */
 
 //    array(53, 0, 'game.asc', 'game.asc', 1),
-    array(53, 0, 'game.bin', 'Simpel Pong (gecompileerd)', 1, 'B'),
+    array(53, 0, 'game.bin', 'Simpel Pong (gecompileerd)', 2, 'B'),  // MSX 2 to prevent date prompt
     array(53, 15, 'game.c', 'Simpel Pong', 1),
 //    array(53, 0, 'game.mac', 'game.mac', 1),
 //    array(53, 0, 'makegame.bat', 'makegame.bat', 1),
@@ -1322,16 +1322,16 @@ $mcm_listings = array(
     array(53, 0, 'diashw', 'Dia Show', 2),
     array(53, 51, 'switch', 'Switch', 1),
     array(53, 51, 'switch1.bas', 'Genereer switch1.bin', 1),
-//    array(53, 0, 'switch1.bin', 'switch1.bin', 1, 'B'),
+    array(53, 0, 'switch1.bin', 'switch1.bin', 2, 'B'), // MSX 2 to prevent date prompt
     array(53, 54, 'switch2.bas', 'Genereer switch2.bin', 1),
-//    array(53, 0, 'switch2.bin', 'switch2.bin', 1, 'B'),
+    array(53, 0, 'switch2.bin', 'switch2.bin', 2, 'B'),  // MSX 2 to prevent date prompt
     array(53, 60, 'contrl.bas', 'CONTRL: demo MIDI controllers', 1),
     array(53, 61, 'midibios.inc', 'midibios.inc', 1),
     array(53, 0, 'mididr.bin', 'Geassembleerde mididr.gen', 1, 'B'),
     array(53, 63, 'mididr.gen', 'mididr.gen', 1),
     array(53, 0, 'mididr.ldr', 'MIDIDR loader', 1),
     array(53, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
-    array(53, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(53, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing msx 2 listings
 //    array(53, 0, 'uitleg.wp', 'uitleg.wp', 1),
     /** Autoexec start-up/menu files
      * array(53, 0, 'autoexe1', 'autoexe1', 1),
@@ -1363,7 +1363,7 @@ $mcm_listings = array(
 //    array(54, 0, 'scr0dump.tsr', 'scr0dump.tsr', 1),
     array(54, 61, 'scr0inst.bas', 'Installatieprogramma voor SCR0DUMP.TSR', 2),
     array(54, 65, 'icp7.bas', 'Invoer Controle Programma 7 generator', 1),
-    array(54, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(54, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt
 //    array(54, 0, 'dancenow.pck', 'dancenow.pck', 1),
     array(54, 0, 'diashw', 'Dia Show', 2),
 //    array(54, 0, 'fonts.tsr', 'fonts.tsr', 1),
@@ -1467,7 +1467,7 @@ $mcm_listings = array(
     array(56, 52, 'master2', 'Mastermind (MSX2)', 2),
     array(56, 53, 'master1', 'Mastermind (MSX1)', 1),
     array(56, 65, 'icp7.bas', 'Invoer Controle Programma 7 generator', 1),
-    array(56, 0, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(56, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
     /** Autoexec start-up/menu files
      * array(56, 0, 'autoexe1', 'autoexe1', 1),
      * array(56, 0, 'autoexe2', 'autoexe2', 1),
@@ -1496,7 +1496,7 @@ $mcm_listings = array(
     array(57, 55, 'prntxt2', 'Print Tekst 2 voor niet-MSX printers (K&K 57-6b)', 1),
     array(57, 55, 'wanwan', 'Wanwanliner (K&K57-7)', 2),
     array(57, 65, 'icp7', 'ICP/7 generator', 1),
-    array(57, 0, 'icp7.bin', 'ICP/7', 1, 'B'),
+    array(57, 0, 'icp7.bin', 'ICP/7', 2, 'B'), // MSX 2 to prevent date prompt & allow typing MSX2 listings
     /** Art Gallery files */
     array(57, 0, 'diashw', 'Dia Show', 2),
     array(57, 0, 'darkness', 'Instrument of Darkness Intro + Future City', 2),
@@ -1509,7 +1509,7 @@ $mcm_listings = array(
 //    array(57, 0, 'runner.ge5', 'Runner', 2),
     /** MemMan 2.42 files */
 //    array(57, 0, 'memman.com', 'MemMan 2.42 voor MSX-DOS', 2),
-    array(57, 0, 'memman.bin', 'MemMan 2.42 voor BASIC', 2, 'B'),
+    array(57, 0, 'memman.bin', 'MemMan 2.42 voor BASIC', 2, 'B'),  // MSX 2 to prevent date prompt & allow MemMan some RAM
 //    array(57, 0, 'tl.com', 'TSR Loader voor MemMan', 2),
 //    array(57, 0, 'tv.com', 'TSR Viewer voor MemMan', 2),
 //    array(57, 0, 'tk.com', 'TSR Killer voor MemMan', 2),
