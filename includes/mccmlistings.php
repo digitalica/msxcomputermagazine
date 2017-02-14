@@ -1127,7 +1127,7 @@ $mccm_listings = array(
 //    array(66, 'a', -40, 'svnbbs1.pma', 'svnbbs1.pma', 2),
 // Pascal uitgediept
 //    array(66, 'a', -44, 'right.com', 'right.com', 2, 'X'),
-    array(66, 'a', -44, 'right.pas', 'right.pas: Pascal listing', 2),
+    array(66, 'a', -44, 'right.pas', 'right.pas: Pascal listing', 2, 'X'),
 // ArtGallery
 //    array(66, 'a', -46, 'snow.com', 'snow.com', 2, 'X'),
     array(66, 'a', -46, 'slak.sc8', 'slak.sc8', 2, 'X'),
