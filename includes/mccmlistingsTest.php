@@ -38,6 +38,12 @@ final class mccmlistingstest extends PHPUnit_Framework_TestCase
             $msx_version = $listing[5];
             $this->assertLessThan($msx_version, 0, "for $filename: $name");
             $this->assertGreaterThan($msx_version, 4, "for $filename: $name");
+
+            if ($filename == 'icp7.bin' || $filename == 'icp7b') {
+                $this->assertEquals(2, $msx_version, "icp7 must be for MSX2, to allow typing MSX 2 listings (and prevert date prompt) for mccm " . $nr);
+                $this->assertEquals('B', $listing[6], "icp7 must be bloaded for mccm " . $nr);
+            }
+
         }
     }
 }

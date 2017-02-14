@@ -305,7 +305,7 @@ $mccm_listings = array(
     array(59, 'a', -9, 'rd216.bin', 'rd216.bin', 2, 'B'),
     array(59, 'a', -9, 'rdinst.bas', 'rdinst.bas', 2),
     array(59, 'a', 14, 'icp7-1.bas', 'Invoer Controle Programma 7 Generator', 1),
-    array(59, 'a', -14, 'icp7.bin', 'Invoer Controle Programma 7', 1, 'B'),
+    array(59, 'a', -14, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'),
     array(59, 'a', -18, 'bmp2msx.bas', 'BMP2MSX converter', 2),
     array(59, 'a', -18, 'bmp2msx.com', 'bmp2msx.com', 2, 'X'),
     array(59, 'a', -18, 'ganzen.bmp', 'ganzen.bmp', 2, 'X'),
