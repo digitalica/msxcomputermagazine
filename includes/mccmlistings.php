@@ -1511,11 +1511,11 @@ $mccm_listings = array(
     array(68, 'a', 0, 'master.ldr', 'Mastermind', 2),
 // Van de vorige keer...
     array(68, 'a', 0, 'movfidir.bas', 'movfidir.bas', 2),
-    array(68, 'a', 0, 'txt.ted', 'txt.ted', 2),
-    array(68, 'a', 0, 'wbass2.ted', 'wbass2.ted', 2),
-    array(68, 'a', 0, 'asm.ted', 'asm.ted', 2),
-    array(68, 'a', 0, 'ber.ted', 'ber.ted', 2),
-
+//    array(68, 'a', 0, 'txt.ted', 'txt.ted', 2),
+//    array(68, 'a', 0, 'wbass2.ted', 'wbass2.ted', 2),
+//    array(68, 'a', 0, 'asm.ted', 'asm.ted', 2),
+//    array(68, 'a', 0, 'ber.ted', 'ber.ted', 2),
+//
     array(68, 'b', 0, 'brisk.asm', 'brisk.asm', 2, 'X'),
 //    array(68, 'b', 0, 'brisk.com', 'brisk.com', 2, 'X'),
 //    array(68, 'b', 0, 'brisk006.com', 'brisk006.com', 2, 'X'),
