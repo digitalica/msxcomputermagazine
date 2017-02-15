@@ -49,9 +49,9 @@ function shortcode_pdf($attr)
 {
     global $post; // the Wordpress current post
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+    $mxsmag_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    $pdfHTML = msxmag_pdf($mcm_nr);
+    $pdfHTML = msxmag_pdf($mxsmag_nr);
     return $pdfHTML;
 }
 
@@ -100,9 +100,9 @@ function shortcode_info($attr)
 {
     global $post; // the Wordpress current post
 
-    $mcm_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
+    $msxmag_nr = mcm_nr_from_attr_or_pagename($attr, get_the_title($post->ID));
 
-    $pdfHTML = msxmag_info($mcm_nr);
+    $pdfHTML = msxmag_info($msxmag_nr);
     return $pdfHTML;
 }
 
