@@ -53,10 +53,11 @@ final class mcmlistingstest extends PHPUnit_Framework_TestCase
 
         foreach ($mcm_listings as $listing) {
             $filename = strtolower($listing[2]);
-            if (strpos($filename, 'k&k') === 0) {
+            if (strpos($filename, 'k&k') === 0 || strpos($filename, 'kk') === 0 ) {
                 $this->assertTrue($filename == $listing[2], "filename k&k should be lowercase: " . $listing[2]); // filename should be lowercase
                 $name = $listing[3];
                 $nameprefix = strtoupper($filename) . ': ';
+                $nameprefix = str_replace('KK', 'K&K', $nameprefix); // met ampersant graag
                 $this->assertTrue(strpos($name, $nameprefix) === 0, "name k&k should start with [" . $nameprefix . "] for [" . $name . ']');
             }
         }
