@@ -499,16 +499,17 @@ $mcm_listings = array(
     array(29, 0, 'vuurwerk.pic', 'vuurwerk.pic', 2, 'X'),
 //    array(29, 0, 'autoexec.bas', 'autoexec.bas', 1),
 
-    array(30, 24, 'schn1', 'Schuin 1', 2),
-    array(30, 24, 'schn2', 'Schuin 2', 2),
-    array(30, 25, 'blokjs', 'blokjs', 2),
-    // p25: crkls1 ??
-    // p25: crkls2 ??
-    array(30, 26, 'lissaj', 'lissaj', 1),
-    array(30, 26, 'haard1', 'haard1', 1),
-    array(30, 27, 'haard2', 'haard2', 1),
-    array(30, 27, 'haard3', 'haard3', 2),
-    array(30, 27, 'haard4', 'haard4', 2),
+    array(30, 24, 'schn1', 'K&K30-1: Schuin 1', 2),
+    array(30, 24, 'schn2', 'K&K30-2: Schuin 2', 2),
+    array(30, 25, 'blokjs', 'K&K30-3: blokjs', 2),
+    // TODO: type listings?
+    // p25: K&K30-4: crkls1 ??
+    // p25: K&K30-5: crkls2 ??
+    array(30, 26, 'lissaj', 'K&K30-6: lissaj', 1),
+    array(30, 26, 'haard1', 'K&K30-7: haard1', 1),
+    array(30, 27, 'haard2', 'K&K30-8: haard2', 1),
+    array(30, 27, 'haard3', 'K&K30-9: haard3', 2),
+    array(30, 27, 'haard4', 'K&K30-10: haard4', 2),
     array(30, 30, 'schuif', 'Schuifpuzzel', 1),
     array(30, 50, 'intlac', 'Interlacing', 2),
     array(30, 52, 'sterrn', 'Sterren', 2),
