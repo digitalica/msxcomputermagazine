@@ -177,7 +177,7 @@ function show_programs($progList, $letter = '')
         if ($runtype == 'B') {
             // we use BASIC ENTER to 'fake' BLOAD option.
             // see https://github.com/ppeccin/WebMSX/issues/11
-            $listingURL .= '&BASIC_ENTER=BLOAD "' . urlencode($filename) . '",r';
+            $listingURL .= '&BASIC_BRUN=' . urlencode($filename);
         } else { // use this as default, and even if an unknown option was used.
             $listingURL .= '&BASIC_RUN=' . urlencode($filename);
         }
