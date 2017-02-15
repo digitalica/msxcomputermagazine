@@ -1516,7 +1516,7 @@ $mccm_listings = array(
 //    array(68, 'a', 0, 'asm.ted', 'asm.ted', 2, 'X'),
 //    array(68, 'a', 0, 'ber.ted', 'ber.ted', 2, 'X'),
 //
-    array(68, 'b', 0, 'brisk.asm', 'brisk.asm', 2, 'X'),
+//    array(68, 'b', 0, 'brisk.asm', 'brisk.asm', 2, 'X'),
 //    array(68, 'b', 0, 'brisk.com', 'brisk.com', 2, 'X'),
 //    array(68, 'b', 0, 'brisk006.com', 'brisk006.com', 2, 'X'),
 //    array(68, 'b', 0, 'cob00', 'cob00', 2),
@@ -1565,7 +1565,7 @@ $mccm_listings = array(
     array(68, 'b', 0, 'patchpix.ldr', 'Patch voor Pixess', 2),
 //    array(68, 'b', 0, 'titel.cc5', 'titel.cc5', 2, 'X'),
 //    array(68, 'b', 0, 'titel.pl5', 'titel.pl5', 2),
-    array(68, 'b', 0, 'veld.ldr', 'veld.ldr', 2),
+    array(68, 'b', 0, 'veld.ldr', 'Oefening voor Schermen op MSX: veld.ldr', 2),
 //    array(68, 'b', 0, 'veld1.cc5', 'veld1.cc5', 2, 'X'),
 //    array(68, 'b', 0, 'veld2.cc5', 'veld2.cc5', 2, 'X'),
 //    array(68, 'b', 0, 'veld3.cc5', 'veld3.cc5', 2, 'X'),
