@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-08 22:04+0100\n"
+"POT-Creation-Date: 2017-02-15 09:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,39 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: msxcomputermagazine.php:64
+#: msxmaghtml.php:44
 msgid "Geen pdf beschikbaar"
 msgstr ""
 
-#: msxcomputermagazine.php:95
-msgid "Geen disk beschikbaar"
+#: msxmaghtml.php:76
+msgid "Start WebMSX met"
 msgstr ""
 
-#: msxcomputermagazine.php:140
-msgid "pagina"
+#: msxmaghtml.php:81
+msgid " Geen disk beschikbaar"
 msgstr ""
 
-#: msxcomputermagazine.php:185
+#: msxmaghtml.php:103
+msgid "Diskabonnement bij dit nummer:"
+msgstr ""
+
+#: msxmaghtml.php:110
+#, php-format
+msgid "pagina %s"
+msgstr ""
+
+#: msxmaghtml.php:190
+msgid "p. "
+msgstr ""
+
+#: msxmaghtml.php:240
 msgid "Listings in dit nummer:"
 msgstr ""
 
-#: msxcomputermagazine.php:193
+#: msxmaghtml.php:248
 msgid "Extra's op disk"
+msgstr ""
+
+#: msxmaghtml.php:300
+msgid "Disk "
 msgstr ""

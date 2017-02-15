@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-08 22:08+0100\n"
-"PO-Revision-Date: 2017-02-08 22:09+0100\n"
+"POT-Creation-Date: 2017-02-15 09:22+0100\n"
+"PO-Revision-Date: 2017-02-15 09:23+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -17,22 +17,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: msxcomputermagazine.php:64
+#: msxmaghtml.php:44
 msgid "Geen pdf beschikbaar"
 msgstr "No pdf available"
 
-#: msxcomputermagazine.php:95
-msgid "Geen disk beschikbaar"
+#: msxmaghtml.php:76
+msgid "Start WebMSX met"
+msgstr "Start WebMSX using"
+
+#: msxmaghtml.php:81
+msgid " Geen disk beschikbaar"
 msgstr "No disk available"
 
-#: msxcomputermagazine.php:140
-msgid "pagina"
-msgstr "page"
+#: msxmaghtml.php:103
+msgid "Diskabonnement bij dit nummer:"
+msgstr "Disk subscription with this issue:"
 
-#: msxcomputermagazine.php:185
+#: msxmaghtml.php:110
+#, php-format
+msgid "pagina %s"
+msgstr "page %s"
+
+#: msxmaghtml.php:190
+msgid "p. "
+msgstr "p."
+
+#: msxmaghtml.php:240
 msgid "Listings in dit nummer:"
 msgstr "Listings in this issue:"
 
-#: msxcomputermagazine.php:193
+#: msxmaghtml.php:248
 msgid "Extra's op disk"
 msgstr "Extra's on disc"
+
+#: msxmaghtml.php:300
+msgid "Disk "
+msgstr "Disk"
+
+#~ msgid "Geen disk beschikbaar"
+#~ msgstr "No disk available"
+
+#~ msgid "pagina"
+#~ msgstr "page"
