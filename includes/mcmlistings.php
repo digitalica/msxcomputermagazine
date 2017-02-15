@@ -255,8 +255,8 @@ $mcm_listings = array(
     array(16, 56, 'kk16-1', 'K&K16-1: Mat grafisch', 1),
     array(16, 57, 'kk16-2', 'K&K16-2: Stapel', 1),
     array(16, 57, 'kk16-3', 'K&K16-3: Stapel nr 2', 1),
-    array(16, 56, 'kk16-4', 'K&K16-4: Vlinder', 1),
-    array(16, 57, 'kk16-5', 'K&K16-5: Vlinder twoliner', 1),
+    array(16, 56, 'kk16-4', 'K&K16-4: Vlinder', 2), // screen 5
+    array(16, 57, 'kk16-5', 'K&K16-5: Vlinder twoliner', 1), // screen 2
     array(16, 57, 'kk16-6', 'K&K16-6: 3D-Bol', 1),
     array(16, 58, 'kk16-7', 'K&K16-7: 3D-Bol verkort', 1),
     array(16, 0, 'kk16-8', 'K&K16-8: 3D-Bol oneliner', 1),
