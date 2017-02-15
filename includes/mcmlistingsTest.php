@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 require_once('mcmlistings.php');
 
-use PHPUnit_Framework_TestCase;
-
 /**
  * tests the mcm listings (sanity check on the table)
  *
