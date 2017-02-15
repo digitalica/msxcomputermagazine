@@ -180,6 +180,31 @@ final class mcmutilstest extends PHPUnit_Framework_TestCase
         $this->assertEquals("mccm/disk58e.di1", msx_disk_filename(58,'e')); // single sided
     }
 
+    public function testUtil_mcm_nr_from_attr_or_pagename() {
+        $this->assertEquals(0, mcm_nr_from_attr_or_pagename("string", "somepagename"));
+        $this->assertEquals(0, mcm_nr_from_attr_or_pagename(array(1,2,3), "somepagename"));
+
+        $none = array();
+        $mcmonly23 = array('mcm' => 23);
+        $mccmonly73 = array('mccm' => 73);
+        $both2373 = array('mcm' => 23, 'mccm' => 73);
+
+        $mcmonly31 = array('mcm' => 31);
+        $mccmonly62 = array('mccm' => 62);
+        $both3162 = array('mcm' => 31, 'mccm' => 62);
+
+        $this->assertEquals(0, mcm_nr_from_attr_or_pagename($none, "somepagename"));
+        $this->assertEquals(23, mcm_nr_from_attr_or_pagename($mcmonly23, "somepagename"));
+        $this->assertEquals(73, mcm_nr_from_attr_or_pagename($mccmonly73, "somepagename"));
+        $this->assertEquals(23, mcm_nr_from_attr_or_pagename($both2373, "somepagename"));
+
+        $this->assertEquals(31, mcm_nr_from_attr_or_pagename($mcmonly31, "somepagename"));
+        $this->assertEquals(62, mcm_nr_from_attr_or_pagename($mccmonly62, "somepagename"));
+        $this->assertEquals(31, mcm_nr_from_attr_or_pagename($both3162, "somepagename"));
+
+    }
+
+
 }
 
 ?>

@@ -103,13 +103,19 @@ function is_disk_available($nr)
  */
 function mcm_nr_from_attr_or_pagename($attr, $pagename)
 {
-    global $post;
-
-    $mcm_nr = $attr['mcm'];
-    if (empty($mcm_nr)) {
-        $mcm_nr = mcm_nr_from_pagename($pagename);
+    $msxmag_nr = 0;
+    if (is_array($attr)) {
+        if (array_key_exists('mccm', $attr)) {
+            $msxmag_nr = $attr['mccm'];
+        }
+        if (array_key_exists('mcm', $attr)) {
+            $msxmag_nr = $attr['mcm'];
+        }
     }
-    return sprintf("%02d", $mcm_nr);
+    if (empty($msxmag_nr)) {
+        $msxmag_nr = mcm_nr_from_pagename($pagename);
+    }
+    return sprintf("%02d", $msxmag_nr);
 }
 
 /**
