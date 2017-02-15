@@ -1498,7 +1498,7 @@ $mccm_listings = array(
 // ML Cursus
     array(68, 'a', 52, 'kogel.gen', 'ML-cursus: kogel.gen', 2, 'X'),
 // Gokje wagen
-    array(68, 'a', 55, 'gokje.bas', 'Gokje w.gen', 2, 'X'),
+    array(68, 'a', 55, 'gokje.bas', 'Gokje wagen', 2, 'X'),
 // Schermen op MSX
     array(68, 'a', 57, 'graphcnv.bas', 'Schermen op MSX: graphcnv.bas', 2),
 // Murphy
