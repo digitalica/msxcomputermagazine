@@ -100,20 +100,19 @@ function mccm_disk($mccm_nr)
     global $mccm_disks;
 
     $diskHTML = "<div class='mcmdisk'>\n";
-    $diskHTML .= _("Diskabonnement bij dit nummer:");
-    $diskHTML .= "<br>\n";
+    $diskHTML .= _("Diskabonnement bij dit nummer");
 
     if ($mccm_nr != 91) { // 91 was extra contents with 90 on cd (pdf) only
-        $diskHTML .= "Zie";
+        $diskHTML .= " (zie";
         $pdfURL = msxmag_pdf_url($mccm_nr, mccm_diskabopag($mccm_nr));
         $diskHTML .= " <a href='$pdfURL' target='_blank'>";
-        $diskHTML .= sprintf(_("pagina %s"), mccm_diskabopag($mccm_nr));
-        $diskHTML .= "</a>\n";
+        $diskHTML .= sprintf(_("pagina %s)"), mccm_diskabopag($mccm_nr));
+        $diskHTML .= "</a>";
     } else {
         $mccm_nr = 90;
     }
 
-    $diskHTML .= "<ul>\n";
+    $diskHTML .= ":\n<ul>\n";
 
     for ($i = 0; $i < sizeof($mccm_disks); $i++) {
         $disk = $mccm_disks[$i];
