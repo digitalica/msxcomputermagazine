@@ -260,12 +260,12 @@ $mcm_listings = array(
     array(16, 57, 'kk16-6', '3D-Bol', 1),
     array(16, 58, 'kk16-7', '3D-Bol verkort', 1),
     array(16, 0, 'kk16-8', '3D-Bol oneliner', 1),
-    array(16, 0, 'kk16-9', '3d fraaie grafics', 1),
+    array(16, 0, 'kk16-9', '3d fraaie grafics', 2), // screen 5
     array(16, 61, 'ml11', 'Cursus Z80 machinetaal voorbeeld 11', 1),
     array(16, 61, 'ml12', 'Cursus Z80 machinetaal voorbeeld 12', 1),
     array(16, 0, 'ml13', 'Cursus Z80 machinetaal voorbeeld 13', 1),
     array(16, 71, 'msxbug', 'MSX Bug', 1),
-    array(16, 0, 'bcdmcm', 'Basicode 3 vertaler', 1),
+    array(16, 0, 'bcdmcm', 'Basicode 3 vertaler', 1, 'B'), // actually binair ding
     array(16, 0, 'ldpic', 'MSX2 schermlader', 2),
     array(16, 0, 'carrou', 'Shermen-carrousel', 2),
     array(16, 0, 'layout.pic', 'layout.pic', 1, 'X'),
