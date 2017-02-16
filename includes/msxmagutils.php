@@ -240,7 +240,7 @@ function mcm_msx_version_url($msx_version)
  * @param $letter volgnummer (letter) van de disk, alleen voor MCCM
  * @return string
  */
-function mcm_disk_name($nr, $letter = '')
+function msx_disk_name($nr, $letter = '')
 {
     if (is_mccm($nr)) {
         return "DA" . $nr . strtoupper($letter);
@@ -251,6 +251,7 @@ function mcm_disk_name($nr, $letter = '')
     if ($nr == 102) {
         return "MCM-L1"; // listing boek exception
     }
+    // must be regular MCM after all.
     return "MCM-D" . (int)mcm_disknr($nr);
 }
 

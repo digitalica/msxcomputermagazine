@@ -75,7 +75,7 @@ function mcm_disk($mcm_nr)
     if (is_disk_available($mcm_nr)) {
         $diskHTML .= _("Start WebMSX met");
         $diskHTML .= " <a href='$diskURL' target='_blank'>";
-        $diskHTML .= mcm_disk_name($mcm_nr);
+        $diskHTML .= msx_disk_name($mcm_nr);
         $diskHTML .= "</a>";
     } else {
         $diskHTML .= _(" Geen disk beschikbaar");
@@ -125,7 +125,7 @@ function mccm_disk($mccm_nr)
             $diskURL .= '&DISKA_URL=';
             $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mccm_nr, $letter);
             $diskHTML .= "<a href='$diskURL' target='_blank'>";
-            $diskHTML .= mcm_disk_name($mccm_nr, $letter);
+            $diskHTML .= msx_disk_name($mccm_nr, $letter);
             $diskHTML .= "</a>";
             if ($disk[2]) {
                 $diskHTML .= " " . $disk[2];
@@ -245,7 +245,7 @@ function mcm_listings($mcm_nr)
     if (!empty($extras)) {
         $listHTML .= "<p>";
         $listHTML .= _("Extra's op disk");
-        $listHTML .= " " . mcm_disk_name($mcm_nr) . ":</p>\n";
+        $listHTML .= " " . msx_disk_name($mcm_nr) . ":</p>\n";
         $listHTML .= "<ul>\n";
         $listHTML .= show_programs($extras);
         $listHTML .= "</ul>\n";
@@ -298,7 +298,7 @@ function mccm_listings($mccm_nr)
         $diskURL .= $mcm_baseDiskUrl . msx_disk_filename($mccm_nr, $letter);
         $listHTML .= _("Disk ");
 //        $listHTML .= "<a href='$diskURL' target='_blank'>";
-        $listHTML .= mcm_disk_name($mccm_nr, $letter);
+        $listHTML .= msx_disk_name($mccm_nr, $letter);
 //        $listHTML .= "</a>";
         $listHTML .= "<ul>\n";
         $listHTML .= show_programs($programs, $letter);
