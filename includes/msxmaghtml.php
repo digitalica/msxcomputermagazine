@@ -262,8 +262,10 @@ function mcm_listings($mcm_nr)
  */
 function mccm_listings($mccm_nr)
 {
+    global $mccm_disks;
     global $mccm_listings;
     global $mcm_baseDiskUrl;
+    global $mcm_emulatorUrl;
 
     $listings = array();
 
@@ -275,17 +277,26 @@ function mccm_listings($mccm_nr)
         $listing = $mccm_listings[$i];
 
         if ($listing[0] == $mccm_nr) {
-            if (sizeof($listing <= 6 || $listing[6] != 'X')) {
+            // echo $mccm_nr . " " . implode($listing, ', ') . " -->" . sizeof($listing) . " " . $listing[6] . "<br>";
+            if (sizeof($listing < 7 || $listing[6] != 'X')) {
                 $letter = $listing[1];
                 if (!array_key_exists($letter, $listings)) {
                     $listings[$letter] = array();
                 }
-                if (sizeof($listing > 6)) {
+                if (sizeof($listing > 6)) { // note: we remove element 1 (the letter)
                     array_push($listings[$letter], array($listing[0], $listing[2], $listing[3], $listing[4], $listing[5], $listing[6]));
                 } else {
                     array_push($listings[$letter], array($listing[0], $listing[2], $listing[3], $listing[4], $listing[5]));
                 }
             }
+        }
+    }
+
+    $mccm_disk_names = array();
+    for ($i = 0; $i < sizeof($mccm_disks); $i++) {
+        $disk = $mccm_disks[$i];
+        if ($disk[0] == $mccm_nr) {
+        $mccm_disk_names[$disk[1]] = $disk[2];
         }
     }
 
@@ -299,6 +310,7 @@ function mccm_listings($mccm_nr)
         $listHTML .= _("Disk ");
 //        $listHTML .= "<a href='$diskURL' target='_blank'>";
         $listHTML .= msx_disk_name($mccm_nr, $letter);
+        $listHTML .= " (" . $mccm_disk_names[$letter] . ")";
 //        $listHTML .= "</a>";
         $listHTML .= "<ul>\n";
         $listHTML .= show_programs($programs, $letter);

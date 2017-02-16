@@ -34,13 +34,13 @@ require_once(plugin_dir_path(__FILE__) . 'includes/mccmlistings.php');
 //$results = textdomain($langdomain);
 //echo 'current message domain is set: ' . $results. "\n";
 
-$mcm_emulatorUrl = 'http://webmsx.org';
-$mcm_baseUrl = 'http://www.msxcomputermagazine.nl';
-$mcm_baseListingUrl = $mcm_baseUrl . '/archief/listings/';
-$mcm_baseDiskZipUrl = $mcm_baseUrl . '/archief/diskzips/';
-$mcm_baseDiskUrl = $mcm_baseUrl . '/archief/disks/';
-$mcm_baseMagazinePdfUrl = $mcm_baseUrl . '/archief/bladen/';
-$mcm_baseListingboekPdfUrl = $mcm_baseUrl . '/archief/lb/';
+$mcm_emulatorUrl = 'http://webmsx.org'; // TODO: rename to msx emulator
+$mcm_baseUrl = 'http://www.msxcomputermagazine.nl'; // TODO: rename to $msxmag_ ...
+$mcm_baseListingUrl = $mcm_baseUrl . '/archief/listings/'; // TODO: rename to $msxmag_ ...
+$mcm_baseDiskZipUrl = $mcm_baseUrl . '/archief/diskzips/'; // TODO: rename to $msxmag_ ...
+$mcm_baseDiskUrl = $mcm_baseUrl . '/archief/disks/'; // TODO: rename to $msxmag_ ...
+$mcm_baseMagazinePdfUrl = $mcm_baseUrl . '/archief/bladen/'; // TODO: rename to $msxmag_ ...
+$mcm_baseListingboekPdfUrl = $mcm_baseUrl . '/archief/lb/'; // TODO: rename to $msxmag_ ...
 
 
 add_shortcode('pdf', 'shortcode_pdf');
