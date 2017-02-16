@@ -310,7 +310,7 @@ function mccm_listings($mccm_nr)
         $listHTML .= _("Disk ");
 //        $listHTML .= "<a href='$diskURL' target='_blank'>";
         $listHTML .= msx_disk_name($mccm_nr, $letter);
-        $listHTML .= " (" . $mccm_disk_names[$letter] . ")";
+        $listHTML .= ": " . $mccm_disk_names[$letter];
 //        $listHTML .= "</a>";
         $listHTML .= "<ul>\n";
         $listHTML .= show_programs($programs, $letter);
