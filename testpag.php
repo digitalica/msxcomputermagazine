@@ -64,6 +64,7 @@ echo "<a href='?issue=102'>102</a> ";
 ?>
 
 <br clear="all">
+<hr>
 <br clear="all">
 
 <?php
