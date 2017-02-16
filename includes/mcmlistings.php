@@ -236,10 +236,10 @@ $mcm_listings = array(
     array(15, 23, 'dotbad', 'Grafische serie test met slechte random generator', 1),
     array(15, 23, 'poker', 'Poker test', 1),
     array(15, 24, 'pkrbad', 'Poker test met slechte random generator', 1),
-    array(15, 43, 'demoms', 'Demo muis', 1),
-    array(15, 44, 'textms', 'Text muis', 1),
-    array(15, 46, 'filems', 'File muis', 1),
-    array(15, 48, 'drawms', 'Draw muis', 1),
+    array(15, 43, 'demoms', 'Demo muis', 2), // width 80
+    array(15, 44, 'textms', 'Text muis', 2), // width 80
+    array(15, 46, 'filems', 'File muis', 2), // width 80
+    array(15, 48, 'drawms', 'Draw muis', 2), // screen 8
     array(15, 0, 'blokms', 'Simpele grafiek', 1),
     array(15, 56, 'mcmprt', 'Afdrukprogramma bij MCM Data', 1),
     array(15, 63, 'drpasc', 'Driehoek van Pascal', 1),
