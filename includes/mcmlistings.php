@@ -277,7 +277,7 @@ $mcm_listings = array(
     array(17, 15, 'ml14', 'Cursus Z80 machinetaal voorbeeld 14', 1),
     array(17, 17, 'ml15', 'Cursus Z80 machinetaal voorbeeld 15', 1),
     array(17, 18, 'ml16', 'Cursus Z80 machinetaal voorbeeld 16', 1),
-    array(17, 39, 'hal', 'Hal', 1),
+    array(17, 39, 'hal', 'Hal', 1), // needs more memory, see: https://github.com/ppeccin/WebMSX/issues/14
     array(17, 0, 'ldpic', 'Hi-res plaatjes', 2),
     array(17, 0, 'carr16', 'Carrousel', 2),
     array(17, 0, 'konami.pic', 'konami.pic', 1, 'X'),
