@@ -242,7 +242,7 @@ $mcm_listings = array(
     array(15, 48, 'drawms', 'Draw muis', 2), // screen 8
     array(15, 0, 'blokms', 'Simpele grafiek', 1),
     array(15, 56, 'mcmprt', 'Afdrukprogramma bij MCM Data', 1),
-    array(15, 63, 'drpasc', 'Driehoek van Pascal', 1),
+    array(15, 63, 'drpasc', 'Driehoek van Pascal', 2),
     array(15, 0, 'newrnd', 'Goede random generator', 1),
     array(15, 0, 'mcarlo', 'Monte Carlo PI-schatting', 1),
 
