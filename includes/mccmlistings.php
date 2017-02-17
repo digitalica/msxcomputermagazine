@@ -33,7 +33,7 @@ $mccm_disks = array(
     array(61, 'a', 'Bestanden bij artikelen'),
     array(61, 'b', 'Sunrise Compilation Disk'),
     array(62, 'a', 'Bestanden bij artikelen'),
-    array(62, 'b', 'Patch Sunrise Compilation Disk, Demo TED'),
+    array(62, 'b', 'Patch Sunrise Compilation Disk; Demo TED'),
     array(62, 'c', 'ArtGallery plaatjes van UMAX'),
     array(63, 'a', 'Bestanden bij artikelen'),
     array(63, 'b', 'Cowboyana Jones; MAD PD lijsten; (Preview)plaatjes uit het magazine'),
