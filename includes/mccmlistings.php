@@ -2934,34 +2934,43 @@ $mccm_listings = array(
 //    array(77, 'c', -46, 'space3.pl5', 'space3.pl5', 2),
     array(77, 'c', -46, 'wolf.pic', 'wolf.pic', 2, 'X'),
 
+// Anti-Virus
+//    array(78, 'a', 0, 'tcav.com', 'tcav.com', 2, 'X'),
+//    array(78, 'a', 0, 'tcav.doc', 'tcav.doc', 2, 'X'),
+//    array(78, 'a', 0, 'tcav.pma', 'tcav.pma', 2),
+//    array(78, 'a', 0, 'vircheck.com', 'vircheck.com', 2, 'X'),
+// MSX4PC
+    array(78, 'a', 42, 'spdchk4b.bas', 'spdchk4b.bas', 2),
+// ArtGallery
+    array(78, 'a', -1, 'opeendag.ge5', 'opeendag.ge5', 2, 'X'),
+    array(78, 'a', -46, 'cave.cc7', 'cave.cc7', 2, 'X'),
+//    array(78, 'a', -46, 'cave.pl7', 'cave.pl7', 2),
+    array(78, 'a', -47, 'pamoon.cc7', 'pamoon.cc7', 2, 'X'),
+//    array(78, 'a', -47, 'pamoon.pl7', 'pamoon.pl7', 2),
+// BBS wereld
 //    array(78, 'a', 0, 'bbslist.pma', 'bbslist.pma', 2),
-    array(78, 'a', 0, 'cave.cc7', 'cave.cc7', 2, 'X'),
-//    array(78, 'a', 0, 'cave.pl7', 'cave.pl7', 2),
-//    array(78, 'a', 0, 'command2.pma', 'command2.pma', 2),
 //    array(78, 'a', 0, 'modrs411.pma', 'modrs411.pma', 2),
+// Command2 2.40
+//    array(78, 'a', 0, 'command2.pma', 'command2.pma', 2),
+// DP
+//    array(78, 'a', -48, 'overig.pma', 'overig.pma', 2),
+//    array(78, 'a', -48, 'stempels.pma', 'stempels.pma', 2),
+// Leprechaun
+//    array(78, 'a', 0, 'ragoem01.lpc', 'ragoem01.lpc', 2),
+// Muziek (ontbreekt?)
+// Pumpkun Adventure 3 promo
+//    array(78, 'a', 0, 'pa3prdos.bas', 'pa3prdos.bas', 2),
+//    array(78, 'a', 0, 'pa3promo.bat', 'pa3promo.bat', 2, 'X'),
+//    array(78, 'a', 0, 'pa3promo.bin', 'pa3promo.bin', 2, 'B'),
+//    array(78, 'a', 0, 'pa3promo.lib', 'pa3promo.lib', 2),
+//    array(78, 'a', 0, 'readme.txt', 'readme.txt', 2, 'X'),
+//    array(78, 'a', 0, 'savegame.pa3', 'savegame.pa3', 2),
+      array(78, 'a', 0, 'autoexec.bas', 'Pumpkin Adventure III promo', 2),
+// Telefoonnummers
+//    array(78, 'a', 0, 'telemenu.com', 'telemenu.com', 2, 'X'),
 //    array(78, 'a', 0, 'netnum.dat', 'netnum.dat', 2, 'X'),
 //    array(78, 'a', 0, 'newtel.dat', 'newtel.dat', 2, 'X'),
-    array(78, 'a', 0, 'opeendag.ge5', 'opeendag.ge5', 2, 'X'),
-//    array(78, 'a', 0, 'overig.pma', 'overig.pma', 2),
-    array(78, 'a', 0, 'pa3prdos.bas', 'pa3prdos.bas', 2),
-//    array(78, 'a', 0, 'pa3promo.bat', 'pa3promo.bat', 2, 'X'),
-    array(78, 'a', 0, 'pa3promo.bin', 'pa3promo.bin', 2, 'B'),
-    array(78, 'a', 0, 'pa3promo.lib', 'pa3promo.lib', 2),
-    array(78, 'a', 0, 'pamoon.cc7', 'pamoon.cc7', 2, 'X'),
-//    array(78, 'a', 0, 'pamoon.pl7', 'pamoon.pl7', 2),
-    array(78, 'a', 0, 'ragoem01.lpc', 'ragoem01.lpc', 2),
-//    array(78, 'a', 0, 'readme.txt', 'readme.txt', 2, 'X'),
-    array(78, 'a', 0, 'savegame.pa3', 'savegame.pa3', 2),
-    array(78, 'a', 42, 'spdchk4b.bas', 'spdchk4b.bas', 2),
-//    array(78, 'a', 0, 'stempels.pma', 'stempels.pma', 2),
-//    array(78, 'a', 0, 'tcav.com', 'tcav.com', 2, 'X'),
-    array(78, 'a', 0, 'tcav.doc', 'tcav.doc', 2, 'X'),
-//    array(78, 'a', 0, 'tcav.pma', 'tcav.pma', 2),
-//    array(78, 'a', 0, 'telemenu.com', 'telemenu.com', 2, 'X'),
-//    array(78, 'a', 0, 'vircheck.com', 'vircheck.com', 2, 'X'),
-    /** Autoexec start-up/menu files
-     * array(78, 'a', 0, 'autoexec.bas', 'autoexec.bas', 1),
-     */
+     
 
 //    PTTR 3+, wordt besproken op pagina 27
 //    array(78, 'b', 0, 'a2', 'a2', 2),
@@ -3051,14 +3060,14 @@ $mccm_listings = array(
      */
 
     array(78, 'c', 0, 'astrid.ge5', 'astrid.ge5', 2, 'X'),
-    array(78, 'c', 0, 'coyote.cc5', 'coyote.cc5', 2, 'X'),
-//    array(78, 'c', 0, 'coyote.pl5', 'coyote.pl5', 2),
-    array(78, 'c', 0, 'eagle.ge5', 'eagle.ge5', 2, 'X'),
-    array(78, 'c', 0, 'f-4e.pic', 'f-4e.pic', 2, 'X'),
-    array(78, 'c', 0, 'f16.ge5', 'f16.ge5', 2, 'X'),
-    array(78, 'c', 0, 'peater.bas', 'peater.bas', 2),
-//    array(78, 'c', 0, 'peater.pl5', 'peater.pl5', 2),
-    array(78, 'c', 0, 'peater.sc5', 'peater.sc5', 2, 'X'),
+    array(78, 'c', -46, 'coyote.cc5', 'coyote.cc5', 2, 'X'),
+//    array(78, 'c', -46, 'coyote.pl5', 'coyote.pl5', 2),
+    array(78, 'c', -47, 'eagle.ge5', 'eagle.ge5', 2, 'X'),
+    array(78, 'c', -47, 'f-4e.pic', 'f-4e.pic', 2, 'X'),
+    array(78, 'c', -47, 'f16.ge5', 'f16.ge5', 2, 'X'),
+    array(78, 'c', -46, 'peater.bas', 'Peater', 2),
+//    array(78, 'c', -46, 'peater.pl5', 'peater.pl5', 2),
+//    array(78, 'c', -46, 'peater.sc5', 'peater.sc5', 2, 'X'),
     array(78, 'c', 0, 'renate.ge8', 'renate.ge8', 2, 'X'),
 
     array(79, 'a', 7, 'blieb.gen', 'blieb.gen', 2, 'X'),
@@ -3081,7 +3090,7 @@ $mccm_listings = array(
 //    array(79, 'a', 0, 'hpkltst.ted', 'hpkltst.ted', 2, 'X'),
 //    array(79, 'a', 0, 'hpkltst1.ted', 'hpkltst1.ted', 2, 'X'),
     array(79, 'a', 0, 'intro.asc', 'intro.asc', 2),
-    array(79, 'a', 0, 'leppatch.bas', 'leppatch.bas', 2),
+    array(79, 'a', 0, 'leppatch.bas', 'leppatch.bas', 2), // zie 78 pagina 59
     array(79, 'a', 32, 'line-.asc', 'line-.asc', 2),
     array(79, 'a', 32, 'line.asc', 'line.asc', 2),
     array(79, 'a', 0, 'moon.co5', 'moon.co5', 2),
