@@ -2828,7 +2828,7 @@ $mccm_listings = array(
 //    array(77, 'a', 0, 'wwveld30.elg', 'wwveld30.elg', 2, 'X'),
 
 //    Data Magazine, wordt besproken op pagina 27 
-//    array(77, 'b', 0, '16fnt1.st5', '16fnt1.st5', 2),
+//    array(77, 'b', 0, '16fnt1.st5', '16fnt1.st5', 2, 'X'),
 //    array(77, 'b', 0, 'abo.sc7', 'abo.sc7', 2, 'X'),
 //    array(77, 'b', 0, 'abo.txt', 'abo.txt', 2, 'X'),
 //    array(77, 'b', 0, 'age.ge5', 'age.ge5', 2, 'X'),
@@ -3293,39 +3293,52 @@ $mccm_listings = array(
 //    array(80, 'c', -46, 'elf07.cc7', 'elf07.cc7', 2, 'X'),
 //    array(80, 'c', -46, 'elf07.pl7', 'elf07.pl7', 2),
 
-    array(81, 'a', 0, 'akira-a.ge5', 'akira-a.ge5', 2, 'X'),
-    array(81, 'a', 0, 'akira-b.ge5', 'akira-b.ge5', 2, 'X'),
-    array(81, 'a', 0, 'akira.bas', 'akira.bas', 2),
-    array(81, 'a', 29, 'bbs81-2.bas', 'bbs81-2.bas', 2),
-    array(81, 'a', 31, 'bbs81-3.bas', 'bbs81-3.bas', 2),
-//    array(81, 'a', 0, 'bbslist.pma', 'bbslist.pma', 2),
-    array(81, 'a', 0, 'bigfeet.ge5', 'bigfeet.ge5', 2, 'X'),
-//    array(81, 'a', 0, 'bob-0b.pl5', 'bob-0b.pl5', 2),
-    array(81, 'a', 0, 'bob-0b.sr5', 'bob-0b.sr5', 2, 'X'),
-    array(81, 'a', 40, 'c-cur3.c', 'Cursus C: c-cur3.c', 2, 'X'),
-//    array(81, 'a', 0, 'd2f.pma', 'd2f.pma', 2),
+// Noorder baken
     array(81, 'a', 7, 'dobstat1.bas', 'dobstat1.bas', 2),
     array(81, 'a', 8, 'dobstat2.bas', 'dobstat2.bas', 2),
-    array(81, 'a', 0, 'dobstat3.bas', 'dobstat3.bas', 2),
-    array(81, 'a', 0, 'drag.cc5', 'drag.cc5', 2, 'X'),
+    array(81, 'a', -8, 'dobstat3.bas', 'dobstat3.bas', 2),
+// Tekenen
+    array(81, 'a', -23, 'drag.cc5', 'drag.cc5', 2, 'X'),
 //    array(81, 'a', 0, 'drag.pl5', 'drag.pl5', 2),
-//    array(81, 'a', 0, 'draggirl.pl7', 'draggirl.pl7', 2),
-    array(81, 'a', 0, 'draggirl.sr7', 'draggirl.sr7', 2, 'X'),
-    array(81, 'a', 0, 'fmsxwin.zip', 'fmsxwin.zip', 2),
-//    array(81, 'a', 0, 'glsuit.pl7', 'glsuit.pl7', 2),
-    array(81, 'a', 0, 'glsuit.sr7', 'glsuit.sr7', 2, 'X'),
-    array(81, 'a', 54, 'hpdmp.bas', 'hpdmp.bas', 2),
+// BBS-Wereld
+//    array(81, 'a', 0, 'bbslist.pma', 'bbslist.pma', 2),
+    array(81, 'a', 29, 'bbs81-2.bas', 'bbs81-2.bas', 2),
+    array(81, 'a', 31, 'bbs81-3.bas', 'bbs81-3.bas', 2),
+//    array(81, 'a', 0, 'd2f.pma', 'd2f.pma', 2),
+//    array(81, 'a', 29, 'pmahulp2.pma', 'pmahulp2.pma', 2),
+//    array(81, 'a', 29, 'reset.pma', 'reset.pma', 2),
+// Cursus C
+    array(81, 'a', 40, 'c-cur3.c', 'Cursus C: c-cur3.c', 2, 'X'),
+// Basic Technieken
+    array(81, 'a', 45, 'tocaps.gen', 'Assembly listing: tocaps.gen', 2, 'X'),
+    array(81, 'a', 45, 'tocaps.bin', 'Geassembleerd: tocaps.bin', 2, 'B'),
+// Art gallery
+//    array(81, 'a', -1, 'bob-0b.pl5', 'bob-0b.pl5', 2),
+    array(81, 'a', -1, 'bob-0b.sr5', 'bob-0b.sr5', 2, 'X'),
+//    array(81, 'a', 0, 'akira-a.ge5', 'akira-a.ge5', 2, 'X'),
+//    array(81, 'a', 0, 'akira-b.ge5', 'akira-b.ge5', 2, 'X'),
+    array(81, 'a', -47, 'akira.bas', 'Akira', 2),
+    array(81, 'a', -46, 'bigfeet.ge5', 'bigfeet.ge5', 2, 'X'),
+//    array(81, 'a', -68, 'draggirl.pl7', 'draggirl.pl7', 2),
+    array(81, 'a', -68, 'draggirl.sr7', 'draggirl.sr7', 2, 'X'),
+//    array(81, 'a', -68, 'glsuit.pl7', 'glsuit.pl7', 2),
+    array(81, 'a', -68, 'glsuit.sr7', 'glsuit.sr7', 2, 'X'),
+/// fMSX emulator
+//    array(81, 'a', 0, 'fmsxwin.zip', 'fmsxwin.zip', 2),
+// HP
+    array(81, 'a', 54, 'hpdmp.bas', 'HP Deskjet screendump', 2),
+    array(81, 'a', 56, 'paldmp.bas', 'paldmp.bas, maakt paldmp.bin aan', 2),
+    array(81, 'a', 57, 'paletdmp.bas', 'HP Deskjet screendump met palet', 2),
+// Pacnac
+//    array(81, 'a', -59, 'pacnac.pma', 'pacnac.pma', 2),
+// MEGA Guide
+    array(81, 'a', 61, 'pixess.bas', 'Pixess cheat', 2),
+// Extra:
+// MBfMS
 //    array(81, 'a', 0, 'mbfm103a.pma', 'mbfm103a.pma', 2),
 //    array(81, 'a', 0, 'mbwv103a.pma', 'mbwv103a.pma', 2),
-//    array(81, 'a', 0, 'pacnac.pma', 'pacnac.pma', 2),
-    array(81, 'a', 56, 'paldmp.bas', 'paldmp.bas', 2),
-    array(81, 'a', 57, 'paletdmp.bas', 'paletdmp.bas', 2),
-    array(81, 'a', 61, 'pixess.bas', 'pixess.bas', 2),
-//    array(81, 'a', 0, 'pmahulp2.pma', 'pmahulp2.pma', 2),
-//    array(81, 'a', 0, 'reset.pma', 'reset.pma', 2),
+// Demo revenge
 //    array(81, 'a', 0, 'revenge.pma', 'revenge.pma', 2),
-    array(81, 'a', 45, 'tocaps.bin', 'tocaps.bin', 2, 'B'),
-    array(81, 'a', 45, 'tocaps.gen', 'tocaps.gen', 2, 'X'),
 
     // ROM special, staat beschreven op pagina 27
 //    array(81, 'b', 0, '3dster.rom', '3dster.rom', 2),
@@ -3403,19 +3416,19 @@ $mccm_listings = array(
      * array(81, 'b', 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
 
-    array(81, 'c', 0, 'b&b.ge5', 'b&b.ge5', 2, 'X'),
-    array(81, 'c', 0, 'baloon.ge5', 'baloon.ge5', 2, 'X'),
-    array(81, 'c', 0, 'duckman.ge5', 'duckman.ge5', 2, 'X'),
-    array(81, 'c', 0, 'kaneda-2.ge5', 'kaneda-2.ge5', 2, 'X'),
-    array(81, 'c', 0, 'ksmooth.ge5', 'ksmooth.ge5', 2, 'X'),
-    array(81, 'c', 0, 'leipie.ge5', 'leipie.ge5', 2, 'X'),
-    array(81, 'c', 0, 'mixed.ge5', 'mixed.ge5', 2, 'X'),
-    array(81, 'c', 0, 'pussycat.ge5', 'pussycat.ge5', 2, 'X'),
-    array(81, 'c', 0, 'raver2.ge5', 'raver2.ge5', 2, 'X'),
-    array(81, 'c', 0, 'scream-1.co5', 'scream-1.co5', 2, 'X'),
-    array(81, 'c', 0, 'scream-1.sc5', 'scream-1.sc5', 2, 'X'),
-    array(81, 'c', 0, 'scream-2.st5', 'scream-2.st5', 2),
-    array(81, 'c', 0, 'smokey.ge5', 'smokey.ge5', 2, 'X'),
+    array(81, 'c', -46, 'b&b.ge5', 'b&b.ge5', 2, 'X'),
+    array(81, 'c', -46, 'baloon.ge5', 'baloon.ge5', 2, 'X'),
+    array(81, 'c', -46, 'duckman.ge5', 'duckman.ge5', 2, 'X'),
+    array(81, 'c', -46, 'leipie.ge5', 'leipie.ge5', 2, 'X'),
+    array(81, 'c', -46, 'pussycat.ge5', 'pussycat.ge5', 2, 'X'),
+    array(81, 'c', -47, 'kaneda-2.ge5', 'kaneda-2.ge5', 2, 'X'),
+    array(81, 'c', -47, 'ksmooth.ge5', 'ksmooth.ge5', 2, 'X'),
+    array(81, 'c', -47, 'mixed.ge5', 'mixed.ge5', 2, 'X'),
+    array(81, 'c', -47, 'raver2.ge5', 'raver2.ge5', 2, 'X'),
+    array(81, 'c', -47, 'scream-1.co5', 'scream-1.co5', 2, 'X'),
+    array(81, 'c', -47, 'scream-1.sc5', 'scream-1.sc5', 2, 'X'),
+    array(81, 'c', -47, 'scream-2.st5', 'scream-2.st5', 2, 'X'),
+    array(81, 'c', -47, 'smokey.ge5', 'smokey.ge5', 2, 'X'),
 
     array(82, 'a', 0, 'banknum.bas', 'banknum.bas', 2),
     array(82, 'a', 40, 'c-cur4.c', 'Cursus C: c-cur4.c', 2, 'X'),
