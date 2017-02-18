@@ -130,6 +130,12 @@ function mccm_disk($mccm_nr)
             if ($disk[2]) {
                 $diskHTML .= " " . $disk[2];
             }
+            if ($disk[3]) {
+                $pdfURL = msxmag_pdf_url($mccm_nr, $disk[3]);
+                $diskHTML .= " <a href='$pdfURL' target='_blank'>";
+                $diskHTML .= sprintf(_("(pagina %s)"), $disk[3]);
+                $diskHTML .= "</a>";
+            }
             $diskHTML .= "</li>\n";
         }
     }
@@ -293,10 +299,12 @@ function mccm_listings($mccm_nr)
     }
 
     $mccm_disk_names = array();
+    $mccm_disk_pagenrs = array();
     for ($i = 0; $i < sizeof($mccm_disks); $i++) {
         $disk = $mccm_disks[$i];
         if ($disk[0] == $mccm_nr) {
-        $mccm_disk_names[$disk[1]] = $disk[2];
+            $mccm_disk_names[$disk[1]] = $disk[2];
+            $mccm_disk_pagenrs[$disk[1]] = $disk[3]; // optional parameter for pagenr
         }
     }
 
@@ -311,6 +319,12 @@ function mccm_listings($mccm_nr)
 //        $listHTML .= "<a href='$diskURL' target='_blank'>";
         $listHTML .= msx_disk_name($mccm_nr, $letter);
         $listHTML .= ": " . $mccm_disk_names[$letter];
+        if ($mccm_disk_pagenrs[$letter]) {
+            $pdfURL = msxmag_pdf_url($mccm_nr, $mccm_disk_pagenrs[$letter]);
+            $listHTML .= " <a href='$pdfURL' target='_blank'>";
+            $listHTML .= sprintf(_("(pagina %s)"), $mccm_disk_pagenrs[$letter]);
+            $listHTML .= "</a>";
+        }
 //        $listHTML .= "</a>";
         $listHTML .= "<ul>\n";
         $listHTML .= show_programs($programs, $letter);
