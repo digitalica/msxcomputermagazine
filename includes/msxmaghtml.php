@@ -130,7 +130,7 @@ function mccm_disk($mccm_nr)
             if ($disk[2]) {
                 $diskHTML .= " " . $disk[2];
             }
-            if ($disk[3]) {
+            if (sizeof($disk) > 3 && $disk[3]) {
                 $pdfURL = msxmag_pdf_url($mccm_nr, $disk[3]);
                 $diskHTML .= " <a href='$pdfURL' target='_blank'>";
                 $diskHTML .= sprintf(_("(pagina %s)"), $disk[3]);
@@ -304,7 +304,11 @@ function mccm_listings($mccm_nr)
         $disk = $mccm_disks[$i];
         if ($disk[0] == $mccm_nr) {
             $mccm_disk_names[$disk[1]] = $disk[2];
-            $mccm_disk_pagenrs[$disk[1]] = $disk[3]; // optional parameter for pagenr
+            if (sizeof($disk) > 3 && $disk[3]) {
+                $mccm_disk_pagenrs[$disk[1]] = $disk[3]; // optional parameter for pagenr
+            } else {
+                $mccm_disk_pagenrs[$disk[1]] = 0;
+            }
         }
     }
 
