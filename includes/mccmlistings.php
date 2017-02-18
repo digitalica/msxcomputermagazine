@@ -38,7 +38,7 @@ $mccm_disks = array(
     array(63, 'a', 'Bestanden bij artikelen'),
     array(63, 'b', 'Cowboyana Jones; MAD PD lijsten; (Preview)plaatjes uit het magazine'),
     array(64, 'a', 'Bestanden bij artikelen'),
-    array(64, 'b', 'Brisk', 44),
+    array(64, 'b', 'Brisk'),
     array(65, 'a', 'Bestanden bij artikelen'),
     array(65, 'b', 'Fractal Demo'),
     array(65, 'c', 'ArtGallery plaatjes'),
