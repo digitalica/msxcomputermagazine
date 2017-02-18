@@ -646,7 +646,7 @@ $mcm_listings = array(
     array(36, 18, 'pasmog', 'KK36-2: Passwords Maze of Galious', 1),
     array(36, 18, 'brdr1', 'KK36-3: Border 1', 1),
     array(36, 18, 'brdr2', 'KK36-4: Border 2', 1),
-    array(36, 19, 'rgnbg', 'KK36-5: Regenboog', 1),
+    array(36, 19, 'rgnbg', 'KK36-5: Regenboog', 2), // screen 8
     array(36, 20, 'wandel', 'KK36-6: Wandel', 1),
     array(36, 31, 'sal90', 'Salarisberekening 1990', 1),
     array(36, -50, 'alpine', 'alpine', 2),
