@@ -721,7 +721,7 @@ $mcm_listings = array(
     array(38, 56, 'potlod', 'KK38-2: Potlood', 1),
     array(38, 56, 'tekst', 'KK38-3: Tekst', 1),
     array(38, 57, 'cujomu', 'KK38-4: Cursor/Joystick/Muis-routine', 2),
-    array(38, 58, 'storin', 'KK38-5: Storing', 1),
+    array(38, 58, 'storin', 'KK38-5: Storing', 2), // VDP commando dat niet werkt in MSX 1 emu, maar in MSX 2 niets doet...
     array(38, 60, 'linlen', 'Linlen (line length)', 1),
     array(38, 60, 'linprt', 'Linprt (line print)', 1),
     array(38, 63, 'cmdemo', 'CMD demo', 1),
