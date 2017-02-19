@@ -3565,7 +3565,7 @@ $mccm_listings = array(
 //    array(83, 'a', 0, 'initstg.01', 'initstg.01', 2),
 //    array(83, 'a', 0, 'install.bas', 'install.bas', 2),
 //    array(83, 'a', 0, 'intro', 'intro', 2),
-//    array(83, 'a', 0, 'intro.sr8', 'intro.sr8', 2),
+//    array(83, 'a', 0, 'intro.sr8', 'intro.sr8', 2, 'X'),
 //    array(83, 'a', 0, 'letset.s5d', 'letset.s5d', 2),
 //    array(83, 'a', 0, 'loading5.cpy', 'loading5.cpy', 2),
 //    array(83, 'a', 0, 'loading8.cpy', 'loading8.cpy', 2),
@@ -3681,8 +3681,8 @@ $mccm_listings = array(
     array(84, 'a', -22, 'vns4ever.ge5', 'vns4ever.ge5', 2, 'X'),
     array(84, 'a', -23, 'beachgal.ge5', 'beachgal.ge5', 2, 'X'),
     array(84, 'a', -23, 'fishbowl.sc8', 'fishbowl.sc8', 2, 'X'),
-    array(84, 'a', -1, 'house.sca', 'house.sca', 2, 'X'),
-    array(84, 'a', -23, 'title.sca', 'title.sca', 2, 'X'),
+    array(84, 'a', -1, 'house.sca', 'house.sca', 3, 'X'),
+    array(84, 'a', -23, 'title.sca', 'title.sca', 3, 'X'),
 // BBS Wereld
 //    array(84, 'a', 0, 'tcbbslst.pma', 'tcbbslst.pma', 2),
 // Cursus C
@@ -3779,7 +3779,7 @@ $mccm_listings = array(
     array(85, 'a', -46, 'klok0.pic', 'klok0.pic', 2, 'X'),
     array(85, 'a', -46, 'moonight.sc8', 'moonight.sc8', 2, 'X'),
     array(85, 'a', -46, 'sunset.sc8', 'sunset.sc8', 2, 'X'),
-    array(85, 'a', -47, 'level.sca', 'level.sca', 2, 'X'),
+    array(85, 'a', -47, 'level.sca', 'level.sca', 3, 'X'),
     array(85, 'a', -47, 'mercury.sc8', 'mercury.sc8', 2, 'X'),
     array(85, 'a', -47, 'msxspot.sc8', 'msxspot.sc8', 2, 'X'),
 // Safesecs
@@ -4130,37 +4130,48 @@ $mccm_listings = array(
 //    array(87, 'c', -47, 'rosa.pl5', 'rosa.pl5', 2),
     array(87, 'c', -47, 'ventje.sc5', 'ventje.sc5', 2, 'X'),
 
-    array(88, 'a', 0, 'abgail.cc5', 'abgail.cc5', 2, 'X'),
-//    array(88, 'a', 0, 'abgail.pl5', 'abgail.pl5', 2),
-    array(88, 'a', 0, 'alias.bas', 'alias.bas', 2),
-//    array(88, 'a', 0, 'bert.lzh', 'bert.lzh', 2, 'X'),
-//    array(88, 'a', 0, 'blacklor.pl7', 'blacklor.pl7', 2),
-    array(88, 'a', 0, 'blacklor.sr7', 'blacklor.sr7', 2, 'X'),
+// BBS Wereld
+//    array(88, 'a', 0, 'tclijste.lzh', 'tclijste.lzh', 2, 'X'),
+// turboR aanpassingen
+//    array(88, 'a', 0, 'mapper.rou', 'mapper.rou', 2), // documentatie
+    array(88, 'a', 32, 'turbor.gen', 'Assembly listing: turbor.gen', 2, 'X'),
+    array(88, 'a', -33, 'memory.gen', 'Assembly: memory.gen', 2, 'X'),
+// Systheemtheorie
+    array(88, 'a', 36, 'alias.bas', 'Aliasing', 2),
+// Art gallery 
+//    array(88, 'a', -1, 'lobo.pl7', 'lobo.pl7', 2),
+    array(88, 'a', -1, 'lobo.sr7', 'lobo.sr7', 2, 'X'),
+//    array(88, 'a', -46, 'blacklor.pl7', 'blacklor.pl7', 2),
+    array(88, 'a', -46, 'blacklor.sr7', 'blacklor.sr7', 2, 'X'),
+    array(88, 'a', -46, 'char1.sca', 'char1.sca', 3, 'X'),
+    array(88, 'a', -46, 'reflect.cc5', 'reflect.cc5', 2, 'X'),
+//    array(88, 'a', -46, 'opadisx2.pl5', 'opadisx2.pl5', 2),
+    array(88, 'a', -46, 'opadisx2.sr5', 'opadisx2.sr5', 2, 'X'),
+    array(88, 'a', -47, 'empire1.pic', 'empire1.pic', 2, 'X'),
+    array(88, 'a', -47, 'empire3.pic', 'empire3.pic', 2, 'X'),
+    array(88, 'a', -47, 'abgail.cc5', 'abgail.cc5', 2, 'X'),
+//    array(88, 'a', -47, 'abgail.pl5', 'abgail.pl5', 2),
+// Cursus C
     array(88, 'a', 52, 'c-cur8.c', 'Cursus C: c-cur8.c', 2, 'X'),
-    array(88, 'a', 0, 'char1.sca', 'char1.sca', 2, 'X'),
-    array(88, 'a', 0, 'empire1.pic', 'empire1.pic', 2, 'X'),
-    array(88, 'a', 0, 'empire3.pic', 'empire3.pic', 2, 'X'),
-    array(88, 'a', 0, 'jbasm.zip', 'jbasm.zip', 2),
+    array(88, 'a', 54, 'tee.c', 'Cursus C: tee.c', 2, 'X'),
+// Techno talk
+    array(88, 'a', -59, 'vdp2demo.bas', 'Demo VDP trucs', 2),
+// EXTRA
+// BERT
+//    array(88, 'a', 0, 'bert.lzh', 'bert.lzh', 2, 'X'),
+// JBassembler
+//    array(88, 'a', 0, 'jbasm.zip', 'jbasm.zip', 2),
+// MathPack
 //    array(88, 'a', 0, 'listing1.txt', 'listing1.txt', 2, 'X'),
 //    array(88, 'a', 0, 'listing2.txt', 'listing2.txt', 2, 'X'),
-//    array(88, 'a', 0, 'lobo.pl7', 'lobo.pl7', 2),
-    array(88, 'a', 0, 'lobo.sr7', 'lobo.sr7', 2, 'X'),
-    array(88, 'a', 0, 'mapper.rou', 'mapper.rou', 2),
-    array(88, 'a', 0, 'math_chk.gen', 'math_chk.gen', 2, 'X'),
-    array(88, 'a', 0, 'math_inp.gen', 'math_inp.gen', 2, 'X'),
-    array(88, 'a', 0, 'math_len.gen', 'math_len.gen', 2, 'X'),
-    array(88, 'a', 0, 'math_tst.gen', 'math_tst.gen', 2, 'X'),
-    array(88, 'a', 0, 'mathpack.art', 'mathpack.art', 2),
-    array(88, 'a', 0, 'mathpack.doc', 'mathpack.doc', 2, 'X'),
-    array(88, 'a', 0, 'memory.gen', 'memory.gen', 2, 'X'),
+//    array(88, 'a', 0, 'math_chk.gen', 'math_chk.gen', 2, 'X'),
+//    array(88, 'a', 0, 'math_inp.gen', 'math_inp.gen', 2, 'X'),
+//    array(88, 'a', 0, 'math_len.gen', 'math_len.gen', 2, 'X'),
+//    array(88, 'a', 0, 'math_tst.gen', 'math_tst.gen', 2, 'X'),
+//    array(88, 'a', 0, 'mathpack.art', 'mathpack.art', 2),
+//    array(88, 'a', 0, 'mathpack.doc', 'mathpack.doc', 2, 'X'),
+// Multi Mente 2.05
 //    array(88, 'a', 0, 'mm205_a.lzh', 'mm205_a.lzh', 2, 'X'),
-//    array(88, 'a', 0, 'opadisx2.pl5', 'opadisx2.pl5', 2),
-    array(88, 'a', 0, 'opadisx2.sr5', 'opadisx2.sr5', 2, 'X'),
-    array(88, 'a', 0, 'reflect.cc5', 'reflect.cc5', 2, 'X'),
-//    array(88, 'a', 0, 'tclijste.lzh', 'tclijste.lzh', 2, 'X'),
-    array(88, 'a', 54, 'tee.c', 'Cursus C: tee.c', 2, 'X'),
-    array(88, 'a', 32, 'turbor.gen', 'turbor.gen', 2, 'X'),
-    array(88, 'a', 0, 'vdp2demo.bas', 'vdp2demo.bas', 2),
 
 // Deze diskette heeft MSX-DOS nodig voor de MiLC reader
 //    array(88, 'b', 0, 'asm.mlc', 'asm.mlc', 2),
@@ -4206,8 +4217,8 @@ $mccm_listings = array(
 //    array(88, 'b', 0, 'vdp2.mlc', 'vdp2.mlc', 2),
 //    array(88, 'b', 0, 'vdp2.mlx', 'vdp2.mlx', 2),
 //
-    array(88, 'c', 0, 'gameover.sca', 'gameover.sca', 2, 'X'),
-    array(88, 'c', 0, 'horror.sr8', 'horror.sr8', 2),
+    array(88, 'c', -46, 'gameover.sca', 'gameover.sca', 3, 'X'),
+    array(88, 'c', -47, 'horror.sr8', 'horror.sr8', 2, 'X'),
 
     array(89, 'a', 36, 'bode.bas', 'bode.bas', 2),
     array(89, 'a', 0, 'bull.cc5', 'bull.cc5', 2, 'X'),
@@ -4251,7 +4262,7 @@ $mccm_listings = array(
 //    array(89, 'a', 0, 'rachnoff.mwm', 'rachnoff.mwm', 2, 'X'),
     array(89, 'a', 0, 'story.plr', 'story.plr', 2),
 //    array(89, 'a', 0, 'stplook.lzh', 'stplook.lzh', 2, 'X'),
-    array(89, 'a', 0, 'strandje.sr8', 'strandje.sr8', 2),
+    array(89, 'a', 0, 'strandje.sr8', 'strandje.sr8', 2, 'X'),
 //    array(89, 'a', 0, 'tcbbslst.lzh', 'tcbbslst.lzh', 2, 'X'),
 //    array(89, 'a', 0, 'voorbeel.bat', 'voorbeel.bat', 2, 'X'),
     array(89, 'a', 0, 'wavedrvz.bin', 'wavedrvz.bin', 2, 'B'),
@@ -4321,7 +4332,7 @@ $mccm_listings = array(
 //    array(90, 'a', 0, 'allpasfl.lzh', 'allpasfl.lzh', 2, 'X'),
 //    array(90, 'a', 0, 'ansedit.lzh', 'ansedit.lzh', 2, 'X'),
     array(90, 'a', 0, 'ax', 'ax', 2),
-    array(90, 'a', 0, 'bert&ern.sr8', 'bert&ern.sr8', 2),
+    array(90, 'a', 0, 'bert&ern.sr8', 'bert&ern.sr8', 2, 'X'),
 //    array(90, 'a', 0, 'boot.lzh', 'boot.lzh', 2, 'X'),
     array(90, 'a', 0, 'c-cur10.c', 'c-cur10.c', 2, 'X'),
     array(90, 'a', 0, 'cartoons.sr5', 'cartoons.sr5', 2, 'X'),
