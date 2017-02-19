@@ -3748,34 +3748,44 @@ $mccm_listings = array(
 //    array(84, 'c', -22, 'ladyinbl.pl7', 'ladyinbl.pl7', 2),
     array(84, 'c', -22, 'speedkic.sc5', 'speedkic.sc5', 2, 'X'),
 
-//    array(85, 'a', 0, '512.com', '512.com', 2, 'X'),
-    array(85, 'a', 0, 'age99a.zip', 'age99a.zip', 2),
-    array(85, 'a', 33, 'ani-zl.bas', 'ani-zl.bas', 2),
-    array(85, 'a', 30, 'break.asm', 'break.asm', 2, 'X'),
-    array(85, 'a', 31, 'break.bas', 'break.bas', 2),
-    array(85, 'a', 0, 'diablox.sys', 'diablox.sys', 2),
-//    array(85, 'a', 0, 'diablox.txt', 'diablox.txt', 2, 'X'),
-//    array(85, 'a', 0, 'diademo.com', 'diademo.com', 2, 'X'),
-    array(85, 'a', 0, 'diadisk.sys', 'diadisk.sys', 2),
-//    array(85, 'a', 0, 'fillout.txt', 'fillout.txt', 2, 'X'),
-//    array(85, 'a', 0, 'flippo.pma', 'flippo.pma', 2),
-    array(85, 'a', 33, 'ge5-play.asm', 'ge5-play.asm', 2, 'X'),
-    array(85, 'a', 33, 'ge5playc.bas', 'ge5playc.bas', 2),
+// Command 2.40
 //    array(85, 'a', 0, 'helpned.pma', 'helpned.pma', 2),
-    array(85, 'a', 0, 'intro.ge5', 'intro.ge5', 2, 'X'),
-    array(85, 'a', 0, 'klok0.pic', 'klok0.pic', 2, 'X'),
-//    array(85, 'a', 0, 'lcd.pma', 'lcd.pma', 2),
-    array(85, 'a', 0, 'level.sca', 'level.sca', 2, 'X'),
-    array(85, 'a', 0, 'mercury.sc8', 'mercury.sc8', 2, 'X'),
-    array(85, 'a', 0, 'moonight.sc8', 'moonight.sc8', 2, 'X'),
-    array(85, 'a', 0, 'msxspot.sc8', 'msxspot.sc8', 2, 'X'),
+// MSX Intro Competitie
+//    array(85, 'a', -25, '512.com', '512.com', 2, 'X'), // DOS nodig...
+// Internet
+//    array(85, 'a', -26, 'age99a.zip', 'age99a.zip', 2),
 //    array(85, 'a', 0, 'paccy.pma', 'paccy.pma', 2),
-//    array(85, 'a', 0, 'readme.txt', 'readme.txt', 2, 'X'),
-    array(85, 'a', 49, 'safesecs.bas', 'safesecs.bas', 2),
-    array(85, 'a', 0, 'sheriff.cc5', 'sheriff.cc5', 2, 'X'),
-//    array(85, 'a', 0, 'sheriff.pl5', 'sheriff.pl5', 2),
-    array(85, 'a', 0, 'sunset.sc8', 'sunset.sc8', 2, 'X'),
+// BBS Wereld
 //    array(85, 'a', 0, 'tc-lijst.pma', 'tc-lijst.pma', 2),
+// Techno Talk
+    array(85, 'a', 30, 'break.asm', 'Assembly listing: break.asm', 1, 'X'),
+    array(85, 'a', 31, 'break.bas', 'break.bas: genereert break.bin', 1),
+    array(85, 'a', 32, 'ge5-play.asm', 'Assembly listing: ge5-play.asm', 2, 'X'),
+    array(85, 'a', 33, 'ge5playc.bas', 'ge5playc.bas: genereert ge5-play.bin', 2),
+    array(85, 'a', 33, 'ani-zl.bas', 'Voorbeeld van GE5-PLAY', 2), // werkt niet, verkeerde filename, sample.ge5 i.p.v. intro.ge5
+//    array(85, 'a', 0, 'intro.ge5', 'intro.ge5', 2, 'X'),
+// LCD
+//    array(85, 'a', 0, 'lcd.pma', 'lcd.pma', 2),
+// Channel Pressure
+//    array(85, 'a', -45, 'diablox.sys', 'diablox.sys', 2),
+//    array(85, 'a', -45, 'diablox.txt', 'diablox.txt', 2, 'X'),
+//    array(85, 'a', -45, 'diademo.com', 'diademo.com', 2, 'X'), // DOS nodig dus
+//    array(85, 'a', -45, 'diadisk.sys', 'diadisk.sys', 2),
+//    array(85, 'a', -45, 'readme.txt', 'readme.txt', 2, 'X'),
+//    array(85, 'a', -45, 'fillout.txt', 'fillout.txt', 2, 'X'),
+// Art gallery
+    array(85, 'a', -46, 'sheriff.cc5', 'sheriff.cc5', 2, 'X'),
+//    array(85, 'a', -46, 'sheriff.pl5', 'sheriff.pl5', 2),
+    array(85, 'a', -46, 'klok0.pic', 'klok0.pic', 2, 'X'),
+    array(85, 'a', -46, 'moonight.sc8', 'moonight.sc8', 2, 'X'),
+    array(85, 'a', -46, 'sunset.sc8', 'sunset.sc8', 2, 'X'),
+    array(85, 'a', -47, 'level.sca', 'level.sca', 2, 'X'),
+    array(85, 'a', -47, 'mercury.sc8', 'mercury.sc8', 2, 'X'),
+    array(85, 'a', -47, 'msxspot.sc8', 'msxspot.sc8', 2, 'X'),
+// Safesecs
+    array(85, 'a', 49, 'safesecs.bas', 'Safesecs', 2),
+// Post / Flippo 24-spel
+//    array(85, 'a', 0, 'flippo.pma', 'flippo.pma', 2),
 
 //    array(85, 'b', 0, 'anidemo.bat', 'anidemo.bat', 2, 'X'),
 //    array(85, 'b', 0, 'cake.ta0', 'cake.ta0', 2),
@@ -3821,18 +3831,18 @@ $mccm_listings = array(
 //    array(85, 'b', 0, 'triple.ta5', 'triple.ta5', 2),
     array(85, 'b', 0, 'autoexec.bas', 'Animatiedemo, heeft MSX-DOS nodig', 2),
 
-    array(85, 'c', 0, 'arrscopy.bas', 'arrscopy.bas', 2),
-    array(85, 'c', 0, 'arrsday1.bas', 'arrsday1.bas', 2),
-    array(85, 'c', 0, 'arrsday1.bin', 'arrsday1.bin', 2, 'B'),
-    array(85, 'c', 0, 'arrsday1.cc5', 'arrsday1.cc5', 2, 'X'),
-    array(85, 'c', 0, 'arrsday1.co5', 'arrsday1.co5', 2, 'X'),
-    array(85, 'c', 0, 'arrsday1.sc5', 'arrsday1.sc5', 2, 'X'),
-    array(85, 'c', 0, 'arrsday1.sc8', 'arrsday1.sc8', 2, 'X'),
-    array(85, 'c', 0, 'klok.pic', 'klok.pic', 2, 'X'),
-//    array(85, 'c', 0, 'vampgirl.pl7', 'vampgirl.pl7', 2),
-    array(85, 'c', 0, 'vampgirl.sr7', 'vampgirl.sr7', 2, 'X'),
-    array(85, 'c', 0, 'vampgrl2.cc7', 'vampgrl2.cc7', 2, 'X'),
-//    array(85, 'c', 0, 'vampgrl2.pl7', 'vampgrl2.pl7', 2),
+//    array(85, 'c', -47, 'arrscopy.bas', 'arrscopy.bas', 2),// werkt niet
+//    array(85, 'c', -47, 'arrsday1.bas', 'arrsday1.bas', 2),// werkt niet, bestanden ontbreken
+//    array(85, 'c', -47, 'arrsday1.bin', 'arrsday1.bin', 2, 'B'),
+    array(85, 'c', -47, 'arrsday1.cc5', 'arrsday1.cc5', 2, 'X'),
+//    array(85, 'c', -47, 'arrsday1.co5', 'arrsday1.co5', 2, 'X'),
+    array(85, 'c', -47, 'arrsday1.sc5', 'arrsday1.sc5', 2, 'X'),
+    array(85, 'c', -47, 'arrsday1.sc8', 'arrsday1.sc8', 2, 'X'),
+    array(85, 'c', -46, 'klok.pic', 'klok.pic', 2, 'X'),
+//    array(85, 'c', -46, 'vampgirl.pl7', 'vampgirl.pl7', 2),
+    array(85, 'c', -46, 'vampgirl.sr7', 'vampgirl.sr7', 2, 'X'),
+    array(85, 'c', -46, 'vampgrl2.cc7', 'vampgrl2.cc7', 2, 'X'),
+//    array(85, 'c', -46, 'vampgrl2.pl7', 'vampgrl2.pl7', 2),
 
 //    array(86, 'a', 0, '!dosscan.com', '!dosscan.com', 2, 'X'),
     array(86, 'a', 0, '5000init.c', '5000init.c', 2, 'X'),
