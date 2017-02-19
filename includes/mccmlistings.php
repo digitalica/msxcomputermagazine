@@ -4114,15 +4114,15 @@ $mccm_listings = array(
     array(87, 'b', 27, 'autoexec.bas', 'Track #1.5 heeft MSX-DOS nodig', 2),
 // Art gallery
 //    array(87, 'b', 0, 'statue.pl7', 'statue.pl7', 2),
-    array(87, 'b', 0, 'statue1.cc7', 'statue1.cc7', 2, 'X'),
-    array(87, 'b', 0, 'statue2.cc7', 'statue2.cc7', 2, 'X'),
+    array(87, 'b', -68, 'statue1.cc7', 'statue1.cc7', 2, 'X'),
+    array(87, 'b', -68, 'statue2.cc7', 'statue2.cc7', 2, 'X'),
 //    array(87, 'b', -47, 'mascotte.pl5', 'mascotte.pl5', 2),
     array(87, 'b', -47, 'mascotte.sr5', 'mascotte.sr5', 2, 'X'),
 
+    array(87, 'c', -1, 'elf-lord.sc8', 'elf-lord.sc8', 2, 'X'),
     array(87, 'c', -46, 'alien.sc8', 'alien.sc8', 2, 'X'),
     array(87, 'c', -46, 'burncity.sc8', 'burncity.sc8', 2, 'X'),
     array(87, 'c', -46, 'car.pic', 'car.pic', 2, 'X'),
-    array(87, 'c', -47, 'elf-lord.sc8', 'elf-lord.sc8', 2, 'X'),
     array(87, 'c', -46, 'highway.sc5', 'highway.sc5', 2, 'X'),
     array(87, 'c', -47, 'lords.ge5', 'lords.ge5', 2, 'X'),
 //    array(87, 'c', -46, 'picload.ldr', 'picload.ldr', 3), werkt niet, laadt CHAR1.SCA, HOUSE.SCA, LEVEL.SCA, GAMEOVER.SCA, en die staan op andere disks van verschillende andere nummers
