@@ -837,7 +837,7 @@ $mcm_listings = array(
     array(41, 37, 'pbna26', 'Computergeluid en muziek - listing 26', 1),
     array(41, 37, 'pbna27', 'Computergeluid en muziek - listing 27', 1),
     array(41, 37, 'pbna28', 'Computergeluid en muziek - listing 28', 1),
-    array(41, 53, 'diashw', 'Dia Show', 2),
+    array(41, -53, 'diashw', 'Dia Show', 2),
     array(41, 65, 'icp7', 'Invoer Controle Programma 7 generator', 1),
     array(41, 0, 'icp7.bin', 'Invoer Controle Programma 7', 2, 'B'),
     array(41, -46, 'fractal9.pic', 'fractal9.pic', 1, 'X'),
