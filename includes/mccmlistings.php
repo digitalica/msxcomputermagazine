@@ -4001,21 +4001,27 @@ $mccm_listings = array(
      * array(86, 'b', 0, 'autoexec.bas', 'autoexec.bas', 1),
      */
 
-    array(87, 'a', 0, 'a.bas', 'a.bas', 2),
-    array(87, 'a', 0, 'b.bas', 'b.bas', 2),
-    array(87, 'a', 0, 'calc.bas', 'calc.bas', 2),
+// DP
+//    array(87, 'a', -16, 'dp.lzh', 'dp.lzh', 2, 'X'),
+// BBS Wereld
+//    array(87, 'a', -28, 'megaterm.lzh', 'megaterm.lzh', 2, 'X'),
+//    array(87, 'a', -28, 'qwkv230.lzh', 'qwkv230.lzh', 2, 'X'),
+//    array(87, 'a', -28, 'tclijste.lzh', 'tclijste.lzh', 2, 'X'),
+// Uitpakken
+//    array(87, 'a', -31, 'lhext.com', 'lhext.com', 2, 'X'),
+//    array(87, 'a', -31, 'lhext.txt', 'lhext.txt', 2, 'X'),
+// Techno talk
     array(87, 'a', 35, 'digit.bas', 'digit.bas: Digitize met NMS 8280', 2),
-//    array(87, 'a', 0, 'dp.lzh', 'dp.lzh', 2, 'X'),
-    array(87, 'a', 36, 'examp.bas', 'examp.bas', 2),
-    array(87, 'a', 0, 'graphcur.gen', 'graphcur.gen', 2, 'X'),
-//    array(87, 'a', 0, 'lhext.com', 'lhext.com', 2, 'X'),
-//    array(87, 'a', 0, 'lhext.txt', 'lhext.txt', 2, 'X'),
-//    array(87, 'a', 0, 'megaterm.lzh', 'megaterm.lzh', 2, 'X'),
-    array(87, 'a', 38, 'mouse.bas', 'mouse.bas', 2),
-//    array(87, 'a', 0, 'qwkv230.lzh', 'qwkv230.lzh', 2, 'X'),
-    array(87, 'a', 0, 'ruis.bas', 'ruis.bas', 2),
-//    array(87, 'a', 0, 'tclijste.lzh', 'tclijste.lzh', 2, 'X'),
-    array(87, 'a', 0, 'vmsx10a.arj', 'vmsx10a.arj', 2),
+    array(87, 'a', 36, 'a.bas', 'a.bas', 1), 
+    array(87, 'a', 36, 'b.bas', 'b.bas', 1),
+    array(87, 'a', 36, 'examp.bas', 'examp.bas', 1),
+    array(87, 'a', 38, 'mouse.bas', 'mouse.bas', 2), // werkt niet, geen graphcur.com
+    array(87, 'a', -38, 'graphcur.gen', 'Assembly listing: graphcur.gen', 2, 'X'),
+// Sampling
+    array(87, 'a', -44, 'calc.bas', 'calc.bas', 2),
+    array(87, 'a', -44, 'ruis.bas', 'ruis.bas', 2),
+// Virtual MSX
+//    array(87, 'a', 0, 'vmsx10a.arj', 'vmsx10a.arj', 2),
 
 //    array(87, 'b', 0, 'autoexec.bat', 'autoexec.bat', 2, 'X'),
 //    array(87, 'b', 0, 'autoexec.bin', 'autoexec.bin', 2, 'B'),
@@ -4105,23 +4111,24 @@ $mccm_listings = array(
 //    array(87, 'b', 0, 'trckbgm8.mbm', 'trckbgm8.mbm', 2, 'X'),
 //    array(87, 'b', 0, 'trckbgm9.mbm', 'trckbgm9.mbm', 2, 'X'),
 //    array(87, 'b', 0, 'trcksam1.mbk', 'trcksam1.mbk', 2, 'X'),
+    array(87, 'b', 27, 'autoexec.bas', 'Track #1.5 heeft MSX-DOS nodig', 2),
+// Art gallery
 //    array(87, 'b', 0, 'statue.pl7', 'statue.pl7', 2),
     array(87, 'b', 0, 'statue1.cc7', 'statue1.cc7', 2, 'X'),
     array(87, 'b', 0, 'statue2.cc7', 'statue2.cc7', 2, 'X'),
-//    array(87, 'b', 0, 'mascotte.pl5', 'mascotte.pl5', 2),
-    array(87, 'b', 0, 'mascotte.sr5', 'mascotte.sr5', 2, 'X'),
-    array(87, 'b', 27, 'autoexec.bas', 'Track #1.5 heeft MSX-DOS nodig', 2),
+//    array(87, 'b', -47, 'mascotte.pl5', 'mascotte.pl5', 2),
+    array(87, 'b', -47, 'mascotte.sr5', 'mascotte.sr5', 2, 'X'),
 
-    array(87, 'c', 0, 'alien.sc8', 'alien.sc8', 2, 'X'),
-    array(87, 'c', 0, 'burncity.sc8', 'burncity.sc8', 2, 'X'),
-    array(87, 'c', 0, 'car.pic', 'car.pic', 2, 'X'),
-    array(87, 'c', 0, 'elf-lord.sc8', 'elf-lord.sc8', 2, 'X'),
-    array(87, 'c', 0, 'highway.sc5', 'highway.sc5', 2, 'X'),
-    array(87, 'c', 0, 'lords.ge5', 'lords.ge5', 2, 'X'),
-    array(87, 'c', 0, 'picload.ldr', 'picload.ldr', 2),
-    array(87, 'c', 0, 'rosa.cc5', 'rosa.cc5', 2, 'X'),
-//    array(87, 'c', 0, 'rosa.pl5', 'rosa.pl5', 2),
-    array(87, 'c', 0, 'ventje.sc5', 'ventje.sc5', 2, 'X'),
+    array(87, 'c', -46, 'alien.sc8', 'alien.sc8', 2, 'X'),
+    array(87, 'c', -46, 'burncity.sc8', 'burncity.sc8', 2, 'X'),
+    array(87, 'c', -46, 'car.pic', 'car.pic', 2, 'X'),
+    array(87, 'c', -47, 'elf-lord.sc8', 'elf-lord.sc8', 2, 'X'),
+    array(87, 'c', -46, 'highway.sc5', 'highway.sc5', 2, 'X'),
+    array(87, 'c', -47, 'lords.ge5', 'lords.ge5', 2, 'X'),
+//    array(87, 'c', -46, 'picload.ldr', 'picload.ldr', 3), werkt niet, laadt CHAR1.SCA, HOUSE.SCA, LEVEL.SCA, GAMEOVER.SCA, en die staan op andere disks van verschillende andere nummers
+    array(87, 'c', -47, 'rosa.cc5', 'rosa.cc5', 2, 'X'),
+//    array(87, 'c', -47, 'rosa.pl5', 'rosa.pl5', 2),
+    array(87, 'c', -47, 'ventje.sc5', 'ventje.sc5', 2, 'X'),
 
     array(88, 'a', 0, 'abgail.cc5', 'abgail.cc5', 2, 'X'),
 //    array(88, 'a', 0, 'abgail.pl5', 'abgail.pl5', 2),
