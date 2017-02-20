@@ -121,7 +121,7 @@ $mccm_disks = array(
     array(90, 'd', 'ArtGallery plaatjes; King\'s Valley II- en leprechaunvelden'),
     array(90, 'e', 'Crackman; Demo Deltabasic; Meridian; Midry; Mission'),
     array(90, 'f', 'King\'s Valley II velden; muziek uit Twisted Reality 2 en Jaijruu; Multitrack-files'),
-    array(90, 'g', 'The Incredible Micro Mirror Men demo', 11), // of MCCM cd
+    array(90, 'g', 'The Incredible Micro Mirror Men demo', 11), // of MCCM cd dus link moet naar nr 91.
     array(90, 'h', 'Kerstdemo'),
     array(90, 'i', 'Diverse programma\'s van MetalSoft')
 );
