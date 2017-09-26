@@ -318,7 +318,7 @@ $mcm_listings = array(
     array(20, 15, 'ml22a', 'Cursus Z80 machinetaal voorbeeld 22a', 1),
     array(20, 41, 'tao', 'Tao puzzle', 1),
     array(20, 47, 'sal88', 'Sal 88', 1),
-    array(20, 53, 'teken', 'Teken', 1),
+    array(20, 53, 'teken', 'Teken', 2),
     array(20, 0, 'fisc40', 'Belastingprogramma 40 koloms', 1),
     array(20, 0, 'fisc80', 'Belastingprogramma 80 koloms', 2),
     array(20, 0, 'schaats', 'Competitie standen schaatsen', 1),
