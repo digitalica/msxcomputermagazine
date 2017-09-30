@@ -161,7 +161,7 @@ $mcm_listings = array(
     array(9, 0, 'tellen', 'Tellen', 1),
     array(9, 0, 'tafels', 'Tafels', 1),
     array(9, 0, 'trein', 'Trein', 1),
-    array(9, 0, 'wammes.sc8', 'Portret Wammes Witkop', 2),
+    array(9, 0, 'wammes.sc8', 'Portret Wammes Witkop', 2, 'X'),
     array(9, 0, 'ldsc8', 'Kleurenfoto MSX2', 2),
 
     array(10, 6, 'icp4', 'Invoer Controle Programma 4', 1),
