@@ -41,9 +41,11 @@ Ideally renaming the autoexec.bas should not be needed, WebMSX is working on thi
 then the zips wont be needed any more and the normal disk images can be used.
 See https://github.com/ppeccin/WebMSX/issues/9
 
-## Installation
+## Deploy and Installation
 
-As any Wordpress plugin
+- update version nr in msxcomputermagazine.php
+- run package.sh (this creates the zip)
+- deploy msxcomputermagazine.zip, as any Wordpress plugin
 
 
 ## translation
