@@ -19,7 +19,7 @@ It creates some shortcodes in Wordpress to be used in the pages for each issue.
 
 In the shortcodes above, the number of the magazine can be left out. The plugin
 wil take the number from the page title automatically. The numbers are the numbers of the
-magazine, the disknumbering is different. (for MCM 1 less, for MCCM multiple disks per issue)
+magazine, the numbering of disk is different. (for MCM 1 less, for MCCM multiple disks per issue)
 
 Special Numbers:
 - 91: The PDF with extra pages for MCCM 90, the last issue.
@@ -29,7 +29,7 @@ Special Numbers:
 
 ## Files
 
-This plugin requires the files to be availble in the configured folders.
+This plugin requires the files to be available in the configured folders.
 As there are many (large) files, we didn't make them part of the plugin itself.
 
 To start single programs, the plugin expects ZIP files containing all files of 
