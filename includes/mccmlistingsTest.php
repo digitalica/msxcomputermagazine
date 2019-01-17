@@ -9,7 +9,7 @@ require_once('mccmlistings.php');
  *
  * @covers mccmlistings
  */
-final class mccmlistingstest extends PHPUnit_Framework_TestCase
+final class mccmlistingstest extends PHPUnit\Framework\TestCase
 {
 
     public function testlistings()

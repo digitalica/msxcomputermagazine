@@ -6,7 +6,7 @@ require_once('msxmagutils.php');
 /**
  * @covers mcmutils
  */
-final class mcmutilstest extends PHPUnit_Framework_TestCase
+final class mcmutilstest extends PHPUnit\Framework\TestCase
 {
 
     public function testUtil_mcm_nr_from_pagename()

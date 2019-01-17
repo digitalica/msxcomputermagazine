@@ -8,7 +8,7 @@ require_once('mccmlistings.php');
 /**
  * @covers mcmhtml
  */
-final class mcmhtmltest extends PHPUnit_Framework_TestCase
+final class mcmhtmltest extends PHPUnit\Framework\TestCase
 {
 
     public function testHtml_mcm_disk()
