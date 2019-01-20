@@ -2,7 +2,7 @@
 /*
 Plugin name: MSX Computer Magazine
 Description: Voor de links naar de listings, disks en pdfs van MSX Computer Magazine
-Version: 1.01
+Version: 1.02
 Author: Digitalica
 GitHub Plugin URI: https://github.com/digitalica/msxcomputermagazine
 License: GPL2

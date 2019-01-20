@@ -3,6 +3,13 @@
 This Wordpress plugin has the data for the links to PDFs and (web)MSX emulator WebMSX for disk images and listings.
 It creates some shortcodes in Wordpress to be used in the pages for each issue.
 
+## Requirements
+
+phpunit
+
+```bash
+sudo apt get phpunit
+```
 
 ## Code Example
 
@@ -43,7 +50,7 @@ See https://github.com/ppeccin/WebMSX/issues/9
 
 ## Deploy and Installation
 
-- update version nr in msxcomputermagazine.php
+- update version nr in msxcomputermagazine.php, line 5
 - run package.sh (this creates the zip)
 - deploy msxcomputermagazine.zip, as any Wordpress plugin
 
