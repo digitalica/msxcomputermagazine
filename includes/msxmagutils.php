@@ -13,7 +13,7 @@ function mcm_nr_from_pagename($pagename)
     // exception for 90 cd
     preg_match('/nr\. (\d+) cd/', $pagename, $matches);
     if (sizeof($matches) > 1 && $matches[1]) {
-        return $matches[1] + 1; // voor mccm90 cd pagina, http://www.msxcomputermagazine.nl/archief/mccm-90cd/
+        return $matches[1] + 1; // voor mccm90 cd pagina, /archief/mccm-90cd/
     }
     // first check regular
     preg_match('/nr\. (\d+)/i', $pagename, $matches);

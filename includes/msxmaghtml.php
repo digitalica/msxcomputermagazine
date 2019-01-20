@@ -353,9 +353,9 @@ function msxmag_info($msxmag_nr)
     if (is_mccm($msxmag_nr)) {
         $infoHTML .= "<div class='mcminfo'>\n";
         $infoHTML .= "Zoek je meer MCCM info? Zie ook de speciale";
-        $infoHTML .= " <a href=\"http://msxcomputermagazine.nl/mccm/\">website</a>";
+        $infoHTML .= " <a href=\"/mccm/\">website</a>";
         $infoHTML .= " met product support (Millenium cd-roms, MSX4PC), correcties en ";
-        $infoHTML .= " <a href=\"http://msxcomputermagazine.nl/mccm/millennium/milc/index.htm\">MiLC</a>";
+        $infoHTML .= " <a href=\"/mccm/millennium/milc/index.htm\">MiLC</a>";
         $infoHTML .= " (MSX Informatie &amp; Listings Collectie).";
         $infoHTML .= "</div>\n";
     }
