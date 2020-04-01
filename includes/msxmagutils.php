@@ -227,6 +227,9 @@ function mcm_msx_version_url($msx_version)
         case 3: // msx 2+
             $url = 'MACHINE=MSX2PE';
             break;
+        case 4: // msx turbo r
+            $url = 'MACHINE=MSXTR';
+            break;
         default: // none
             $url = 'MACHINE=';
     }

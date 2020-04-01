@@ -14,7 +14,7 @@
  *    een negatief paginanummer zet de listing bij de extra's, maar wel met een pagina link. (bv voor art gallery plaatjes)
  * 3: de filenaam van het bestand op de disk
  * 4: de naam in leesbare vorm (titel van het artikel, opschrijving op disk)
- * 5: minimale MSX versie nodig (1: MSX1, 2: MSX2, 3: MSX2+)
+ * 5: minimale MSX versie nodig (1: MSX1, 2: MSX2, 3: MSX2+: 4: MSXturboR)
  * 6: hoe starten: R (BASIC RUN, default), B (BLOAD,r), 'X' (niet, bv voor plaatjes)
  *
  */
@@ -1166,7 +1166,7 @@ $mcm_listings = array(
 //    array(50, 0, 'rubiklok', 'rubiklok', 1), // 2x dezelfde listing?
     array(50, 31, 'mseldr', 'MSE Loader (MCM\'s Sample Editor)', 2),
     array(50, 33, 'mse.bas', 'MSE (MCM\'s Sample Editor)', 2),
-    array(50, 35, 'samptr', 'SAMPTR: Samples op de turboR', 3),
+    array(50, 35, 'samptr', 'SAMPTR: Samples op de turboR', 4),
 //    array(50, 0, 'sampblk1.smp', 'sampblk1.smp', 1),
 //    array(50, 0, 'sampblk2.smp', 'sampblk2.smp', 1),
 //    array(50, 0, 'sampblk3.smp', 'sampblk3.smp', 1),
