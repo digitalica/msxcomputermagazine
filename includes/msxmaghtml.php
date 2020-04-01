@@ -8,8 +8,9 @@ function msxmag_pdf_url($msxmag_nr, $pag = 0)
     global $mcm_baseMagazinePdfUrl;
     global $mcm_baseListingboekPdfUrl;
 
+    # sanitize input to be sure (prepend 0)
     if ($msxmag_nr < 10) {
-        $msxmag_nr = "0" . $msxmag_nr;
+        $msxmag_nr = substr("0" . $msxmag_nr, -2);
     }
 
     if (is_magazine($msxmag_nr)) {
