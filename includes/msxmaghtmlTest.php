@@ -11,6 +11,20 @@ require_once('mccmlistings.php');
 final class mcmhtmltest extends PHPUnit\Framework\TestCase
 {
 
+
+    public function testMsxmag_pdf_url()
+    {
+        $this->assertRegexp("/01\.pdf/", msxmag_pdf_url(1,1), "there should be a prepending 0 for numbers below 10");
+        $this->assertRegexp("/page=1/", msxmag_pdf_url(1,1), "there should be a correct pagenr for numbers below 10");
+
+        $this->assertRegexp("/12\.pdf/", msxmag_pdf_url(12,12), "there should be no prepending 0 for numbers above 10");
+        $this->assertRegexp("/page=12/", msxmag_pdf_url(12,12), "there should be a correct pagenr for numbers above 10");
+
+        $this->assertRegexp("/34\.pdf/", msxmag_pdf_url(34,34), "there should be no prepending 0 for numbers above 10");
+        $this->assertRegexp("/page=34/", msxmag_pdf_url(34,34), "there should be a correct pagenr for numbers above 10");
+    }
+
+
     public function testHtml_mcm_disk()
     {
         for ($nr = 1; $nr < 58; $nr++) {

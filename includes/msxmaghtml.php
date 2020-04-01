@@ -8,6 +8,10 @@ function msxmag_pdf_url($msxmag_nr, $pag = 0)
     global $mcm_baseMagazinePdfUrl;
     global $mcm_baseListingboekPdfUrl;
 
+    if ($msxmag_nr < 10) {
+        $msxmag_nr = "0" . $msxmag_nr;
+    }
+
     if (is_magazine($msxmag_nr)) {
         $pdfURL = $mcm_baseMagazinePdfUrl . mcm_pdfbasename($msxmag_nr) . $msxmag_nr . ".pdf";
     } else if (is_listingboek($msxmag_nr)) {
