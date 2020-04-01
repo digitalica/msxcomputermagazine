@@ -54,6 +54,8 @@ See https://github.com/ppeccin/WebMSX/issues/9
 - run package.sh (this creates the zip)
 - deploy msxcomputermagazine.zip, as any Wordpress plugin
 
+(on the MSX Computer Magazine Site there is a plugin checking the version on github.
+so the new version should be noticed automatically)
 
 ## translation
 
