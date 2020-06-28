@@ -15,7 +15,7 @@
  * 3: de filenaam van het bestand op de disk
  * 4: de naam in leesbare vorm (titel van het artikel, opschrijving op disk)
  * 5: minimale MSX versie nodig (1: MSX1, 2: MSX2, 3: MSX2+: 4: MSXturboR)
- * 6: hoe starten: R (BASIC RUN, default), B (BLOAD,r), 'X' (niet, bv voor plaatjes)
+ * 6: hoe starten: R (BASIC RUN, default), B (BLOAD,r), 'X' (niet, bv voor plaatjes), lowercase: keep ctrl pressed for more memory
  *
  */
 $mcm_listings = array(
@@ -277,7 +277,7 @@ $mcm_listings = array(
     array(17, 15, 'ml14', 'Cursus Z80 machinetaal voorbeeld 14', 1),
     array(17, 17, 'ml15', 'Cursus Z80 machinetaal voorbeeld 15', 1),
     array(17, 18, 'ml16', 'Cursus Z80 machinetaal voorbeeld 16', 1),
-    array(17, 39, 'hal', 'Hal', 1), // needs more memory, see: https://github.com/ppeccin/WebMSX/issues/14
+    array(17, 39, 'hal', 'Hal', 1, 'r'), // needs more memory, see: https://github.com/ppeccin/WebMSX/issues/14
     array(17, 0, 'ldpic', 'Hi-res plaatjes', 2),
     array(17, 0, 'carr16', 'Carrousel', 2),
     array(17, 0, 'konami.pic', 'konami.pic', 1, 'X'),

@@ -184,6 +184,9 @@ function show_programs($progList, $letter = '')
         } else {
             $listingURL .= '&DISKA_FILES_URL=' . $mcm_baseDiskZipUrl . 'mcmd' . mcm_disknr($nr) . '.zip';
         }
+        if ($runtype == 'b' || $runtype == 'r') {
+            $listingURL .= "&BOOT_KEYS=ctrl"; // only one drive
+        }
         if ($runtype == 'B') {
             // we use BASIC ENTER to 'fake' BLOAD option.
             // see https://github.com/ppeccin/WebMSX/issues/11

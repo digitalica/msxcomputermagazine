@@ -34,10 +34,10 @@ final class mcmlistingstest extends PHPUnit\Framework\TestCase
             $this->assertNotEmpty($name);
             $msx_version = $listing[4];
             $this->assertLessThan($msx_version, 0);
-            $this->assertGreaterThan($msx_version, 4);
+            $this->assertGreaterThan($msx_version, 5);
             if (sizeof($listing) > 5) { // optional
                 $runtype = $listing[5];
-                $this->assertTrue(in_array($runtype, array('X', 'B')));
+                $this->assertTrue(in_array($runtype, array('X', 'B', 'r', 'b')));
             }
             if ($filename == 'icp7.bin' || $filename == 'icp7b') {
                 $this->assertEquals(2, $msx_version, "icp7 must be for MSX2, to allow typing MSX 2 listings (and prevert date prompt) for mcm " . $nr);
