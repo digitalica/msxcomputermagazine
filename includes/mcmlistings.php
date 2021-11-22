@@ -1350,7 +1350,7 @@ $mcm_listings = array(
     array(54, 42, 'supdel2a', 'K&K54-3a1: Superdeler 2a', 1),
     array(54, 42, 'klokje', 'K&K54-4: Klokje', 2),
     array(54, 42, 'klokje2', 'K&K54-4a: Klokje 2', 2),
-    array(54, 43, 'patroon', 'K&K54-5: Patroon', 1),
+    array(54, 43, 'patroon', 'K&K54-5: Patroon', 2),
     array(54, 44, 'patro2a', 'K&K54-5a: Patroon 2a', 1),
     array(54, 44, 'patro2b', 'K&K54-5b: Patroon 2b', 1),
     array(54, 44, 'kortst', 'K&K54-6: Kortst', 1),
