@@ -485,7 +485,7 @@ $mcm_listings = array(
     array(29, 20, 'pasen', 'Paasdatum', 1),
     array(29, 24, 'ramdsk', 'RAM disk', 1),
     array(29, 24, 'rdinst', 'RDINST - RAM disk instellen', 1),
-    array(29, 24, 'rmdbin', 'RMDBIN - bin versie', 1),
+    array(29, 24, 'rmdbin', 'RMDBIN - bin versie', 2, 'B'),
     array(29, 46, 'ftime', 'ftime', 1),
     array(29, 46, 'ftime.com', 'ftime.com', 1),
     array(29, 67, 'icp6', 'Invoer Controle Programma 6', 1),
@@ -1343,7 +1343,7 @@ $mcm_listings = array(
      * array(53, 0, 'autotx', 'autotx', 1),
      */
 
-    array(54, 41, '65536!', 'K&K54-1: 65536!', 3),
+    array(54, 41, '65536!', 'K&K54-1: 65536!', 4), // also works on MSX2+
     array(54, 41, 'klelog', 'K&K54-2: Kleurenlogica', 2),
     array(54, 41, 'supdel', 'K&K54-3; Superdeler', 1),
     array(54, 42, 'supdel2', 'K&K54-3a: Superdeler 2', 1),
