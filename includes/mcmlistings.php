@@ -1402,7 +1402,7 @@ $mcm_listings = array(
     array(55, 0, 'som1', 'Recursie: ook in Basic! Berekent som van getallen uit interval', 1),
     array(55, 0, 'som2', 'Recursie: ook in Basic! Berekent som der cijfers der cijfers...', 1),
     array(55, 0, 'tafel', 'Recursie: ook in Basic! Drukt tafel van een getal af', 1),
-    array(55, 0, 'ehbol1', 'Nemeesis 3 Cheat', 1),
+    array(55, 0, 'ehbol1', 'Nemesis 3 Cheat', 1),
 
     array(56, 10, 'midi-int.bas', 'Demonstratie MIDI-interrupt', 1),
     array(56, 0, 'midi-int', 'Menu voor 4 versies MIDI-INT', 1),
