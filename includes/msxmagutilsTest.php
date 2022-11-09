@@ -11,16 +11,15 @@ final class mcmutilstest extends PHPUnit\Framework\TestCase
 
     public function testUtil_mcm_nr_from_pagename()
     {
-        $this->assertEquals("01", mcm_nr_from_pagename("nr. 1 - feb 1985"));
-        $this->assertEquals("02", mcm_nr_from_pagename("nr. 2 – apr/mei 1985"));
-        $this->assertEquals("02", mcm_nr_from_pagename("nr. 2 – apr/mei 1985"));
-        $this->assertEquals("04", mcm_nr_from_pagename("nr. 4 - aug 1985"));
-        $this->assertEquals("07", mcm_nr_from_pagename("nr. 7 – mrt 1986"));
+        $this->assertEquals("1", mcm_nr_from_pagename("nr. 1 - feb 1985"));
+        $this->assertEquals("2", mcm_nr_from_pagename("nr. 2 – apr/mei 1985"));
+        $this->assertEquals("4", mcm_nr_from_pagename("nr. 4 - aug 1985"));
+        $this->assertEquals("7", mcm_nr_from_pagename("nr. 7 – mrt 1986"));
         $this->assertEquals("19", mcm_nr_from_pagename("nr. 19 - feb 1985"));
         $this->assertEquals("49", mcm_nr_from_pagename("nr. 49 - aug 1985"));
 
         $this->assertEquals("49", mcm_nr_from_pagename("nr. 49 - augxxxx 1985"));
-        $this->assertEquals("02", mcm_nr_from_pagename("nr. 2 - apr/mei 1985"));
+        $this->assertEquals("2", mcm_nr_from_pagename("nr. 2 - apr/mei 1985"));
 
         $this->assertEquals("23", mcm_nr_from_pagename("nr. 23 – jun 1988 – MSX Computer Magazine"));
 
