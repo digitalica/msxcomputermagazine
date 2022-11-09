@@ -59,9 +59,15 @@ so the new version should be noticed automatically, maybe clearing cache in gith
 
 ## translation
 
-update POT file
+update POT file 
 
 xgettext --from-code=UTF-8 -o languages/msxcomputermagazine.pot *.php
+
+create po files
+
+msginit --locale nl --input languages/msxcomputermagazine.pot --output languages/nl/LC_MESSAGES/msxcomputermagazine.po
+msginit --locale en --input languages/msxcomputermagazine.pot --output languages/en/LC_MESSAGES/msxcomputermagazine.po
+
 
 generate MO files
 
