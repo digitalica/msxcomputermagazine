@@ -82,6 +82,9 @@ function mcm_disk($mcm_nr)
         $diskHTML .= " <a href='$diskURL' target='_blank'>";
         $diskHTML .= msx_disk_name($mcm_nr);
         $diskHTML .= "</a>";
+        if ($mcm_nr == 55) {
+            $diskHTML .= _("Zou 54 moeten zijn, maar die bestaat niet. Zie MCM56, pag 42.");
+        }
     } else {
         $diskHTML .= _(" Geen disk beschikbaar");
     }

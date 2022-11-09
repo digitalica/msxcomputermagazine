@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-15 09:21+0100\n"
+"POT-Creation-Date: 2022-11-09 17:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,48 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: msxmaghtml.php:44
+#: msxmaghtml.php:49
 msgid "Geen pdf beschikbaar"
 msgstr ""
 
-#: msxmaghtml.php:76
+#: msxmaghtml.php:81
 msgid "Start WebMSX met"
 msgstr ""
 
-#: msxmaghtml.php:81
+#: msxmaghtml.php:86
+msgid "zou 54 moeten zijn, maar die bestaat niet. Zie MCM56, pag 42."
+msgstr ""
+
+#: msxmaghtml.php:89
 msgid " Geen disk beschikbaar"
 msgstr ""
 
-#: msxmaghtml.php:103
-msgid "Diskabonnement bij dit nummer:"
+#: msxmaghtml.php:111
+msgid "Diskabonnement bij dit nummer"
 msgstr ""
 
-#: msxmaghtml.php:110
+#: msxmaghtml.php:117
 #, php-format
-msgid "pagina %s"
+msgid "pagina %s)"
 msgstr ""
 
-#: msxmaghtml.php:190
+#: msxmaghtml.php:144 msxmaghtml.php:340
+#, php-format
+msgid "(pagina %s)"
+msgstr ""
+
+#: msxmaghtml.php:206
 msgid "p. "
 msgstr ""
 
-#: msxmaghtml.php:240
+#: msxmaghtml.php:256
 msgid "Listings in dit nummer:"
 msgstr ""
 
-#: msxmaghtml.php:248
+#: msxmaghtml.php:264
 msgid "Extra's op disk"
 msgstr ""
 
-#: msxmaghtml.php:300
+#: msxmaghtml.php:333
 msgid "Disk "
 msgstr ""

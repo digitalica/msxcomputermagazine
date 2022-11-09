@@ -1,62 +1,64 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Dutch translations for PACKAGE package.
+# Copyright (C) 2022 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Robbert Wethmar <robbert@robbert-workstation>, 2022.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-15 09:24+0100\n"
-"PO-Revision-Date: 2017-02-15 09:24+0100\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: nl_NL\n"
+"POT-Creation-Date: 2022-11-09 17:31+0100\n"
+"PO-Revision-Date: 2022-11-09 17:42+0100\n"
+"Last-Translator: Robbert Wethmar <robbert@robbert-workstation>\n"
+"Language-Team: Dutch\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: msxmaghtml.php:44
+#: msxmaghtml.php:49
 msgid "Geen pdf beschikbaar"
-msgstr "Geen pdf beschikbaar"
-
-#: msxmaghtml.php:76
-msgid "Start WebMSX met"
-msgstr "Start WebMSX met"
+msgstr ""
 
 #: msxmaghtml.php:81
+msgid "Start WebMSX met"
+msgstr ""
+
+#: msxmaghtml.php:86
+msgid "Zou 54 moeten zijn, maar die bestaat niet. Zie MCM56, pag 42."
+msgstr "Zou 54 moeten zijn, maar die bestaat niet. Zie MCM56, pag 42."
+
+#: msxmaghtml.php:89
 msgid " Geen disk beschikbaar"
-msgstr " Geen disk beschikbaar"
+msgstr ""
 
-#: msxmaghtml.php:103
-msgid "Diskabonnement bij dit nummer:"
-msgstr "Diskabonnement bij dit nummer:"
+#: msxmaghtml.php:111
+msgid "Diskabonnement bij dit nummer"
+msgstr ""
 
-#: msxmaghtml.php:110
+#: msxmaghtml.php:117
 #, php-format
-msgid "pagina %s"
-msgstr "pagina %s"
+msgid "pagina %s)"
+msgstr ""
 
-#: msxmaghtml.php:190
+#: msxmaghtml.php:144 msxmaghtml.php:340
+#, php-format
+msgid "(pagina %s)"
+msgstr ""
+
+#: msxmaghtml.php:206
 msgid "p. "
-msgstr "p. "
+msgstr ""
 
-#: msxmaghtml.php:240
+#: msxmaghtml.php:256
 msgid "Listings in dit nummer:"
-msgstr "Listings in dit nummer:"
+msgstr ""
 
-#: msxmaghtml.php:248
+#: msxmaghtml.php:264
 msgid "Extra's op disk"
-msgstr "Extra's op disk"
+msgstr ""
 
-#: msxmaghtml.php:300
+#: msxmaghtml.php:333
 msgid "Disk "
-msgstr "Disk "
-
-#~ msgid "Geen disk beschikbaar"
-#~ msgstr "Geen disk beschikbaar"
-
-#~ msgid "pagina"
-#~ msgstr "pagina"
+msgstr ""
