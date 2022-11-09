@@ -7,7 +7,7 @@
  */
 
 /**
- * Alle diskabonnementen van MCCM, om links te kunnen maken naar files op de disk / de dieks zelf
+ * Alle diskabonnementen van MCCM, om links te kunnen maken naar files op de disk / de disks zelf
  *
  * 1: het bladnummer (dus NIET het nummer van de disk, dat is meestal 1 lager
  * 2: de letter van de disk (er zijn meerdere disks per nr)
