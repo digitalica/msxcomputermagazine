@@ -30,8 +30,11 @@ corepack pnpm check      # type-check
 | `src/content.config.ts` | schema of all content: a build fails on invalid data |
 | `src/lib/links.ts` | how pdf, bladerkamer and WebMSX links are built |
 | `src/pages/` | page templates |
+| `files/` | the archive files (pdfs, disks, MCCM/MCCW sites) at their URL paths; page viewer tiles are not in git |
 | `scripts/migrate/` | one-off migration from the WordPress site |
-| `Dockerfile`, `docker/nginx.conf` | image: build the site, serve it with nginx |
+| `scripts/download-archive.mjs` | download of `files/` from the old site |
+| `docker/files.Dockerfile`, `scripts/build-files-image.sh` | base image with the archive files |
+| `Dockerfile`, `docker/nginx.conf` | site image: build the site, serve it with nginx |
 | `docker-compose.yml` | runs the image behind Traefik on the server |
 | `.github/workflows/docker.yml` | builds and pushes the image to ghcr.io on push to `main` |
 | `docs/` | migration report and deploy notes |
@@ -58,8 +61,8 @@ sections:
 ---
 ```
 
-Paths to pdfs and disk images are paths on the web server: those files are not
-in this repository (see `docs/deploy.md`).
+Paths to pdfs and disk images are URL paths; the files are in `files/` at the
+same path.
 
 ## Deployment
 
@@ -71,8 +74,9 @@ docker compose pull
 docker compose up -d
 ```
 
-The archive files (pdfs, disks, page viewer tiles) are mounted into the
-container from `files/`. See [docs/deploy.md](docs/deploy.md).
+The site image builds on a separate files image with the archive files
+(pdfs, disks, page viewer tiles), which is built and pushed by hand with
+`scripts/build-files-image.sh --push`. See [docs/deploy.md](docs/deploy.md).
 
 ## Migration
 

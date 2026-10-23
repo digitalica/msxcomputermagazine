@@ -1,92 +1,102 @@
 # Deploying
 
-The site runs as a Docker container behind Traefik, like watbenjedan:
+The site runs as a Docker container behind Traefik, like watbenjedan. There
+are two images:
 
-- GitHub Actions builds the image on every push to `main` and pushes it to
-  `ghcr.io/digitalica/msxcomputermagazine:latest` (`.github/workflows/docker.yml`).
-- The image builds the Astro site and serves it with nginx (`Dockerfile`,
-  `docker/nginx.conf`).
-- On the server, `docker-compose.yml` runs it on the shared `proxy` network.
-  Traefik handles TLS (Let's Encrypt) and redirects `www.` to the apex domain.
+| Image | Contents | Built by |
+|---|---|---|
+| `ghcr.io/digitalica/msxcomputermagazine-files` | nginx + the archive files (`files/`) | by hand, `scripts/build-files-image.sh --push` |
+| `ghcr.io/digitalica/msxcomputermagazine` | the files image + the generated site | GitHub Actions, on every push to `main` |
+
+The site image starts `FROM` the files image and adds its layers with
+`COPY --link`, so a release only adds a few MB: the server downloads the
+archive layers once.
 
 ## Archive files
 
-The pdfs, disk images and page viewer tiles are several GB and are **not** in
-the repository or the image. They live in a directory on the server that is
-mounted read-only into the container at `/srv/files`. Its layout follows the
-URL paths:
+The old server is going away, so `files/` holds a full copy, at the URL paths:
 
 ```
 files/
-  archief/bladen/      magazine pdfs
-  archief/lb/          listing book pdfs
-  archief/disks/       disk images (WebMSX)
-  archief/diskzips/    zipped disk contents (WebMSX DISKA_FILES_URL)
-  mcm_dzi/             Deep Zoom tiles for the bladerkamer
-  mccm/                MCCM support site (static)
-  mccw/                MCCW web magazine (static)
-  wp-content/uploads/  only the six verzameldisk zips in 2017/12/ are still linked
+  archief/bladen/      magazine pdfs                                  (git)
+  archief/lb/          listing book pdfs                              (git)
+  archief/disks/       disk images (WebMSX)                           (git)
+  archief/diskzips/    zipped disk contents (WebMSX DISKA_FILES_URL)  (git)
+  wp-content/uploads/  the six verzameldisk zips                      (git)
+  mccm/                MCCM support site (static)                     (git)
+  mccw/                MCCW web magazine (static)                     (git)
+  mcm_dzi/             page viewer tiles, ~200k files                 (NOT in git)
 ```
 
-Copy these directories from the old web root once, e.g.:
+The tiles are not in git (too many files, several GB). They exist in the
+files image and on the machine that built it. They can be extracted from the
+image again, or regenerated from the pdfs (one row per issue, one column per
+page, 1760×2440 per page; see `src/scripts/bladerkamer.ts`).
+
+`files/` was filled from the old site with:
 
 ```sh
-rsync -av old-server:/path/to/webroot/{archief,mcm_dzi,mccm,mccw} files/
-rsync -av --relative old-server:/path/to/webroot/./wp-content/uploads/2017/12/ files/
+node scripts/download-archive.mjs --dzi     # everything linked + all tiles
+wget --mirror --no-parent --no-host-directories --page-requisites -e robots=off \
+  --directory-prefix=files https://msxcomputermagazine.nl/mccm/ https://msxcomputermagazine.nl/mccw/
 ```
 
-The issue pages (`/archief/mcm-1/` etc.) come from the image; only the
-subdirectories above come from `files/`. nginx serves the archive paths with `Access-Control-Allow-Origin: *`, so WebMSX can
-load disks and a preview deployment can use the tiles.
+Only files that something links to could be downloaded (the server has no
+directory listings).
 
-`FILES_DIR` sets where the directory is (default `./files` next to
-`docker-compose.yml`).
+## Updating the files image
 
-## First-time server setup
+When something in `files/` changes:
 
-Log in once with a GitHub PAT scoped to `read:packages` (needed while the
-package is private):
+```sh
+docker login ghcr.io -u YOUR_GITHUB_USERNAME   # token with write:packages
+scripts/build-files-image.sh --push            # DOCKER=podman also works
+```
+
+Then rebuild the site image: GitHub → Actions → "Build and push Docker image"
+→ Run workflow (or push a commit). Pushes that only change `files/` do not
+start a build by themselves.
+
+The files image has a label linking it to this repository, so the workflow's
+`GITHUB_TOKEN` can pull it. If the first workflow run cannot pull it, check
+the package settings on GitHub: the repository must have access.
+
+## Server
+
+Log in once with a GitHub token that has `read:packages`:
 
 ```sh
 echo YOUR_GITHUB_PAT | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
 ```
 
-Copy `docker-compose.yml` to the server, put the archive files next to it in
-`files/` (or set `FILES_DIR`), and start:
+Copy `docker-compose.yml` to the server and start:
 
 ```sh
 docker compose pull
 docker compose up -d
 ```
 
-The `proxy` network must already exist (shared with Traefik).
+The `proxy` network must already exist (shared with Traefik). Traefik handles
+TLS and redirects `www.` to the apex domain. Updating is the same two
+commands after a new image is built.
 
-## Updating
-
-Push to `main`, wait for the GitHub Action, then on the server:
-
-```sh
-docker compose pull
-docker compose up -d
-```
-
-## Testing the image locally
+## Testing locally
 
 ```sh
 docker build -t msxcomputermagazine .
-docker run --rm -p 8080:80 -v "$PWD/files:/srv/files:ro" msxcomputermagazine
+docker run --rm -p 8080:80 msxcomputermagazine
 ```
 
-Without a `files/` directory the site works, but pdf, disk and tile requests
-to localhost return 404. The pdf and WebMSX links themselves point to
-`https://msxcomputermagazine.nl` (`PUBLIC_FILES_ORIGIN` in `src/lib/links.ts`).
+With a locally built files image: add
+`--build-arg FILES_IMAGE=ghcr.io/digitalica/msxcomputermagazine-files:latest`
+(the default) after `scripts/build-files-image.sh`, or point it at another tag.
 
 ## Switching from WordPress
 
-1. Put the archive files in place and start the container.
+1. Push the files image, run the workflow, start the container on the server.
 2. Check it before moving DNS, e.g. with a temporary extra Traefik host rule
    (`new.msxcomputermagazine.nl`) or `curl --resolve`: an issue page, a pdf, a
-   WebMSX run link, the bladerkamer, search.
+   WebMSX run link, the bladerkamer, search, `/mccm/`.
 3. Point `msxcomputermagazine.nl` and `www.` to the Traefik server.
 4. Keep a backup of the WordPress database and `wp-content/` for a while.
 

@@ -3,10 +3,6 @@ services:
     image: ghcr.io/digitalica/msxcomputermagazine:latest
     # build: .   # uncomment to build locally instead
     restart: unless-stopped
-    volumes:
-      # Archive files that are not in the image: archief/{bladen,lb,disks,diskzips},
-      # mcm_dzi, mccm, mccw and wp-content/uploads, at their URL paths.
-      - ${FILES_DIR:-./files}:/srv/files:ro
     networks:
       - proxy
     labels:
