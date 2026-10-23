@@ -25,12 +25,13 @@ files/
   wp-content/uploads/  the six verzameldisk zips                      (git)
   mccm/                MCCM support site (static)                     (git)
   mccw/                MCCW web magazine (static)                     (git)
-  mcm_dzi/             page viewer tiles, ~200k files                 (NOT in git)
+  mcm_dzi/             page viewer tiles, ~197k files, 9.1 GB         (NOT in git)
 ```
 
-The tiles are not in git (too many files, several GB). They exist in the
-files image and on the machine that built it. They can be extracted from the
-image again, or regenerated from the pdfs (one row per issue, one column per
+The tiles are not in git (too many files, 9 GB). They exist in the files image
+(split into layers of at most ~2.5 GB, as registries limit the layer size) and
+on the machine that built it. They can be extracted from the image again, or
+regenerated from the pdfs (one row per issue, one column per
 page, 1760×2440 per page; see `src/scripts/bladerkamer.ts`).
 
 `files/` was filled from the old site with:
