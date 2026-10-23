@@ -19,3 +19,6 @@ pnpm-debug.log*
 # editor / OS
 .DS_Store
 .idea/
+
+# local copy of the archive files (mounted into the container)
+files/

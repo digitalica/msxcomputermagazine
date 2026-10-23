@@ -5,7 +5,7 @@
 // says where; WebMSX needs absolute URLs, and it lets a preview deployment
 // elsewhere still use the real files.
 export const FILES_ORIGIN: string =
-  import.meta.env.PUBLIC_FILES_ORIGIN ?? 'https://www.msxcomputermagazine.nl';
+  import.meta.env.PUBLIC_FILES_ORIGIN ?? 'https://msxcomputermagazine.nl';
 
 export interface WebMSX {
   machine: string;

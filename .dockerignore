@@ -1,0 +1,11 @@
+.git
+.github
+.cache
+.astro
+.npmrc
+dist
+node_modules
+docs
+README.md
+docker-compose.yml
+files

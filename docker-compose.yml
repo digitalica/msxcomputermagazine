@@ -1,0 +1,29 @@
+services:
+  website:
+    image: ghcr.io/digitalica/msxcomputermagazine:latest
+    # build: .   # uncomment to build locally instead
+    restart: unless-stopped
+    volumes:
+      # Archive files that are not in the image: archief/{bladen,lb,disks,diskzips},
+      # mcm_dzi, mccm, mccw and wp-content/uploads, at their URL paths.
+      - ${FILES_DIR:-./files}:/srv/files:ro
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.msxcomputermagazine.rule=Host(`msxcomputermagazine.nl`)"
+      - "traefik.http.routers.msxcomputermagazine.entrypoints=websecure"
+      - "traefik.http.routers.msxcomputermagazine.tls.certresolver=letsencrypt"
+      - "traefik.http.services.msxcomputermagazine.loadbalancer.server.port=80"
+      # www → apex redirect
+      - "traefik.http.routers.msxcomputermagazine-www.rule=Host(`www.msxcomputermagazine.nl`)"
+      - "traefik.http.routers.msxcomputermagazine-www.entrypoints=websecure"
+      - "traefik.http.routers.msxcomputermagazine-www.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.msxcomputermagazine-www.middlewares=redirect-www-msxcomputermagazine"
+      - "traefik.http.middlewares.redirect-www-msxcomputermagazine.redirectregex.regex=^https://www\\.msxcomputermagazine\\.nl/(.*)"
+      - "traefik.http.middlewares.redirect-www-msxcomputermagazine.redirectregex.replacement=https://msxcomputermagazine.nl/$${1}"
+      - "traefik.http.middlewares.redirect-www-msxcomputermagazine.redirectregex.permanent=true"
+
+networks:
+  proxy:
+    external: true
