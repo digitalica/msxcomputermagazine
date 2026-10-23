@@ -4,6 +4,9 @@ Static website of the MSX Computer Magazine archive (1985 – 1997), built with
 [Astro](https://astro.build). It replaces the old WordPress site; the content
 was migrated with `scripts/migrate/`.
 
+This was done because the used WordPress Theme (Helium Versie: 2.3.1, Door Mairel Theafila) is no longer maintained. Therefore, updating to a newer PHP version then 7.4 was not possible (error in theme).
+
+
 ## Getting started
 
 Requires Node (any recent version) with corepack. pnpm downloads the Node
