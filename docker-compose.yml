@@ -7,7 +7,8 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.msxcomputermagazine.rule=Host(`msxcomputermagazine.nl`)"
+      # new.* is for testing before the DNS switch
+      - "traefik.http.routers.msxcomputermagazine.rule=Host(`msxcomputermagazine.nl`) || Host(`new.msxcomputermagazine.nl`)"
       - "traefik.http.routers.msxcomputermagazine.entrypoints=websecure"
       - "traefik.http.routers.msxcomputermagazine.tls.certresolver=letsencrypt"
       - "traefik.http.services.msxcomputermagazine.loadbalancer.server.port=80"
