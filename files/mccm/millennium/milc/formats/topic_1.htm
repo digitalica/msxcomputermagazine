@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<title>MILC - Topic IMG fileformaat</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">IMG fileformaat</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                               IMG-FILEFORMAAT
+
+HEADER
+=============================================================================
+Byte  Lengte  Beschrijving
+-----------------------------------------------------------------------------
+ 0      2     versienummer (altijd 1)
+ 2      2     Lengte van de header in woorden (1 woord=2 bytes).
+              normaal staat hier 8 maar ventura gebruikt een 18 bytes header,
+              dus staat er 9.
+ 4      2     Aantal planes. Dit is 1 voor monochrome plaatjes en 2 voor 
+              16-kleuren plaatjes, alhoewel het aantal planes dan 4 is.
+ 6      2     patroonlengte, gebruikt voor compressie. normaal de waarde 2 
+              maar mag varieeren tussen 1 en 8.
+ 8      2     De breedte van een pixel in microns (duizendem van mm). 
+              Meestal niet gebruikt omdat je pixels toch niet kleiner kunt 
+              maken. Een veel gebruikte waarde is 85 micron.
+ 10     2     De hoogte van een pixel in microns (zie byte 8)
+ 12     2     De breedte van het plaatje in pixels.
+ 14     2     De hoogte van het plaatje in pixels.
+=============================================================================
+ 
+DATA:
+Vanaf byte 16 tot het einde van het bestand is dan de eigenlijke data. 
+
+PLANES:
+Gaat het om een kleuren plaatje dan is dat weggeschreven als vier maal een 
+monochroom plaatje; ieder plane wordt apart weggeschreven. 
+
+SOLID RUNS:
+IMG-files werken op bit-niveau en normaal is alle data zogenaamd &quot;Run Length 
+Encoded&quot; (RLE). Je leest steeds een byte van het bestand. Als een byte in het 
+hoogste bit een 1 heeft staan, dan weet je dat er een aantal 1's komen. 
+Hoeveel er moeten komen, staat in de resterende 7 bits. Begint een byte met 
+een 0, dan geven de resterende 7 bits aan hoeveel nullen je naar je scherm 
+moet schrijven. We noemen dit &quot;solid runs&quot;. 
+
+PATTERN RUNS:
+Er kunnen echter ook zogenaamde &quot;pattern runs&quot; voorkomen. In dat geval wordt 
+aangegeven hoe vaak een bepaald patroon voorkomt. Kom je een byte tegen dat 
+00 (hex) is, dan betekent dat de start van een pattern run. De erop volgende 
+byte bepaalt hoe vaak het patroon zich herhaalt. De bytes daarna bepalen het 
+patroon. De lengte van het patroon staat in de header. Daardoor weet je 
+hoeveel bytes je in moet lezen. 
+
+RAW DATA:
+Tenslotte kan ook een bepaalde combinatie van bits direct in het bestand 
+worden weergegeven. Dat is dus &quot;raw data&quot; en die begint met 80 (hex). Het 
+byte daarna beschrijft hoeveel databytes er volgen als raw data, dat op zijn 
+beurt weer gevolgd wordt door dat aantal bytes met data, die je dus 
+letterlijk moet overnemen.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

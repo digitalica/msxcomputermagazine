@@ -1,0 +1,361 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-DOS 2.20 functions [2/5]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-DOS 2.20 functions [2/5]</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+  3.20   DELETE FILE [FCB] (13H)
+
+     Parameters:    C = 13H (_FDEL)
+                   DE = Pointer to unopened FCB
+     Results:     L=A = 0FFH if no files deleted
+                      =   0  if files deleted OK
+
+   All  files in  the current directory of the disk specified by the FCB, and 
+which match  the ambiguous filename in the FCB, are deleted. Sub-directories, 
+system  files, hidden files and read only files are not deleted. If any files 
+at all are successfully deleted then this function returns with A=0. A return 
+with A=FFh indicates that no files were deleted.
+
+  3.21   SEQUENTIAL READ [FCB] (14H)
+
+     Parameters:    C = 14H (_RDSEQ)
+                   DE = Pointer to opened FCB
+     Results:     L=A = 01H if error (end of file)
+                      =  0  if read was successful
+
+   This function reads the next sequential 128 byte record from the file into 
+the  current  disk transfer  address. The  record is  defined by  the current 
+extent  (high  and  low  bytes) and  the current  record. After  successfully 
+reading the  record, this  function increments  the current  record and if it 
+reaches  080h, sets  it back  to zero  and increments  the extent number. The 
+record count field is also kept updated when necessary.
+
+   Unlike  CP/M it  is possible  to have  partially filled records, since the 
+file size is not necessarily a multiple of 128 bytes. If this occurs then the 
+partial record  is padded  out with zeroes when it is copied to the transient 
+program's DTA address.
+
+  3.22   SEQUENTIAL WRITE [FCB] (15H)
+
+     Parameters:    C = 15H (_WRSEQ)
+                   DE = Pointer to opened FCB
+     Results:     L=A = 01H if error (disk full)
+                      =  0  if write was successful
+
+   This function  writes the 128 bytes from the current disk transfer address 
+to  the file  at the position defined by the current record and extent, which 
+are then  incremented appropriately.  The record  count byte  is kept updated 
+correctly  if the  file is  extended or if the write moves into a new extent. 
+The file size in the FCB is also updated if the file is extended. 
+
+  3.23   CREATE FILE [FCB] (16H)
+
+     Parameters:    C = 16H (_FMAKE)
+                   DE = Pointer to unopened FCB
+     Results:     L=A = 0FFH if unsuccessful
+                      =   0  if successful   
+
+   This function creates a new file in the current directory of the specified 
+drive and opens it ready for reading and writing. The drive, filename and low 
+byte of the extent number must be set up in the FCB and the filename must not 
+be  ambiguous. Checks  will be  done to ensure that invalid filenames are not 
+created.
+
+   If there is already a file of the required name then the action depends on
+the value  of the  extent number byte. Normally this will be zero and in this 
+case  the old  file will  be deleted  and a  new one  created. However if the 
+extent  number  is non-zero  then the  existing file  will be  opened without 
+creating a  new file.  This ensures compatibility with early versions of CP/M 
+where each extent had to be explicitly created.
+
+   In all  cases the  resulting file  will be opened with the required extent 
+number exactly as if an OPEN function call had been done.
+
+  3.24   RENAME FILE [FCB] (17H)
+
+     Parameters:    C = 17H (_FREN)
+                   DE = Pointer to unopened FCB
+     Results:     L=A = 0FFH not if successful
+                      =   0  if successful
+
+   The  unopened FCB  has the  normal drive  and filename,  and also a second 
+filename starting  at (DE+17).  Every file  in the  current directory  of the 
+specified  drive which  matches the  first filename, is changed to the second 
+filename with  &quot;?&quot; characters  in the second filename leaving the appropriate 
+character  unchanged.  Checks  are  done  to  prevent  duplicate  or  illegal 
+filenames  from being  created. Entries for sub-directories, hidden files and 
+system files will not be renamed. 
+
+  3.25   GET LOGIN VECTOR (18H)
+
+     Parameters:    C = 18H (_LOGIN)
+     Results:      HL = Login vector
+
+   This function  returns a  bit set in HL for each drive which is available,
+bit-0 of L corresponding to drive &quot;A:&quot;. Up to eight drives (&quot;A:&quot; to &quot;H:&quot;) are 
+supported  by the  system currently,  so register  H will  usually be zero on 
+return.
+
+  3.26   GET CURRENT DRIVE (19H)
+
+     Parameters:    C = 19H (_CURDRV)
+     Results:     L=A = Current drive (0=A: etc)
+
+   This function just returns the current drive number.
+
+  3.27   SET DISK TRANSFER ADDRESS (1AH)
+
+     Parameters:    C = 1AH (_SETDTA)
+                   DE = Required Disk Transfer Address
+     Results:       None
+
+   This function simply records the address passed in DE as the disk transfer 
+address.  This address  will be  used for  all subsequent  FCB read and write 
+calls,  for  &quot;search for  first&quot; and  &quot;search for  next&quot; calls  to store  the 
+directory entry, and for absolute read and write calls. It is not used by the 
+new MSX-DOS  read and  write functions.  The address  is set back to 80h by a 
+DISK RESET call.
+
+  3.28   GET ALLOCATION INFORMATION (1BH)
+
+     Parameters:    C = 1BH (_ALLOC)
+                    E = Drive number (0=current, 1=A: etc)
+     Results:       A = Sectors per cluster
+                   BC = Sector size (always 512)
+                   DE = Total clusters on disk
+                   HL = Free clusters on disk
+                   IX = Pointer to DPB
+                   IY = Pointer to first FAT sector  
+
+   This function  returns various information about the disk in the specified 
+drive.  It is  not compatible  with CP/M  which uses  this function number to 
+return the  address of an allocation vector. Note that unlike MSX-DOS 1, only 
+the  first sector  of the FAT may be accessed from the address in IY, and the 
+data there will only remain valid until the next MSX-DOS call.
+
+  3.29   RANDOM READ [FCB] (21H)
+
+     Parameters:    C = 21H (_RDRND)
+                   DE = Pointer to opened FCB
+     Results:     L=A = 01H if error (end of file)
+                         0  if read was successful
+
+   This function  reads a  128 byte  record from the file to the current disk
+transfer  address. The  file position  is defined  by the  three byte  random 
+record number  in the  FCB (bytes  21h...23h). Unlike CP/M all three bytes of 
+the  random record  number are  used. A partial record at the end of the file 
+will be padded with zeroes before being copied to the user's DTA.
+
+   The  random  record  number is  not altered  so successive  calls to  this 
+function  will read  the same  record unless the transient program alters the 
+random record number. A side effect is that the current record and extent are 
+set up  to refer  to the  same record as the random record number. This means 
+that  sequential reads  (or writes)  can follow  a random read and will start 
+from the  same record. The record count byte is also set up correctly for the 
+extent.
+
+  3.30   RANDOM WRITE [FCB] (22H)
+
+     Parameters:    C = 22H (_WRRND)
+                   DE = Pointer to opened FCB
+     Results:     L=A = 01H if error (disk full)
+                      =  0  if no error
+
+   This  function writes  a 128  byte record  from the  current disk transfer 
+address to  the file,  at the  record position  specified by  the three  byte 
+random  record number (bytes 21h...23h). All three bytes of the random record 
+number are  used. If  the record  position is  beyond the current end of file 
+then un-initialized disk space will be allocated to fill the gap.
+
+   The random record number field will not be changed, but the current record 
+and extent  fields will  be set  up to  refer to  the same record. The record 
+count  byte will be adjusted as necessary if the file is being extended or if 
+the write goes into a new extent. 
+
+  3.31   GET FILE SIZE [FCB] (23H)
+
+     Parameters:    C = 23H (_FSIZE)
+                   DE = Pointer to unopened FCB
+     Results:     L=A = 0FFH if file not found
+                      =   0  if file found OK
+
+   This function  searches for  the first match with the filename in the FCB, 
+exactly the same as OPEN FILE (function 0FH). The size of the located file is 
+rounded up to the nearest 128 bytes and the number of records determined. The 
+three byte random record field of the FCB is set to the number of records, so 
+it is the number of the first record which does not exist. The fourth byte of 
+the random record number is not altered.
+
+  3.32   SET RANDOM RECORD [FCB] (24H)
+
+     Parameters:    C = 24H (_SETRND)
+                   DE = Pointer to opened FCB
+     Results:       None
+
+   This function simply sets the three byte random record field in the FCB to 
+the record  determined by  the current  record and  extent number. The fourth 
+byte  of the  random record  number is  not altered.  No check  is done as to 
+whether the record actually exists in the file.
+
+  3.33   RANDOM BLOCK WRITE [FCB] (26H)
+
+     Parameters:    C = 26H (_WRBLK)
+                   DE = Pointer to opened FCB
+                   HL = Number of records to write
+     Results:       A = 01H if error 
+                      =  0  if no error
+
+   Data  is written from the current disk transfer address to the position in 
+the file  defined by  the random record number. The record size is determined 
+by  the record size field in the FCB (bytes 0Eh and 0Fh) which must be set by 
+the user  after opening  the file  and before  calling this  function. If the 
+record  size is  less than  64 bytes then all four bytes of the random record 
+number are used, otherwise only the first three are used.
+
+   The number  of records to be written is specified by HL, and together with 
+the  record size  this determines  the amount of data to be written. An error 
+will be returned if the size exceeds 64k, thus limiting the maximum size of a 
+transfer.
+
+   After  writing the  data, the  random record field is adjusted to the next 
+record number  in the file (ie. HL is added on to it). The current record and 
+extent  fields are not used or altered. The file size field is updated if the 
+file has been extended.
+
+   The  record size  can be any value from 1...0FFFFh. Small record sizes are
+no less  efficient that  large record sizes so if desired the record size can 
+be set to one and the record count then becomes a byte count. It is desirable 
+to  write as much as possible with one function call since one large transfer 
+will be quicker than several small ones.
+
+   If  the number  of records  to write  (HL) is  zero then  no data  will be
+written, but  the size  of the file will be altered to the value specified by 
+the random record field. This may be either longer or shorter than the file's 
+current  size  and  disk  space  will  be  allocated  or  freed as  required. 
+Additional  disk space  allocated in  this way will not be initialized to any 
+particular value.
+
+  3.34   RANDOM BLOCK READ [FCB] (27H)
+
+     Parameters:    C = 27H (_RDBLK)
+                   DE = Pointer to opened FCB
+                   HL = Number of records to read
+     Results:       A = 01H if error (usually caused by end-of-file)
+                      =  0  if no error
+                   HL = Number of records actually read
+
+This  function is  the complement of the BLOCK WRITE function described above 
+and most of the same comments apply as regards its use. Again if large blocks 
+are read then it will be much faster than the normal CP/M operation.
+   For example if it is desired to read 20k from a file, it is better to read 
+the 20k  with one  function call rather than 20 separate function calls of 1k 
+each.  However it  makes no  difference whether  the 20k  read is done with a 
+record size  of 1  and a record count of 20k, with a record size of 20k and a 
+record count of 1, or any intermediate combination.
+
+   The number of records actually read is returned in HL. This may be smaller 
+than the  number of records requested if the end of the file was encountered. 
+In  this case  any partial record will be padded out with zeroes before being 
+copied to  the users  DTA. The  random record  field is adjusted to the first 
+record not read, ie. the value returned in HL is added on to it.
+
+  3.35   RANDOM WRITE WITH ZERO FILL [FCB] (28H)
+
+     Parameters:    C = 28H (_WRZER)
+                   DE = Pointer to opened FCB
+     Results:     L=A = 01H if error
+                      = 00H if no error
+
+   This  function is  identical to RANDOM WRITE (function 22h) except that if
+the file has to be extended, any extra allocated disk clusters will be filled 
+with zeroes before writing the data. 
+
+  3.36   GET DATE (2AH)
+
+     Parameters:    C = 2AH (_GDATE)
+     Results:      HL = Year 1980...2079
+                    D = Month (1=Jan...12=Dec)
+                    E = Date (1...31)
+                    A = Day of week (0=Sun...6=Sat)
+
+   This function simply returns the current value of the internal calender in 
+the format shown.
+
+  3.37   SET DATE (2BH)
+
+     Parameters:    C = 2BH (_SDATE)
+                   HL = Year 1980...2079
+                    D = Month (1=Jan...12=Dec)
+                    E = Date (1...31)
+     Results:       A = 00H if date was valid
+                        FFH if date was invalid
+
+   The supplied  date is  checked for  validity and if it is valid then it is 
+stored  as the  new date.  The validity  checks include full checking for the 
+number of  days in each month and leap years. If the date is invalid then the 
+current  date will  be left  unaltered. The  date is  stored in the real time 
+clock chip so it will be remembered when the machine is turned off.
+
+  3.38   GET TIME (2CH)
+
+     Parameters:    C = 2CH (_GTIME)
+     Results:       H = Hours (0...23)
+                    L = Minutes (0...59)
+                    D = Seconds (0...59)
+                    E = Centiseconds (always zero)
+
+   This function  returns the current value of the system clock in the format 
+shown.
+
+  3.39   SET TIME (2DH)
+
+     Parameters:    C = 2DH (_STIME)
+                    H = Hours (0...23)
+                    L = Minutes (0...59)
+                    D = Seconds (0...59)
+                    E = Centiseconds (ignored)
+     Results:       A = 00H if time was valid
+                        FFH if time was invalid
+
+   This function  sets the internal system clock to the specified time value. 
+If  the time  is invalid then register A will be returned as 0FFh to indicate 
+an error  and the  current time will be left unaltered. The time is stored in 
+the  real time  clock chip and so it will be remembered and kept correct when 
+the machine is turned off.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

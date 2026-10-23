@@ -1,0 +1,191 @@
+<html>
+
+<head>
+<title>MILC - Topic Talstelsels</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_18.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_20.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Talstelsels</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+      PROGRAMMEREN: BIN-DEC, DEC-BIN, HEX-DEC, DEC-HEX
+
+Nee, dit wordt geen vrolijke tekst. Dit is niet  bedoeld  om
+te lezen als  u  de  Clubguide  doorneemt,  maar  voor  alle
+programmeerartikelen kunt u eigenlijk het  beste  even  gaan
+zitten, als u even tijd hebt.
+
+De  bovengenoemde  getallenconversies  zijn  eigenlijk  niet
+bedoeld voor pure  basic-programmeurs,  want  daar  zijn  de
+volgende conversies mogelijk:
+
+PRINT &amp;B1000111
+PRINT BIN$(132)
+PRINT &amp;B4F
+PRINT HEX$(124)
+
+Maar voor andere basics (niet interresant voor  MSX-ers)  of
+een compiler (MCBC!) zijn  de  echte  technieken  onmisbaar!
+Deze  kunnen  namelijk  niet  altijd  met  de   bovenstaande
+commando's worden verwerkt. Natuurlijk zijn deze niet alleen
+daarvoor bruikbaar, als u de techniek snapt waarmee  gewerkt
+wordt is dit ook voor machinetaal en  hoge  programmeertalen
+erg interessant (bijvoorbeeld voor het maken van een (disk-)
+monitor.
+
+                    BINAIR naar DECIMAAL
+
+We gaan er even vanuit dat het binaire getal  in  A$  staat,
+met de toevallige waarde. Deze string  moet  omgezet  worden
+naar een integervariabele,  genaamd  A.  We  geven  hier  de
+listing, bekeken vanuit basic.
+
+100 DEFINT A-Z
+110 A$=&quot;10100101&quot;
+120 B=0:A=0:T=256
+130  T=T\2:B=B+1
+140  IF MID$(A$,B,1) = &quot;1&quot; THEN A=A+T
+150  IFB=8THEN70 ELSE 40
+160 PRINT A
+
+De techniek werkt als volgt: B is de teller. T is eerst 256,
+wordt IN de lus, VOOR de eerste bewerking  door  2  gedeeld,
+dus nu 128, daarna 64, 32 etc. geeft dus steeds de  decimale
+waarde van bit B aan. Ook B wordt voor de lus verhoogd met 1
+tot 1, dan 2 etc. en geeft de MID$-plaats voor het lezen van
+A$ aan, dat is dan bitnummer 7 tot 0.  Als  de  bit  op  &quot;1&quot;
+staat moet bij A de decimale bitwaarde  T  worden  opgeteld.
+Zodra de teller na de 8e lusdoorloping op 8 staat  wordt  de
+lus niet meer herhaald.
+
+                    DECIMAAL naar BINAIR
+
+100 DEFINT A-Z
+110 A=112:T=256:B=0
+120  T=T\2:B=B+1
+130  IFA=&gt;T THEN A=A-T: A$=A$+&quot;1&quot; ELSE A$=A$+&quot;0&quot;
+140  IFB=8 THENGOTO60ELSE30
+150 PRINT A$
+
+De techniek is eigenlijk gelijk -of juist omgekeerd- aan die
+van het BIN-DEC programma. B is  weer  de  bitteller,  T  de
+decimale waarde van die bit, A is de waarde  die  over  moet
+worden gezet naar A$. In  regel  130  kijk  ik  of  T  (nog)
+voorkomt in het getal A, zoja dan wordt T van A  afgetrokken
+en een &quot;1&quot; toegevoegd aan A$, zoniet wordt  alleen  een  &quot;0&quot;
+toegevoegd. Ook hier weer wordt aan het eind van de  lus  de
+teller gecontrolleerd.
+
+                 DECIMAAL naar HEXADECIMAAL
+
+Weer een hele andere techniek komt aan bod bij het  omzetten
+van decimaal naar hexadecimaal, interessant voor  het  maken
+van een monitor!
+
+100 DEFINTA-Z
+110 A=123 : A$=&quot;&quot; :B=0:C=0
+120 B=A\16:C=AMOD16
+130 B=B+48:IFB&gt;58 THENB=B+7
+140 A$=A$+CHR$(B)
+150 C=C+48:IFC&gt;58 THENC=C+7
+160 A$=A$+CHR$(C)
+170 PRINTA$
+
+We maken hier geen gebruik van lussen. De bedoeling is om  A
+(decimaal) om te zetten naar een hexadecimale  string  (A$).
+Dit doen we door in regel 120 eerst B gelijk te maken aan  A
+gedeeld door 16, dus het linkse karakter van de hexadecimale
+string. C wordt dan het restant van de  deling  door  middel
+van het commando mod. Vanaf regel 130 maken we van  B  en  C
+ascii-waarden,  die  we  kunnen  gebruiken  voor  CHR$.   De
+moeilijkheid bij hexadecimaal is dat bij de ascii-codes  van
+de MSX-letterset na de getallen eerst 7 andere tekens  komen
+voor de hoofdletters A,B,C enzovoort,  en  bij  hexadecimaal
+dus niet. Eerst tellen we 48 bij C op om  van  de  waarde  0
+asciiwaarde   &quot;0&quot;   te   krijgen.   in   dezelfde regel  nog
+wordt gecontroleerd indien B, NA de  verhoging,  een  waarde
+heeft hoger dan de asciiwaarde van &quot;9&quot;. Zo ja, dan  verhogen
+we B met 7! dus CHR$(B) is de  hexadecimale  waarde  van  C,
+dus we voegen CHR$(B) aan A$ toe.
+echter we wilden de waarde van  A.  We  gaan  dus  door  met
+hetzelfde, maar dan in plaats  van  B  dus  C.  Daarna  weer
+CHR$(C) toevoegen aan A$ en voil…! We hebben van decimale  A
+de hexadecimale A$ gemaakt.
+
+                 HEXADECIMAAL naar DECIMAAL
+
+Pfoe, we zijn er bijna door. Hier vinden we  onze  opgewekte
+programmeerstemming   niet   in   terug,   maar   goed.   De
+basic-versie:
+
+100 DEFINTA-Z
+110 A$=&quot;D2&quot;
+120 A=0:M$=&quot;&quot;:M=0
+130 M$=MID$(A$,1,1)
+140 M=ASC(M$)
+150 M=M-48
+160 IFM&gt;9 THENM=M-7
+170 A=M*16
+180 M$=MID$(A$,2,1)
+190 M=ASC(M$)
+200 M=M-48
+210 IFM&gt;9THENM=M-7
+220 A=A+M
+230 PRINTA
+
+Met zijn 13 regels is dit het langste programma uit de reeks
+van (voorlopig) 4. Zoals vermeld gaat het om de hexadecimale
+A$ om te zetten  naar  een  decimaal  getal.  A$  wordt  dus
+toevallig &quot;D2&quot;, mag u dus  zelf  veranderen.  In  regel  130
+wordt eerst het eerste teken (zie vorige programma)  van  A$
+in M$ gezet, daarna wordt M de  ascii-waarde  van  M$.  Daar
+wordt 48 van afgetrokken om de zelfde waarde te krijgen  dan
+de asciiwaarde, en dan wordt er weer gekeken  of  de  waarde
+hoger dan 9  ligt,  zo  ja,  dan  wordt  er  7  afgetrokken.
+Ditzelfde gebeurt dus voor de rechterkant van de  string  in
+regels 180-210.
+In regel 170 wordt de eindwaarde A gelijk aan 16 maal M,  en
+in regel 220 als de rechterkant van A$ in M staat wordt  die
+M bij A opgeteld. En joepie! We zijn er door!
+
+Ik hoop werkelijk dat er nog meer mensen  dan  1  (ik)  deze
+technieken interessant vinden. Inderdaad, het is saai,  maar
+anders kunt u MCBC, een hoge programmeertaal of  machinetaal
+nooit optimaal gebruiken.
+
+Ik wens u veel succes en hoop dat ik ook eens een reactie op
+mijn artikelen mag ontvangen.....
+
+                                 Ronald Zijlstra.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_18.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_20.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

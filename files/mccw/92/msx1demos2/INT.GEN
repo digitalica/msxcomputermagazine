@@ -1,0 +1,203 @@
+; Interference balls by
+; An-ti Silvast 2000
+
+; Run through GEN80 and type 
+; "> INT INTER.DAT" to run.
+; MSX1/64k/16k/VDP1 required and
+; recommended.
+
+; Sorry for little comments.
+
+; write to asilvast@cc.hut.fi.
+;
+
+ org #0100
+ jp start
+ include file.inc
+krupps db 0
+krupps2 db 1
+
+start:
+
+ call refile
+ ld a,2
+ call scrmode
+
+ call make2
+
+ ei
+ call col_t
+ call setup_nt
+
+;black bg
+ ld a,#00
+ out (#99),a
+ ld a,#87
+ out (#99),a
+
+; use 1 colour table
+; and 1 pattern table
+
+ ld a,#FF-#40-#20
+ out (#99),a
+ ld a,#83
+ out (#99),a
+ 
+ ld a,#0
+ out (#99),a
+ ld a,#84
+ out (#99),a
+
+kontikue:
+ 
+ ld a,(krupps)
+ inc a
+ cp 96
+ jp nz,ei
+ sub a
+ei:
+ ld (krupps),a
+ ld hl,file
+ add a,l
+ ld l,a
+
+ ld a,(krupps2)
+ dec a
+ cp #FF
+ jp nz,ei2
+ ld a,95
+ei2:
+ ld (krupps2),a
+ 
+ ld de,file2
+ add a,e
+ ld e,a
+
+ halt  ; vretrace
+ call screendump
+
+ call ispressed
+ jp nz,kontikue
+ 
+ sub a
+ call scrmode
+ ret
+  
+screendump:
+; de - image 2
+; hl - image 1
+ sub a
+ out (#99),a
+ ld a,#40
+ out (#99),a
+ 
+ ld c,16
+out_:
+ ld b,96
+in_:
+ ld a,(de) ; take image 1
+ xor (hl)  ; and mix it with 2
+ out (#98),a
+ inc hl
+ inc de
+ djnz in_
+
+ push de
+ ld de,96
+ add hl,de
+ pop de
+ 
+ push hl
+ ld hl,96
+ add hl,de
+ ld e,l
+ ld d,h
+ pop hl
+
+ dec c
+ jp nz,out_
+ ret
+ 
+setup_nt:
+; setup nametable in pseudolinear
+; mode
+ sub a
+ out (#99),a
+ ld a,#40+#18
+ out (#99),a
+ 
+ ld e,2
+outest:
+ halt
+ ld d,0
+ ld c,12
+outer:
+ halt
+ ld a,d
+ ld b,16
+inner:
+ out (#98),a
+ add a,12
+ djnz inner
+ ld a,d
+ ld b,16
+inner2:
+ out (#98),a
+ add a,12
+ djnz inner2
+
+ inc d
+ dec c
+ jp nz,outer
+
+ dec e
+ jp nz,outest
+ ret
+
+col_t:
+; setup colour table. We'll set it 
+; full of black and white, but it
+; could be anything, also any colours
+; for any row since we're in SCREEN 2.
+
+ sub a
+ out (#99),a
+ ld a,#40+#20
+ out (#99),a
+
+ ld d,24
+cinner:
+ halt
+ ld b,0
+couter:
+ ld a,#F0
+ out (#98),a
+ djnz couter
+ dec d
+ jp nz,cinner
+ ret
+
+platz equ 7
+
+make2:
+; this is where we copy the other 
+; image to be XORred with the original
+; The one we use is 7 columns displaced,
+; (constant platz)
+; it could of course be anything at 
+; all.
+
+ ld hl,file+3172-platz*96
+ ld de,file2
+ ld bc,platz*96
+ ldir
+
+ ld hl,file
+ ld de,file2+platz*96
+ ld bc,3172-platz*96
+ ldir
+
+ ret
+
+file equ $ ; image 1
+file2 equ $+3072 ; image 2

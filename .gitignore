@@ -20,5 +20,6 @@ pnpm-debug.log*
 .DS_Store
 .idea/
 
-# local copy of the archive files (mounted into the container)
-files/
+# page viewer tiles: too large for git, they live in the files image
+files/mcm_dzi/
+*.part

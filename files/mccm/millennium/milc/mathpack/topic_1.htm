@@ -1,0 +1,362 @@
+<html>
+
+<head>
+<title>MILC - Topic Mathpack routines</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Mathpack routines</b><br>
+    <i>MCCM/WR/JvdM</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;De volgende 2 routines horen bij elkaar. Zij kontroleren of een ingetypte
+;numerieke ascii-string voldoet aan de voorgeschreven systax zoals die geldt
+;voor basic programma's.
+
+;------------------------------
+;CHECK SYNTAX NUMERIEKE ASCII_$
+;Input: HL = pointer $
+;------------------------------
+CHK_NUM PUSH HL
+        EXX
+        POP  HL         ;Adres bewaren in HL' voor evt. checken ven exponent
+        EXX
+        LD   B,(HL)     ;$-Lengte = teller
+        INC  HL         ;Pointer naar 1e karakter
+        LD   A,(HL)     ;Haal 1e karakter
+        INC  HL         ;Pointer +1
+        DEC  B          ;Teller -1
+        CP   &quot;&amp;&quot;        ;Decimale notatie ?
+        JP   NZ,CHKN_06 ;Ja
+
+;--&gt; Hier indien geen decimale notatie, 2e karakter
+
+        LD   A,(HL)     ;Haal 2e karakter (na &quot;&amp;&quot; teken)
+        INC  HL         ;Pointer +1
+        DEC  B          ;Waren er maar 1 of 2 karakters ?
+        JP   C,CHKN_18  ;Ja   (fout)
+        JP   Z,CHKN_18  ;Ja   (fout)
+        AND  #DF        ;Uppercase karakter
+        CP   &quot;H&quot;        ;Hex notatie ?
+        JR   Z,CHKN_03  ;Ja
+        CP   &quot;B&quot;        ;Binaire notatie ?
+        JP   NZ,CHKN_18 ;Nee   (fout)
+
+;--&gt; Hier indien binaire notatie
+
+        LD   A,#10
+        CP   B          ;Meer dan 16 binaire karakters ?
+        JP   C,CHKN_18  ;Ja   (fout)
+CHKN_01 LD   A,(HL)     ;Haal karakter
+        INC  HL         ;Pointer +1
+        CP   &quot;0&quot;        ;Binair karakter ?
+        JR   Z,CHKN_02  ;Ja
+        CP   &quot;1&quot;        ;Binair karakter ?
+        JP   NZ,CHKN_18 ;Nee   (fout)
+CHKN_02 DJNZ CHKN_01
+        OR   A          ;Clear carry
+        RET             ;(Binaire notatie is oke)
+
+;--&gt; Hier indien hex. notatie
+
+CHKN_03 LD   A,#04
+        CP   B          ;Meer dan 4 hex.karakters ?
+        JP   C,CHKN_18  ;Ja   (fout)
+CHKN_04 LD   A,(HL)     ;Haal karakter
+        INC  HL         ;Pointer +1
+        CP   #30        ;Cijfer of letter ?
+        JP   C,CHKN_18  ;Nee   (fout)
+        CP   #3A        ;Cijfer ?
+        JR   C,CHKN_05  ;Ja
+        AND  #DF        ;Uppercase letter
+        CP   #47        ;Hex. letter ?
+        JP   NC,CHKN_18 ;Nee   (fout)
+        CP   #41        ;Hex. letter ?
+        JP   C,CHKN_18  ;Nee   (fout)
+CHKN_05 DJNZ CHKN_04
+        OR   A          ;Clear carry
+        RET             ;(Hex notatie is oke)
+
+;--&gt; Hier indien decimale notatie (+, -, punt of cijfer verlangd)
+
+CHKN_06 CP   &quot;+&quot;        ;Plus-teken ?  (v&cent;&cent;r getal)
+        JR   Z,CHKN_07  ;Ja
+        CP   &quot;-&quot;        ;Min-teken ?   (v&cent;&cent;r getal)
+        JR   Z,CHKN_07  ;Ja
+        CP   #2E        ;Punt ?
+        JR   Z,CHKN_08  ;Ja   (verder cijfers zonder punt verlangd)
+        CP   #30        ;Cijfer ?
+        JP   C,CHKN_18  ;Nee   (fout)
+        CP   #3A        ;Cijfer ?
+        JP   NC,CHKN_18 ;Nee   (fout)
+        XOR  A
+        OR   B          ;Was er maar 1 karakter ('n cijfer) aanwezig ?
+        RET  Z          ;Ja   (decimale notatie oke)
+        JR   CHKN_09    ;(1e cijfer gevonden, nog geen punt)
+
+;--&gt; Hier indien 1e karakter &quot;+&quot; of &quot;-&quot; teken was (punt of cijfer verlangd)
+
+CHKN_07 XOR  A
+        OR   B          ;Geen karakters meer aanwezig ?
+        JP   Z,CHKN_18  ;Nee   (fout)
+        LD   A,(HL)     ;Haal 2e karakter (na +/- teken)
+        INC  HL         ;Pointer +1
+        DEC  B          ;Teller -1
+        CP   #2E        ;Punt ?
+        JR   Z,CHKN_08  ;Ja    (verder cijfers zonder punt verlangd)
+        CP   #30        ;Cijfer ?
+        JP   C,CHKN_18  ;Nee   (fout)
+        CP   #3A        ;Cijfer ?
+        JP   NC,CHKN_18 ;Nee   (fout)
+        XOR  A
+        OR   B          ;Laatste karakter gehad ?
+        RET  Z          ;Ja   (notatie oke)
+        JR   CHKN_09    ;Nee  (Cijfer gevonden, nog geen punt)
+
+;--&gt; Hier indien punt gevonden en nog geen cijfers
+
+CHKN_08 XOR  A
+        OR   B          ;Geen karakters meer aanwezig ?
+        JP   Z,CHKN_18  ;Nee   (fout)
+        LD   A,(HL)     ;Haal volgende karakter
+        INC  HL         ;Pointer +1
+        DEC  B          ;Teller -1
+        CP   #30        ;Cijfer of letter ?
+        JP   C,CHKN_18  ;Nee   (fout)
+        CP   #3A        ;Cijfer ?
+        JP   NC,CHKN_18 ;Nee   (fout)
+        XOR  A
+        OR   B          ;Laatste karakter gehad ?
+        RET  Z          ;Ja   (notatie oke)
+        JR   CHKN_12    ;(punt + 1e cijfer gevonden)
+
+;--&gt; Hier als er 1 cijfer is gevonden en nog geen punt
+
+CHKN_09 LD   A,(HL)
+        INC  HL
+        CP   #2E        ;Punt ?
+        JR   NZ,CHKN_10 ;Nee
+        DEC  B          ;Ja, dan teller -1, Laatste karakter gehad ?
+        RET  Z          ;Ja    (notatie oke)
+        JR   CHKN_12    ;Nee   (punt gevonden na cijfers)
+CHKN_10 CP   #30        ;Cijfer of letter ?  (v&cent;&cent;r dec.punt)
+        JP   C,CHKN_18  ;Nee   (fout)
+        CP   #3A        ;Cijfer ?  (v&cent;&cent;r dec.punt)
+        JR   NC,CHKN_11 ;Nee
+        DJNZ CHKN_09    ;Ja,  dan check next kar.
+        OR   A          ;Clear carry
+        RET             ;(Decimale notatie oke)
+;-------
+CHKN_11 DEC  B
+        AND  #DF        ;Uppercase
+        CP   #44        ;Letter &quot;D&quot; ?
+        JR   Z,CHKN_14  ;Ja   (wetenschappelijke notatie)
+        CP   #45        ;Letter &quot;E&quot; ?
+        JR   Z,CHKN_14  ;Ja   (wetenschappelijke notatie)
+        JP   CHKN_18    ;Nee   (fout)
+
+;--&gt; Hier als cijfer(s) + punt gehad, cijfer of exponentletter verlangd
+
+CHKN_12 LD   A,(HL)     ;Haal kar.
+        INC  HL         ;Pointer +1
+        CP   #30        ;Cijfer of letter ?
+        JR   C,CHKN_18  ;Nee   (fout)
+        CP   #3A        ;Cijfer ?
+        JR   NC,CHKN_13 ;Nee
+        DJNZ CHKN_12    ;Ja   check next kar.
+        OR   A          ;Clear carry
+        RET             ;(Notatie oke)
+;------
+CHKN_13 DEC  B
+        AND  #DF        ;Uppercase kar.
+        CP   #44        ;Letter &quot;D&quot; ?
+        JR   Z,CHKN_14  ;Ja
+        CP   #45        ;Letter &quot;E&quot; ?
+        JR   NZ,CHKN_18 ;Nee   (fout)
+
+;--&gt; Wetenschappelijke notatie, letter &quot;D&quot; of &quot;E&quot; gehad
+;   + of - of cijfer verlangd
+
+CHKN_14 XOR  A
+        OR   B          ;Alle karakters gehad ?
+        JR   Z,CHKN_18  ;Ja   (fout)
+        LD   A,(HL)     ;Haal karakter
+        CP   &quot;-&quot;        ;Min-teken ?
+        JR   Z,CHKN_15  ;Ja
+        CP   &quot;+&quot;        ;Plus-teken ?
+        JR   NZ,CHKN_16 ;Nee
+
+;--&gt; Letter &quot;D&quot; of &quot;E&quot;  &amp;  &quot;-&quot; of &quot;+&quot; gehad, nog 1 of 2 cijfers verlangd
+
+CHKN_15 INC  HL         ;Pointer +1
+        DEC  B          ;Alle karakters gehad ?
+        JR   Z,CHKN_18  ;Ja   (fout)
+
+;--&gt; Hier indien &quot;D&quot; of &quot;E&quot; gehad &amp; wel of geen &quot;+&quot; of &quot;-&quot; teken
+;    (nog 1 of 2 cijfers voor exponent verlangd)
+
+CHKN_16 LD   A,#02
+        CP   B          ;Meer dan 2 karakters over ?
+        JR   C,CHKN_18  ;Ja   (fout)
+CHKN_17 LD   A,(HL)
+        INC  HL
+        CP   #30        ;Cijfer ?
+        JR   C,CHKN_18  ;Nee   (fout)
+        CP   #3A        ;Cijfer ?
+        JR   NC,CHKN_18 ;Nee   (fout)
+        DJNZ CHKN_17
+        CALL CHK_EXP    ;Check waarde exponent (Sets carry indien te groot)
+        RET  NC         ;Return indien exponent oke
+        LD   HL,TEXT_2  ;Txtpointer `Waarde exponent te groot'
+        JR   CHKN_19
+
+;--&gt; Foutafhandeling
+
+CHKN_18 LD   HL,TEXT_1  ;Txtpointer `Syntax fout'
+CHKN_19 CALL MESSAGE    ;Message naar scherm
+        RET
+;---------------
+TEXT_1  DEFB &quot;Syntax fout in ingetypte waarde&quot;,#00
+TEXT_2  DEFB &quot;Waarde van exponent is te groot&quot;,#00
+;---------------
+MESSAGE NOP             ;Hier komt de routine om foutmelding naar scherm
+                        ;te sturen
+        RET
+;-------------------------
+;CHECK WAARDE VAN EXPONENT   page 0
+;-------------------------
+CHK_EXP DEC  HL
+        LD   A,(HL)     ;Haal laatste karakter = cijfer van exponent
+        SUB  #30        ;Conversie naar binair
+        LD   E,A        ;Opslaan in `E'
+        DEC  HL
+        LD   A,(HL)     ;Haal voorlaatste karakter
+        CP   #2D        ;&quot;-&quot; Teken ?
+        JR   Z,CHK_EX2  ;Ja   (neg. exponent 1 decade)
+        CP   #2B        ;&quot;+&quot; Teken ?
+        JR   Z,CHK_EX3  ;Ja   (pos. exponent 1 decade)
+        CP   #3A        ;Cijfer ?
+        JR   C,CHK_EX1  ;Ja   (2 decades)
+        CP   #44        ;Letter `D' ?
+        JR   Z,CHK_EX3  ;Ja   (pos. exponent 1 decade)
+        CP   #45        ;Letter `E' ?
+        JR   Z,CHK_EX3  ;Ja   (pos. exponent 1 decade)
+
+;--&gt; Hier indien exponent 2 cijfers
+
+CHK_EX1 SUB  #30        ;Conversie naar binair 1e cijfer
+        LD   C,A        ;1x
+        ADD  A,A        ;2x
+        ADD  A,A        ;4x
+        ADD  A,C        ;5x
+        ADD  A,A        ;10x
+        ADD  A,E        ;Waarde exponent 2 cijfers
+        LD   E,A        ;Opslaan in `E'
+        DEC  HL
+        LD   A,(HL)
+        CP   #2D        ;&quot;-&quot; Teken ?
+        JR   NZ,CHK_EX3 ;Nee  (pos. exponent 2 decades)
+
+;--&gt; Hier indien neg. exponent
+
+CHK_EX2 SET  7,E        ;Set bit 7 als merkteken `negatief'
+
+;--&gt; Plaats van decimale punt bepalen
+
+CHK_EX3 EXX             ;HL' = Pointer naar string (lengte byte)
+        PUSH HL
+        EXX
+        POP  HL         ;HL = Pointer naar string (lengte byte)
+        LD   B,#00      ;Preset teller voor aantal cijfers v&cent;&cent;r de punt
+        LD   C,B        ;C = #00 = teller voor aantal nullen achter de punt
+CHK_EX4 INC  HL         ;Pointer naar karakter
+        LD   A,(HL)     ;Haal karakter
+        CP   #30        ;Een nul ?
+        JR   Z,CHK_EX4  ;Ja   (negeren)
+        CP   #2E        ;Punt achter nul(len) ? of 1e kar. een punt
+        JR   Z,CHK_EX7  ;Ja   (Nullen achter de punt tellen)
+
+;Hier indien 1e karakter geen nul en ook geen punt is
+
+CHK_EX5 CP   #2E        ;Punt ?
+        JR   Z,CHK_EX8  ;Ja
+        CP   #44        ;Letter `D' of `E'
+        JR   NC,CHK_EX8 ;Ja
+        INC  B          ;Nee,   tel dan aantal cijfers v&cent;&cent;r de punt
+                        ; of v&cent;&cent;r &quot;D&quot; of &quot;E&quot; indien er geen punt is
+        INC  HL
+        LD   A,(HL)     ;Haal karakter
+        JR   CHK_EX5    ;(Check next)
+
+;--&gt; Nullen achter de punt tellen bij 0.0000xxxxxxx (of .0000xxxxxxxxxx)
+
+CHK_EX6 INC  C          ;Tel aantal nullen achter de punt
+CHK_EX7 INC  HL
+        LD   A,(HL)
+        CP   #30        ;Een nul ?
+        JR   Z,CHK_EX6  ;Ja
+
+;--&gt; Check waarde exponent
+
+CHK_EX8 BIT  7,E        ;Negatieve exponent ?
+        JR   NZ,CHK_EX9 ;Ja
+        LD   A,63       ;Max. waarde indien geen nullen achter de punt
+        ADD  A,C        ;+ Aantal nullen na punt = Re‰le max. waarde exponent
+        SUB  E          ;Exponent te groot ?
+        RET  C          ;Ja
+        XOR  A
+        OR   B          ;Zijn er cijfers v&cent;&cent;r de punt ?
+        RET  Z          ;Nee
+        LD   A,63       ;Max. waarde indien geen cijfers v&cent;&cent;r de punt
+        SUB  B          ;Minus aantal cijfers v&cent;&cent;r de punt
+                        ;= re‰ele max. waarde exponent
+        SUB  E          ;Exponent te groot ?
+        RET             ;(Carry set indien ja,  else no carry)
+
+;--&gt; Check waarde negatieve exponent
+
+CHK_EX9 RES  7,E        ;Reset markeringsbit `neg.exponent'
+        LD   A,63       ;Max. waarde indien geen cijfers v&cent;&cent;r de punt
+        ADD  A,B        ;Plus aantal cijfers v&cent;&cent;r de punt
+                        ;= re‰ele max. waarde exponent
+        SUB  E          ;Exponent te groot ?
+        RET  C          ;Ja
+        XOR  A
+        OR   C          ;Zijn er nullen v&cent;&cent;r en achter de punt ?
+        RET  Z          ;Nee
+        LD   A,63       ;Max. waarde indien geen nullen achter de punt
+        SUB  C          ;Re‰ele max. waarde exponent
+        SUB  E          ;Exponent te groot ?
+        RET             ;Carry set indien ja, else no carry
+;---------------------------------------------------------------
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

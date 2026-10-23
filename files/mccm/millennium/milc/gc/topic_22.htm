@@ -1,0 +1,211 @@
+<html>
+
+<head>
+<title>MILC - Topic Schuiven en roteren</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_21.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_23.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Schuiven en roteren</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MACHINETAAL:
+
+            S C H U I V E N   E N   R O T E R E N
+           =======================================
+
+Ik heb nu al een aantal mensen  gesproken  die  in  principe
+best  in  staat  moeten  zijn  om  een  werkend  machinetaal
+programma te schrijven. Ze  kennen  de  meeste  belangerijke
+instrukties wel, maar tot mijn verbazing blijken  roteer  en
+schuifinstrukties  niet  tot  deze  elementaire  kennis   te
+vallen. Dit vind ik raar omdat deze soort  instrukties  niet
+echt moeilijk zijn en ze vooral bij grafische software nogal
+eens gebruikt moeten worden. Gevorderde programmeurs  kunnen
+het eerste stuk van het nu volgende artikel  wel  overslaan,
+maar ik raad ze toch aan om het laatste deel te lezen  omdat
+daar interessante tips staan over vermenigvuldigen en delen.
+
+Ik ga er vanaf nu verder vanuit dat u  een  lijst  hebt  met
+MNEMONICS (=instruktie tabellen) + Opcodes (=de code van een
+instruktie) hebt. Hebt u deze niet, zorg dan dat  u  er  ‚‚n
+krijgt omdat u anders  NOOIT  in  staat  zult  zijn  om  een
+behoorlijk programma te schrijven, omdat u niet  zult  weten
+hoe  de  vlaggen  be‹nvloed  worden  bij  een   willekeurige
+instruktie.
+
+(Nvdr: deze  tabellen  zullen  in  gedeelten  op  de  paper-
+enclosure  worden  gepubliceerd.  Deze  keer  de  tabel  met
+schuif- en roteerinstrukties.)
+
+Er  zijn  twee  soorten  schuif  en  roteerinstrukties,  nl.
+logische en rekenkundige, maar het is in  de  praktijk  niet
+nodig dat u ze uit elkaar kunt  houden.  Als  u  de  werking
+ervan weet is dat goed genoeg.
+
+        Cy = De Carry vlag van het F register
+             Dus niet het C register
+
+        Bit:  76543210
+RLCA     Cy &lt; 7 &lt;--- 0   RLCA = Rotate
+                                Left
+                                Carry
+                                Accumulator
+
+Dit betekent zoiets als  Roteer  de  Accu  Linksom  naar  de
+Carry. Bit 7 van het A register komt in de Cy vlag te staan,
+waarna alle bits van het A  register  1  plaats  naar  links
+opschuiven. Het zevende bit komt op de plaats van bit 0
+
+Vb. SCF     ; (Set Cy vlag     ==&gt; Cy = 1)
+    CCF     ; (Invert Cy vlag  ==&gt; Cy = 0)
+    LD A,33 ; (A = 10100001B  Cy = 0)
+    RLCA    ; (A = 01000011B  Cy = 1)
+
+RRCA werkt precies andersom, hier roteert alles naar  rechts
+     en komt de inhoud van Bit 0 van register A in de Cy.
+
+Dit is even een voorbeeld van een roteerinstruktie. Als u in
+een MNEMONICS tabellenlijst kijkt zult u zien dat alles daar
+nog veel duidelijker in staat. U  zult  bij  de  instrukties
+plaatjes aantreffen  met  pijlen  die  de  richting  van  de
+verschillende bewegingen aangeven.
+
+Als  u deze  tabellen eens  even bestudeert,  dan zult u ook 
+zien dat  andere schuifinstrukties  ook met andere registers 
+gedaan kunnen worden, of zelfs met bytes in het geheugen.
+
+De instukties RLD en RRD vallen een beetje op door hun  vele
+pijltjes  bij  de  uitleg.  Het  praktische  nut  van   deze
+instrukties is mij nog nooit opgevallen.  Theoretisch  wordt
+een 12  bits  woord  4  bits  opgeschoven  en  worden  de  4
+afgestoten bits aan de andere kant  weer  neergezet.  De  12
+bits worden door het A register en byte (HL) gevormd.
+
+Vb. A = 00001111B  (HL) = 10101001B   A = 16  (HL) = 196
+    RLD
+    A = 00001010B  (HL) = 10011111B   A = 10  (HL) = 159
+    RLD
+    A = 00001001B  (HL) = 11111010B   A = 09  (HL) = 250
+    RLD
+    A = 00001111B  (HL) = 10101001B   A = 16  (HL) = 196
+
+Als iemand een toepassing voor deze beide instrukties heeft,
+dan wil ik het graag horen.
+
+Goed, dan komt nu het deel dat ook nog interessant kan  zijn
+voor de wat gevorderde programmeurs. Als je een byte schuift
+dan is dat hetzelfde als een vermenigvuldiging of een deling
+door 2, zolang er maar geen bit door het schuiven verdwijnt.
+Het antwoordt zou in zo'n geval groter dan  255  worden,  en
+dat kan niet bij een 8 bits getal. Het getal  dat  verdwijnt
+komt altijd in de Cy terecht. Dit verklaart meteen  de  naam
+van dit bit. Een 'Carry  overflow' is  namelijk  de  Engelse
+term voor het wegvallen van een bit. Als je alleen maar  een
+vermenigvuldiging of deling door 2 kunt  doen,  dan  kom  je
+niet  erg  ver.  Het  is  echter  heel  gemakkelijk  om  een
+vermenigvuldiging  met  b.v.  25  te   maken   als   je   de
+vermenigvuldiging opsplitst.
+
+4 x 25 = 100
+4 x (16 + 8 + 1) = 4 x 25 = 100
+
+Als de vermenigvuldigingsfaktor dus niet een macht van  twee
+is, dan moet u deze faktor in machten van 2 opsplitsen zoals
+hierboven  vermeld  staat.  Ik  kan  hier  alleen  maar  het
+vermenigvuldigen en delen met integers behandelen.
+
+Dan nu het praktische voorbeeld:
+
+LD A,4   ; De startwaarde
+
+LD B,A   ; Bewaar faktor A x 2^0 = 1
+
+RLCA     ; A x 2
+RLCA     ; A x 2
+RLCA     ; A x 2 ==&gt; totaal = x 8
+LD C,A   ; Bewaar faktor
+
+RLCA     ; A x 2 ==&gt; totaal = x 16
+
+ADD A,B  ; Tel B erbij op
+ADD A,C  ; Tel C erbij op. In A staat nu het antwoord !
+
+Hierboven staat dus: 4x1 + 4x8 + 4x16
+                   = 4 x (1+8+16)
+                   = 4 x 25
+                   = 100
+
+Een deling is niet volgens dit principe te maken, alleen als
+u een getal door een macht van 2 wilt  delen  gaat  dat.  In
+alle andere gevallen is herhaald aftrekken de enige methode.
+
+192 / 16
+
+LD A,192
+SRL A    ; SRL = Shift Right Logic
+SRL A
+SRL A
+SRL A    ; Totaal gedeeld door 2^4 = 16
+
+U mag hier niet van de  snelle  roteer  instrukties  gebruik
+maken omdat verdwijnende bits dan weer aan de linker kant in
+het register geschoven worden. Dit  kan  niet  de  bedoeling
+zijn, omdat dat verkeerde antwoorden oplevert.
+
+192 / 24 = 8
+192 - n x 24 = 0 ==&gt; n = 8
+
+        LD A,192     ; Beginwaarde
+        LD B,255
+_SP1:   INC B
+        AND A
+        SUB 24       ; De deler
+        JP NZ,_SP1   ; Zolang A niet 0 is, blijven aftrekken
+
+        LD A,B       ; Zet het antwoord in A
+
+Goed, dat was het dan voor deze keer. Ik heb natuurlijk lang
+niet  alles  behandeld,  maar  u  kunt  zelf  ook  wel   wat
+uitproberen. Pas met de deling  op  dat  u  alleen  getallen
+deelt waar als antwoord een geheel getal uit komt.  Als  het
+toch anders uit kan komen, dan  moet  u  deze  routine  niet
+gebruiken omdat  het  dan  mogelijk  is  dat  de  lus  nooit
+onderbroken zal worden. Het komt in de  praktijk  toch  niet
+veel voor dat u in een routine wilt delen,  vermenigvuldigen
+komt echter redelijk vaak voor en ik hoop dat ik een  aantal
+mensen heb kunnen helpen.
+
+Veel programmeerplezier,
+                                            Alex van der Wal
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_21.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_23.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>Assembly line</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Albert Beevendorp">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 93, June-December">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#800000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#800000">
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../ciel/nl.html">[en] The Ciel MSX2+ Turbo</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        nummer
+        93,
+        juni-december&nbsp;2000<BR>
+</FONT><A HREF="../contents/nl.html#assemblyline1">Terug naar inhoud</A></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../kyokugen/nl.html">[en] Kyokugen</A></TD>
+</TR>
+<TR BGCOLOR="#886878">
+<TD ALIGN="center" colspan="3"><FONT COLOR="#FFFFFF">
+            Dit artikel is helaas alleen beschikbaar in het Engels.
+        </FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>the next level in hi-speed programming</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>Assembly line</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>Assembly programmers sometimes have problems with calculations. Some of them are quite simple as there are instructions for them, others might be a bit more complicated. Adding and subtracting values are common issue with the Z80. Multiplication and division are not. The R800 has an advantage when it comes to multiplication as it has an instruction for it. And introducing the next step in MSX Assembly resources... The MSX Assembly Page.</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#886878" HEIGHT="20"><B><I><A HREF="mailto:bifi@msxnet.org"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Albert Beevendorp</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par1">Mathematics in another way</A>
+<BR>
+<A HREF="#Par3">Explanations</A>
+<BR>
+<A HREF="#Par4">Multiplication using <TT>IMULT</TT></A>
+<BR>
+<A HREF="#Par5">Division using <TT>IDIV</TT></A>
+<BR>
+<A HREF="#Par6">Modulus using <TT>IMOD</TT></A>
+<BR>
+<A HREF="#Par9">Another way of dividing</A>
+<BR>
+<A HREF="#Par10">MSX Assembly Page</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="CENTER" BGCOLOR="#F8D0D8"><B><FONT COLOR="#000000">
+                                    References
+                                  </FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT"><FONT COLOR="#FFFFFF">1.</FONT>&nbsp;<A HREF="DIVIWORD.ASC"><FONT COLOR="#FFFFFF">DIVIWORD.ASC</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">2.</FONT>&nbsp;<A HREF="MULUBYTE.ASC"><FONT COLOR="#FFFFFF">MULUBYTE.ASC</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">3.</FONT>&nbsp;<A HREF="MULUWORD.ASC"><FONT COLOR="#FFFFFF">MULUWORD.ASC</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">4.</FONT>&nbsp;<A HREF="DIVIBYTE.ASC"><FONT COLOR="#FFFFFF">DIVIBYTE.ASC</FONT></A>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+<B>Mathematics in another way</B>
+<BR>
+Many articles have been written about the math-pack which is incorporated in the main-rom of any MSX computer. I found some routines which can be made easily and a lot faster in assembly. The routine <TT>IADD</TT> (i.e. <TT>HL=DE+HL</TT>) can be done with just one assembly instruction: <TT>ADD&nbsp;HL,DE</TT> but to be conform to what <TT>IADD</TT> does an <TT>EX&nbsp;DE,HL</TT> has to be added. The routine <TT>ISUB</TT> (i.e. <TT>HL=DE-HL</TT>) can be done in very much the same way, with the only exception the register exchange is necessary. The routines <TT>IMULT</TT> (i.e. <TT>HL=DE*HL</TT>, the routine published here isn&#8217;t the fastest multiplication routine though) and <TT>IDIV</TT> (i.e. <TT>HL=DE\HL</TT>) are included in this little source as well and note that <TT>IMOD</TT> (i.e. <TT>HL=DE&nbsp;MOD&nbsp;HL</TT>) uses the same routine as <TT>IDIV</TT>, with the exception the modulus is returned in HL:</P>
+<A NAME="Par2"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT>MATHPACK.ASM</TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+IADD:   EX    DE,HL           ; HL = DE + HL
+        ADD   HL,DE
+        RET
+
+ISUB:   EX    DE,HL           ; HL = DE - HL
+        AND   A               ; Reset Carry
+        SBC   HL,DE
+        RET
+
+IMULT:  EX    DE,HL           ; HL = DE * HL
+        PUSH  HL              ; Keep for subtraction later
+        PUSH  HL              ; Counter
+        POP   BC
+IMLTLP: ADD   HL,DE           ; ADD DE to HL BC times
+        DEC   BC
+        LD    A,B             ; Check if counter reached zero
+        OR    C
+        JR    NZ,IMLTLP
+        POP   DE              ; Result is DE too high
+        SBC   HL,DE           ; so correct this
+        RET
+
+IDIV:   EX    DE,HL           ; HL = DE \ HL
+        LD    A,E             ; Division by zero?
+        OR    D
+        JR    NZ,IDIVDO       ; Continue of not
+        LD    HL,0
+        LD    DE,0
+        SCF                   ; Set Carry to indicate an error
+        RET
+IDIVDO: LD    C,L             ; AC = HL
+        LD    A,H
+        LD    HL,0            ; HL = Modulus
+        LD    B,16            ; 16-bit division
+        OR    A               ; Start with carry reset
+IDIVLP: RL    C               ; AC = AC * 2
+        RLA                   ; (set Carry to bit 0)
+        RL    L               ; HL = HL * 2
+        RL    H               ; (reset Carry again (HL = 0))
+        PUSH  HL
+        SBC   HL,DE
+        CCF                   ; Carry set when Ok
+        JR    C,IDIVDN        ; Modulus cannot be &gt;= Value
+        EX    (SP),HL         ; Restore Modulus
+IDIVDN: INC   SP              ; Get Modulus from Stack
+        INC   SP
+        DJNZ  IDIVLP          ; Repeat for all bits
+; Shift last Carry-bit to divider
+        EX    DE,HL           ; DE = Modulus
+        RL    C               ; Carry to C
+        LD    L,C             ; HL = AC
+        RLA
+        LD    H,A
+        OR    A               ; Reset Carry (valid result)
+        RET
+
+IMOD:   CALL  IDIV            ; HL = DE MOD HL
+        EX    DE,HL           ; Modulus in HL
+        RET
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"></P>
+<A NAME="Par3"></A>
+<P CLASS="bodynoindent">
+<B>Explanations</B>
+<BR>
+The source contains 5 major calls which result in 4 routines. The first two are addition and subtraction. Because of the simplicity of these routines explaining how these work would be nonsense now. The routines for multiplication, division and modulus mathematics are explained right now.</P>
+<A NAME="Par4"></A>
+<P CLASS="bodynoindent">
+<B>Multiplication using <TT>IMULT</TT></B>
+<BR>
+There are a few methods for multiplying one value with another. In a way, two methods are explained in this first Assembly Line. The first method is quite simple to make and understand. I agree on the fact there are methods which are much faster and a second and faster solution will be provided in the next Assembly Line. In here I have taken a rather lazy approach. The routine actually does <TT>DE&nbsp;*&nbsp;HL&nbsp;-&nbsp;DE</TT>. That is because I didn&#8217;t reset one of the register pairs first. We need to multiply 123 with 234. The routine does the following, a step by step explanation: We make 123 a counter which is usually put in <TT>BC</TT>. The loop does <TT>HL&nbsp;=&nbsp;HL&nbsp;+&nbsp;DE</TT> exactly 123 times, so <TT>HL&nbsp;=&nbsp;123&nbsp;+&nbsp;234</TT>, so <TT>HL&nbsp;=&nbsp;357</TT>. Then <TT>HL&nbsp;=&nbsp;357&nbsp;+&nbsp;234</TT>, so <TT>HL&nbsp;=&nbsp;581</TT>. Then <TT>HL&nbsp;=&nbsp;581&nbsp;+&nbsp;234</TT>, so <TT>HL&nbsp;=&nbsp;815</TT> and after 123 times the result in <TT>HL</TT> would be 28905 because we started with 123 already in <TT>HL</TT>. So to correct the result we need to subtract 123 from <TT>HL</TT>. <TT>HL</TT> will become 28782.
+</P>
+<A NAME="Par5"></A>
+<P CLASS="bodynoindent">
+<B>Division using <TT>IDIV</TT></B>
+<BR>
+Just like multiplication there are a few methods to divide a value from another and in a way, two methods are explained in this first Assembly Line. First, we check whether we are going to attempt an illegal division by zero. According to correct math only 1 division by zero is legal, but not tested in this routine.
+</P>
+<A NAME="Par6"></A>
+<P CLASS="bodynoindent">
+<B>Modulus using <TT>IMOD</TT></B>
+<BR>
+For <TT>IMOD</TT> the exact same routine is called like <TT>IDIV</TT> and by swapping <TT>DE</TT> and <TT>HL</TT> the modulus result is written in <TT>HL</TT>. For more information about the actual division routine, read &#8220;Division using <TT>IDIV</TT>&#8221;.</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>The source of <TT>IDIV</TT> and <TT>IMOD</TT> can be found right with the following reference [<A HREF="DIVIWORD.ASC">1</A>] as the original file doesn&#8217;t have these routines.</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>More math appeared with the MSX&nbsp;turbo&nbsp;R, which contains two very useful instructions to do very fast multiplication: <TT>MULUB</TT> and <TT>MULUW</TT>. Note that both instructions are located in the R800 processor and the Z80 processor still needs routines to do the multiplication part. <TT>MULUB</TT> needs two 8-bit registers as input and the 16-bit result is output in <TT>HL</TT>. <TT>MULUW</TT> is a bit different. It needs two 16-bit registers as input and the 32-bit result is output to registers <TT>DE</TT> and <TT>HL</TT> (format <TT>DEHL</TT>). Clicking on the instruction the Z80 equivalents of <TT>MULUB&nbsp;A,B</TT> (reference [<A HREF="MULUBYTE.ASC">2</A>]) and <TT>MULUW&nbsp;HL,BC</TT> (reference [<A HREF="MULUWORD.ASC">3</A>]) can be found. Both routines check whether they are running on Z80 or R800 CPU, so both the R800 instruction as the Z80 routine which does the same multiplication are included in both sources including the check. I am aware of the fact a little bug remains in the Z80 equivalent of <TT>MULUW&nbsp;HL,BC</TT>.</P>
+<A NAME="Par9"></A>
+<P CLASS="bodynoindent">
+<B>Another way of dividing</B>
+<BR>
+Referring to a telephone conversation I once had with Jan van der Meer &mdash;&nbsp;who has passed away a few years ago&nbsp;&mdash; of a way to divide a number by 6 the easy way, he came up with a different solution to divide two bytes by each other. The source can be found in this reference [<A HREF="DIVIBYTE.ASC">4</A>] and in a nutshell, this is how it works: the routine subtracts the divider from the value you want the value from until you reach 0 or a value which lies below the divider. This will be the modulus. The result is the number of times the divider could go into the value.</P>
+<A NAME="Par10"></A>
+<P CLASS="bodynoindent">
+<B>MSX Assembly Page</B>
+<BR>
+A lot has happened between the release of the last two issues of MCCW. A dedicated website for MSX assembly programmers (either current or future ones) has become a quite worthy place with resources, articles, sources, downloads and links to other pages which have info about MSX assembly quite useful to programmers. Together with the <A HREF="http://www.msx.org/">MSX Resource Center</A> development forum the <A HREF="http://map.tni.nl/">MSX Assembly Page</A> will be the most valuable to all MSX assembly programmers. There is also an MSX development IRC channel. Information and the channel location, as well as a CGI:IRC client to it is available at <A HREF="http://msxbanzai.tni.nl/dev/">MSX Banzai!</A>.</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>I hope to meet many developers on the MSX development IRC channel. I also think we can help each other with a variety of programming problems and solutions, faster routines and other MSX development related issues.</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+<I>A short note from the editors:</I>
+</P>
+<A NAME="Par13"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+This article isn&#8217;t finished at all. We think that it lacks a thorough explanation of what is going on. The author did not have time to improve it, though. It may be beneficial to very experienced MSX programmers anyway. Of course I do not need to mention that there will be no Assembly Line part 2 and beyond.
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../ciel/nl.html">[en] The Ciel MSX2+ Turbo</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        nummer
+        93,
+        juni-december&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../kyokugen/nl.html">[en] Kyokugen</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

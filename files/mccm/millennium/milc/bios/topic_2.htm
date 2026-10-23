@@ -1,0 +1,120 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX Systeemadressen</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_3.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX Systeemadressen</b><br>
+    <i>Albert Beevendorp</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+In de MSX2 BIOS-calls worden nogal wat systeem adressen gebruikt om te kunnen
+werken. Deze tekstfile bevat het lijstje met systeem adressen. Deze dienen te
+worden gevuld met de juiste waarde zoals deze in die BIOS-call moet worden ge-
+bruikt:
+
+   Naam:        Adres:     Lengte:   Omschrijving:
+   TXTNAM       F3B3         2       Naamtabel    SCREEN 0
+   TXTCOL       F3B5         2       Kleurentabel SCREEN 0
+   TXTCGP       F3B7         2       Patroontabel SCREEN 0
+   TXTATR       F3B9         2       Sprite-attr. SCREEN 0
+   TXTPAT       F3BB         2       Sprite-patr. SCREEN 0
+   T32NAM       F3BD         2       Naamtabel    SCREEN 1
+   T32COL       F3BF         2       Kleurentabel SCREEN 1
+   T32CGP       F3C1         2       Patroontabel SCREEN 1
+   T32ATR       F3C3         2       Sprite-attr. SCREEN 1
+   T32PAT       F3C5         2       Sprite-patr. SCREEN 1
+   GRPNAM       F3C7         2       Naamtabel    SCREEN 2
+   GRPCOL       F3C9         2       Kleurentabel SCREEN 2
+   GRPCGP       F3CB         2       Patroontabel SCREEN 2
+   GRPATR       F3CD         2       Sprite-attr. SCREEN 2
+   GRPPAT       F3CF         2       Sprite-patr. SCREEN 2
+   MLTNAM       F3D1         2       Naamtabel    SCREEN 3
+   MLTCOL       F3D3         2       Kleurentabel SCREEN 3
+   MLTCGP       F3D5         2       Patroontabel SCREEN 3
+   MLTATR       F3D7         2       Sprite-attr. SCREEN 3
+   MLTPAT       F3D9         2       Sprite-patr. SCREEN 3
+   FORCLR       F3E9         1       Voorgrondkleur
+   BAKCLR       F3EA         1       Achtergrondkleur
+   BDRCLR       F3EB         1       Rand-kleur
+   ATRBYT       F3F2         1       Attribuut-byte (kleur)
+   SX           F562         2       Start X-coordinaat         (Bit-blitten)
+   SY           F564         2       Start Y-coordinaat         (Bit-blitten)
+   DX           F566         2       Eind  X-coordinaat         (Bit-blitten)
+   DY           F568         2       Eind  Y-coordinaat         (Bit-blitten)
+   NX           F56A         2       Aantal pixels horizontaal  (Bit-blitten)
+   NY           F56C         2       Aantal pixels vertikaal    (Bit-blitten)
+   CDUMMY       F56E         1       -- intern gebruik --       (Bit-blitten)
+   ARG          F56F         1       Richting                   (Bit-blitten)
+   L_OP         F570         1       Logic operator             (Bit-blitten)
+   CLOC         F92A         2       Adres van cursor
+   CMASK        F92C         1       Masker van cursor
+   DPPAGE       FAF5         1       Display-page (op beeldscherm)
+   ACPAGE       FAF6         1       Active page
+   LOGOPR       FB02         1       Logic operator
+   PATWRK       FC40         8       Patroon-buffer
+   SCRMOD       FCAF         1       Scherm-type-nummer
+   GXPOS        FCB3         2       X-positie
+   GYPOS        FCB5         2       Y-positie
+
+Bij een gedeelte van de tabel staat tussen haakjes Bit-blitten. Dit heeeft te
+maken met het in Basic gebruikte COPY-commando die te maken hebben met de VRAM.
+Ook kan er vanuit de VDP met de diskROM worden gecommuniceerd. Dit om files van
+of naar disk te lezen resp. schrijven. Wanneer dit moet gebeuren, moet de naam
+van de file als volgt worden opgegeven in machinetaal:
+    FNAAM: DEFB 34,&quot;d:filename.ext&quot;,34,0
+waarbij het adres van FNAAM in SX of DX moet komen. In SX als het geladen moet
+worden en (uiteraard) in DX als het weggeschreven moet worden.
+
+ L_OP kan 10 verschillende bytes krijgen:
+               0 - PSET
+               1 - AND
+               2 - OR
+               3 - XOR
+               4 - PRESET
+
+               8 - TPSET
+               9 - TAND
+              10 - TOR
+              11 - TXOR
+              12 - TPRESET
+
+Het klok-RAM is onderverdeeld in vier blokken van 13 adressen die de data
+met een lengte van 4 bits bevatten.
+     Blok 0 bevat de tijd en datum
+     Blok 1 bevat de tijd en datum voor het alarm
+     Blok 2 en 3 bevatten de scherminstellingen
+
+                                         Groetjes, Albert Beevendorp.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<html>
+
+<head>
+<title>MILC - Topic Uitlezen muis</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Uitlezen muis</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Het uitlezen van de joystick-poorten gaat via de PSG-registers. Raar 
+maar waar. In de PSG-chip zijn 2 &quot;general purpose&quot; registers vrij en 
+daar hebben ze de onder andere de joystick-ingangen aangehangen.
+
+De beschrijving van die 2 PSG-registers is als volgt:
+
+Register 14: Read-only. (op MSX BELANGRIJK! HIER KAN JE JE PSG ANDERS 
+                        MEE OPBLAZEN!)
+
+Bit 7: cassette-ingengssignaal
+bit 6: alleen gebruikt in Japanse MSX computers (= ??)
+bit 5: invoersignaal pin 7 (TRG 2)
+bit 4: invoersignaal pin 6 (TRG 1)
+bit 3: invoersignaal pin 4 (right)
+bit 2: invoersignaal pin 3 (left)
+bit 1: invoersignaal pin 2 (back)
+bit 0: invoersignaal pin 1 (forward)
+
+
+Register 15: Zowel lezen als schrijven.
+
+Bit 7: KANA led besturing (alleen Jap. MSX-en) 0=aan, 1=uit.
+bit 6: Keuze of register 14 betrekking heeft op joystickpoort 1 of 2
+       (1 = poort 2)
+bit 5: uitvoersignaal pin 8, poort 2
+bit 4: uitvoersignaal pin 8, poort 1
+bit 3: uitvoersignaal pin 7, poort 2
+bit 2: uitvoersignaal pin 6, poort 2
+bit 1: uitvoersignaal pin 7, poort 1
+bit 0: uitvoersignaal pin 6, poort 1
+
+
+PSG-registers lezen/schrijven gaat door het registernummer naar poort 
+&amp;HA0 te schrijven, waarna de waarde in poort &amp;HA1 kan worden geschreven, 
+of uitgelezen kan worden uit poort &amp;HA2. 
+
+
+De muis moet uitgelezen worden door 4 keer een joystick-poort uit te 
+lezen. In bits 3-0 van register 14 krijg je dan achtereenvolgens binnen:
+hoge deel van de X-offset (bit 7-4)
+lage deel van de X-offset (bit 3-0)
+hoge deel van de Y-offset (bit 7-4)
+lage deel van de Y-offset (bit 3-0)
+Deze offsets zijn negatief.
+
+Bit 4 (voor poort 1) moet steeds geinverteerd worden bij iedere 
+lees-aktie, zie listing...
+
+Een routine om de muis uit te lezen:
+
+
+        LD    D,&amp;B10010011     ; Dit is de invoer als poort 1 uitgelezen
+        LD    E,&amp;B00010000     ; wordt
+ 
+
+        LD    D,&amp;B11101100     ; En dit voor poort 2
+        LD    E,&amp;B00100000
+
+
+GTMOUS: ; LEES MUIS UIT. Invoer: D/E=.... Uitvoer: H=X-offset, L=Y-offset
+
+        LD    B,WACHT2        ; wacht de eerste keer langer
+        CALL  GTOFS2          ; Lees bit 7-4 van X-offset
+        AND   0FH
+        RLCA
+        RLCA
+        RLCA
+        RLCA
+        LD    C,A
+        CALL  GTOFST          ; Lees bit 3-0 van X-offset
+        AND   0FH
+        OR    C
+        LD    H,A             ; Sla komplete offset in A' op
+        CALL  GTOFST          ; Lees bit 7-4 van Y-offset
+        AND   0FH
+        RLCA
+        RLCA
+        RLCA
+        RLCA
+        LD    C,A
+        CALL  GTOFST          ; Lees bit 3-0 van Y-offset
+        AND   0FH
+        OR    C
+        LD    L,A             ; Sla komplete offset in L op
+        RET
+
+WACHT1: EQU   10              ; Wachtvariabele bij uitlezen muis. Laten staan.
+WACHT2: EQU   30              ; Idem
+
+GTOFST: LD    B,WACHT1
+GTOFS2: LD    A,15            ; Lees muis uit
+        OUT   (0A0H),A
+        LD    A,D
+        OUT   (0A1H),A
+        XOR   E
+        LD    D,A
+
+WACHT:  DJNZ  WACHT           ; Wacht even, de muis is nogal traag
+
+        LD    A,14
+        OUT   (0A0H),A
+        IN    A,(0A2H)
+        RET
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

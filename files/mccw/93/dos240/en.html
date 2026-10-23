@@ -1,0 +1,643 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>MSX-DOS 2 version 2.40</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Alex Wulms">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 93, June-December">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#800000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#800000">
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../notebook/en.html">[nl] VPB50 MSX notebook - revisited</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        issue
+        93,
+        June-December&nbsp;2000<BR>
+</FONT><A HREF="../contents/en.html#dos240">Back to contents</A></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../tunez2/en.html">Tunez 2 - Asterix edition</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>beyond normal MSX-DOS 2</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>MSX-DOS 2 version 2.40</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>
+After ASCII Corporation stopped with MSX I did not expect a new MSX-DOS 2 
+version. However, there now is an update available, from an entirely 
+unexpected direction! 
+</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#886878" HEIGHT="20"><B><I><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Alex Wulms</FONT></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par2">Installation</A>
+<BR>
+<A HREF="#Par5">Changes</A>
+<BR>
+<A HREF="#Par6">Aliases</A>
+<BR>
+<A HREF="#Par8">Internal variables and functions</A>
+<BR>
+<A HREF="#Par10">Memory</A>
+<BR>
+<A HREF="#Par11">More possibilities and conclusion</A>
+<BR>
+<A HREF="#Par14">New command line editor</A>
+<BR>
+<A HREF="#Par15">Length of command line</A>
+<BR>
+<A HREF="#Par16">New commands</A>
+<BR>
+<A HREF="#Par17">Disappeared commands</A>
+<BR>
+<A HREF="#Par18">New environment variables</A>
+<BR>
+<A HREF="#Par19">New default values of environment variables</A>
+<BR>
+<A HREF="#Par20">Added internal variables</A>
+<BR>
+<A HREF="#Par21">Added Internal Variable Functions</A>
+<BR>
+<A HREF="#Par22">Miscellaneous changes</A>
+<BR>
+<A HREF="#Par23">Changed memory usage</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Note from the translator</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<I>This article is quite old, and therefore might 
+contain some outdated remarks. Out of respect for the author, I have not changed 
+anything, but when necessary I will give comments <I>in italics</I>. In this first 
+comment I would like to start with mentioning that in the meantime there have been 
+some bug fixes and the current version is v2.41. Also, it is not really a new 
+MSX-DOS version, but rather an update of the command-interpreter, 
+<TT>COMMAND2.COM</TT>.</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Ordering information</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+
+<I>MSX-DOS 2.41 used to cost about EUR&nbsp;10, but has become freeware in 2003. You can download it <A HREF="http://www.funet.fi/pub/msx/mirrors/msx2.com/sources/command241.zip">here</A>. The sources are available <A HREF="http://www.funet.fi/pub/msx/mirrors/msx2.com/sources/command241src.zip">here</A>. A special version for FAT16 (by Okei) can be found <A HREF="http://www.funet.fi/pub/msx/mirrors/msx2.com/sources/command241fat16.zip">here</A>. </I>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+For the people who read <SPAN CLASS="sc">MCCM</SPAN> 77 thoroughly, the news about MSX-DOS version 
+is not really a surprise. In the article about the Multi Mente utilities this 
+new version was already mentioned in a letter of its creator, Fokke Post. 
+Fokke followed <SPAN CLASS="sc">MCCM</SPAN>&#8217;s advise and released the new version as a patch.
+</P>
+<A NAME="Par2"></A>
+<P CLASS="bodynoindent">
+<B>Installation</B>
+<BR>
+The new MSX-DOS 2 consists out of a new version of the command interpreter 
+<TT>COMMAND2.COM</TT>, and of a new series of (English) help files with in it extensive 
+explanations about all old, changed and new MSX-DOS commands. Thee disk contains 
+an install-program, two data files, a PMA-archive with in it all new help files, 
+a text file with an overview of all modifications and a set of external 
+commands which from now on belong to MSX-DOS 2 by default. With the 
+install-program and one of the two data files the old version of MSX-DOS 2 can 
+be patched to the new version. It is possible to patch MSX-DOS 2 version 2.20 
+as well as version 2.31, since one of the data files is used for patching 
+version 2.20 and the other datafile belongs to version 2.31. The latest 
+MSX-DOS 2 can easily be installed by copying the correct datafile to a disk 
+with <TT>COMMAND2.COM</TT> and then launching the install-program. It is wise though 
+to save an old <TT>COMMAND2.COM</TT> version separately, in case something goes wrong.
+</P>
+<A NAME="Par3"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Apart from a new version of the command interpreter you will also get three new 
+external commands. Those are the latest versions of <TT>TO.COM</TT>, <TT>TREE.COM</TT> and 
+<TT>RRAMDISK.COM</TT>. Those three programs are already available for some time in the 
+public domain circuit. It is nice though to have them for free with this new 
+MSX-DOS 2 version. Especially for the people who did not have those utilities yet.
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Furthermore, there are yet two handy batch files on the disk. It is highly 
+likely there will be more and/or other batch files on the final version because 
+Fokke is still working on MSX-DOS 2.4. One of the batch files is mainly meant to 
+demonstrate the new possibilities and the other sets up several handy 
+<I>aliases</I> for you. The use of aliases is one of the new features of this 
+MSX-DOS. The people who already know this term from other operating systems, 
+like UNIX, from which ASCII Corporation already got a lot of inspiration for  MSX-DOS 
+functions, will now probably jump in excitement. 
+For the other MSX-freaks an explanation about this oh-so-useful option will 
+follow below.
+</P>
+<A NAME="Par5"></A>
+<P CLASS="bodynoindent">
+<B>Changes</B>
+<BR>
+MSX-DOS 2 version 2.40 has got a lot of new possibilities compared to the 
+previous versions of MSX-DOS 2. I myself find the progress in 
+user-friendliness from version 2.31 to version 2.40 almost as large as the 
+progress from MSX-DOS 1 to MSX-DOS 2. An overview of the new 
+possibilities can be found in a separate box. Of all those changes I am most 
+pleased with the possibility to use aliases and with the new type of 
+batch files in which commands like <TT>GOTO</TT> can be used. In addition, I 
+find it very useful to be able to access the internal variables and functions 
+of MSX-DOS 2; there clearly is a programmer speaking here. However, the 
+disappearance of some key-combinations like <TT>CTRL-U</TT> for clearing the 
+line are less useful. <I>(Note: the line can also be cleared by pressing 
+ESC.)</I>
+</P>
+<A NAME="Par6"></A>
+<P CLASS="bodynoindent">
+<B>Aliases</B>
+<BR>
+An alias can best be compared with a batch file which consists only out of one 
+line. However, by using the new command-separation mark (<TT>^</TT>) several commands can 
+be put in one alias. The big advantage to batch files however, is that aliases 
+are directly in the computer&#8217;s ram. That means that they do not have to be 
+loaded from disk first. So in fact you compare an alias with an 
+internal command which is directly executed, without any delay. In this new 
+MSX-DOS 2 an alias can be defined with the new <TT>ALIAS</TT> command. An example of an 
+alias is the following:<BR>
+<TT>ALIAS DW = DIR @1 /W</TT>
+<BR>
+If you would now type<BR>
+<TT>DW A:</TT>
+MSX-DOS 2 will execute the command<BR>
+<TT>DIR A: /W</TT>.
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Another advantage of the aliases is that they can be linked to 
+extensions. An example is the following:<BR>
+<TT>ALIAS .TXT = A:\UTILS\TED</TT>
+<BR>
+If you have a file named <TT>REVIEW.TXT</TT> in the current directory, you can 
+start TED  with <TT>REVIEW.TXT</TT> as a parameter by simply typing <TT>REVIEW</TT>. 
+Unless TED cannot be found in the given path of course. And if the file 
+<TT>REVIEW.TXT</TT> is somewhere else in the search path, <TT>A:\UTILS\TED</TT> is executed with the complete path of <TT>REVIEW.TXT</TT>.
+</P>
+<A NAME="Par8"></A>
+<P CLASS="bodynoindent">
+<B>Internal variables and functions</B>
+<BR>
+Internal variables and functions can be used in the same way environment 
+variables can be used in MSX-DOS version 2.31, with <TT>%NAME%</TT> in which 
+<TT>NAME</TT> indicates the variable or function. A number of useful variables 
+is:
+
+</P><TABLE>
+<TR>
+<TD VALIGN="top"><TT>_BG</TT> and <TT>_FG</TT></TD><TD VALIGN="top">screen colours</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>_CWD</TT></TD><TD VALIGN="top"> current directory</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>_CPU</TT></TD><TD VALIGN="top"> current processor mode</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>_DATE</TT> </TD><TD VALIGN="top">current date</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+
+A number of useful functions is:
+
+</P><TABLE>
+<TR>
+<TD VALIGN="top"><TT>@ATTRIB</TT></TD><TD VALIGN="top">request a given file its attribute bits</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>@DISKFREE</TT></TD><TD VALIGN="top">amount of free space on a disk</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>@MID</TT></TD><TD VALIGN="top">comparable with <TT>MID$</TT> in the Basic environment</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+</P>
+<A NAME="Par9"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+By combining those internal variables and functions with the new <TT>IFF THEN ELSE 
+ENDIFF</TT> constructions, it is possible to create highly advanced batch files which 
+execute very complex tasks.
+</P>
+<A NAME="Par10"></A>
+<P CLASS="bodynoindent">
+<B>Memory</B>
+<BR>
+Next to the numerous advantages, the new MSX-DOS also has a small disadvantage: 
+the usage of aliases takes 16&nbsp;kB of additional memory and the new 
+batch file-format also takes up an extra 16 kB at the moment such a batch file 
+is executed. This is especially a disadvantage for the people who have only 
+128&nbsp;kB of memory. Then there is hardly any free memory left for  
+a RAMdisk, MemMan 2.x or other programs which use additional memory. 
+In computer land, memory is often the price you have to pay 
+for the extra possibilities which ease your life. Take a look at 
+the pc, for example, where nowadays even 4 MB is not enough to run modern programs. In that 
+respect MSX still remains a quite cheap computer.
+</P>
+<A NAME="Par11"></A>
+<P CLASS="bodynoindent">
+<B>More possibilities and conclusion</B>
+<BR>
+Although this update of MSX-DOS 2 already is a huge improvement, I myself see 
+enough space for more possibilities. Especially the batch-language could be 
+greatly enhanced with useful programming constructions like <TT>WHILE</TT>, 
+<TT>FOR</TT> and <TT>CASE</TT>. In this respect Fokke is open to all new ideas, 
+so who knows what will come next if ultimately everybody uses this version of 
+MSX-DOS 2 and passes all ideas they come up with through to Fokke.
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Hence my conclusion is that actually everybody using MSX-DOS 2 should buy
+this new version. The improvements are well worth the money.
+</P>
+<A NAME="Par13"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+<TR>
+<TD VALIGN="top">
+<I>Note of the editor: in the <SPAN CLASS="sc">MCCM</SPAN> 78 in which the above article was published, there is also an article that shows all differences between MSX-DOS 2.40 and MSX-DOS 2.31. For completeness I will include the English version of that article here too.</I>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par14"></A>
+<P CLASS="bodynoindent">
+<B>New command line editor</B>
+<BR>
+</P><UL STYLE="text-align: justify">
+<LI> Command history buffer is now 1024 bytes.</LI>
+<LI> File name completion with <TT CLASS="key">TAB</TT>.</LI>
+<LI> <TT CLASS="key">CTRL-DEL</TT> clears the buffer.</LI>
+<LI> <TT CLASS="key">CTRL-INS</TT> puts the current line in buffer without executing it.</LI>
+<LI> <TT CLASS="key">CTRL-LEFT/RIGHT</TT> goes to begin/end of line.</LI>
+<LI> <TT CLASS="key">SHIFT-LEFT/RIGHT</TT> goes to previous/next word.</LI>
+<LI> <TT CLASS="key">SHIFT-DEL</TT> deletes the rest of the line after the cursor.</LI>
+<LI> <TT CLASS="key">CTRL-RETURN</TT> executes the command without putting it in the buffer.</LI>
+<LI> The normal control keys &mdash;&nbsp;like <TT CLASS="key">^U</TT>: delete line, <TT CLASS="key">^G</TT>: beep&nbsp;&mdash; have disappeared.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par15"></A>
+<P CLASS="bodynoindent">
+<B>Length of command line</B>
+<BR>
+</P><UL STYLE="text-align: justify">
+<LI> You can enter 127 characters at most.</LI>
+<LI> After expanding aliases a maximum of 255 characters.</LI>
+<LI> After splitting into commands 127 characters maximum.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par16"></A>
+<P CLASS="bodynoindent">
+<B>New commands</B>
+<BR>
+</P><UL STYLE="text-align: justify">
+<LI> <TT>FREE [d:]</TT> Shows the amount of free space on drive <I>d</I>.</LI>
+<LI> <TT>BEEP</TT> Sounds a beep.</LI>
+<LI> <TT>ALIAS [name] [separator] [value]</TT> Sets an alias for a command.</LI>
+<LI> <TT>RESET</TT> Resets computer.</LI>
+<LI> <TT>COLOR forclr [bakclr [brdclr]]</TT> Sets the screen colours.</LI>
+<LI> <TT>INPUT [string] %%envname</TT> Reads a line to an environment variable from keyboard.</LI>
+<LI> <TT>INKEY [string] %%envname</TT> Reads a key press to an environment variable</LI>
+<LI> <TT>CPU [n]</TT> Sets or shows CPU mode.</LI>
+<LI> <TT>CDPATH [[+|-] [d:]path [[d:]path [[d:]path...]]]</TT> Changes search path that is used for commands like <TT>CD</TT>.</LI>
+<LI> <TT>CDD [d:][path]</TT> Changes to another drive and directory.</LI>
+<LI> <TT>PUSHD [d:][path]</TT> Pushes current dir to directory stack and changes to new directory specified with <I>path</I>.</LI>
+<LI> <TT>POPD</TT> Pops the directory at the top of the directory stack from the stack and make it the current directory.</LI>
+<LI> <TT>IFF</TT>, <TT>THEN</TT>, <TT>ELSE</TT> and <TT>ENDIFF</TT> Execute a command conditionally. <TT>IFF</TT> is nestable in 16 levels.</LI>
+<LI> <TT>HISTORY</TT> Shows the contents of the command history buffer.</LI>
+<LI> <TT>DSKCHK</TT> Sets or shows the current disk check status.</LI>
+<LI> <TT>MEMORY</TT> Shows memory usage.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par17"></A>
+<P CLASS="bodynoindent">
+<B>Disappeared commands</B>
+<BR>
+</P><UL STYLE="text-align: justify">
+<LI> The commands <TT>ERA</TT>, <TT>ERASE</TT> and <TT>RENAME</TT> have been removed.</LI>
+</UL><P CLASS="body"> 
+</P>
+<A NAME="Par18"></A>
+<P CLASS="bodynoindent">
+<B>New environment variables</B>
+<BR>
+</P><UL STYLE="text-align: justify">
+<LI> The following environment variables have been added: <TT>ALIAS</TT>, <TT>SEPAR</TT>, <TT>EXPAND</TT>, <TT>CDPATH</TT> and <TT>LOWER</TT>.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par19"></A>
+<P CLASS="bodynoindent">
+<B>New default values of environment variables</B>
+<BR>
+</P><UL STYLE="text-align: justify">
+<LI> <TT>TIME</TT> is now on 24 by default.</LI>
+<LI> <TT>EXPERT</TT> is now on <TT>ON</TT> by default.</LI>
+<LI> <TT>PROMPT</TT> is now on <TT>%_CWD%&gt;</TT> by default.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par20"></A>
+<P CLASS="bodynoindent">
+<B>Added internal variables</B>
+<BR>
+Internal variables can be queried the same way as environment
+variables, so using <TT>%name%</TT>. However, they cannot be changed with the <TT>SET</TT>
+command. The following internal variables are defined:
+</P><UL STYLE="text-align: justify">
+<LI> <TT>_BG</TT> Current background colour.</LI>
+<LI> <TT>_BOOT</TT> Boot drive letter, without the colon.</LI>
+<LI> <TT>_COLUMN</TT> Current cursor column, starting at 1.</LI>
+<LI> <TT>_COLUMNS</TT> Number of screen columns.</LI>
+<LI> <TT>_CPU</TT> Current CPU type, Z80 or R800.</LI>
+<LI> <TT>_CWD</TT> Current directory, format <TT>d:\directoryname</TT>.</LI>
+<LI> <TT>_CWDS</TT> Current directory, format <TT>d:\directoryname\</TT>.</LI>
+<LI> 
+<TT>_CWP</TT> Current directory, format <TT>\directoryname</TT>.</LI> 
+<LI> <TT>_CWPS</TT> Current directory, format <TT>\directoryname\</TT>.</LI>
+<LI> <TT>_DATE</TT> Current date, format dd-mm-yy.</LI>
+<LI> <TT>_DATEF</TT> Current date, format dd-mm-yyyy.</LI>
+<LI> <TT>_DIRBUFFER</TT> The directory you were previously and will return to with the commands <TT>CD -</TT> and <TT>CDD -</TT>.</LI>
+<LI> <TT>_DISK</TT> Current disk drive, without colon.</LI>
+<LI> <TT>_DOSVER</TT> Current version of COMMAND2.</LI>
+<LI> <TT>_DOW</TT> Current day of the week (&#8216;Monday&#8217;, &#8216;Tuesday&#8217;, etc).</LI>
+<LI> <TT>_FG</TT> Current foreground colour.</LI>
+<LI> <TT>_MSXVER</TT> MSX version, MSX-2, MSX-2+ or Turbo-R.</LI>
+<LI> <TT>_ROW</TT> Current cursor row, starting at 1.</LI>
+<LI> <TT>_ROWS</TT> Number of screen rows.</LI>
+<LI> <TT>_TIME</TT> Current system time in the format hh:mm:ss</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par21"></A>
+<P CLASS="bodynoindent">
+<B>Added Internal Variable Functions</B>
+<BR>
+Internal Variable Functions are similar to Internal Variables. The difference is that they need one or more parameters. They can be used like this: <TT>%name[parameters]%</TT>. The following internal variable functions are defined:
+</P><UL STYLE="text-align: justify">
+<LI>
+<TT>@ALIAS[aliasname]</TT>
+</LI>
+<LI>
+<TT>@ASCII[character]</TT>
+</LI>
+<LI>
+<TT>@ATTRIB[filename, attributes]</TT>
+</LI>
+<LI>
+<TT>@CHAR[ASCII value]</TT>
+</LI>
+<LI>
+<TT>@DISKFREE[d:, b|k|m]</TT>
+</LI>
+<LI>
+<TT>@DISKTOTAL[d:, b|k|m]</TT>
+</LI>
+<LI>
+<TT>@DISKUSED[d:, b|k|m]</TT>
+</LI>
+<LI>
+<TT>@EXT[filename]</TT>
+</LI>
+<LI>
+<TT>@FILE[filename]</TT>
+</LI>
+<LI>
+<TT>@FILEATTR[filename]</TT>
+</LI>
+<LI>
+<TT>@FILEDATE[filename]</TT>
+</LI>
+<LI>
+<TT>@FILESIZE[filename]</TT>
+</LI>
+<LI>
+<TT>@FILETIME[filename]</TT>
+</LI>
+<LI>
+<TT>@HEX[number]</TT>
+</LI>
+<LI>
+<TT>@INSTR[number, string1, string2]</TT>
+</LI>
+<LI>
+<TT>@LABEL[d:]</TT>
+</LI>
+<LI>
+<TT>@LEFT[string, n]</TT>
+</LI>
+<LI>
+<TT>@LEN[string]</TT>
+</LI>
+<LI>
+<TT>@LOWER[string]</TT>
+</LI>
+<LI>
+<TT>@MID[string, start, length]</TT>
+</LI>
+<LI>
+<TT>@NAME[filename]</TT>
+</LI>
+<LI>
+<TT>@NEWFILE[filename1, filename2]</TT>
+</LI>
+<LI>
+<TT>@PARSE[filename]</TT>
+</LI>
+<LI>
+<TT>@PATH[filename]</TT>
+</LI>
+<LI>
+<TT>@RIGHT[string, n]</TT>
+</LI>
+<LI>
+<TT>@UPPER[string]</TT>
+</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par22"></A>
+<P CLASS="bodynoindent">
+<B>Miscellaneous changes</B>
+<BR>
+</P><UL STYLE="text-align: justify">
+<LI> The <TT>DATE</TT> command shows the full name of the day.</LI>
+<LI> It is possible to set another drive when reloading <TT>COMMAND2.COM</TT>.</LI>
+<LI> Extra spaces are being printed between the name and the contents of a environment variable when using the command <TT>SET</TT>.</LI>
+<LI> The command <TT>DEL *.*</TT> now asks &#8216;Delete all files&#8217; instead of &#8216;Erase...&#8217;.</LI>
+<LI> There can be more than one command on a line by using the separation character <TT>^</TT>.</LI>
+<LI> Directories can be changed to without using the <TT>CD</TT> command by just typing in the directory name and adding a <TT>\</TT> at the end.</LI>
+<LI> The command <TT>CD -</TT> changes to the previous directory.</LI>
+<LI> You can use the so called aliases in the command line.</LI>
+<LI> When a directory is not found when using <TT>CD</TT>, all paths that are in the environment variable <TT>CDPATH</TT> will be searched.</LI>
+<LI> The number of parameters for batch files has been increased. Now a maximum of 255 parameters can be passed using <TT>%n</TT>, instead of only 9.</LI>
+<LI> In stead of parameters, (internal) variables and functions can be used.
+Example: <TT>%@DISKFREE[%_BOOT%:]%</TT>. Functions are nestable, as long as the command line is not too long.</LI>
+<LI> Using the alias mechanism, it is possible to link commands to file extensions. This mechanism is called &#8216;Executable Extensions&#8217;.</LI>
+<LI> The prompt can be any text. It can be set with the command <TT>SET PROMPT</TT> and can also contain <TT>%name%</TT>. The default prompt
+is <TT>%_CWD%&gt;</TT>. Note that the &#8216;greater than&#8217; symbol (&gt;) needs to be double quoted when using it in a <TT>SET</TT> command, or else MSX-DOS2 will process it as if it were a redirection symbol.</LI>
+<LI> An external command (file) can also contain wild cards. In that case, the first matching file will be executed.</LI>
+<LI> The <TT>/P</TT> option is now also available for the commands <TT>ALIAS</TT> and <TT>SET</TT>.</LI>
+<LI> The <TT>MODE</TT> command can now also set the screen height.</LI>
+<LI> In a batch file one can now also use  <TT>%n&amp;</TT> which means &#8216;all parameters starting at parameter <I>n</I>&#8217;. The default value for <I>n</I> is 1, so <TT>%&amp;</TT> is the same as <TT>%1&amp;</TT>.</LI>
+<LI> Passing parameters when using aliases is done using <TT>@n</TT>. Similar to batch files, <TT>&amp;</TT> can be added to a parameter of an alias: <TT>@n&amp;</TT>. In a batch file both <TT>%n</TT> as well as <TT>@n</TT>
+parameters can be passed to an alias.</LI>
+<LI> When using <TT>IF(F)</TT>, apart from  == one can also make use of the operators <TT>EQ</TT> (equivalent), <TT>LT</TT> (less than) and <TT>GT</TT> (greater than) and the logical operators <TT>AND</TT>, <TT>OR</TT> and <TT>XOR</TT>.</LI>
+<LI> When using <TT>DIR</TT> you can get two-column output by adding the <TT>/2</TT> option.</LI>
+<LI> There is a new type of batch file with the .btm extension. It can be as big as 16&nbsp;kB and is loaded to memory in one go. It can contain commands like <TT>GOTO</TT>. The batch language is slowly becoming a real programming language, like this!</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par23"></A>
+<P CLASS="bodynoindent">
+<B>Changed memory usage</B>
+<BR>
+16&nbsp;kB of extra memory is used to store the aliases and another 16&nbsp;kB extra memory is used when a .btm file is loaded. So, in total, 32&nbsp;kB of extra memory is needed on top of the 32&nbsp;kB that is used by MSX-DOS2 for internal buffers and things like that.
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../notebook/en.html">[nl] VPB50 MSX notebook - revisited</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        issue
+        93,
+        June-December&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../tunez2/en.html">Tunez 2 - Asterix edition</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,181 @@
+<html>
+
+<head>
+<title>MILC - Topic AGE decrunch routine</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">AGE decrunch routine</b><br>
+    <i>MS/RM</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+; gedisassembleerd(?) door Michiel Spoor
+; uitgezocht/wat verbeterd door Roderik Muit
+
+        ORG   0C000H
+
+
+; ---- AGE-DECRUNCHER ----
+
+; A  - Page to put to
+; HL - Start Address of DATA (PIC)
+; D  - Y-Offset
+; E  - X-Offset (moet even zijn)
+
+; vB:
+        LD    A,1             ; Page 0
+        LD    DE,00H          ; Coors (0,0)
+        LD    HL,8800H        ; Address of Pic
+
+;-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+START:
+        SRL   A
+        LD    (PAGE),A
+        RR    D
+        RR    E
+        PUSH  DE
+        LD    B,(HL)          ; lengte X * 2
+        INC   HL
+        LD    C,(HL)          ; lengte Y
+        INC   HL
+        LD    A,(HL)          ; lengte Y van eerste stuk (dat niet ge-XORd moet)
+        INC   HL
+        EX    AF,AF
+        PUSH  BC
+        CALL  FILBUF          ; Vul buffer (DE, B, C gezet)
+        EXX
+        POP   BC              ; BC=lengtes, HL=VRAM-ad.
+        POP   HL
+        DB    0FEH            ; Sla EX AF,AF over
+
+LOOP1:  EX    AF,AF
+        PUSH  BC
+        LD    A,(PAGE)
+        CALL  SETVDP
+        LD    DE,BUFF2
+DLIJN1: EXX                   ; Haal volgende byte, zet in BUFF2 en OUT naar
+        CALL  GETBYT          ;  VRAM
+        EXX
+        LD    (DE),A
+        INC   DE
+        OUT   (98H),A
+        DJNZ  DLIJN1
+        EI
+        LD    C,80H           ; VRAM-adres met 128 verhogen: volgende lijn
+        ADD   HL,BC
+        POP   BC
+        DEC   C
+        RET   Z
+        EX    AF,AF
+        DEC   A               ; Zelfde methode als nog in eerste stuk
+        JP    NZ,LOOP1
+
+LOOP2:  PUSH  BC              ; Tweede stuk:
+        LD    A,(PAGE)
+        CALL  SETVDP
+        LD    DE,BUFF2
+        EX    DE,HL           ; DE=VRAM-adres
+DLIJN2: EXX                   ; Doe zelfde, maar XOR nu met data van vorige
+        CALL  GETBYT          ;  lijn
+        EXX
+        XOR   (HL)
+        LD    (HL),A
+        INC   HL
+        OUT   (98H),A
+        DJNZ  DLIJN2
+        EI
+        EX    DE,HL
+        LD    C,80H
+        ADD   HL,BC
+        POP   BC
+        DEC   C
+        JP    NZ,LOOP2
+        RET
+
+GETBYT: XOR   A
+        SLA   B               ; Volgende byte uit geheugen in A,
+        JR    NC,SKIP1        ;  of 0 als bitje=0
+        LD    A,(HL)
+        INC   HL
+SKIP1:  DEC   C
+        RET   NZ
+
+        PUSH  AF              ; Einde buffer?
+        LD    A,E
+        CP    BUFF2 AND 0FFH
+        JR    NZ,J1
+
+        DB    0FEH            ; Sla PUSH over
+FILBUF: PUSH  AF              ; Vul buffer opnieuw
+        LD    C,(HL)
+        INC   HL
+        LD    DE,BUFFER
+        LD    B,8
+DJRT1:  XOR   A
+        SLA   C
+        JR    NC,SKOP
+        LD    A,(HL)
+        INC   HL
+SKOP:   LD    (DE),A
+        INC   DE
+        DJNZ  DJRT1
+        LD    DE,BUFFER
+J1:     LD    A,(DE)          ; Volgende byte uit buffer
+        LD    B,A
+        INC   DE
+        LD    C,8
+        POP   AF
+        RET
+
+
+SETVDP: DI
+        LD    C,H
+        RL    C
+        RLA
+        RL    C
+        RLA
+        OUT   (99H),A
+        LD    A,8EH
+        OUT   (99H),A
+        LD    A,L
+        OUT   (99H),A
+        LD    A,H
+        AND   127
+        OR    64
+        OUT   (99H),A
+        RET
+
+PAGE:   DB    0               ; page van 64K
+BUFFER: DS    8               ; Buffer voor statusbytes
+BUFF2:  DB    0               ; Hier wordt plaatje ook in RAM opgeslagen
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

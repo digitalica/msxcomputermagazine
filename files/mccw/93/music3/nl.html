@@ -1,0 +1,439 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>The wolf and the seven notes</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Maarten van Strien">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 93, June-December">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#800000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#800000">
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../preface3/nl.html">[en] All Good Things...</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        nummer
+        93,
+        juni-december&nbsp;2000<BR>
+</FONT><A HREF="../contents/nl.html#music3">Terug naar inhoud</A></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../pentaro2/nl.html">[en] Pentaro Odyssey 2</A></TD>
+</TR>
+<TR BGCOLOR="#886878">
+<TD ALIGN="center" colspan="3"><FONT COLOR="#FFFFFF">
+            Dit artikel is helaas alleen beschikbaar in het Engels.
+        </FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>part 3 - strings and sound design</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>The wolf and the seven notes</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>
+When designing a new sound, perhaps the biggest challenge of all models is FM. A
+question from one of the readers about that is the central point in this article.
+</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#886878" HEIGHT="20"><B><I><A HREF="mailto:mvs@mvs-music.tmfweb.nl"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Maarten van Strien</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par2">Answer 1</A>
+<BR>
+<A HREF="#Par5">FM-PAC 6 channel mode</A>
+<BR>
+<A HREF="#Par7">Answer 2</A>
+<BR>
+<A HREF="#Par8">Fool people with sound design!</A>
+<BR>
+<A HREF="#Par14">The 80&#8217;s</A>
+<BR>
+<A HREF="#Par15">Finally</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+On my request for questions in the first part of this course, I got the following
+response from Frederik Boelens:
+</P><OL STYLE="text-align: justify">
+<LI>How is it possible to make nice strings with FM voices? I used AM voices so far, but the volume is not adjustable with AM voices in a nice way.</LI>
+<LI>How is it possible to keep the music interesting from the start to the end? I used to do a style change, but is it possible to continue with the same style?</LI>
+</OL><P CLASS="body">
+</P>
+<A NAME="Par2"></A>
+<P CLASS="bodynoindent">
+<B>Answer 1</B>
+<BR>
+Whatever people say about strings: what <I>you</I> mean are pads. Strings
+can be divided in first violins, second violins, violas, celli and double
+basses. As we use the synthetic FM model, we are talking about pads. In the 80&#8217;s
+people used the old analogue synths &mdash;&nbsp;JP-8, Juno 106 etc.&nbsp;&mdash; to replace real
+strings, because the band&#8217;s budget usually was not enough to hire 30 real
+string players, paying $500 per player per day. From that moment, the average
+synth owner sees the string pad to be  real strings, but that is just
+side-information. We can split your question into two parts, pads for FM-PAC or
+pads for Music-Module. A nice simple solution for the Music-Module would be by
+just selecting four &#8216;strings&#8217;, use three channels to build the chord and use the
+fourth channel to detune the top-line of the chord. A detune value of +1 is
+good. You could of course also fatten-up all three channels with a detune, but
+this way you are spending six of nine channels for the chord alone! So you have
+four channels, do not set them too loud compared to the rest of the channels.
+Make sure the voice has vibrato of its own and in the patterns also use vibrato,
+called modulation in Moonblaster. These vibratos &mdash;&nbsp;<TT>MOD</TT>&nbsp;&mdash; should not
+be at the same row. See the examples:
+
+</P><TABLE>
+<TR>
+<TD VALIGN="top">
+
+<TABLE BORDER="0" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+  <CAPTION STYLE="color: #FFFFFF; background-color: #886878; text-align: center">
+<B>example with detune</B>
+</CAPTION>
+  <TR>
+    <TH VALIGN="top">vol</TH><TD VALIGN="top">52</TD><TD VALIGN="top">52</TD><TD VALIGN="top">52</TD><TD VALIGN="top">52</TD>
+  </TR>
+  <TR>
+    <TH VALIGN="top">det</TH><TD VALIGN="top">+1</TD><TD VALIGN="top">+0</TD><TD VALIGN="top">+0</TD><TD VALIGN="top">+0</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">1</TD><TD VALIGN="top"><TT>D 5</TT> </TD><TD VALIGN="top"><TT>D 5</TT> </TD><TD VALIGN="top"><TT>
+C 5</TT>  </TD><TD VALIGN="top"><TT>G 4</TT></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">2</TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD><TD VALIGN="top"><TT>MOD</TT> </TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">3</TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD><TD VALIGN="top"><TT>MOD</TT> </TD><TD VALIGN="top">.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">4</TD><TD VALIGN="top">.</TD><TD VALIGN="top"><TT>MOD</TT> </TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">5</TD><TD VALIGN="top"><TT>MOD</TT> </TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD>
+  </TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+
+</TD><TD VALIGN="top">
+
+<TABLE BORDER="0" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+  <CAPTION STYLE="color: #FFFFFF; background-color: #886878; text-align: center">
+<B>example detune and echo</B>
+</CAPTION>
+  <TR>
+    <TH VALIGN="top">vol</TH><TD VALIGN="top">48</TD><TD VALIGN="top">52</TD><TD VALIGN="top">52</TD><TD VALIGN="top">52</TD>
+  </TR>
+  <TR>
+    <TH VALIGN="top">det</TH><TD VALIGN="top">+1</TD><TD VALIGN="top">+0</TD><TD VALIGN="top">+0</TD><TD VALIGN="top">+0</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">1</TD><TD VALIGN="top">. </TD><TD VALIGN="top"><TT>D 5</TT> </TD><TD VALIGN="top"><TT>
+C 5</TT>  </TD><TD VALIGN="top"><TT>G 4</TT></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">2</TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD><TD VALIGN="top"><TT>MOD</TT> </TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">3</TD><TD VALIGN="top"><TT>D 5</TT> </TD><TD VALIGN="top">.</TD><TD VALIGN="top"><TT>MOD</TT> </TD><TD VALIGN="top">.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">4</TD><TD VALIGN="top">.</TD><TD VALIGN="top"><TT>MOD</TT> </TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">5</TD><TD VALIGN="top"><TT>MOD</TT> </TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD><TD VALIGN="top">.</TD>
+  </TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+
+</P>
+<A NAME="Par3"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Your pad-instrument should have the following properties:
+</P><UL STYLE="text-align: justify">
+<LI>vibrato</LI>
+<LI>bright sound</LI>
+<LI>no attack on the modulator</LI>
+<LI>no attack on the carrier</LI>
+<LI>longest release on the release of the modulator</LI>
+<LI>average-long release on the carrier</LI>
+<LI>no decays on the modulator as well as the carrier: sustain to the max!</LI>
+<LI>a 1:1  FM-ratio is generally good</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Set the modulation-depth in the pattern-editor to 3. Most Muzax 3 tunes were made by using this scheme!
+</P>
+<A NAME="Par5"></A>
+<P CLASS="bodynoindent">
+<B>FM-PAC 6 channel mode</B>
+<BR>
+It is another story for the FM-PAC using drum mode. Because you have only six
+channels, wasting four channels for the chord alone is a bit overcooked. It
+depends on the situation actually: if your idea was to use one bass, one melody
+and one echo for the melody, then there are three channels left for chords. You
+could spend three channels for pads, but then without a detuned channel. And
+again, not too loud: volume 10, 11 or 12. You could also use two channels, so
+you have a channel left for a detune and write your melody in a way it fills-up
+your chord too. We are lucky to have an FM-PAC, which sounds a little fatter
+than the Music-Module, so using only two channels with the hardware-violin does a nice job here also!
+</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Xak 3 has nice string-simulations used for melody. A nice trick is the
+following. Your melody consists of two hardware violins, detuned respectively as
++1 and -1 and with volume 13 and 12. Make your melody use both channels. Now the
+trick: when you want a musical note-off, put a <TT>SUS</TT> command on the
+loudest channel. The quieter channel continues and makes a reverb effect. Since
+the Music Module does not support the <TT>SUS</TT> command, make sure that the
+Music-Module-instrument has an amount of release in the
+&mdash;&nbsp;carrier&nbsp;&mdash;envelope. For FM-PAC you have four channels left for your
+usual stuff. <I>If</I> you use this method, make sure the rest of your
+channels are &#8216;filled-up&#8217; pretty well. In case of a solo, better use conventional echo channels instead. An easy way of filling-up your sound, for use with the method above, is by using a harpsichord somewhere.
+</P>
+<A NAME="Par7"></A>
+<P CLASS="bodynoindent">
+<B>Answer 2</B>
+<BR>
+To make an interesting piece of music of about three minutes is a true puzzle on
+MSX. Again I am basically talking about sound design, almost boring by now, but
+sound design is a major basic skill! Sounds on MSX, whether they come from
+FM-PAC or Music Module, only have little &#8216;evolution&#8217; when speaking of
+sound-colour. Avoid long notes without sound-evolution, unless you are using
+pad-sounds to make chords. A clear story about melody is a major-sized
+article, going to the next issue of <SPAN CLASS="sc">MCCW</SPAN>, but until that moment here are some
+quick hints:
+</P><UL STYLE="text-align: justify">
+<LI>keep the melody simple</LI>
+<LI>let a friend hear your piece once or twice, if that person can whistle the melody afterwards your melody is good. If that person does not know anymore there&#8217;s something wrong.</LI>
+<LI>you can re-use pieces of your basic melody for new themes. The advantage of this is that you already know your melody, this makes your music easy to pick up for others too.</LI>
+<LI>repeat something = recognise something = structure!</LI>
+<LI>pay attention to the rhythmic structure! People pick up rhythmic
+structures more easily than a bunch of different pitches, for an example see the
+end of this article! Maybe you could listen to Celtic music sometime... a simple
+rhythmic structure and interesting themes.</LI>
+<LI>lower the melody an octave, change instrument, and lower the volume. Now make a new melody to this as theme. This method is a part of a technique called counterpoint, a nice subject for a future article.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par8"></A>
+<P CLASS="bodynoindent">
+<B>Fool people with sound design!</B>
+<BR>
+As you noticed, I keep repeating the words &#8216;sound design&#8217;... designing a sound.
+What is an instrument actually? Here are some elements.  A sound contains:
+</P><UL STYLE="text-align: justify">
+<LI>pitch</LI>
+<LI>volume</LI>
+<LI>sound-colour</LI>
+<LI>location (when used in an ensemble)</LI>
+<LI>play techniques</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par9"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The pitch of an acoustic instrument is not exactly constant... there is always a difference. A lot of instruments have their own out-of-tune level, however, you do not hear this in a full orchestra. When you simulate such an instrument with a synth-model &mdash;&nbsp;such as FM&nbsp;&mdash; keep this out-of-tune level in mind. A thriller on an oboe rarely &mdash;&nbsp;actually never&nbsp;&mdash; sounds correct, compared with a thriller you use from a synth. This makes real instruments sound real and a synth sound static.
+</P>
+<A NAME="Par10"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Volume is important also. Volume &mdash;&nbsp;music-technology freaks call it
+amplitude&nbsp;&mdash; when using an FM-model and when used in our trackers, has little
+to do with real acoustic volume. Our FM volume is rather an amplifier setting instead,
+since low volumes sound about the same as loud volumes. Acoustic
+instruments do sound differently when played soft or loud. A crescendo is more
+than only the volume getting louder, the whole sound-colour evolves too!
+</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Sound-colour is one of the most important elements of an instrument definition.
+It is the sound-colour you recognise of an instrument, and to start with the good
+news here, FM is rich of colours, very rich! Even the simplest FM
+&mdash;&nbsp;simple-FM&nbsp;&mdash; has a rich amount of colours. When using complex FM &mdash;&nbsp;two
+operator FM with feedback or three or more operator FM&nbsp;&mdash; you get a lot more colours.
+Some instruments can be simulated surprisingly well with FM. Unfortunately, real
+instruments have small fluctuations in the colour-spectrum, so that a 100% simulation with our FM will not work.
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Location is not really an issue on MSX, perhaps on OPL4... when I get questions
+about this I will come back to it some day...
+</P>
+<A NAME="Par13"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Play techniques are as important as sound-colour. If a sound is produced 100%
+perfectly, you can still ruin your result if your play technique fails. A
+well-known example is the guitar. When you analyse what you hear then you will
+notice that you will hear a lot of noise and &#8216;mistakes&#8217;, like fret noise, nails that
+hit the strings etc. If you make perfect guitar-string samples, and you do not
+sample all those mistakes too, you can imagine that the result is bad. If you
+try to simulate a wind instrument such as an oboe or bassoon, you
+<I>can</I> get nice results as long as you take care of all the play
+techniques/effects those instruments have. All these aspects belong to the
+profession of a sound designer. A piano like that of the OPL4, not really bad,
+fails in a tracker notation like that of Moonblaster. Basically because you
+cannot adjust the volume on the same step as the note. You do have to pay
+attention to get the piano sound like a real piano; if you have to use eight
+channels for this... then you have to.
+</P>
+<A NAME="Par14"></A>
+<P CLASS="bodynoindent">
+<B>The 80&#8217;s</B>
+<BR>
+The DX7 was the major success of the 80&#8217;s. Every band of some proportion owned a
+DX7. In those years, synths did not have built-in effect processors. And the
+effect processors in fact do a major job on FM, especially when using chorus and
+reverb. For instance, make an instrument and try to route the output through an
+effect machine! Or sample the instrument into your pc and use software like
+Soundforge or Cooledit to add some reverb. You will be surprised about the result
+because suddenly all instruments sound cool and fat. And suddenly you will
+recognise all those sounds you heard in the 80&#8217;s, indeed that was FM too! It is
+pretty strange it sounds that cool, a piano with reverb sounds &#8216;normal&#8217; but the
+same reverb added to an FM voice is very special and new. Probably this is
+because you never heard your FM-PAC sound like this in all those years... it is
+strange to hear it like this. FM in fact is a cool synthesis model... be proud
+of it! It is an excellent fundamental for your carrier as soundaholic. Whatever people say: remember that FM is cool!
+</P>
+<A NAME="Par15"></A>
+<P CLASS="bodynoindent">
+<B>Finally</B>
+<BR>
+I promised an experiment! You can do this alone, but together it is more fun! I
+was talking about the fact that people recognise a rhythmic structure a lot
+easier than a melodic structure. Do the following: clap you hands twice and let
+another person clap the third one. You will notice that the timing is correct. The
+time between the first two claps is obviously that clear that anyone can define
+when the next clap should come. This can be very fast, but also very slow, the
+experiment will show how slow it can be. Slower than you think! Next time a theoretic article about analysis.
+</P>
+<A NAME="Par16"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Questions? E-mail them to support these articles!
+</P>
+<A NAME="Par17"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+<I>A short note from the editors:</I>
+</P>
+<A NAME="Par18"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Of course there is no need to e-mail anymore, because the articles will not be continued.
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../preface3/nl.html">[en] All Good Things...</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        nummer
+        93,
+        juni-december&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../pentaro2/nl.html">[en] Pentaro Odyssey 2</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

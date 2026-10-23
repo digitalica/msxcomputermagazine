@@ -1,0 +1,165 @@
+<html>
+
+<head>
+<title>MILC - Topic Slot indeling Yamaha computer</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_6.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Slot indeling Yamaha computer</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+ Q T16
+-----------------------------------------------------------------------
+
+             Memory personal computer YAMAHA YIS503IIR
+
+                  00        01        02        83    87    8B    8F
+
+Slot:              0         1         2                  3
+Ext. slot:                                       0     1     2     3
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|FFFF:|  3  |   |     |   |     |   |     |   |     |     | RAM |     |
+|C000:|     |   |     |   |     |   |     |   |     |     |     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|BFFF:|  2  |   |     |   |     |   |     |   |     |     | RAM |     |
+|8000:|     |   |     |   |     |   |     |   |     |     |     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|7FFF:|  1  |   | ROM |   |Cartr|   |Cartr|   |     | RS  | RAM |     |
+|4000:|     |   |Basic|   |  A  |   |  B  |   |     | ROM |     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|3FFF:|  0  |   | ROM |   |     |   |     |   |     |     | RAM |     |
+|0000:|     |   |BIOS |   |     |   |     |   |     |     |     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+
+-----------------------------------------------------------------------
+
+             Memory personal computer YAMAHA YIS503IIIR
+
+                  00        01        02        83    87    8B    8F
+
+Slot:              0         1         2                  3
+Ext. slot:                                       0     1     2     3
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|FFFF:|  3  |   |     |   |     |   |     |   |     |     | RAM |     |
+|C000:|     |   |     |   |     |   |     |   |     |     |     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|BFFF:|  2  |   |     |   |     |   |     |   |CP/M |     | RAM | NET |
+|8000:|     |   |     |   |     |   |     |   | ROM |     |     | ROM |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|7FFF:|  1  |   | ROM |   |Cartr|   |Cartr|   |CP/M |     | RAM | NET |
+|4000:|     |   |Basic|   |  A  |   |  B  |   | ROM |     |     | ROM |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|3FFF:|  0  |   | ROM |   |     |   |     |   |     |Ext. | RAM |     |
+|0000:|     |   |BIOS |   |     |   |     |   |     |MSX 2|     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+
+-----------------------------------------------------------------------
+
+            Memory personal computer YAMAHA YIS805/128 R2
+
+                  00        01        02        83    87    8B    8F
+
+Slot:              0         1         2                  3
+Ext. slot:                                       0     1     2     3
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|FFFF:|  3  |   |     |   |     |   |     |   |Paint|     | RAM |     |
+|C000:|     |   |     |   |     |   |     |   | er  |     |     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|BFFF:|  2  |   |     |   |     |   |     |   |Paint|     | RAM | NET |
+|8000:|     |   |     |   |     |   |     |   | er  |     |     | ROM |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|7FFF:|  1  |   | ROM |   |Cartr|   |Cartr|   |Paint| ROM | RAM | NET |
+|4000:|     |   |Basic|   |  A  |   |  B  |   | er  |BDOS |     | ROM |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+|3FFF:|  0  |   | ROM |   |     |   |     |   |Paint|Ext. | RAM |     |
+|0000:|     |   |BIOS |   |     |   |     |   | er  |MSX 2|     |     |
++-----+-----+   +-----+   +-----+   +-----+   +-----+-----+-----+-----+
+
+-----------------------------------------------------------------------
+SLOT 0-3
+
+Prymary slot:     Data  ----&gt;  port (A8h)
+
+Data for port A8h:
+
+               Bits:  7 6 5 4 3 2 1 0
+                     +-+-+-+-+-+-+-+-+
+               Data: |D D|C C|B B|A A|
+                     +-+-+-+-+-+-+-+-+
+                       |   |   |   +------ Page 0
+                       |   |   +---------- Page 1
+                       |   +-------------- Page 2
+                       +------------------ Page 3
+
+-----------------------------------------------------------------------
+SLOT 3
+
+Secondary slot:   Data  ----&gt;  (FFFFh)
+
+Data for FFFFh:
+
+               Bits:  7 6 5 4 3 2 1 0
+                     +-+-+-+-+-+-+-+-+
+               Data: |D D|C C|B B|A A|
+                     +-+-+-+-+-+-+-+-+
+                       |   |   |   +------ Page 0
+                       |   |   +---------- Page 1
+                       |   +-------------- Page 2
+                       +------------------ Page 3
+
+-----------------------------------------------------------------------
+RAM MSX2:
+
+
+   +---+       Data for page 0,1,2,3: (ports FCh,FDh,FEh,FFh)
+00:|16K|
+   +---+             +-+-+-+-+-+-+-+-+
+01:|16K|             |1|1|1|1|1|x x x|
+   +---+             +-+-+-+-+-+-+-+-+
+02:|16K|
+   +---+
+03:|16K|
+   +---+        xxx - number RAM (0-7) for MSX2
+04:|16K|
+   +---+
+05:|16K|
+   +---+
+06:|16K|
+   +---+
+07:|16K|
+   +---+
+
+-----------------------------------------------------------------------
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

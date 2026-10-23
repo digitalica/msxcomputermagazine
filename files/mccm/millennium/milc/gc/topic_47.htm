@@ -1,0 +1,108 @@
+<html>
+
+<head>
+<title>MILC - Topic Toetsenbord scanner</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_46.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_48.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Toetsenbord scanner</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                     TOETSENBORD SCANNER
+
+Van de heer R.van Dongen uit Opende ontving ik  de  volgende
+brief :
+
+
+Mijne Heren,
+
+Allereerst mijn complimenten met uw voortreffelijk magazine,
+naar mijn mening ŠŠn van de beste, zo niet  het  beste,  MSX
+computerblad.
+
+Maar nu terzake : Hoe kan  ik  vanuit  een  (BASIC)programma
+opvragen of de CAPS- of de  SHIFT-Toets  ingedrukt  is ?
+
+R. van Dongen, Opende
+
+
+Inderdaad toetsen zoals  SHIFT,  CODE,  GRAPH,  CAPS  of  de
+accenttoets zijn niet  rechtstreeks  van  uit  BASIC  op  te
+vragen, met enig &quot;gePEEK&quot; lukt dit wel:
+
+In het NEWKEY geheugen gebied staan namelijk  11  bytes  (88
+bits) die bepalen of een toets al  dan  niet  is  ingedrukt:
+normaal staan alle bits op 1, wordt er een toets  ingedrukt,
+dan wordt het desbetreffende bit 0.
+
+Die toetsenbordmatrix is als volgt geordend :
+
+
+Voor een Europees Toetsenbord :
+
+BIT    :  x7   x6   x5   x4   x3   x2   x1   x0
+------------------------------------------------------
+FBE5H  :   7    6    5    4    3    2    1    0
+FBE6H  :   ;    ]?   [?   \    =    -    9    8
+FBE7H  :   B    A  ACC.T. /    .    ,    `?   '?
+FBE8H  :   J    I    H    G    F    E    D    C
+FBE9H  :   R    Q    P    O    N    M    L    K
+FBEAH  :   Z    Y    X    W    V    U    T    S
+FBEBH  :  F3   F2   F1  CODE  CAP GRAPH CTRL SHIFT
+FBECH  :  RET  SEL  BS  STOP  TAB  ESC  F5   F4
+FBEDH  :  CR   CD   CU   CL   DEL  INS  HOME SPACE
+FBEEH  :   4    3    2    1    0    /    +    *    } NUMERIC
+FBEFH  :   .    ,    -    9    8    7    6    5    } PAD.
+
+VERKL. CR= Cursor Right CD= Cursor Down CU=  Cursor  Up  CL=
+Cursor Left. Achter sommige toetsen  staat  een  vraagteken,
+gebruik deze toetsen bij  voorkeur  niet  omdat  ze  op  een
+Japanse machine anders in de toetsenbordmatrix staan!
+
+Als u wilt opvragen of b.v. de CTRL-Toets is  ingedrukt  dan
+kunt u het volgende  gebruiken:  IF  PEEK(&amp;HFEBB)=&amp;B11111101
+THEN... Maar bij deze methode schuilt een addertje onder het
+gras, als bijvoorbeeld de CODE toets ook  ingedrukt  is  dan
+zal FBEBH 11101101B bevatten en  het  programma  zal  gewoon
+doorgaan alsof de CTRL-Toets niet ingedrukt is.
+
+Een   betere   methode   is   daarom   :   IF   PEEK(&amp;HFBEB)
+AND&amp;B00000010)=0 THEN.... Dit is een  betere  methode  omdat
+hier alleen het zevende bit (en  dus  niet  het  hele  byte)
+wordt gecontroleerd. Zie voor nadere  uitleg  over  logische
+operaties, het speciale artikel over dit onderwerp.
+
+In het software menu bevindt zich een  complete  toetsenbord
+scanner van Stefan Boer.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_46.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_48.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

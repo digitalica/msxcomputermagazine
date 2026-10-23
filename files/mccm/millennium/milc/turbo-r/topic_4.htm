@@ -1,0 +1,900 @@
+<html>
+
+<head>
+<title>MILC - Topic Datapack section5</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_3.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_5.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Datapack section5</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+&lt;25                                                                          &gt;
+-----------------------------------------------------------------------------
+                   SECTION 5
+                     BIOS
+-----------------------------------------------------------------------------
+5.1 Added entries
+
+   In the MSX Turbo R entries related to PCM and changing the CPU have been
+added to the BIOS.
+   Below each of these entries are explained.
+
+5.1.1 Changing of the CPU
+
+CHGCPU and GETCPU are the names of the entries in the BIOS for changing the 
+CPU.
+
+CHGCPU  (&amp;H0180/MAIN)
+------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl;  changing of the CPU
+--------
+&Aring;--------&atilde;
+&iexcl;process &iexcl;  A
+&iexcl;call    &iexcl;
+--------
+
+                  b7  b6  b5  b4  b3  b2  b1  b0
+                 &Aring;---\---\---\---\---\---\---\---&atilde;
+                 &iexcl; L &iexcl; 0 &iexcl; 0 &iexcl; 0 &iexcl; 0 &iexcl; 0 &iexcl; M &iexcl; M &iexcl;
+                 ---_---_---_---_---_---_---_---
+                   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;
+                   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   ---_----- MODE
+                   &iexcl;   ---_---_---_---_------------- always 0
+                   --------------------------------- LED
+&lt;26                                                            CHAPTER 5 BIOS&gt;
+
+               MODE
+                designate of the mode of the CPU
+               -------------------------------------------------
+               mode     meaning
+               -------------------------------------------------
+                00      Z80
+                01      R800 ROM
+                10      R800 DRAM
+                11      system
+               -------------------------------------------------
+
+               LED
+               designate the state of the LED
+               -------------------------------------------------
+               mode     meaning
+               -------------------------------------------------
+                0       LED is not changed
+                1       LED is changed
+               -------------------------------------------------
+
+&Aring;--------&atilde;
+&iexcl;output  &iexcl;    none
+--------
+&Aring;---------&atilde;
+&iexcl;changed  &iexcl;   none
+&iexcl;registers&iexcl;
+---------
+&Aring;---------&atilde;
+&iexcl; comments&iexcl;   Dependent on the contents of register A the CPU is changed.
+---------   In case bit 7 of register A is set to 1, the status of the CPU 
+              when the changing of the CPU is show by the LED (it is burning
+              or not). When bit 7 of register A is set to 0, the LED doesn't 
+              change.
+&Aring;---------&atilde;
+&iexcl; note    &iexcl;   The changing of the CPU is done by the systemcontroller LSI 
+---------   (S1990). Therefore after changing to the Z80 or R800 mode, when 
+              the R800 mode is choosen, the contents of the emptied DRAM area
+              is filled.
+              The systemsoftware that is transfered to the DRAM is only done 
+              when starting the system.
+
+&lt;5.1 ADDED ENTRIES                                                      27&gt;
+
+GETCPU  (&amp;H0183/MAIN)
+------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl;  This function looks the present used CPU up.
+--------
+&Aring;--------&atilde;
+&iexcl;process &iexcl;  none
+&iexcl;call    &iexcl;
+--------
+&Aring;--------&atilde;
+&iexcl;output  &iexcl;  A
+--------
+               -------------------------------------------------
+                value  meaning
+               -------------------------------------------------
+                0  Z80 MODE
+                1  R800 ROM MODE
+                2  R800 DRAM MODE
+               -------------------------------------------------
+&Aring;---------&atilde;
+&iexcl;changed  &iexcl;  F
+&iexcl;registers&iexcl;
+---------
+
+5.1.2 PCM
+
+PCMPLAY and PCMREC are the names of the entries for playing and recording PCM
+data.
+
+PCMPLY (0186H/MAIN)
+-----------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl;  Plays the PCM data.
+--------
+&Aring;--------&atilde;
+&iexcl;process &iexcl;  A
+&iexcl;call    &iexcl;
+--------
+
+                  b7  b6  b5  b4  b3  b2  b1  b0
+                 &Aring;---\---\---\---\---\---\---\---&atilde;
+                 &iexcl; R &iexcl; 0 &iexcl; 0 &iexcl; 0 &iexcl; 0 &iexcl; 0 &iexcl; S &iexcl; S &iexcl;
+                 ---_---_---_---_---_---_---_---
+                   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;
+                   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   ---_----- sampling rate
+                   &iexcl;   ---_---_---_---_------------- always 0
+                   --------------------------------- VRAM/MAIN MEMORY
+&lt;28                                                            CHAPTER 5 BIOS&gt;
+
+                * sampling rate
+                  These are the sampling rates that can be designated.
+                  ------------------------------------------------------
+                   sampling rate         meaning (KHz)
+                  ------------------------------------------------------
+                        00               15.75
+                        01                7.875
+                        10                5.25
+                        11                3.9375
+                  ------------------------------------------------------
+
+                * memory
+                  This is used memory of the play data that can be designated.
+                  ------------------------------------------------------
+                   memory               meaning
+                  ------------------------------------------------------
+                        0               MAIN MEMORY
+                        1               VRAM
+                  ------------------------------------------------------
+
+                HL   Adres of the PCM data
+                     When VRAM is designated, register E and register HL form a
+                     3 byte adres. Register E is the high byte.
+
+                BC   Length of the PCM data
+                     When VRAM is designated, register D and register BC form a
+                     3 byte adres. Register D is the high byte.
+&Aring;--------&atilde;
+&iexcl;output  &iexcl;    carry flag
+--------
+              ----------------------------------------------------------
+               value            meaning
+              ----------------------------------------------------------
+                0               normal end
+                1               abnormal end
+
+                        A  cause of abnormal end
+                           1. mistake in the desgination of the sampling
+                              frequency
+                           2. STOP key interupt
+
+                        HL  data adres when interrupt was generated.
+                            When VRAM is used the E register and HL register
+                            form a 3 byte adres. The E register is the high
+                            byte.
+
+&lt;5.1 ADDED ENTRIES                                                         29&gt;
+
+&Aring;----------&atilde;
+&iexcl; changed  &iexcl;
+&iexcl; registers&iexcl;    all
+----------
+&Aring;----------&atilde;
+&iexcl;  note    &iexcl;    When while running in the Z80 mode is changed to R800 ROM mode,
+----------    when ended returns to the Z80 mode.
+                It is not allowed while playing PCM, using the memory
+                When the stop key is pressed, an itterrupt is generated.
+                In this BIOS in this situation, page 1 (04000H-07FFFH) is used
+                by the program.
+                In accordance with the data used by the main memory, must be
+                higher than 08000H.
+
+PCMREC (0189H/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl;  Recording the PCM data.
+--------
+&Aring;--------&atilde;
+&iexcl;process &iexcl;  A
+&iexcl;call    &iexcl;
+--------
+
+                  b7  b6  b5  b4  b3  b2  b1  b0
+                 &Aring;---\---\---\---\---\---\---\---&atilde;
+                 &iexcl; R &iexcl; T &iexcl; T &iexcl; T &iexcl; T &iexcl; C &iexcl; S &iexcl; S &iexcl;
+                 ---_---_---_---_---_---_---_---
+                   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;
+                   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   ---_----- sampling rate
+                   &iexcl;   &iexcl;   &iexcl;   &iexcl;   &iexcl;   ------------- compression
+                   &iexcl;   ---_---_---_----------------- triggerlabel
+                   --------------------------------- VRAM/MAIN MEMORY
+
+                * sampling rate
+                  These are the sampling rates that can be designated.
+                  ------------------------------------------------------
+                   sampling rate         meaning (KHz)
+                  ------------------------------------------------------
+                        00               15.75
+                        01                7.875
+                        10                5.25
+                        11                3.9375
+                  ------------------------------------------------------
+
+                * compression
+                  With this bit the use of compression on no compression can
+                  be designated.
+                  ------------------------------------------------------
+                   compression   meaning
+                  ------------------------------------------------------
+                      0           no compression
+                      1           compression
+                  ------------------------------------------------------
+&lt;30                                                            CHAPTER 5 BIOS&gt;
+                * triggerlabel
+                  With these bytes the volume of the sound is desginated when 
+                  the recording will be starting.
+
+                * memory
+                  This is used memory of the play data that can be designated.
+                  ------------------------------------------------------
+                   memory               meaning
+                  ------------------------------------------------------
+                        0               MAIN MEMORY
+                        1               VRAM
+                  ------------------------------------------------------
+
+                HL   Adres of the PCM data
+                     When VRAM is designated, register E and register HL form a
+                     3 byte adres. Register E is the high byte.
+
+                BC   Length of the PCM data
+                     When VRAM is designated, register D and register BC form a
+                     3 byte adres. Register D is the high byte.
+&Aring;--------&atilde;
+&iexcl;output  &iexcl;    carry flag
+--------
+              ----------------------------------------------------------
+               value            meaning
+              ----------------------------------------------------------
+                0               normal end
+                1               abnormal end
+
+                        A  cause of abnormal end
+                           1. mistake in the desgination of the sampling
+                              frequency
+                           2. STOP key interupt
+
+                        HL  data adres when interrupt was generated.
+                            When VRAM is used the E register and HL register
+                            form a 3 byte adres. The E register is the high
+                            byte.
+&Aring;----------&atilde;
+&iexcl; changed  &iexcl;
+&iexcl; registers&iexcl;    all
+----------
+&Aring;----------&atilde;
+&iexcl;  note    &iexcl;    When while running in the Z80 mode is changed to R800 ROM mode,
+----------    when ended returns to the Z80 mode.
+                When the R800 ROM mode or the Z80 mode is used, when the
+                sampling rate is designated to 15.75 KHz, a 'mistake in
+                designated sampling frequency' error will occur.
+                It is not allowed while sampling to use the memory.
+                When the stop key is pressed, an interrupt is generated.
+
+&lt;5.2 CHANGED ENTRIES                                                       31&gt;
+
+                When the mainmemory is used for sampling, please be aware of
+                the adres for the sampled data.
+
+---_---_---_---_---_---_---_---_---_---_---_---_---_---_---_---_---_---_---&cent;
+&iexcl; COMPRESSION                                                              &iexcl;
+&iexcl; When reproducing the sounds, if the data is compressed, can't be         &iexcl;
+&iexcl; seen when reproducing.                                                   &iexcl;
+&iexcl; When recoding, it is possible to designate if there is any compression   &iexcl;
+&iexcl; or not. furthermore, when the recorded data is 0, always it is read      &iexcl;
+&iexcl; once again.                                                              &iexcl;
+--------------------------------------------------------------------------
+
+5.2 CHANGED ENTRIES
+
+ Because of the construction of the MSX Turbo R, also here follow the details
+of the changed entries.
+ Below here are the details for each changed entry are show.
+
+GTPDL (00DEH/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The paddlefunction can't be used. Will always returned with 0.
+--------
+
+TAPION (00E1H/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The clear flag will always be set and will be returned with an error
+--------
+
+TAPIN (00E4H/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The clear flag will always be set and will be returned with a error
+--------
+
+TAPIOF (00E7H/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The clear flag will always be set and will be returned with a error
+--------
+
+TAPOON (0EAH/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The clear flag will always be set and will be returned with a error
+--------
+
+&lt;32                                                            CHAPTER 5 BIOS&gt;
+
+TAPOUT (00EDH/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The clear flag will always be set and will be returned with a error
+--------
+
+TAPOFF (00F0H/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The clear flag will always be set and will be returned with a error
+--------
+
+STMOTOR (00F3H/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; Will return without doing anything.
+--------
+
+GTPAD (00DBH/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The clear flag will always be set and will be returned with a error
+--------
+
+NEWPAD (01ADH/SUB)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; The lightpen function can't be used. When register A is filled with
+-------- 8 - 11 it will always be returned with 0
+
+RDRES (017AH/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; System crash
+--------
+
+WRRES (017DH/MAIN)
+------------------------------------------------------------------------------
+&Aring;--------&atilde;
+&iexcl;function&iexcl; System crash
+--------
+
+&lt;33                                                                          &gt;
+------------------------------------------------------------------------------
+                          CHAPTER 6
+                      MAPPER RAM SEGMENTS
+------------------------------------------------------------------------------
+In the R800 DRAM mode the mainram is divided in segments, here the proces for
+the mapper ram segments that are used again are introduced here.
+
+6.1 Mapper support routines of the MSX Turbo R
+
+Take care of the following things in the R800 DRAM mode with consideration
+with the mapper support routine of the MSX Turbo R.
+
+1. Always the mapper in the highest external slot, the primary mapper is
+   selected.
+
+2. The 4 highest segments of the primary mapper are selected for the use for
+   segments for R800 DRAM mode.
+
+3. For the RAM segments of the MSX-DOS2 kernel the first 2 segments of the
+   segments for the R800 DRAM mode are assigned.
+
+The mapper support routines are not affected by running in the R800 DRAM mode
+or not using it. In this situation, please take notice that some of the last
+pages of the primary mapper are used.
+In case the mainram is 256 Kb, after the bootsequence stage, the segments are
+as shown below.
+
+  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+&Aring;---\---\---\---\---\---\---\---\---\---\---\---\---\---\---\---&atilde;
+&iexcl; S &iexcl; S &iexcl; S &iexcl; S &iexcl; - &iexcl; - &iexcl; - &iexcl; - &iexcl; - &iexcl; - &iexcl; S &iexcl; S &iexcl; S &iexcl; S &iexcl; S &iexcl; S &iexcl;
+---_---_---_---_---_---_---_---_---_---_---_---_---_---_---_---
+
+          Figure 1.3 Assigned table after the bootsequence
+
+Here 'S' means that is is assigned as a systemsegment.
+?????
+&lt;34                                             CHAPTER 6 MAPPER RAM SEGMENTS&gt;
+
+         Figure 1.4 System segments after the bootsequence
+-------------------------------------------------------------------------
+segment nr      contents
+-------------------------------------------------------------------------
+0 - 3           used by application
+10 - 11         used by MSX-DOS2 kernel
+12 - 15         assigned but not used by MSX-DOS2
+-------------------------------------------------------------------------
+
+In this situation segments 4 - 9 are not concern of the assignment.
+When the R800 DRAM mode is used, the 4 highest segments are write protected.
+Because it is not possible to access RAM, it will be returned by the mapper
+support routine. It is not possible to handle the 4 segments as if they are
+RAM.
+But, because from the position of the segment administration, those 4
+segments that are assigned for the system segments can't be used, this in
+contradiction with the applications, the contents has no meaning.
+In the bootsequence the system ROMs are copied to the 4 highest segments.
+
+         Figure 1.5 Contents of the copied system ROMs
+------------------------------------------------------------------------
+segment nr      contents
+------------------------------------------------------------------------
+  12            MAIN ROM (page 0)
+  13            MAIN ROM (page 1)
+  14            SUB ROM
+  15            First 16Kb of the kanji driver
+------------------------------------------------------------------------
+
+Because in this case these 4 segments are always adminisrated by the mapper
+support routine, in case of the R800 ROM mode the the function 'release of
+segments' of the standard routines are used, it is possible to release it
+with. The released segments can be used as RAM after the use of the
+'assigned segments' function.
+When the mapper support routine switches to the R800 ROM mode it is allowed to
+use the 4 highest segments as if they where RAM segments.
+ Finally, when the segments 12-15 are used for applications, it is not
+possible to change to the R800 DRAM mode. Because when changing to the R800
+DRAM mode, the contents of system ROM shown in figure 1.5 were copied and
+those segments were assigned as system segments
+
+&lt;6.2 PROCESS OF USING THE 4 HIGHEST SEGMENTS                               35&gt;
+
+6.2 PROCESS OF USING THE 4 HIGHEST SEGMENTS
+
+Below the concrete processes for re-use of the 4 highest segments are shown.
+Also see the MSXDOS2 - chapter 15 : mapper support routine.
+
+1. Verify that you are in the R800 DRAM mode.
+   The 4 highest segments are according to the function copied in the boot
+   sequence. You must verify if they are not released by an other and not
+   re-asigned.
+
+2. The function ' possession of mapper support routine adres' of the BIOS
+   functions is used and some of the last segments of the primary mapper are
+   assigned.
+   The segment numbers of the 4 last segments are taken. If the total number
+   of segments is N then the segments assigned are (N-4) to (N-1).
+
+3. If the function 'FRE_SEG' of the mapper support routine is used, the 4
+   highest segments are released.
+   Because this is when the segments will belong to the primary mapper,
+   register B is always 0.
+
+6.3 PROGRAM EXAMPLE
+
+  Below a program example is shown. Please note that this example has no
+distionction of error procudure or exception functions. Further, 'jump_table
+must be in the upper RAM.
+
+                .z80
+extbio:  equ    0ffcah          ;extended bios entry
+
+         ld     de,0402h        ;
+         call   extbio          ;possession of the mapper support routine adres
+         ld     de,jump_table   ;The jumptable is copied to the fixed adres for
+         ld     bc,16*3         ;the use of the execution for the calling of
+         ldir                   ;the mapper support routine
+         ld     b,4
+fre_loop:
+         dec    a               ;A = n-1, n-2, n-3, n-4
+         push   bc
+         push   af
+         ld     b,0             ; release of segment a of the primary mapper
+         call   fre_seg
+         pop    af
+         pop    bc
+         djnz   fre_loop
+         ...
+
+         jumptable:
+         all_seg:       ds 3
+
+&lt;36                                             CHAPTER 6 MAPPER RAM SEGMENTS&gt;
+
+         fre_seg:       ds 3
+         rd_seg:        ds 3
+         wr_seg:        ds 3
+         cal_seg        ds 3
+         calls:         ds 3
+         put_ph:        ds 3
+         get_ph:        ds 3
+         put_p0:        ds 3
+         get_p0:        ds 3
+         put_p1:        ds 3
+         get_p1:        ds 3
+         put_p2:        ds 3
+         get_p2:        ds 3
+         put_p3:        ds 3
+         get_p3:        ds 3
+//////////////////////////////////////////////
+              PAGE MODE ACCESS
+
+Bij  het bekijken van een artikel over de R800 in een Japans
+blad kwam  ik de  term &quot;DRAM  page access&quot;  tegen, en ik had
+eerst  geen flauw  idee wat  dat was.  Later kwam  ik er wel
+achter.
+
+Wanneer  van het  adres in  de externe  databus de high-byte
+niet verandert,  zal de R800 de high-byte van het adres niet
+opnieuw op de adresbus plaatsen (lijkt heel logisch, maar de
+Z80 kent deze truuk niet!)
+
+Een  &quot;page&quot; is in de processorwereld een stukje geheugen van
+256 bytes,  dat op  een 256-byte  grens begint, dus &amp;H??00 -
+&amp;H??FF.  Verwar dit niet met de bij MSX bekende term &quot;page&quot;,
+een stuk geheugen van 16 kB.
+
+Het hierboven  beschreven truukje  dat de R800 gebruikt heet
+&quot;Page  mode access&quot;  en verhoogt  de snelheid  nog eens  met
+ongeveer een factor twee.
+
+De programmeur kan met &quot;paged DRAM access&quot; maximaal van deze
+truuk  gebruik maken.  Paged DRAM  access betekent  dat alle
+geheugentoegang van een routine (dus ook de routine zelf) in
+dezelfde page staat (bijvoorbeeld &amp;HD000-&amp;HD0FF). Dit is wel
+zeer beperkt,  want met  alle geheugentoegang  bedoel ik dan
+dus  echt ALLE  geheugentoegang, inclusief stack, variabelen
+en constanten. Het uitzetten van de interrupts is in verband
+met die  stack dan  ook ten  zeerste aan te raden. Maar deze
+moeite wordt wel beloond met een ultra-snelle routine!
+
+We  begrijpen  nu  ook beter  hoe het  komt dat  een LD  A,B
+instruktie  op de  R800 tien  keer zo snel is dan op de Z80,
+terwijl een LD A,(HL) maar 5,3 keer zo snel is.
+
+Bij het  uitvoeren van een instructie hoort namelijk ook het
+ophalen van de opcode uit het geheugen. Omdat bij een LD A,B
+instructie  de externe  adresbus niet wordt gewijzigd, hoeft
+bij het  ophalen van  de volgende opcode (meestal) alleen de
+low-byte van de externe adresbus te worden veranderd. Bij de
+LD  A,(HL) instructie  is de externe adresbus wel veranderd,
+zodat zowel  de low-  als de  high-byte van  het PC register
+(Program  Counter) naar  de externe  adresbus moeten  worden
+verplaatst.
+/////////////////////////////////////////
+&lt;                                                                          37&gt;
+------------------------------------------------------------------------
+                        CHAPTER 7
+                       NEW HARDWARE
+------------------------------------------------------------------------
+
+In this chapter the new internally build-in hardware will be explained.
+
+7.1 SYSTEM TIMER
+
+In the R800 because there are no time related instructions, due to this
+wait-timing isn't possible with time related instructions from the CPU.
+But a system timer with a timing between the 10 u-sec and the 10 m-sec can be
+used.
+With this timer, a 16 bit clear-data output is possible, with use of the
+system clock of 10.738635 Mhz that will be divided by 42
+(10.738635Mhz/42=255.68Khz) a counter up is generated.
+Furhtermore, the lowest bit will be increased every 3.911 u-sec. Therefore the
+time between the counter is cleared and the time it will be set to 1,
+3.911 u-sec will have passed.
+When reading the counter there is no data-latch function. Please notify that
+between reading the higher and the lower byte of the counter the clock signal
+could have appeared and the correct counter value isn't read.
+
+                figure 1.6 I/O ports of the system timer.
+------------------------------------------------------------------------
+I/O port nr     R/W     function
+------------------------------------------------------------------------
+0E6H            W       When any data is written to this port,
+                         the counter is cleared.
+0E6H            R       lower 8 bit of the countertimer.
+0E7H            R       higher 8 bit of the countertimer.
+------------------------------------------------------------------------
+For a timing routine the following program can be used.
+
+&lt;38                                                    CHAPTER 7 NEW HARDWARE&gt;
+
+countlow  equ   06eh            ; lower 8 bits of the counter
+counthigh equ   0e7h            ; higher 8 bits of the counter
+
+;
+; The in register B desginated time is waited.
+; The time waited is B*3.911 u-sec.
+; It is not possible to use negative time.
+; It is not possible to assign 0 to B.
+; There may not be any interrupts.
+; Register A,C,F are changed.
+wait:
+         in     a,(countlow)    ; get current value of the counter
+         ld     c,a             ; store this value in C
+wait_loop:
+         in     a,(countlow)    ; get current value of the counter
+         sub    c               ; calculate the elapsed time
+         cp     b               ; is it the designated time?
+         jr     c,wait_loop     ; if not so, loop
+         ret
+
+7.2 PCM
+
+In this part the I/O ports of the PCM and the functions of recording and
+playing etc are explained.
+
+7.2.1 PCM I/O PORTS
+
+The I/O ports for the PCM sampling and recording are as shown below.
+
+                        figure 1.7 I/O port of the PCM
+------------------------------------------------------------------------
+port     bit7   bit6    bit5    bit4    bit3    bit2    bit1    bit0
+------------------------------------------------------------------------
+0A5H(Wr) 0      0       0       SMPL    SEL     FILT    MUTE    ADDA
+0A5H(Rd) COMP   0       0       SMPL    SEL     FILT    MUTE    BUFF
+0A4H(Wr) DA7    DA6     DA5     DA4     DA3     DA2     DA1     DA0
+0A4H(Rd) 0      0       0       0       0       0       CT1     CT0
+------------------------------------------------------------------------
+
+ADDA (BUFF)     BUFFER MODE
+                For DA conversion output there can be chosen for a single
+                buffer or there can be chosen for a dubbel buffer.
+                If there is chosen a dubbel buffer for the DA, there must be
+                chosen a singel buffer for the AD.
+                  0 single buffer (When AD or after reset)
+                  1 dubbel buffer (when DA)
+
+&lt;7.2 PCM                                                                   39&gt;
+
+MUTE            MUTING SWITCH
+                With this switch the sound output of the whole system can be
+                switched ON or OFF.
+                 0 soundoutput OFF (when reset)
+                 1 soundoutput ON
+
+FILT            SELECTION OF THE SAMPLE HOLD OF INPUT SIGNAL
+                When AD, a signal for the sample hold of the inputsignal, a
+                filter for the outputsignal or a groundlevel can be chosen.
+                 0 groundlevel (after reset)
+                 1 filter output signal
+
+SEL             SELECTION OF A FILTER OF THE INPUT SIGNAL
+                For the low pass filter for the input signal, a DA conversion
+                for the output signal or an outputsignal from the microphone
+                can be selected.
+                 0 DA conversion as outputsignal
+                 1 microphone amplifier as output signal
+
+SMPL            SAMPLE HOLD SIGNAL
+                There can be chosen between sampling and input signal or a hold
+                of the sampling input signal.
+                 0 when sampling (after reset)
+                 1 when hold
+
+COMP            COMPARE OUTPUT SIGNAL
+                When the sample hold signal is on, the outputsignal of DA
+                convertor is compared and it is possible to find out if the
+                signal is bigger.
+                 0 D/A output &gt; sample hold output
+                 1 D/A output &lt; sample hold output
+
+DA7 - DA0       D/A OUTPUT DATA
+CT1, CT0        COUNTER DATA
+                Every 63.5 u-sec this counter is increased.
+                When DA (ADDA = 1), at the same time this counter is
+                increased, the to port 0A$4H written data is copied an
+                putted out. When data is written to port 0A4H, the counter is
+                cleared.
+                When AD (ADDA = 0), the to port 0A4H written data is output.
+                eventhough data is written to port 0A4H the counter is not
+                cleared.
+
+&lt;40                                                    CHAPTER 7 NEW HARDWARE&gt;
+
+7.2.2 PCM PLAYING
+
+The following a program for the PCM playing function.
+
+1. ADDA is set to 1, MUTE is set to 1, SEL is set to 0 (00000011B is written
+   to port 0A5H).
+
+2. CT1 and CT0 are being read and the sample period is detected
+
+3. PCM data is written. When this is done, the counter is automatically
+   increased.
+
+4. The second time and the third time the same data is used.
+
+                .Z80
+;
+; PCM PLAY
+;
+; INPUT         HL = ADRES OF THE PCM DATA
+;               BC = LENGTH OF THE PCM DATA
+;               E  = SAMPLING RATE
+;                       1 = 15.75  KHz
+;                       2 =  7.875 KHz
+;                       3 =  5.25  KHz
+; OUTPUT        NONE
+
+pcmdac   equ    0a4h            ;D/A convertor (Write)
+pcmcnt   equ    0a4h            ;counter       (Read)
+pcmcntl  equ    0a5h            ;PCM control   (Write)
+pcmstat  equ    0a5h            ;PCM status    (Read)
+pcmplay:
+         ld     a,00000011b
+         out    (pcmcntl),a     ; designate D/A mode
+         di                     ; for the timing, the interrupts are put off
+
+pcmplay_loop:
+         in     a,(pcmcnt)      ; read counter
+         sub    e               ; has it reached the requested value?
+         jr     c,pcmplay_loop  ; if not so, loop
+         ld     a,(hl)          ; read PCM data
+         out    (pcmdac),a      ; put the data to the DAC
+         inc    hl              ; next adres for the sample data
+         dec    bc              ; decrease counter
+         ld     a,c             ; is the counter 0?
+         or     b
+         jr     nz,pcmplay_loop ; if not so, loop
+         ei                     ; turn interrupts back on
+         ret
+
+&lt;7.2 PCM                                                                   41&gt;
+
+7.2.3    PCM RECORDING
+
+This is a program for the PCM recording function.
+
+1. ADDA is set to 0,MUTE is set to 0, FILT is set to 1, SIMPL is set to 0.
+   (To the I/O port 0A5H 00001100B is written and the input analog signal is
+    sampled.)
+
+2. CT1 and CT0 are being read and the sample period is detected.
+
+3. At least 7 u-sec is waited. if these 7 u-sec wait is included twice,
+   waiting is surely not necesarry.
+
+4. SMPL is set to 1 (to I/O port 0A5H 00011100B is written) and the input
+   analog signal is sampled.
+
+5. By the sequence changing the bits one by one, the data from the D/A
+   convertor is changed but, the effect of the comparison of the output of
+   the D/A convertor and the input analog signal by the COMP bit is read and
+   for each bit it is determined and it is stored.
+
+6. SMPL is set to 0 (to I/O port 0A5H 00001100B is written).
+
+7. Now point 2 to 6 is done again.
+
+         .Z80
+;
+;  PCM RECORDING
+;
+; INPUT      HL = ADRES OF THE PCM DATA
+;            BC = LENGTH OF THE PCM DATA
+;            E  = SAMPLING RATE
+;                   1 = 15.75  KHz
+;                   2 =  8.875 KHz
+;                   3 =  5.25  KHz
+; OUTPUT     NONE
+
+pcmdac   equ    0a4h            ;D/A convertor
+pcmcnt   equ    0a4h            ;counter
+pcmcntl  equ    0a5h            ;PCM control
+pcmstat  equ    0a5h            ;pcm status
+; defenition of the 1bit A/D change macro
+adconv   macro  next_bit,strip
+         local  adconv_not_change
+         out    (pcmdac),a      ; output of the data
+         db     0edh,70h        ; the data from PCMSTAT is read and
+                                ; the flags can be set
+         jp     m,adconv_not_change ;  the data if the input analog signal is
+                                ;      bigger.
+         and    strip           ;      according to that the bit is set to 0
+                                       when the input analog signal is smaller.
+adconv_not_change:
+         or     next_bit        ; next bit is set to 1
+
+&lt;42                                                    CHAPTER 7 NEW HARDWARE&gt;
+
+         endm
+
+pcmrec:
+         ld     a,00001100b
+         out    (pcmcntl),a     ; designate A/D mode
+         ld     d,0             ; designation of the startvalue of the
+                                  detection of the counter
+         di                     ; disable interrupts because of the timing
+
+pcmrec_loop:
+         in     a,(pcmcnt)      ; get timer
+         cp     d               ; is it the value that is required?
+         jr     nz,pcmrec_loop  ; if not so, loop
+         add    a,e             ; use the value for the next counter
+         and    11b
+         ld     d,a             ; storage of that
+         ; after the above a loop of 7 u-sec will be enough
+         exx
+         ld     a,00011100b
+         out    (pcmcntl),a     ; data for the holding
+         ld     c,pcmstat       ; designation of the hold adres of the COMP bit
+         ld     a,80h           ; designation of the start data
+         adconv 01000000b,01111111b ; changing of the next bit
+         adconv 00100000b,10111111b
+         adconv 00010000b,11011111b
+         adconv 00001000b,11101111b
+         adconv 00000100b,11110111b
+         adconv 00000010b,11111011b
+         adconv 00000001b,11111101b
+         adconv 00000000b,11111110b
+         exx
+         ld     (hl),a          ; store data
+         ld     a,0001100b
+         out    (pcmcntl),a     ; release of the hold of the data
+         inc    hl              ; adres for the next data
+         dec    bc              ; decrease the counter
+         ld     a,c             ; is the counter 0?
+         or     b
+         jr     nz,pcmrec_loop  ; if not so, loop
+         ld     a,00000011b
+         out    (pcmcntl),a     ; designate the D/A mode. Mute is set
+         ei                     ; put the interrupts back on
+         ret
+
+&Aring;-----------&atilde;
+&iexcl; attention &iexcl;   On a Z80 there is not the speed to run the program properly.
+-----------
+
+&lt;43                                                                          &gt;
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

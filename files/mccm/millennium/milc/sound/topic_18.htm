@@ -1,0 +1,206 @@
+<html>
+
+<head>
+<title>MILC - Topic MoonSound overview</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_17.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_19.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MoonSound overview</b><br>
+    <i>R.Schrijvers</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+This is  the English version of a Dutch article that will be published in MCCM 
+70 and on Sunrise Magazine #14.
+ 
+ 
+                              M O O N S O U N D
+                             ===================
+ 
+Almost  one and  a half year ago the Swiss MSX-Hndlergemeinschaft asked me to 
+write the  software for the soundchip they were going to develop for MSX. They 
+had  plans to  build a  cartridge with  an OPL3 from Yamaha. The whole project 
+took  some  time  so  meanwhile Yamaha  released the  sequel: the  OPL4! After 
+reading the  OPL4 specifications  I asked them to use the OPL4 in stead of the 
+OPL3 and fortunately they agreed. The name of this cartridge with OPL4 will be 
+Moonsound.
+ 
+Unfortunately  I didn't receive an OPL4 evaluation board yet but fortunately I 
+have had  an OPL3  evaluation board  for over  6 months  now. This  means that 
+everything  in this  text concerning the FM synthesizer has been tested by me, 
+but  that  everything concerning  the PCM  synthesizer comes  from the  Yamaha 
+manuals without testing.
+ 
+To start  I'll give  a list  of the  most important possibilities of the chip. 
+I'll  try  not  to get  too technical,  but sometimes  this cannot  be avoided 
+completely.   Some  experience   with  using   MSX-AUDIO  (Music  Module)  and 
+MoonBlaster  will  be  of  great  help.  The OPL4  has two  main parts.  An FM 
+Synthesizer Unit  (the OPL3)  and a  PCM Synthesizer  Unit. This  last one  is 
+better known in the PC world by the name Wave Table Synthesis.
+ 
+FM:
+ 
+- Upto eighteen  2-Operator FM  channels or fifteen FM channels with five drum 
+  sounds
+- Upto  six  4-Operator  FM  channels  (together with  another six  2-Operator 
+  channels)
+- Eight different waveforms
+- Possibility to specifiy right, left or both for each channel
+ 
+PCM:
+ 
+- Upto 24 waves simultaneously! (this means 24 channels)
+- Replayfrequency of 44.1 kHz
+- 8, 12 or 16 bits wavedata
+- Stereo signal in 16 positions for each channel
+ 
+ 
+                             THE FM SYNTHESIZERS
+ 
+The  best way  to judge  the FM  synthesizer of the OPL4 is by comparing it to 
+MSX-MUSIC (FM-PAC)  and MSX-AUDIO  (Music Module).  The possibilities of these 
+chips  should be known by everybody nowadays. The OPL4 resembles the MSX-AUDIO 
+the most.  This is  not so strange because the MSX-AUDIO is actually the OPL1. 
+The  FM synthesizer  of the OPL4 is 100% compatible with the FM synthesizer of 
+MSX-AUDIO. But the OPL4 has twice as many channels!
+ 
+On top  of that  there are  the so-called  4-Operator instruments. Normally an 
+instrument  is created  by adjusting  two operators  in the right way. Compare 
+this to  the Make  Own Voice  part of  MoonBlaster. Now it is also possible to 
+create  voices using  four operators. It speaks for itself that you can create 
+much better  instruments than  with only two operators. Another improvement is 
+that  the waveform  can be  selected for  each operator.  On the MSX-AUDIO the 
+waveform is always a sinus, now that can be changed.
+ 
+Finally a stereo possibility was added to the FM synthesizer. With MoonBlaster 
+we had  to go  through a  lot of trouble using two different soundchips to get 
+stereo,  now you can select for each channel if it should be heard left, right 
+or both.
+ 
+ 
+                             THE PCM SYNTHESIZERS
+ 
+This part  of the  OPL4 makes it possible to play samples. A sample is a piece 
+of  digitized  (sampled)  sound.  You  can  use  this  to  get very  realistic 
+instruments, because it's an exact copy! A drawback of samples is that a large 
+difference  between the record and play samplefrequency will give bad quality: 
+the  instrument  doesn't sound  like the  original. To  get a  good piano  for 
+example, it would be necessary to sample each note seperately. To prevent this 
+the sample  will be  influenced by the PCM synthesizer. A lot of things can be 
+done  with this,  a lot  of them  are also used for FM synthesis, like attack, 
+decay, etc.  An extra advantage of this synthesizer is that the samples can be 
+short  because,  for  example,  the  decay  of  the tone  can be  done by  the 
+synthesizer.  Playing a  sample with  these extra  'effects' is  known as Wave 
+Table Synthesis and a sample with this extra information is called a 'wave'.
+ 
+The quality  of a sample is determined by two things: de sample resolution and 
+the  sample frequency.  With a sample resolution of 16 bits and a frequency of 
+44.1 kHz the OPL4 has sound of CD quality!
+ 
+The PCM  synthesizer has  stereo possibilities too. These are even better than 
+those  of the  FM synthesizer,  because here there is no left/right/both but a 
+real balance  with 16  positions! This  balance can  be set for each of the 24 
+channels seperately.
+ 
+PCM  data takes  a lot of memory, even with the synthesizer stuff of the OPL4. 
+Especially on  an MSX it is not nice at all to load 300 kB of wavedata for one 
+song.  The  solution  for this  is the  2 megabyte  ROM which  will be  in the 
+cartridge  too. This ROM was designed by Yamaha especially for the OPL4 and it 
+contains  all  General  MIDI  sounds! These  are 128  instruments and  47 drum 
+sounds. On  top of  that there  will be 128 kB RAM in the cartridge so can you 
+can  use your  own samples  too. For  the real  freaks it  will be possible to 
+replace this 128 kB RAM by 512 kB RAM.
+ 
+To erase  any doubts:  the OPL4  is not  able to  digitize sound,  it can only 
+replay it. This is not really a problem because wavedata is just PCM data with 
+some  extra information. It should be simple to use samples created by a Music 
+Module, turbo R or another computer.
+ 
+ 
+                                    SPEED
+ 
+Programmers will  be interested  to know  that the  OPL4 is  much faster  than 
+MSX-MUSIC  and MSX-AUDIO.  Even the  quite slow Z80 had to wait when accessing 
+those chips.  But the  OPL4 is so fast that even the R800 doesn't have to wait 
+anymore. Another advantage is that all (!) registers can be read.
+ 
+It  is a  mayor advantage  for the  relatively slow MSX computer that the OPL4 
+handles almost  everything itself. It would never be possible to play 24 waves 
+simultaneously if this hadn't been the case. Just think about the MODplayer by 
+XelaSoft.  It takes  all the CPU time on a turbo R to play 4 samples. The OPL4 
+makes it  possible to  create demos  and games with fabulous background music. 
+The  128 kB RAM can be used perfectly for sound effects in games. It should be 
+possible to  make a  MODplayer for  Z80 that  leaves enough CPU time for other 
+programs to run simultaneously!
+ 
+ 
+                                 THE SOFTWARE
+ 
+When  you buy  the OPL4 you'll get it with two music editors. Both of them are 
+special MoonBlaster  versions. There  is an FM version and a Wave version. The 
+FM  version supports  upto 18  FM channels in combination with 6 Wave channels 
+for drums.  The Wave  version will  'only' support the 24 Wave channels. There 
+are  two versions  to keep  the songdata  small and to let the programs run on 
+computers with 128 kB RAM.
+ 
+Both programs  will look  a lot  like MoonBlaster  so everybody who is used to 
+those  programs  will  get  used  to these  new programs  very soon.  The main 
+advantage  with MoonBlaster  that these  programs run under DOS. If there is a 
+memory mapper of 256 kB or more DOS2 (and harddisk) will be supported. It will 
+be possible to load MoonBlaster v1.4 songs in both programs.
+ 
+As soon  as these  MoonBlasters are  finished I'll start programming a General 
+MIDI  file player and a MODplayer. I can't say when they will be finished yet, 
+but if everything is as easy as it looks from the Yamaha manuals it won't take 
+too long.
+ 
+A lot  of groups  already announced  that they  will support  the OPL4, on the 
+large  International MSX  fair in Tilburg (April 7th 1995) the first demos and 
+games with OPL4 music will be released.
+ 
+Moonsound (the  cartridge for  MSX with  OPL4) will  probably be  available in 
+October  or November. The price will be approximately US$ 200. On the MSX fair 
+in Zandvoort  on September  17th 1994 the exact price will be announced. Visit 
+the  Sunrise stand  for a  demonstration of  the OPL4. You can order Moonsound 
+there as well.
+ 
+                                                             Remco Schrijvers
+                                                    Translated by Stefan Boer
+ 
+ 
+                         (c) Sunrise Foundation 1994
+                                 P.O. Box 178
+                               1530 AD  Wormer
+                                 Netherlands
+ 
+                           E-mail: smboer@cs.vu.nl
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_17.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_19.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

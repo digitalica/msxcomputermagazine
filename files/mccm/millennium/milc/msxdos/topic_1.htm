@@ -1,0 +1,220 @@
+<html>
+
+<head>
+<title>MILC - Topic SOLUTION FOR SOME DOS 2 & TURBO R PROBLEMS</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">SOLUTION FOR SOME DOS 2 & TURBO R PROBLEMS</b><br>
+    <i>Henrik Gilvad</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+(Overgenomen uit Quasar 19)
+
+SOLUTION FOR SOME DOS 2 &amp; TURBO R PROBLEMS
+==========================================
+
+Written by Henrik G.
+
+I often see programs &amp; diskmagazines that have big problems
+with DOS 2.20. We (the scandinavian -no finnish members-
+usergroup) have also had some with our diskmag. and other
+programs. In this text I will try to explain the source and the
+solutions for some of them.
+
+Problem 1: RAMsearch vs. DOS 2 pagecontrol conflict
+---------------------------------------------------
+The DOS 2.20 is mapped in 4 x 16k pages, the page selection is
+done by writing a value from 0-3 to adr. #6000 in the slot that
+the DOS cartridge is plugged in.
+A few DOS 2 cartridges use using all of the area from
+#4000-#7FFF but most only use #6000-#7FFF. (The Turbo R only
+uses #7FF0 or so and it has 8 pages. 3 for DOS 2, 1 for DOS 1
+and 4 for something yet to be found out.)
+
+Some RAMsearch routines use a simple algorithm which look
+somewhat like this one.
+
+  Read old value
+  Turn all bits
+  Write this new value
+  Read it again and turn all bits
+  Compare this value to the original value
+  (Write old value)
+
+If the slot contains RAM then this routine will discover it.
+But if the testaddress is in the DOS 2 pageselection area then
+a 'random' (= uncertain) page will be selected. The next time a
+piece of code in the DOS 2 ROM is called, it will probably not
+be there and the computer hangs.
+
+Possible solution 1: Write '00h' to the testadr. after each
+test, and not the original value (unless it WAS RAM). The DOS
+is always set back to page 0 by its own routines.
+
+Solution 2: Read contents of address #40FF and write this value
+to the testadress after testing. Adress #40FF contains the page
+number in the DOS 2 ROM. (Even on Turbo R DOS 2.30.) This is
+perhaps the best solution. The value should be from 0-3 if it
+is a DOS slot.
+
+I discovered this problem the first time with Dynamic Publisher
+a few years ago, it uses the adr. #6000 as RAMtest address and
+my DOS did not like that.
+
+
+Problem 2: XBASIC vs. DOS
+-------------------------
+When Xbasic (in any of its many names) is installed in RAM then
+an adress between #FCC9-#FD08 is set to #20 in order to tell
+the basic CALL interpreter that there now is a CALL handler in
+this slot. If you stop a program using XBASIC and then go to
+DOS, the area from #4000-#7fff will often be overwritten. When
+you return to Basic again and try to use a CALL statement, the
+Basic interpreter will still believe that there is a CALL
+handler in the RAM slot, but there isn't. The computer will
+call some mad code and the computer hangs.
+
+This problem is not restricted for XBASIC only but also for any
+other Basic extension (like MIDIIO) that is loaded into RAM.
+
+The solution is simple. Just clear the byte that tells Basic
+where you installed a 'cartridge'. If you do not know which one
+then use this formula:
+
+10 AD=&amp;HFCC9 + PS*16 + SS*4 + PA
+20 POKE AD,0
+
+PS is Primary slot for the RAM. (0-3)
+SS is Secondary slot for the RAM. (0-3)
+PA is the page number. 0 for #0000-#3fff, 1 for #4000-#7fff,
+                       2 for #8000-#Bfff and 3 for #C000-FFFF
+
+PA will always be 1 for machinecode extensions.
+
+If you are using DOS 2 then make a litle DOS program that do
+this trick and state this programname in the REBOOT.BAT.
+REBOOT.BAT is called when ever CALL SYSTEM is used.
+
+
+Problem 3: Dynamic Publisher and Turbo R
+----------------------------------------
+My original H.S.H. version of D.P. was very difficult to start
+on the Turbo R in the beginning. First of all I had to get it
+on my harddisk. &quot;BDOSPROT.BIN&quot; from Lars Hansen fixed that one.
+(This program simulates the error on the floppy disk.) But then
+some more problems occured, that had something to do with DOS
+2.20 as written earlier. After changing the loader there were
+some more problems, this was due to the DOS 2 Memorymapper
+routines. MAP.COM was the solution to this one.
+
+DO NOT use &quot;MAP2.COM&quot; when you want to run D.P.! Use MAP.COM
+instead. The only difference between MAP and MAP2 is this:
+MAP only changes the DOS 2 mapperroutines concerning #FD-#FF
+MAP2 changes all 4 mapperroutines from #FC-#FF
+
+D.P. is the only program having problems with MAP2.COM but if
+you get some then just reboot and try MAP.COM. (It is a static
+error, so if it works once it will also work later on.) A
+program like EASE (from Philips/Operasoft) will not work good
+with MAP but needs MAP2.
+
+There is still 1 error with Dynamic on the Turbo R! Sometimes
+it suddenly stops while loading but once it is loaded it works
+fine. (I have no solutions for this problem yet.)
+
+
+Problem 4: Turbo R super turbo mode vs. memorymapper
+----------------------------------------------------
+In the super turbo mode (LD A,#82; CALL #180) the Turbo R does
+not have the normal number of mapperpages available. Some
+programs are using a bad kind of logic when they examine the
+mapper.
+
+IF pages &gt;  8 then Mapper = 256k
+IF pages &gt; 16 then Mapper = 512k
+
+etc.
+
+This will not do for the Turbo R since it is using 4 pages for
+'FastROM'. Furthermore, the DOS 2 is using 2 pages which are
+not 'disabled' like the 'FastROM'. This means that if a program
+is using mapperpages which are not there, the result will be
+always #FF. Remember also that you must never use the 2 DOS
+RAMpages.
+
+One of these programs is RAMCOPY.BIN that is used in MSX PAINT
+4 (sorry Juan and Marco) and that is why the BRUSH type
+commands are always drawing with white colour. (= #FF)
+
+The solution for this specific program is to change CPU mode to
+MEDIUM. (LD A,#81; CALL #180) Then RAMCOPY.BIN works fine. (If
+it does not, use the 2 DOS 2 pages.)
+
+Remember that this is ONLY for TURBO R. There are no problems
+of this kind on other MSX's.
+
+Since this problem was how to define the actual numbers of
+mapperpages if have to prevent another fault.
+
+Do not 'just' use a simple algorithm like the following to
+decide the number of mapperpages.
+
+FOR A=1 to 255
+  test mapper page A for ram.
+IF RAM then NEXT A
+?&quot;Number of pages =&quot;;A
+
+This will overwrite at least 2 bytes in the DOS 2 ram area.
+Therefore RESTORE the original contents of the adr. you test.
+
+FOR A=1 to 255
+  OldValue=peek(xx)
+  test mapper page A
+  poke xx,OldValue
+IF ram then NEXT A
+?&quot;Number of pages =&quot;;A
+
+This is also necessary if you do not have a 4Mbyte mapper
+because then this algorithm will destroy 1 byte in mapper page
+0. (mainly adr. #C000.)
+
+If your program is to be used only on MSX DOS 2 then you should
+consider to use the DOS 2 memorymapper manager functions, which
+are easy to use.
+
+That were all my experiences with DOS 2.20. I hope this can
+help other programmers to avoid the problems I have had.
+
+                                                H.G.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

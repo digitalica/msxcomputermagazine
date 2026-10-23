@@ -1,0 +1,343 @@
+<html>
+
+<head>
+<title>MILC - Topic Screen5-12 converter (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_32.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_34.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Screen5-12 converter (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+DE MACHINETAALVERSIE:
+
+       S C R E E N   5 / 1 2   S U P E R I M P O S E
+      ===============================================
+
+Voor  ClubGuide #9  maakte ik  het programma &quot;SUPIMPOS.M2P&quot;, 
+dat  een  SCREEN  5  plaatje  over  een  SCREEN  12  plaatje 
+heenzette, met  als resultaat  een SCREEN  11 plaatje.  Deze 
+versie  was in BASIC, en daarom erg traag. Alleen met behulp 
+van de KUN compiler (versie 2.0, anders wordt SCREEN 10 niet 
+ondersteund!),  was  de  snelheid  tot  een  zeer acceptabel 
+niveau  op  te  voeren.  Ik  kondigde  toen  al  aan dat  ik 
+misschien een  machinetaalversie zou  maken, en die staat op 
+deze ClubGuide Special #2.
+
+Om uit te kunnen leggen hoe de conversie werkt, is het eerst 
+noodzakelijk   om  de   schermopslag  in  de  desbetreffende 
+screenmodes te weten. Vandaar dat ik daar maar mee begin.
+
+
+                          SCREEN 5
+
+In  SCREEN 5  kunnen er  maximaal 16 kleuren tegelijk op het 
+scherm worden  getoond. In  een byte  kunnen dus twee pixels 
+opgeslagen worden, en wel op deze manier:
+
+MSB   7   6   5   4   3   2   1   0   LSB
+     CL3 CL2 CL1 CL0 CR3 CR2 CR1 CR0
+
+Hierboven  ziet u  een byte  van het  VRAM in  SCREEN 5,  in 
+binaire notatie. CL staat voor Color Links, en CR voor Color 
+Rechts. Voor  beiden zijn  4 bits beschikbaar, wat inderdaad 
+leidt tot maximaal 16 verschillende kleuren.
+
+De kleuren van de pixels (0,0) en (1,0) staan op adres 0 van 
+het VRAM,  de kleuren  van de pixels (2,0) en (3,0) staan op 
+adres  1, ..., de kleuren van de pixels (0,1) en (1,1) staan 
+op adres  128, ...,  de kleuren  van de  pixels (254,211) en 
+(255,211) staan op adres 27135. Iedere regel neemt 128 bytes 
+in  beslag, wat  het totaal  per scherm  brengt op 128*212 = 
+27136 bytes.
+
+
+                         SCREEN 12
+
+Om meer  dan 256  kleuren tegelijk  op het  scherm te kunnen 
+zetten  terwijl er  toch maar  8 bits  per pixel beschikbaar 
+zijn, hebben  de mensen  van Yamaha  (de makers van de V9958 
+videochip,  toegepast  in  MSX2+  en  MSX turbo  R) het  YJK 
+systeem  bedacht. Er  zijn 4096  basiskleuren, die elk in 32 
+helderheden kunnen  voorkomen. Dit zou een totaal van 131072 
+kleuren  opleveren, maar  omdat een aantal kleuren hetzelfde 
+zijn blijven  er 'maar' 19268 over. Vier pixels naast elkaar 
+hebben  steeds dezelfde  basiskleur, dit wordt vastgelegd in 
+de zogenaamde J en K waardes. Deze waardes worden opgeslagen 
+in de  drie minst significante bits van elke byte. Drie bits 
+maal  vier  bytes  maakt een  totaal van  twaalf bits  om de 
+basiskleur aan te geven. In twaalf bits kun je de getallen 0 
+t/m 4095 opslaan, de 4096 basiskleuren. De overige vijf bits 
+van  elke byte  worden gebruikt  voor het  opslaan van  de Y 
+waarden. In  vijf bits  past een  getal van  0 t/m 31, de 32 
+helderheden. In schema ziet dat er als volgt uit:
+
+MSB   7   6   5   4   3   2   1   0   LSB
+     --------Y1--------- ----KL----     1e pixel
+     --------Y2--------- ----KH----     2e pixel
+     --------Y3--------- ----JL----     3e pixel
+     --------Y4--------- ----JH----     4e pixel
+
+Net als bij SCREEN 5 staat de informatie over de pixels weer 
+van  linksboven naar  rechtsonder, regel  voor regel  in het 
+VRAM. Per  pixel is  een byte nodig, een regel vergt dus 256 
+bytes en het hele scherm 212*256 = 54272 bytes.
+
+
+                        SCREEN 10/11
+
+SCREEN  10 en 11 zijn voor de V9958 precies hetzelfde. Er is 
+alleen een  verschil in de manier waarop BASIC ze behandelt. 
+In  SCREEN  10  mogen  alleen  de  kleuren  0 t/m  15 worden 
+gebruikt,  BASIC behandelt  SCREEN 10  voor de gebruiker net 
+zoals SCREEN  5. SCREEN 11 wordt net zo behandeld als SCREEN 
+8  en 12,  dus kleurnummers 0 t/m 255. Ik zal in het vervolg 
+SCREEN 11  typen, maar daarvoor kunt u net zo goed SCREEN 10 
+lezen.
+
+In  SCREEN  11  kan behalve  de YJK mode ook het oude 16 uit 
+512 kleuren palet worden gebruikt. Hiervoor moeten we wel de 
+helft   van  de   helderheden  inleveren,   zodat  er   4096 
+basiskleuren, 16  helderheden en  16 (uit  512) paletkleuren 
+zijn.  Het aantal verschillende combinaties van basiskleuren 
+en helderheden  is 65536,  maar doordat  er weer  een aantal 
+hetzelfde  zijn blijven  er 12499  over, en  dat is toch ook 
+niet niks!  De drie  minst significante bits van iedere byte 
+bevatten weer de J en K waardes, voor de helderheid (Y) zijn 
+de  bovenste vier  bits gereserveerd. De paletkleur wordt in 
+diezelfde vier bits opgeslagen. Hoe weet de VDP nu of er een 
+paletkleur  of  een  helderheid  bedoeld  wordt?  Dat  wordt 
+aangegeven met  het overgebleven  bit, dat ook wel het A bit 
+wordt genoemd. Dit is bit 3. In schema ziet dit er als volgt 
+uit:
+
+MSB   7   6   5   4   3   2   1   0   LSB
+     --------Y1----- -A- ----KL----     1e pixel
+     --------Y2----- -A- ----KH----     2e pixel
+     --------Y3----- -A- ----JL----     3e pixel
+     --------Y4----- -A- ----JH----     4e pixel
+
+Als A=1  dan wordt  de Y-waarde  als paletnummer  opgevat en 
+wordt de J/K waarde genegeerd. Als A=0 wordt de Y-waarde als 
+helderheid  opgevat. In vier pixels mogen beiden door elkaar 
+gebruikt  worden,   de  J/K  waarde  van  een  pixel  in  de 
+paletkleur  telt wel  mee voor  de pixels  die wel in de YJK 
+mode zitten!  De verdeling  van de  pixels over  het VRAM is 
+hetzelfde als bij SCREEN 12.
+
+Nu we de basiskennis hebben gehad, kunnen we overgaan tot de 
+kern van de zaak.
+
+
+                 HOE WERKT HET SUPERIMPOSEN
+
+Stel je hebt een SCREEN 12 plaatje en je wilt daar een tekst 
+overheen  zetten. Je maakt de tekst in SCREEN 5 en je BSAVEt 
+dat plaatje. Op de plaatsen waar paletnummer 0 of 1 voorkomt 
+in  het  SCREEN  5  plaatje,  komt  het  SCREEN  12  plaatje 
+tevoorschijn.
+
+Daarna start  je het  programma &quot;IMPOSE.M2P&quot; op, dat op deze 
+ClubGuide Special #2 staat. Het programma geeft voor de rest 
+zelf ruim voldoende tekst en uitleg.
+
+Hoe  gaat  het  superimposen nu  in z'n  werk? Het  SCREEN 5 
+plaatje  wordt in  PAGE 0 ingeladen en het SCREEN 12 in PAGE 
+1. Vervolgens  wordt het  SCREEN 12 plaatje omgezet naar een 
+SCREEN  11 plaatje.  Daarna begint de conversie. Eerst leest 
+de  computer  een pixel  van het  SCREEN 5  plaatje. Is  het 
+paletnummer gelijk aan 0 of 1, dan wordt gewoon de pixel van 
+het SCREEN  12 plaatje  overgenomen. Is  dat niet het geval, 
+dan  wordt het  A bit gezet en wordt het paletnummer over de 
+Y-waarde  heengezet.  Aan  de  J  of  K  waarde  wordt niets 
+veranderd, anders  worden de omliggende pixels die wel in de 
+YJK  mode staan  be‹nvloed. Op  deze manier  wordt het  hele 
+scherm afgewerkt.
+
+Hieronder zal  ik de  machinetaal source  bespreken die  dit 
+proces tot stand brengt.
+
+
+                     MACHINETAAL SOURCE
+
+Hieronder  heb ik de volledige source gezet, die u ook op de 
+disk  kunt  vinden onder  de naam  &quot;IMPOSE.ASC&quot;. Dit  is een 
+ASCII file, gemaakt met WB-ASS2. Ik zal de source regelmatig 
+onderbreken voor extra commentaar.
+
+; Superimpose in Machine Taal
+; Sc5 + Sc12 wordt samen Sc11
+; Door Stefan Boer, 16 november 1991
+; (C) SteveSoft 1991
+; Voor ClubGuide Special #2
+; Released (C) Stichting GENIC 1991
+
+        ORG   &amp;HD000          ; startadres
+
+In register  IX wordt het VRAM adres in het SCREEN 5 plaatje 
+bijgehouden,  in register IY het VRAM adres in het SCREEN 12 
+plaatje. In  register B  wordt bijgehouden hoeveel lijnen er 
+nog moeten worden afgewerkt.
+
+; Startwaardes registers
+
+        LD    IX,0            ; adres sc5/page 0
+        LD    IY,0            ; adres sc12/page 1
+        LD    B,212           ; het scherm heeft 212 regels
+
+; Hoofdlus
+
+LUS:    PUSH  BC              ; bewaar register B
+
+Register  B is  in de  hoofdlus ook  nog voor  andere dingen 
+nodig, daarom wordt hij hier gePUSHed. Vervolgens worden een 
+regel van  het SCREEN  5 plaatje en een regel van het SCREEN 
+12  plaatje naar het RAM gekopieerd. Dit is veel sneller dan 
+elke  byte apart  lezen. Omdat  de instruktie  LD HL,IX niet 
+bestaat gebruik ik het truukje PUSH IX/POP HL.
+
+; Kopieer regel screen 5 naar RAM
+
+        PUSH  IX              ; IX bevat sc5 adres
+        POP   HL              ; HL=IX
+        LD    A,0             ; PAGE 0
+        LD    BC,128          ; 256 pixels = 128 bytes
+        LD    DE,BUF1         ; RAM doeladres
+        CALL  VRMRAM          ; kopieer een regel sc5 naar
+                              ; RAM
+; Kopieer regel screen 12 naar RAM
+
+        PUSH  IY              ; IY bevat sc12 adres
+        POP   HL              ; HL=IY
+        LD    A,1             ; PAGE 1
+        LD    BC,256          ; 256 pixels = 256 bytes
+        LD    DE,BUF2         ; RAM doeladres
+        CALL  VRMRAM          ; kopieer een regel sc12 naar
+                              ; RAM
+
+Het  schrijven hoeft  niet in ‚‚n keer te gebeuren, dat kost 
+ten eerste  256 bytes  extra RAM, en is bovendien langzamer. 
+Wel  worden de  bytes rechtstreeks  naar de  VDP geschreven. 
+Eerst wordt het startadres ingesteld, daarna kunnen de bytes 
+gewoon naar  Port #0  (I/O adres &amp;H98) worden geschreven. De 
+VDP hoogt automatisch het adres op.
+
+; Zet de VDP klaar voor het schrijven naar screen 11
+
+        PUSH  IY              ; sc12 adres
+        POP   HL              ; HL=IY
+        LD    A,1             ; PAGE 1
+        CALL  STWRIT          ; stel VDP in voor VRAM
+                              ; schrijven vanaf HL
+
+In het  HL register  wordt de  positie in de SCREEN 5 buffer 
+bijgehouden,  in DE  de positie  in de  SCREEN 12  buffer. B 
+wordt nu  weer gebruikt  om te zorgen dat de lus precies het 
+juiste aantal malen wordt doorlopen.
+
+; Begin met de conversie
+
+        LD    HL,BUF1         ; HL sc5 buffer
+        LD    DE,BUF2         ; DE sc12 buffer
+        LD    B,128           ; sc5 buffer bevat 128 bytes
+
+Van beide  pixels wordt  gekeken of  ze 0  of 1 zijn, anders 
+wordt de Y-waarde vervangen door het paletnummer. Ik gebruik 
+JP omdat die instruktie sneller is dan JR. (Bij de R800 zijn 
+ze  wel even  snel, maar  ik ga er (nog) niet van uit dat de 
+meerderheid van  de Special  lezers in het bezit is van deze 
+snelheidsduivel.)
+
+; Eerst de linker pixel van screen 5
+
+CNV_1:  LD    A,(HL)          ; A=twee pixels sc5
+        AND   &amp;HF0            ; eerst linker pixel
+        CP    0               ; transparant?
+        JP    Z,CNV_2         ; ja, handhaaf dan YJK
+        CP    &amp;H10            ; zwart?
+        JP    Z,CNV_2         ; ja, handhaaf dan YJK
+
+        LD    C,A             ; bewaar in C
+        LD    A,(DE)          ; A=een pixel sc12
+        AND   &amp;H07            ; bewaar alleen JK-bits
+        SET   3,A             ; zet het A-bit
+        OR    C               ; voeg Sc5-kleur toe
+        JP    CNV_3
+
+; De sc5 pixel was kleur 0 of 1, dus gewoon de sc12
+; pixel behouden
+
+CNV_2:  LD    A,(DE)          ; A=een pixel sc12
+
+; Dit is voor beide gevallen gelijk
+
+CNV_3:  OUT   (&amp;H98),A        ; Schrijf de pixel naar het
+                              ; VRAM
+
+; ... en dan de rechter pixel van screen 5
+
+        INC   DE              ; volgende pixel sc12
+        LD    A,(HL)          ; zelfde byte sc5 nog een keer
+        AND   &amp;H0F            ; nu de rechter pixel
+        CP    0               ; transparant?
+        JP    Z,CNV_4         ; ja, handhaaf dan YJK 
+        CP    1               ; zwart?
+        JP    Z,CNV_4         ; ja, handhaaf dan YJK
+
+        RLCA                  ; verplaats het
+        RLCA                  ; kleurnummer naar
+        RLCA                  ; de bovenste
+        RLCA                  ; vier bits
+        LD    C,A             ; en bewaar in C
+
+        LD    A,(DE)          ; een pixel sc12
+        AND   &amp;H07            ; bewaar alleen JK-bits
+        SET   3,A             ; zet het A-bit
+        OR    C               ; voeg de sc5 kleur toe
+        JP    CNV_5
+
+; De sc5 pixel was kleur 0 of 1, verander niets aan sc12
+; byte
+
+CNV_4:  LD    A,(DE)          ; een pixel sc12
+
+; Dit is voor beide gevallen hetzelfde
+
+CNV_5:  OUT   (&amp;H98),A        ; schrijf de byte naar VRAM
+
+
+(Nvdr.  Deze tekst  was te lang voor de layout van ClubGuide 
+Special.  Daarom  hebben we  de tekst  in twee  delen op  de 
+Special gezet. Dit was het eerste deel, het tweede deel kunt 
+u in het menu vinden.)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_32.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_34.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

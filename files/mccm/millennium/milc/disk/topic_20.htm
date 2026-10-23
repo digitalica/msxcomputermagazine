@@ -1,0 +1,455 @@
+<html>
+
+<head>
+<title>MILC - Topic BDOS fileshell routines</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_19.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_21.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">BDOS fileshell routines</b><br>
+    <i>Alex van der Wal</i>, 15-08-93</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+; BDOS fileshell routines for secure file loading and saving
+; Version for: Sunrise Magazine Special 4
+; File: EASYBDOS.ASC  V2.00
+; By: Alex van der Wal  Last update: 15-8-93
+; Alias: Savage '93 (Fuzzy Logic)  !! It ain't much if it ain't Dutch !!
+;
+; Note:
+; - The BIOS (PAGE 0) must be active for error handling and text output
+
+; (Stupid) example of fileshell load function
+;        ORG   &amp;HD000
+
+;        LD    A,(&amp;HF342)      ; Slot &amp; Subslot of main RAM
+;        CALL  FINSTL          ; Install the fileshell
+;        JR    C,EIND
+;        LD    HL,DATA         ; HL points to address of filename string
+;        CALL  FOPEN           ; Open file
+;        JR    C,EIND
+;LUS:    LD    HL,&amp;H8000       ; Startaddress for data to load
+;        LD    DE,&amp;H4000       ; Blocklength
+;        CALL  FBLKRD          ; Read file block
+;        JR    C,EIND
+;        CP    &quot;r&quot;
+;        JR    NZ,LUS
+;EIND:   CALL  FRESET          ; Reset the fileshell
+;        RET
+;
+;DATA:   DM    &quot;MMU2info&quot;,&quot;TXT&quot;
+
+ENASLT: EQU   &amp;H24
+PRINTC: EQU   &amp;HA2
+BDOS:   EQU   &amp;HF37D
+F##ERR: EQU   &amp;HF323          ; Double pointer address to error routine
+BLOAD:  EQU   &amp;HFE            ; ID byte van een BLOAD type file
+VDPBF1: EQU   &amp;HF3DF
+VDPBF2: EQU   &amp;HFFE7-8
+
+        ORG   &amp;HC000
+
+; Print string
+PRINTS: LD    A,(HL)
+        INC   HL
+        AND   A
+        RET   Z
+        CALL  PRINTC
+        JR    PRINTS
+
+; Print string with fixed length
+PRINTF: LD    A,(HL)
+        INC   HL
+        CALL  PRINTC
+        DJNZ  PRINTF
+        RET
+
+; Wait until SPACE is pressed
+WAITSP: CALL  &amp;H9F
+        CP    &quot; &quot;
+        JR    NZ,WAITSP
+        RET
+
+; Print filename. In: HL with filename address
+PRFLNM: PUSH  BC
+        LD    B,8
+        CALL  PRINTF
+        LD    A,&quot;.&quot;
+        CALL  PRINTC
+        LD    B,3
+        CALL  PRINTF
+        LD    A,&quot; &quot;
+        CALL  PRINTC
+        POP   BC
+        RET
+
+
+; Install BDOS fileshell
+; In : A  (See BIOS rout 24H)
+;      A must contain the settings for PAGE 1 (SLOT/SUBSLOT)
+; Out: Cy, on error
+FINSTL: LD    (PG1SET),A
+        LD    A,(FSTAT)
+        BIT   0,A
+        LD    C,0
+        JP    NZ,FERROR
+        SET   0,A
+        LD    (FSTAT),A       ; Fileshell install executed
+        LD    A,255
+        LD    (CURDRV),A
+        LD    HL,0
+        LD    (FLELEN),HL
+
+        LD    HL,(BDOS+1)
+        LD    (OLDDOS+1),HL
+        LD    HL,FBDOS
+        LD    (BDOS+1),HL
+        LD    HL,(F##ERR)     ; Double pointer to error routine
+        LD    (_##ERR),HL
+        LD    HL,DSERPT       ; Pointer address to error routine
+        LD    (F##ERR),HL
+        XOR   A
+        RET
+
+; Reset BDOS fileshell
+; Out: Cy, on error
+FRESET: LD    A,(FSTAT)
+        BIT   0,A
+        LD    C,1
+        JP    Z,FERROR
+        RES   0,A
+        LD    (FSTAT),A
+        BIT   2,A             ; Writing to disc ?
+        CALL  NZ,FCLOSE       ; then close that file
+        LD    HL,(OLDDOS+1)
+        LD    (BDOS+1),HL
+        LD    HL,(_##ERR)
+        LD    (F##ERR),HL
+        XOR   A
+        RET
+
+; Open file
+; In: HL, filename address
+; Out: Cy, on error
+FOPEN:  LD    A,(FSTAT)
+        CP    &amp;B00000001
+        LD    C,2
+        JP    NZ,FERROR
+        LD    DE,FCB+1
+        LD    BC,11
+        LDIR                  ; Copy filename to FCB
+        LD    HL,FCB1
+        LD    DE,FCB1+1
+        LD    BC,25-1
+        LD    (HL),B
+        LDIR
+        LD    C,15
+        LD    DE,FCB
+        CALL  BDOS            ; Open file
+        AND   A
+        JR    NZ,FOPN.0
+        LD    HL,&amp;H00
+        LD    (FCB+&amp;H0C),HL   ; Current block
+        INC   HL
+        LD    (FCB+&amp;H0E),HL   ; Record length
+        LD    HL,(FCB+&amp;H10)   ; File length
+        LD    (FLELEN),HL     ; 
+        LD    A,(FSTAT)
+        SET   1,A
+        LD    (FSTAT),A
+        XOR   A
+        RET
+FOPN.0: LD    HL,FCB+1
+        CALL  PRFLNM
+        LD    C,3
+        JP    FERROR
+
+; Load fileblock
+; In:  DE, blocklength
+;      HL, load address
+; Out: Cy, on error
+; Out: A , &quot;r&quot;, Then file is 100% percent loaded
+;
+FBLKRD: LD    A,(FSTAT)
+        CP    &amp;B00000011
+        LD    C,2
+        JP    NZ,FERROR
+        PUSH  DE
+        EX    DE,HL
+        LD    C,26
+        CALL  BDOS            ; Set DMA address
+        POP   DE
+        XOR   A
+        LD    HL,(FLELEN)     ; # of Bytes still to load
+        SBC   HL,DE
+        JR    C,FBLR.1
+        LD    (FLELEN),HL
+        LD    A,H
+        OR    L
+        JR    NZ,FBLR.2
+FBLR.1: ADD   HL,DE
+        EX    DE,HL
+        LD    HL,0
+        LD    (FLELEN),HL
+        LD    A,(FSTAT)       ; Loading ready after this read action
+        RES   1,A
+        LD    (FSTAT),A
+FBLR.2: EX    DE,HL
+        CALL  INTOFF
+        LD    C,39
+        LD    DE,FCB
+        CALL  BDOS
+        CALL  INTON
+        AND   A
+        JR    NZ,FBLR.3
+        LD    A,(FSTAT)
+        BIT   1,A
+        RET   NZ
+        LD    A,&quot;r&quot;           ; Mark succesfully loaded
+        RET
+FBLR.3: LD    HL,FCB+1
+        CALL  PRFLNM
+        LD    C,4
+        JP    FERROR
+
+; Create file
+; In:  HL, filename address
+; Out: Cy : High, then an error occured
+FCREAT: LD    A,(FSTAT)
+        CP    &amp;B00000001
+        LD    C,2
+        JP    NZ,FERROR
+        LD    DE,FCB+1
+        LD    BC,11
+        LDIR                  ; Copy filename to FCB
+        LD    HL,FCB1
+        LD    DE,FCB1+1
+        LD    BC,25-1
+        LD    (HL),B
+        LDIR
+        LD    HL,0
+        LD    (FLELEN),A
+        LD    C,22
+        LD    DE,FCB
+        CALL  BDOS
+        AND   A
+        JR    NZ,FCRE.0
+        LD    HL,&amp;H00
+        LD    (FCB+&amp;H0C),HL   ; Current block
+        INC   HL
+        LD    (FCB+&amp;H0E),HL   ; Record length
+        LD    A,(FSTAT)
+        SET   2,A
+        LD    (FSTAT),A
+        XOR   A
+        RET
+FCRE.0: LD    HL,FCB+1
+        CALL  PRFLNM
+        LD    C,5
+        JP    FERROR
+
+; Write fileblock
+; In:  DE, Blocklength
+;      HL, Startaddress
+; Out: Cy, on error (File will be closed)
+FBLKWR: LD    A,(FSTAT)
+        CP    &amp;B00000101
+        LD    C,2
+        JP    NZ,FERROR
+        PUSH  DE
+        EX    DE,HL
+        LD    C,&amp;H1A
+        CALL  BDOS
+        POP   HL
+        LD    DE,(FLELEN)     ; Add length to FLELEN
+        EX    DE,HL
+        ADD   HL,DE
+        LD    (FLELEN),HL
+        EX    DE,HL
+        CALL  INTOFF
+        LD    DE,FCB
+        LD    C,38
+        CALL  BDOS
+        CALL  INTON
+        AND   A
+        RET   Z
+        CALL  FCLOSE
+        LD    HL,FCB+1
+        CALL  PRFLNM
+        LD    C,6
+        JP    FERROR
+
+; Close file
+FCLOSE: LD    C,16
+        LD    DE,FCB
+        CALL  BDOS            ; Close file
+        RET
+
+; CHNDSK Waits for a diskchange, with conformation by the space key
+;        Request for same drive as current one is ignored !!
+; In: A (0, then 'Insert source disk')
+;       (otherwise, 'Insert destination disk')
+CHNDSK: LD    B,A
+        LD    A,(CURDRV)
+        CP    255
+        JR    Z,CHND.2
+        CP    B
+        RET   Z
+CHND.2: LD    A,B
+        LD    (CURDRV),A
+        LD    HL,CHND.A
+        AND   A
+        JR    Z,CHND.1
+        LD    HL,CHND.B
+CHND.1: CALL  PRINTS
+;       call  beep
+        CALL  WAITSP
+        RET
+
+INTOFF: PUSH  AF
+        LD    A,(VDPBF1+1)
+        RES   5,A
+INTO.0: LD    (VDPBF1+1),A
+        DI
+        OUT   (&amp;H99),A
+        LD    A,128+1
+        OUT   (&amp;H99),A
+        EI
+        POP   AF
+        RET
+
+INTON:  PUSH  AF
+        LD    A,(VDPBF1+1)
+        SET   5,A
+        JR    INTO.0
+
+; BDOS call routine [system routine]
+; In:  BDOS parameters 
+; Out: BDOS parameters
+FBDOS:  PUSH  BC
+        PUSH  DE
+        PUSH  HL
+        PUSH  IX
+        PUSH  IY
+        LD    (SP_SAV),SP
+        CALL  OLDDOS          ; Call BDOS
+FDOS.2: POP   IY
+        POP   IX
+        POP   HL
+        POP   DE
+        POP   BC
+        RET
+
+; BDOS error code [system routine]
+; In: nothing
+; Out: nothing
+DSERPT: DW    ERRCDE          ; Pointer to error code
+ERRCDE: LD    HL,STDERR
+        CALL  PRINTS
+ERRC.0: CALL  &amp;H0156
+        CALL  &amp;H9F
+        SET   5,A             ; Convert &quot;R&quot; to &quot;r&quot; for example
+        CP    &quot;r&quot;
+        JR    Z,ERRC.1
+        CP    &quot;a&quot;
+        JR    NZ,ERRC.0
+
+        LD    HL,EOLN         ; Abort
+        CALL  PRINTS
+        LD    A,(PG1SET)
+        LD    H,&amp;H40
+        CALL  ENASLT
+        LD    SP,(SP_SAV)
+        LD    A,1             ; Signal BDOS error back
+        EI
+        JP    FDOS.2
+ERRC.1: LD    HL,EOLN
+        CALL  PRINTS
+        LD    C,1             ; Retry
+        RET
+
+; Print fileshell error
+FERROR: LD    HL,FERTXT
+        LD    A,C
+        CALL  PRTERR
+        SCF                   ; return Cy on error
+        RET
+
+PRTERR: AND   A
+        JR    Z,PRTE.1
+        LD    B,A
+PRTE.0: LD    A,(HL)
+        INC   HL
+        AND   A
+        JR    NZ,PRTE.0
+        CP    255
+        JR    Z,PRTE.2
+        DJNZ  PRTE.0
+PRTE.1: CALL  PRINTS
+        LD    HL,EOLN
+        CALL  PRINTS
+        RET
+PRTE.2: LD    HL,FSYSER
+        CALL  PRINTS
+        RET
+
+; BDOS routine variables
+CHND.A: DM    &quot;Insert source disk:&quot;,10,13,0
+CHND.B: DM    &quot;Insert destination disk:&quot;,10,13,0
+STDERR: DM    10,13,&quot;Drive error !!  Press 'r' to retry or 'a' to abort&quot;,10,13,0
+
+FERTXT: DM    &quot;Fileshell already installed&quot;,0
+        DM    &quot;Fileshell not installed&quot;,0
+        DM    &quot;Status error&quot;,0
+        DM    &quot;not found&quot;,0
+        DM    &quot;has a read error&quot;,0
+        DM    &quot;cannot be created&quot;,0
+        DM    &quot;has a write error&quot;,0
+FSYSER: DM    &quot;Unknown error [SYSTEM ERROR]&quot;,0
+EOLN:   DB    10,13,0
+
+FSTAT:  DB    0               ; Fileshell status
+CURDRV: DB    255             ; Current drivenumber (255=invalid)
+FLELEN: DW    0               ; Bytes to read / written bytes
+_##ERR: DW    0               ; Double pointer to error code
+OLDDOS: DB    &amp;HC3,0,0        ; Old BDOS call
+PG1SET: DB    0               ; PAGE 1 memory settings
+SP_SAV: DW    0               ; SP save address
+
+; The following addresses must be located outside page 1 (4000H-7fffH) !
+FCB:    DEFM  0
+        DEFM  &quot;filename&quot;
+EXT:    DEFM  &quot;ext&quot;
+FCB1:   DEFS  25
+
+        END
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_19.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_21.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

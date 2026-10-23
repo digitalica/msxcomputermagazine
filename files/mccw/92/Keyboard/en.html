@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>The LP keyboard interface</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Pierre Gielen">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 92, March/April/May">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#008000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#008000">
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../koek2/en.html">De Maiskoek/Bits and Pieces</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        issue
+        92,
+        March/April/May&nbsp;2000<BR>
+</FONT><A HREF="../contents/en.html#Keyboard">Back to contents</A></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../metal/en.html">Metal Gear save file faking</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>experiences with it</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>The LP keyboard interface</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>
+A real MSX fanatic can be recognized by examining his keyboard.
+It will be worn down by about fifteen years of daily use. None of
+the impressed letters are visible anymore. Some keys falter and
+sometimes a wire gets loose on the connector. But hey, whats the
+alternative? A brand new keyboard! Hardware wizard Leonardo
+Padial from Madrid, Spain, has designed an external keyboard
+interface. With this small card, you can simply connect a cheap
+pc keyboard to your MSX. This will work with any AT or PS/2
+keyboard, even if it has special &#8216;Windows&#8217; keys. It&#8217;s not only a
+good replacement for your old keyboard but can also be a great
+solution if you want to build your MSX into a pc tower or desktop
+case. The problem &#8216;how to connect an external keyboard to it&#8217;, is
+then solved.
+</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#688878" HEIGHT="20"><B><I><A HREF="mailto:PGielen@zonnet.nl"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Pierre Gielen</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par3">
+Different keys
+</A>
+<BR>
+<A HREF="#Par9">
+Connecting the interface
+</A>
+<BR>
+<A HREF="#Par13">
+Micro controller
+</A>
+<BR>
+<A HREF="#Par16">
+Experiences
+</A>
+<BR>
+<A HREF="#Par19">
+Special keys
+</A>
+<BR>
+<A HREF="#Par22">
+Ordering
+</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="CENTER" BGCOLOR="#D0F8D8"><B><FONT COLOR="#000000">
+                                    References
+                                  </FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT"><FONT COLOR="#FFFFFF">1.</FONT>&nbsp;<A HREF="CHARS.ASM"><FONT COLOR="#FFFFFF">CHARS.ASM</FONT></A>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+Building your MSX in a pc case has some advantages: less cables
+hanging around your computer, it protects vulnerable expansions
+that are not always built into a cartridge box, a big power
+supply is provided and there is enough room for a harddisk,
+cd-rom player, ZIP-drive, etcetera. As you can see on one of the
+pictures below, a creative person can even build an external MSX
+cartridge slot into a pc case.
+</P>
+<A NAME="Par2"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+If, however, you don&#8217;t want all this, you&#8217;d better consider
+buying a second hand MSX keyboard first. Of course that will only
+be possible if you own an MSX with a seperate keyboard, like the
+Philips NMS 8250/55/80 or the Sony HB500/700. Keyboards and
+other spare parts can be found at the bigger MSX fairs. Sometimes
+a complete second hand MSX computer may even be cheaper than one
+pc keyboard interface. So if you&#8217;re looking for a standard MSX,
+that may be the best choice for you. But if you have a computer
+that is expanded, like mine, with a 7&nbsp;MHz clock and an internal
+megamapper, a replacement will be much harder to find. And if you
+have an MSX2+ or even an MSX&nbsp;turbo&nbsp;R, you will almost certainly run
+out of options. In this case, the pc keyboard interface may just
+be the thing to rescue your computer from a hapless end in the
+trash can.
+</P><TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="345" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><A HREF="Keyboard-interface_small_1.jpg"><IMG BORDER="0" WIDTH="337" HEIGHT="310" ALIGN="MIDDLE" SRC="Keyboard-interface_small_1.jpg" ALT=""></A></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><I>This is what the interface looks like.</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par3"></A>
+<P CLASS="bodynoindent">
+<B>
+Different keys
+</B>
+<BR>
+Connecting a pc keyboard to the MSX is not a trivial task. The
+first problems are the many differences between the keyboards for
+both systems. The most obvious one is that the pc keyboard has a
+lot more keys: <TT CLASS="key">F6</TT> to <TT CLASS="key">F12</TT> for example, <TT CLASS="key">Print
+Screen</TT>, <TT CLASS="key">PageUp</TT>,
+<TT CLASS="key">PageDown</TT>, <TT CLASS="key">End</TT>, <TT CLASS="key">Num Lock</TT>, <TT CLASS="key">Scroll
+Lock</TT>, <TT CLASS="key">Alt</TT>, maybe <TT CLASS="key">Alt-Gr</TT> and if
+it&#8217;s a so called &#8216;Windows&#8217; or &#8216;Multimedia&#8217; keyboard, even a
+couple of other special keys. The MSX on the other hand, has
+<TT CLASS="key">Stop</TT>, <TT CLASS="key">Select</TT>, <TT CLASS="key">Code</TT> and <TT CLASS="key">Graph</TT> keys
+that the pc keyboard doesn&#8217;t
+have. In the LP keyboard interface, these MSX specific keys are
+mapped to the following pc keys:
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE>
+<TR>
+<TH VALIGN="top">MSX</TH>            <TH VALIGN="top">pc</TH>
+</TR>
+<TR>
+<TD VALIGN="top"><TT CLASS="key">Stop</TT>  </TD>            <TD VALIGN="top"><TT CLASS="key">Pause/Break</TT></TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT CLASS="key">Select</TT></TD>            <TD VALIGN="top"><TT CLASS="key">Scroll Lock</TT></TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT CLASS="key">Code</TT> </TD>            <TD VALIGN="top"><TT CLASS="key">Left Alt</TT></TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT CLASS="key">Graph</TT></TD>            <TD VALIGN="top"><TT CLASS="key">Right Ctrl</TT></TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par5"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Other &#8216;special&#8217; keys on the pc keyboard are left unused in the
+standard version of the pc keyboard interface. So pressing
+<TT CLASS="key">PageUp</TT>, <TT CLASS="key">PageDown</TT>, <TT CLASS="key">Num Lock</TT>, <TT CLASS="key">Alt-Gr</TT>
+(<TT CLASS="key">Right Alt</TT>) or <TT CLASS="key">F6</TT>-<TT CLASS="key">F12</TT> does
+nothing. I think Leonardo Padial missed a chance here to use at
+least <TT CLASS="key">F6</TT>-<TT CLASS="key">F10</TT>. Now it is still necessary to press
+<TT CLASS="key">SHIFT</TT>-<TT CLASS="key">F1</TT> to
+<TT CLASS="key">SHIFT</TT>-<TT CLASS="key">F5</TT> if you want <TT CLASS="key">F6</TT> to <TT CLASS="key">F10</TT>.
+</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Because <TT CLASS="key">Num Lock</TT> does not work, a thing to remember is also that
+you cannot use the alternative cursor keys, <TT CLASS="key">Home</TT>, <TT CLASS="key">Del</TT>, etc. of
+the numerical keypad. For most MSX users, this will not be a
+problem since on the MSX, the numerical keypad couldn&#8217;t be used
+for things other than entering numbers and calculations anyway.
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The <TT CLASS="key">Num Lock</TT>, <TT CLASS="key">Caps Lock</TT> and <TT CLASS="key">Scroll Lock</TT> lights
+on the pc keyboard
+will not work either. It&#8217;s a pity that you can&#8217;t at least see if
+<TT CLASS="key">Caps Lock</TT> is enabled. Switching the <TT CLASS="key">Caps Lock</TT> light on and off could probably be implemented in the LP keyboard interface, but it isn&#8217;t yet. This may change in future versions.
+</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+If you&#8217;re not scared of soldering yourself, you could use one of
+the unused wires in the pc keyboard connector &mdash;&nbsp;there is at least
+one&nbsp;&mdash; to make a direct connection to the output for the <TT CLASS="key">Caps Lock</TT> 
+light in your MSX. This also requires a modification in the pc
+keyboard itself. I have not tried it &mdash;&nbsp;yet&nbsp;&mdash; so do this at your
+own risk. After this piece of surgery, the pc keyboard will not
+be compatible anymore with a pc.
+</P>
+<A NAME="Par9"></A>
+<P CLASS="bodynoindent">
+<B>
+Connecting the interface
+</B>
+<BR>
+The keyboard interface &mdash;&nbsp;Leonardo calls it the LP-PCK-V2&nbsp;&mdash; consists
+of a 10&times;10&nbsp;cm small printed circuit board (PCB) that can be
+inserted into a normal MSX slot. The PCB is not built into a
+cartridge box, so you should be careful with it.
+</P>
+<A NAME="Par10"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+If you&#8217;re using it with an MSX&nbsp;turbo&nbsp;R, it is also necessary to
+connect a flat cable from the keyboard matrix connecter inside
+the MSX&nbsp;turbo&nbsp;R to a small rectangular connector on the interface.
+This is needed because of differences in the internal keyboard
+hardware of the MSX&nbsp;turbo&nbsp;R.
+</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+If you want to use the MSX&nbsp;turbo&nbsp;R keyboard socket, one of the eight
+dip switches on the interface has to be set. I have not tried
+this, since I do not own an MSX&nbsp;turbo&nbsp;R. The other dip switches are
+for switching translation tables, so that the interface can
+translate several pc keyboards to a number of possible MSX
+keyboards. Until now, the interface was only available for Spanish keyboards. They are somewhat different from the standard US/International keyboards that are used in
+the Netherlands. Recently, Leonardo has also finished a Dutch
+version. Multiple language versions may appear in the future.
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The pc keyboard can be connected to one of the two sockets on the
+board: a big DIN socket for a keyboard with an old AT connector
+and a small one for keyboards with PS/2 connector.
+</P>
+<A NAME="Par13"></A>
+<P CLASS="bodynoindent">
+<B>
+Micro controller
+</B>
+<BR>
+Translating pc keyboard serial scan codes to MSX keyboard matrix
+codes is not a simple task. In the interface, it is done by a Z8
+micro controller from Zilog. It contains 4&nbsp;kB of rom, in which an
+assembler program is burnt. Since the Z8 is mounted in a socket on the circuit board, it can easily be replaced. 
+</P>
+<A NAME="Par14"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+All firmware is in the Z8 and, if needed, in an eprom which can also be placed on the circuit board. There is no need for software drivers. Your MSX will immediately recognize the plugged-in interface. This will also work if the interface is in a slot expander, on any MSX, even it it runs at 7&nbsp;MHz or in R800 mode.
+</P>
+<A NAME="Par15"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+On the interface there is also a socket for a 27C256/512 eprom &mdash;&nbsp;erasable programmable rom&nbsp;&mdash; or a 32&nbsp;kB CMOS ram. For the eprom, the dip switch near pin 28 must be in the ON/OFF/ON/OFF position (from left to right). For the ram, it must be in the OFF/ON/OFF/ON position. 
+
+The eprom &mdash;&nbsp;or ram&nbsp;&mdash; can contain extensions, like an
+extra character set. If used with the MSX&nbsp;turbo&nbsp;R for example, it can contain an international character set instead of the
+original Japanese set. On request, Leonardo can program special character sets into an eprom.
+
+Hobbyists who have the proper hardware, can burn their own eproms for the keyboard interface.
+The example program [<A HREF="CHARS.ASM">1</A>] shows how it can be done. It contains a Spanish character set for the Turbo-R.
+</P>
+<A NAME="Par16"></A>
+<P CLASS="bodynoindent">
+<B>
+Experiences
+</B>
+<BR>
+My experiences with the keyboard interface are mainly positive.
+I had ordered the interface at the International MSX fair in
+Tilburg and received it by snail mail a couple of weeks later. It
+was accompanied by an unclear photocopy and some Spanish
+instructions. I asked Leonardo about it and learned that this
+information only concerned a now obsolete version of the
+interface. A manual for the new version 2 is not necessary,
+since everything works like it should. Well, almost: one key did
+not work. It was the backslash (&#8216;\&#8217;) key on the left of the
+backspace on international keyboards. Without a backslash it is
+impossible to type in MSX-dos-2 directory names! On Spanish
+keyboards, this key is apparently placed elsewhere. After
+contacting Leonardo about this weird problem, he sent me a new Z8
+without charge. Great service! </P>
+<A NAME="Par17"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+I have not encountered any other hardware or software
+compatibility problems. Even scanning the MSX keyboard matrix
+directly by reading and writing to the I/O ports 0A9h and 0AAh of
+the PPI works perfectly! This means that all software will be
+able to work with the interface without problems, even if it
+doesn&#8217;t use the MSX bios.
+</P><TABLE BORDER="0" ALIGN="LEFT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5">
+<TR>
+<TD ALIGN="LEFT">
+<TABLE BORDER="0" ALIGN="LEFT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="389" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><A HREF="Keyboard-interface_small_7.jpg"><IMG BORDER="0" WIDTH="381" HEIGHT="251" ALIGN="MIDDLE" SRC="Keyboard-interface_small_7.jpg" ALT=""></A></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><I>The interface mounted in a MSX which is in a pc desktop case.</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par18"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+You can, by the way, keep your old MSX keyboard connected and use
+the pc-keyboard at the same time. It&#8217;s up to you to find an
+application for it.
+</P>
+<A NAME="Par19"></A>
+<P CLASS="bodynoindent">
+<B>
+Special keys
+</B>
+<BR>
+As stated earlier, I found it a little bit disappointing that the
+extra keys of the pc keyboard are not used. It would have been
+nice if <TT CLASS="key">F6</TT> to <TT CLASS="key">F10</TT> on the pc keyboard would work like
+<TT CLASS="key">SHIFT</TT>-<TT CLASS="key">F5</TT> to
+<TT CLASS="key">SHIFT</TT>-<TT CLASS="key">F6</TT> on the MSX keyboard. I also had to get used to the
+position of the <TT CLASS="key">Graph</TT> key. Since a pc-keyboard does not have
+<TT CLASS="key">Code</TT> 
+and <TT CLASS="key">Graph</TT> keys, Leonardo has decided to use <TT CLASS="key">Left-Alt</TT> as
+<TT CLASS="key">Code</TT> and
+<TT CLASS="key">Right-Ctrl</TT> as <TT CLASS="key">Graph</TT>. I think it would have made more sense to use
+<TT CLASS="key">Right-Alt</TT> (<TT CLASS="key">Alt-Gr</TT>) as <TT CLASS="key">Graph</TT> and use
+<TT CLASS="key">Right-Ctrl</TT> as normal <TT CLASS="key">Ctrl</TT>.
+</P>
+<A NAME="Par20"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+I have asked Leonardo if it was possible to make a new version of
+the controller software, so that <TT CLASS="key">F6</TT> to <TT CLASS="key">F10</TT> can be used,
+<TT CLASS="key">Graph</TT> is
+placed under <TT CLASS="key">Alt-Gr</TT> and <TT CLASS="key">PageUp</TT> and <TT CLASS="key">PageDn</TT> can emulate the MSX
+key combination <TT CLASS="key">Ctrl</TT>-<TT CLASS="key">CursorUp</TT> and
+<TT CLASS="key">Ctrl</TT>-<TT CLASS="key">CursorDown</TT>. Some programs,
+like the popular text editor TED, use these combinations to page
+up and down. Leonardo has let me know that it is possible, but
+expensive to produce a single customized version of the
+interface. At least ten pieces should be ordered to make a
+customized version possible without extra charge. If you&#8217;re
+thinking about buying one, remember to ask if it is possible to
+get one with a customized translation table.
+</P>
+<A NAME="Par21"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The interface costs about EUR&nbsp;66 including postage and packaging. That&#8217;s not really cheap. But if you decide that a second
+hand keyboard is not the right solution for you, it&#8217;s not too
+much either. If your pc-keyboard breaks down in the future, you
+can buy a new one for less than EUR&nbsp;10. Or you can choose to
+connect a so called &#8216;natural&#8217; keyboard or a wireless keyboard to
+your MSX. And unlike spare parts for the MSX, pc keyboards will
+probably still be available for a long, long time.
+</P>
+<A NAME="Par22"></A>
+<P CLASS="bodynoindent">
+<B>
+Ordering
+</B>
+<BR>
+The pc interface card can be ordered through the Spanish MSX Club Power Replay. Your contact there is Rafael Corrales de
+Pulido (<A HREF="mailto:replay@meridian.es"><TT>replay@meridian.es</TT></A>). Clearly state for which pc-keyboard
+it must be suitable. In the Netherlands, we use standard
+US/International QWERTY keyboard. Belgian, French or German
+keyboards are different from these. Also don&#8217;t forget to mention
+which nationality the MSX keyboard must be. The interface card
+will be sent to you by mail, normally within two weeks.
+</P>
+<A NAME="Par23"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+For ten or more identical interfaces &mdash;&nbsp;that means only one pc
+keyboard type and only one MSX keyboard type&nbsp;&mdash; you can place your
+order directly with Leonardo Padial (<A HREF="mailto:lpadial@teleline.es"><TT>lpadial@teleline.es</TT></A>). In
+this case, discounts are available and a customized version can
+be made without extra charge. Contact Leonardo to discuss the
+possibilities and if you have any technical questions. Besides
+the keyboard interface, he also produces other hardware
+extensions for the MSX, like a 16-bits slot expander and of
+course the Z380 accelerator card that will be at the heart of a
+brand new modular MSX computer. At the moment, he is working on a
+video adapter that will be compatible with the standard Yamaha
+VDP and connects to a VGA-monitor.
+</P>
+<A NAME="Par24"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+More information about MSX hardware can be found on <A HREF="http://www.geocities.com/CollegePark/Classroom/9927/padial/page4.htm">Leonardo
+Padial&#8217;s website</A> and on the <A HREF="http://usuarios.meridian.es/replay/emmsxesl.htm">website of MSX Club Power
+Replay</A>.
+
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../koek2/en.html">De Maiskoek/Bits and Pieces</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        issue
+        92,
+        March/April/May&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../metal/en.html">Metal Gear save file faking</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

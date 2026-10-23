@@ -1,0 +1,3163 @@
+<html>
+
+<head>
+<title>MILC - Topic Datapack ch2</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_6.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Datapack ch2</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+&lt;&lt; page 5 &gt;&gt;
+----------------------------------------------------
+CHAPTER 2
+System organization
+-----------------------------------------------------
+In this chapter We want to explain the hardware organization of the MSX Turbo
+R to start of with the new R800 CPU.
+
+2.1 standard equipment (shiy(tm) blz 130)
+
+ Below we show with the help of a summary the differences between the standards
+ of msx 2+ and the Turbo R
+
+
+ chart 1.1 outline ofthe standard equipment of the MSX Turbo R and the MSX 2+
+
+ -----------------------\------------------------\---------------------------
+                        &iexcl; MSX Turbo R            &iexcl; MSX 2+
+ ----------------------------------------------------------------------------
+ CPU                    &iexcl; R800 of eqv            &iexcl; Z80A or eqv
+                        &iexcl;(7.15909 Mhz)           &iexcl; (3.579545 Mhz)
+ -------\--------------------------------------------------------------------
+        &iexcl;         ROM   &iexcl; 160 KB                 &iexcl; 96 KB
+        &iexcl;               &iexcl;(MSX BASIC ver.4)       &iexcl; (MSX BASIC ver.3)
+        &iexcl;               &iexcl; MAIN ROM 32 KB         &iexcl; MAIN ROM 32 KB
+        &iexcl;               &iexcl; SUB ROM 16 KB          &iexcl; SUB ROM 16 KB
+        &iexcl;               &iexcl; KANJI Driver 32 KB     &iexcl; KANJI Driver 32 KB
+        &iexcl;               &iexcl; MSX DOS1 16 KB         &iexcl; MSX DOS1 16 KB
+ memory &iexcl;               &iexcl; MSx DOS2 48 KB         &iexcl; (option)
+        &iexcl;               &iexcl; MSX MUSIC 16 KB        &iexcl; (option)
+        &iexcl;               ------------------------------------------------------
+        &iexcl;      RAM      &iexcl; At least 256 Kb        &iexcl; At least 64 KB
+        &iexcl;               -------------------------_----------------------------
+        &iexcl;      VRAM     &iexcl; 128 KB
+ -------_---------------_-----------------------------------------------------
+&lt;6                                             CHAPTER 2 SYSTEM ORGINATZATION&gt;
+------------------------\------------------------\----------------------------
+                        &iexcl; MSX TURBO R            &iexcl; MSX 2+
+---------\---------------------------------------_----------------------------
+         &iexcl; VDP          &iexcl; V9958 or EQV
+         &iexcl;              ------------------------------------------------------
+         &iexcl; resolution   &iexcl; 512x212 (non interlaced)
+         &iexcl;    (max)     &iexcl; 512x424 (interlaced)
+         &iexcl;              ------------------------------------------------------
+screen   &iexcl; colors(max)  &iexcl; 19268 colors
+         &iexcl;              ------------------------------------------------------
+         &iexcl; hardware     &iexcl; vertically and horzontally
+         &iexcl; scroll       &iexcl;
+---------_--------------------------------------\-----------------------------
+cassette interface      &iexcl; not available         &iexcl; FSK methode 1200 . 2400baud
+---------\--------------------------------------_-----------------------------
+         &iexcl;PSG           &iexcl; AY-3-8910 or eqv
+         &iexcl;              ------------------------------------------------------
+         &iexcl; FM sound     &iexcl; MSX-AUDIO (option)
+sound    &iexcl;    source    ------------------------\-----------------------------
+         &iexcl;              &iexcl; MX-MUSIC              &iexcl; (option)
+         &iexcl;              ------------------------------------------------------
+         &iexcl;              &iexcl; MSX-MIDI              &iexcl; not available
+         &iexcl;              &iexcl; (option)              &iexcl;
+---------_--------------------------------------------------------------------
+Keyboard                &iexcl; English-nummerical, hirigana, katakana, grafic
+                        &iexcl; letter equivalence (????), JIS arrangement, 50??
+------------------------------------------------------------------------------
+Floppydrive             &iexcl; 3.5 inch 2dd
+                        &iexcl; (1DD read/write possibilitiy)
+                        ------------------------------------------------------
+               Format   &iexcl; MS-DOS 2.11 standard
+------------------------------------------------------------------------------
+PRINTER                 &iexcl; 8 bit parallel
+                        &iexcl; centronicsinterface standard
+------------------------------------------------------------------------------
+cartridge slot          &iexcl; ??
+------------------------------------------------------------------------------
+Joystick                &iexcl; 2
+---------\--------------------------------------------------------------------
+KANIJ    &iexcl; KANJI ROM    &iexcl; 1 Standard
+function &iexcl;              &iexcl; 2 Standard
+         &iexcl;              ------------------------------------------------------
+         &iexcl; KANJI INPUT  &iexcl; SINGLE KANJI CONVERTOR (MSX JE EQUIVALANCE)
+---------_--------------------------------------------------------------------
+realtime clock          &iexcl; RP5C01 or eqv
+------------------------_-----------------------------------------------------
+&lt;2.2 HARDWARE ORGINAZATION                                                  7&gt;
+
+2.2 HARDWARE ORGINAZATION
+
+ The hardware orginazation of the msx turbo r is shown here
+
+2.2.1 MAIN LSI
+  The most important LSI of the Turbo R are shown below here.
+
+  CPU      R800 or eqv (clock 7.15909 Mhz)
+           Z80A or eqv (clock 3.57945 Mhz)
+  VDP      V9958 or eqv
+  PSG      AY-3-8910 or eqv
+  FM soundsource  MSX-MUSIC (YM2413 or eqv)
+  MIDI     MSX-MIDI (i8251 or eqv en i8253 or eqv en verder i8254 or eqv)
+  PPI      i8255 or eqv
+  systemIC S1990 or eqv
+
+2.2.2 MEMMORY
+  The memory shown below is orginized in the MSX Turbo R.
+
+       ROM  MSX BASIC ver.4         80 KB
+               (MAIN ROM    32 KB)
+               (SUB ROM      16KB)
+               (KANJI DRIVER 32KB)
+            MSX-DOS1                16KB
+            MSX-DOS2                48KB
+            MSX-MUSIC               16KB
+
+       RAM  MAIN RAM               256 KB at least (memmory mapper is being
+                                                      used)
+            VRAM                   128 KB
+
+2.2.3 BLOCK DIAGRAM
+
+  The MSX Turbo-R system-equipment is explained with a block diagram.
+  The MSX Turbo-R has 2 CPU's (Z80 and R800). The type of processor (R800 or
+  Z80) can be freely changed in the use of program. If one of the processors
+  is used the other processor will be put on HOLD.
+  It is not possible to use both the processors at the same time.
+
+&lt;8                                              CHAPTER 2 SYSTEM ORGINAZATION&gt;
+&Aring;--------&atilde;      &Aring;--------&atilde;      &Aring;---------&atilde;     &Aring;------------&atilde;
+&iexcl;        &iexcl;      &iexcl;        &iexcl;      &iexcl;         &iexcl;     &iexcl;            &iexcl;
+&iexcl;  Z80   -------&cent; S1990  -------&cent; R800    ------&cent;  DRAM      &iexcl;
+&iexcl;        &iexcl;      &iexcl;        &iexcl;      &iexcl;         &iexcl;     &iexcl;            &iexcl;
+--------      ----\---      ---------     ------------
+                     &iexcl;
+    &Aring;-------------------------------------------&atilde;
+    &iexcl;                &iexcl;                          &iexcl;
+&Aring;---_----&atilde;      &Aring;----_----&atilde;     &Aring;---------------_-----------&atilde;
+&iexcl;        &iexcl;      &iexcl;         &iexcl;     &iexcl;                           &iexcl;
+&iexcl; SLOT   &iexcl;      &iexcl;  ROM    &iexcl;     &iexcl;  VDP, OPLL, FDC etc       &iexcl;
+&iexcl;        &iexcl;      &iexcl;         &iexcl;     &iexcl;                           &iexcl;
+--------      ---------     ---------------------------
+
+                picture 1.1 MSX Turbo R Block scheme
+
+The S1990 is a LSI-systemcontroller as a solution for the switching of the CPU.
+The control of the slots and memory, the generation of wait signals as well as
+the I/O decoding etc is executed by the S1990.
+
+2.3 SLOT ORGINASATION
+
+In the MSX Turbo R the slot orginazation was standarized. Because the Main Ram
+was directlty connected to the R800 or depending to which slot it is connected,
+the  system performance can change graetly. Furthermore, a purpose is to
+simplify the develpment of application software.
+DOS contains both MSX DOS1 en MSX DOS2. In page 1 of slot 3-2 there are  4
+local banks, the first 3 pages are for MSX-DOS2 and the last page 1 for MSX
+DOS1.
+In the system the combination of the two DOS versions with the 2 CPU can be
+changed freely but it simplifies the system and to avoid disorginazation of the
+user, in the standard there are 2 combinatios supported :
+     Z80 and DOS1 (Z80 Mode)
+     R800 and DOS2 (R800 Mode)
+When starting the system, depending on the
+inserted cartridge or disk is the selection between these 2 modes automatically
+done.
+&lt;2.3 SLOT ORGINAZATION                                                  9&gt;
+
+         0-0        0-1        0-2        0-3
+FFFFH &Aring;-------&atilde;  &Aring;-------&atilde;  &Aring;-------&atilde;  &Aring;-------&atilde;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl; PAGE 3
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;
+C000H --------&cent;  --------&cent;  --------&cent;  --------&cent;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl; PAGE 2
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;
+8000H --------&cent;  --------&cent;  --------&cent;  --------&cent;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;MSX    &iexcl;  &iexcl;       &iexcl; PAGE 1
+      &iexcl; MAIN  &iexcl;  &iexcl;       &iexcl;  &iexcl;MUSIC  &iexcl;  &iexcl;       &iexcl;
+4000H &iexcl;       &iexcl;  --------&cent;  --------&cent;  --------&cent;
+      &iexcl; ROM   &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl; PAGE 0
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;
+0000H -------  -------  -------  -------
+
+
+          1          2
+FFFFH &Aring;-------&atilde;  &Aring;-------&atilde;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;
+C000H &iexcl;EXT.   &iexcl;  &iexcl;EXT.   &iexcl;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;
+      &iexcl;SLOT   &iexcl;  &iexcl;SLOT   &iexcl;
+8000H &iexcl;       &iexcl;  &iexcl;       &iexcl;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;
+4000H &iexcl;       &iexcl;  &iexcl;       &iexcl;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;
+0000H -------  -------
+
+
+         3-0        3-1        3-2          3-3
+FFFFH &Aring;-------&atilde;  &Aring;-------&atilde;  &Aring;-------&atilde;     &Aring;-------&atilde;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;     &iexcl;       &iexcl;  PAGE 3
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;     &iexcl;       &iexcl;
+C000H &iexcl;       &iexcl;  --------&cent;  --------&cent;--&atilde;  --------&cent;
+      &iexcl; MAIN  &iexcl;  &iexcl;KANJI  &iexcl;  &iexcl;       &iexcl;-&atilde;&iexcl;  &iexcl;       &iexcl;  PAGE 2
+      &iexcl; RAM   &iexcl;  &iexcl;DRIVER &iexcl;  &iexcl;       &iexcl;&atilde;&iexcl;&iexcl;  &iexcl;       &iexcl;
+8000H &iexcl; (*1)  &iexcl;  &iexcl;       &iexcl;  --------&cent;&iexcl;&iexcl;  --------&cent;
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl; DOS   &iexcl;&iexcl;   &iexcl;       &iexcl;  PAGE 1
+      &iexcl;       &iexcl;  &iexcl;       &iexcl;  &iexcl;       &iexcl;(*2)&iexcl;       &iexcl;
+4000H &iexcl;       &iexcl;  --------&cent;  --------&cent;     --------&cent;
+      &iexcl;       &iexcl;  &iexcl; SUB   &iexcl;  &iexcl;       &iexcl;     &iexcl;       &iexcl;  PAGE 0
+      &iexcl;       &iexcl;  &iexcl; ROM   &iexcl;  &iexcl;       &iexcl;     &iexcl;       &iexcl;
+0000H -------  -------  -------     -------
+
+(*1) With the memmory it contains at least 256 Kb.
+(*2) Local Bank. The first 3 pages are for MSX DOS2 and the last page is for
+      MSX DOS1.
+
+         Pricture 1.2 Slot orginasation of the MSX Turbo R
+&lt;10                                             CHAPTER 2 SYSTEM ORGINAZATION&gt;
+
+2.4 R800
+
+2.4.1 FEATURES OF THE R800
+
+The R800, develloped CPUused in the Turbo R, has the features shown below.
+
+1. Z80 and object-compatible
+   With the software written for the Z80 note that the parts dependent on the
+   timing of the CPU are removed and not-changed can be used.
+
+2. The CPU clock frequency is 7.15909 Mhz
+   Because compared with the number of clockpulses per instruction in the Z80
+   sharply lower , the z80 conversion is in fact at the speed on 28.63636Mhz
+   (If there are no waitstates).
+3. multiplication commands
+   the multiply command that is supported has an accuracy of  8bit x 8bit -&gt;
+   16 bit and also 16bit x 16bit -&gt; 32 bit
+   Dependend on this, bigscale progress of mathematical- operation-procedure
+   speed is possible. (??)
+4. LSB/MSB defenition instructions
+   With the Z80 / The access of the higher and the lower 8 bit of register
+   IX/IY with the LSB/MSB defenition is properly ensured
+   In figure 1.2 the [verwerkings]speeds of the most important instructions is
+   shown. (When the Turbo R has no waitstates. On the MSX 2+ 1 waitstate
+   occurs on the M1 cycle.??)
+
+2.5 WAIT
+In the MSX Turbo R normally no waitstates are generated. In the conditions
+below a waitstate is generated.
+
+ 1. If an external slot is accessed (3 waitstates)
+    When an external slot is accessed, to support the externale hardware up to
+    now developed, the Turbo R is designed in the same way the MSX2+, it has
+    the same accesstime while accessing.
+
+ 2. If an internal rom is accessed (2 waitstates)
+    internal ROMS are ROMS like BIOS, BASIC and as well as the internal
+    DISKROM etc.
+    In the first stage in the Turbo R because BIOS, BASIC, SUB ROM and the 16KB
+    of the first part of the KANJI driver (64KB in total) are being copied to
+    the main RAM, In that case approximately in state 3 waitstates
+    are generated(????????????????????????)
+&lt;2.5 WAIT                                                               11&gt;
+  picture 1.2  execution-comparison of the MSX Turbo R and MSX2+
+-----------------------------------------------------------------------------
+ INSTRUCTION    MSX2+(in u.sec) MSX Turbo R(in u.sec)   FACTOR
+-----------------------------------------------------------------------------
+LD     r,s      1.40            0.14                    x 10.0
+LD     r,(HL)   2.23            0.42                    x 5.3
+LD     r,(IX+n) 5.87            0.70                    x 8.4
+PUSH   qq       3.35            0.56                    x 6.0
+LDIR   (BC&lt;&gt;0)  6.43            0.98                    x 6.6
+ADD    A,r      1.40            0.14                    x 10.0
+INC    r        1.40            0.14                    x 10.0
+ADD    HL,ss    3.35            0.14                    x 24.0
+INC    ss       1.96            0.14                    x 14.0
+JP              3.07            0.42                    x 7.3
+JR              3.63            0.42                    x 8.7
+DJNZ   (B&lt;&gt;0)   3.91            0.42                    x 9.3
+CALL            5.03            0.84                    x 6.0
+RET             3.07            0.56                    x 5.5
+MULTU  A,r      160             1.96                    x 82
+MULTUW HL,rr    361             5.03                    x 71
+-----------------------------------------------------------------------------
+
+3. When the internal DRAM is being addressed (1 waitstate)
+   the pageaccess-mode is supported what means that the R800 uses its own bus
+   to the DRAM. Therefore it is possible to get the best performance of the
+   DRAM. In differences with the memmory access the lower 8bit of the adress
+   is just changed, in the page-address-mode highspeed access is possible.
+   Except the lower 8 bit that are changed, the rest presents the pagebreak
+   that is produced.
+   Because when using the page-break 2 using the DRAM is done 1 about 1 time
+   practically approximately 0.5 waitstate is generated.
+   With the pagebreak also a DRAM refresh is generated.
+   With the R800, different from the Z80, together with the commands in
+   practice the DRAM refesh are not unsynchonized executed.
+   In the MSX Turdo R the refresh takes every time 31 u.sec The refresh of 1
+   time takes 280 n.sec. Furthermore with jump instructions (relative jumps
+   and absolute jumps) a pagebreak is absolutly generated.
+
+According to this it is better with highspeed access to pay attention to the
+ things below with important programs.
+
+1. Transmission of programs in RAM
+   With a program in a ROM cartridge, highspeed can be used if a important part
+   is moved by highspeed into ram.
+   A program provided from diskette will inevitable put into RAM for using it 
+   so that will be no problem.
+
+&lt;12                                              CHAPTER 2 SYSTEM ORGINASATION&gt;
+2. Coding where no pagebreak takes place.
+   In the case of using into RAM when highspeed  comes to a necessary loop
+   /just the register of the CPU ?? /and  when coding with few times accessing
+   of datamemory (this also contains stack) the advantage of the pageacces mode
+   makes the best use of it.
+   Furthermore, a loop is most effective when it is programmed between xx00H
+   and xxFFH.
+
+3. Using the system-timer
+   In the Turbo R the effect of the above mentioned pagebreak and refreshcycle
+   like in the MSX 2+ understand exactly the timing of the instructions by
+   means of the coding steps, is not needed.
+   In accordance with that, even on the MSX Turbo R to make programs like
+   making on the MSX 2+, timing with software loops is not recommended.
+   In the MSx Turbo R becasue the systemclock is increased every 3.91 u.sec,
+   it is recommended to be used for timing.
+&lt;629                                                                          &gt;
+
+CHAPTER 4
+------------------------------------------------------------------------------
+MSX MIDI
+
+&lt;630                                                                          &gt;
+------------------------------------------------------------------------------
+CHAPTER 1
+
+ABOUT MSX MIDI
+------------------------------------------------------------------------------
+Because MIDI (Musical Instrumental Digital Interface) functions were also
+added to MSX MUSIC, MIDI can be used via BASIC instructions.
+There is no BIOS used for MSX MUSIC. Except for Basic, programs that use
+MSX-MIDI access the I/O ports directly.
+MSX-MIDI can be built inside as well as it can be an external cartridge.
+MIDI was for the exclusive use of the MSX TURBO R and machines that might be
+build hereafter. On a MSX, MSX 2 or MSX 2+ it can't be used.
+MSX MIDI was constructed in the following way.
+
+* MIDI INTERFACE
+   8251    MIDI data communication IC
+   8253 and 8254 booreeto generator and timer IC
+   futhermore there are some different IC's for the port access.
+
+* MSX-MIDI ROM (16Kb)
+   In case it is internal, the ROM is in the same slot (slot 0-2, page1) as
+    MSX MUSIC.
+   In case it is in an external cartridge, the rom is fitted in the
+   cartridge. When basic commands are used, the internal MSX MUSIC can't be
+   used so the MSX MIDI in the external cartridge will be used that appeared
+   in the booting process.
+&lt;633&gt;
+------------------------------------------------------------------------------
+                      CHAPTER 2
+                      HARDWARE
+------------------------------------------------------------------------------
+The way of accessing and the way of construction of the hardware depends on
+the fact if there is an internal or an external MSX MIDI.
+Below the hardware construction of MSX MIDI is explained.
+Further, the timer IC 8253 and 8254 are being used but below only the 8253 is
+shown.
+
+2.1 BLOCK DIAGRAM
+
+ The hardware construction of MSX-MIDI.
+
+           8251
+         &Aring;--------&atilde;                         &Aring;-----&atilde;
+ MIDI IN &iexcl;    RTS &iexcl;------------------------&gt;&iexcl;     &iexcl;
+ -------&gt;&iexcl;  RXRDY &iexcl;------------------------&gt;&iexcl; AND &iexcl; --&atilde;
+         &iexcl;    DSR &iexcl;&lt;------------------&atilde;     &iexcl;     &iexcl;   &iexcl;
+         &iexcl;    DTR &iexcl;-----------------&atilde; &iexcl;     -----   &iexcl;
+ MIDI OUT&iexcl;        &iexcl;&lt;--&atilde;             &iexcl; &iexcl;               &iexcl;  &Aring;-----&atilde;
+&lt;--------&iexcl;        &iexcl;   &iexcl;             &iexcl; ---------&atilde;     -&gt;&iexcl;     &iexcl;
+         --------   &iexcl; 500 KHz     &iexcl;           &iexcl;        &iexcl; OR  &iexcl; ------&gt; INT
+                      &iexcl;             &iexcl;  &Aring;-----&atilde;  &iexcl; &Aring;-----&gt;&iexcl;     &iexcl;
+         &Aring;--------&atilde;   &iexcl;             -&gt;&iexcl;     &iexcl;  &iexcl; &iexcl;      -----
+4Mhz \--&gt;&iexcl; TIMER0 &iexcl;---                &iexcl;AND  &iexcl;--_-
+     &iexcl;   ---------&cent;         &Aring;-----&atilde; &Aring;-&gt;&iexcl;     &iexcl;
+     &iexcl;   &iexcl; TIMER1 &iexcl;---\----&gt;&iexcl;S    &iexcl; &iexcl;  -----
+     &iexcl;   ---------&cent;   &iexcl;     &iexcl;  FF &iexcl;-
+     --&gt;&iexcl; TIMER2 &iexcl;--&gt;  &Aring;-&gt;&iexcl;R    &iexcl;
+         --------      &iexcl;  -----
+                         &iexcl;
+
+                        0EAH Write
+
+                DIAGRAM 4.1 BLOCK SCHEME OF THE MSX MIDI
+&lt;634                                                   CHAPTER 2 HARDWARE  &gt;
+2.2 BUILT-IN MIDI INTERFACE
+       The following I/O ports of the built in MSX-MIDI interface are
+       accessable.
+
+8251 interface ; portnumber 0E8H, 0E9H
+
+0E8H (READ)     b7   b6   b5   b4   b3   b2   b1   b0
+              &Aring;----\----\----\----\----\----\----\----&atilde;
+              &iexcl;RXD7&iexcl;RXD6&iexcl;RXD5&iexcl;RXD4&iexcl;RXD3&iexcl;RXD2&iexcl;RXD1&iexcl;RXD0&iexcl;
+              ----_----_----_----_----_----_----_----
+              &Aring;----\----\----\----\----\----\----\----&atilde;
+     (WRITE)  &iexcl;TXD7&iexcl;TXD6&iexcl;TXD5&iexcl;TXD4&iexcl;TXD3&iexcl;TXD2&iexcl;TXD1&iexcl;TXD0&iexcl;
+              ----_----_----_----_----_----_----_----
+
+      RXD7-RXD0  =  8251 received data
+      TXD7-TXD0  =  8251 data to send
+
+0E9H (READ)     b7   b6   b5   b4   b3   b2   b1   b0
+              &Aring;----\----\----\----\----\----\----\----&atilde;
+              &iexcl;DSR &iexcl;BRK &iexcl; FE &iexcl; OE &iexcl; PE &iexcl;EMPT&iexcl;RDDY&iexcl;TRDY&iexcl;
+              ----_----_----_----_----_----_----_----
+
+        DSR     8253  data set ready                  (1=  ?? detected)
+        BRK     8251  break detection                 (1=detected)
+        FE      8251  frame error flag                (1=error detected)
+        OE      8251  overrun error flag              (1=error detected)
+        PE      8251  parity error flag               (1=parity error detected)
+        EMPT    8251  transmitter buffer empty status (1=buffer is empty)
+        RRDY    8251  receiver buffer status          (1= data is present)
+        TRDY    8251  transmitter status              (1=transmission possible)
+
+       (WRITE)
+
+
+0E9H  (Write)    b7   b6   b5   b4   b3   b2   b1   b0
+               &Aring;----\----\----\----\----\----\----\----&atilde;
+      mode     &iexcl; S2 &iexcl; S1 &iexcl; EP &iexcl; PEN&iexcl; L2 &iexcl; L1 &iexcl; B2 &iexcl; B1 &iexcl;
+               ----_----_----_----_----_----_----_----
+               &Aring;----\----\----\----\----\----\----\----&atilde;
+      command  &iexcl; EH &iexcl; IR &iexcl;RIE &iexcl; ER &iexcl;SBRK&iexcl; RE &iexcl;TIE &iexcl;TEN &iexcl;
+               ----_----_----_----_----_----_----_----
+
+    EH    normally set to 0
+    IR    normally set to 0
+    RIE   MIDI IN transmission enablen   (1=enable; 0=disable)
+    ER    error reset                    (1=reset error flags; 0=no operation)
+&lt;2.2 INTERNAL MIDI INERFACE                                             635&gt;
+    SBRK  normally set to 0
+    PE    MIDI IN receive enable          (1=enable; 0=disable)
+    TIE   8253 timer (counter #2)         (1=enable; 0=disable)
+          transmission enable
+    TEN   MIDI OUT transmission enable    (1=enable; 0=disable)
+
+When writing to the command mode register of the 8251 it is nessesary to wait
+16 clock cycles (3.579545 Mhz) for the result. When writing a sequence of
+commands to to command register please wait before writing the data.
+
+After writing 00H, 00H, 00H, 40H to the I/O port 0E9H the 8251 is resetted.
+Because when a wrong value to the mode was written the MIDI can't function
+properly, it is necessary to write the correct values after a reset.
+For details please see the accompanied programsample ([THRU.MAC]).
+
+8253 OUT2 Latch of the signals of the terminal (adress 0EAH,0EBH)
+
+0EAH (WRITE)       b7   b6   b5   b4   b3   b2   b1   b0
+                 &Aring;----\----\----\----\----\----\----\----&atilde;
+                 &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;
+                 ----_----_----_----_----_----_----_----
+
+          0EAH Reading the data from this adres is ineffective
+          0EBH Is the image of 0EAH
+
+
+dependent on the optional data written to adress 0EAH, the data read from
+counter #2 of the 8253 can be cancelled.
+
+8253 INTERFACE (adres 0ECH-0EFH)
+
+                   b7   b6   b5   b4   b3   b2   b1   b0
+                 &Aring;----\----\----\----\----\----\----\----&atilde;
+     0ECH (R/W)  &iexcl;CT7 &iexcl;CT6 &iexcl;CT5 &iexcl;CT4 &iexcl;CT3 &iexcl;CT2 &iexcl;CT1 &iexcl;CT0 &iexcl;
+                 ----_----_----_----_----_----_----_----
+                 &Aring;----\----\----\----\----\----\----\----&atilde;
+     0EDH (R/W)  &iexcl;CT17&iexcl;CT16&iexcl;CT15&iexcl;CT14&iexcl;CT13&iexcl;CT12&iexcl;CT11&iexcl;CT10&iexcl;
+                 ----_----_----_----_----_----_----_----
+                 &Aring;----\----\----\----\----\----\----\----&atilde;
+     0EEH (R/W)  &iexcl;C727&iexcl;CT26&iexcl;CT25&iexcl;CT24&iexcl;CT23&iexcl;CT22&iexcl;CT21&iexcl;CT20&iexcl;
+                 ----_----_----_----_----_----_----_----
+                 &Aring;----\----\----\----\----\----\----\----&atilde;
+     0EFH (READ) &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;
+                 ----_----_----_----_----_----_----_----
+                 &Aring;----\----\----\----\----\----\----\----&atilde;
+          (WRITE)&iexcl;SC1 &iexcl;SC0 &iexcl;RW1 &iexcl;RW0 &iexcl;M2  &iexcl;M1  &iexcl;M0  &iexcl;BCD &iexcl;
+                 ----_----_----_----_----_----_----_----
+&lt;636                                                    CHAPTER 2 HARDWARE  &gt;
+
+            CT7-CT0     counter 0
+            CT17-CT10   counter 1
+            CT27-CT20   counter 2
+            SC1, SC0    select counter, select counter
+            RW1,RW0     counter read/write mode
+            M2,M1,M0    counter mode
+            BCD         binairy counting/ BCD counting select
+
+every counter has the following features:
+- counter #0
+  The ?? generator of the 8251 is used. A clock unit gives a clockpulse of
+  4 Mhz. In contrast to the 8251 the ?? generator must give a clock pulse of
+  500 Khz (division by 8). Mode 3 is used ( 2^N = division -&gt; 2^3 = 8)
+- counter #1
+  Can be used as a timer for any kind of use. By the clock unit the output of
+  timer #2 is going to timer #1. (?????)
+- counter #2
+  Is used for writing ?? cycle to the CPU
+  Normally mode 2 is used (N is the divsion factor). When OUT2 gets low, the
+  latch data is transmitted and the ?? to the CPU is developped. The CLK unit
+  gives a clockpulse of 4 MHz.
+
+2.3 EXTERNAL MIDI INTERFACE
+
+The external MSX MIDI interface uses I/O port that is can be found in port
+0E2H, the I/O port can be changed.
+
+* MIDI interface selections (adres 0E2H, 0EAH)
+
+   0E2H  (WRITE)    B7   B6   B5   B4   B3   B2   B1   B0
+                  &Aring;----\----\----\----\----\----\----\----&atilde;
+                  &iexcl; EN &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl;  - &iexcl; E8 &iexcl;
+                  ----_----_----_----_----_----_----_----
+
+    EN          MIDI interface enable  (0=enable, 1=disable)
+                With the initialization set to 1
+    E8          MIDI interface adres select (0=0E8H/0E9H)
+                                            (1=0E0H/0E1H)
+
+ If bit E8 is set to 0, I/O port of the external MIDI interface is changed
+ from 0E2H to 0EAH, the internal MIDI interface is compatible with this.
+ Further, the 8251 I/O adres becomes 0E8H and 0E9H.
+&lt;2.3 EXTERNAL MIDI INTERFACE                                    637&gt;
+ If bit E8 is set to 1, the I/O port of the 8251 interface is 0E0H and 0E1H ,
+ the access of 0ECH to 0EFH as I/O of the cartridge is invalid. Further, the
+ 8253 timer is also invalid.
+
+* 8251 INTERFACE (adres 0E0H and 0E1H)
+
+0E0H            b7   b6   b5   b4   b3   b2   b1   b0
+              &Aring;----\----\----\----\----\----\----\----&atilde;
+      (read)  &iexcl;RXD7&iexcl;RXD6&iexcl;RXD5&iexcl;RXD4&iexcl;RXD3&iexcl;RXD2&iexcl;RXD1&iexcl;RXD0&iexcl;
+              ----_----_----_----_----_----_----_----
+              &Aring;----\----\----\----\----\----\----\----&atilde;
+      (write) &iexcl;TXD7&iexcl;TXD6&iexcl;TXD5&iexcl;TXD4&iexcl;TXD3&iexcl;TXD2&iexcl;TXD1&iexcl;TXD0&iexcl;
+              ----_----_----_----_----_----_----_----
+      RXD7-RXD0  =  8251 received data
+      TXD7-TXD0  =  8251 data to send
+
+0E1H            b7   b6   b5   b4   b3   b2   b1   b0
+              &Aring;----\----\----\----\----\----\----\----&atilde;
+       (read) &iexcl;DSR &iexcl;BRK &iexcl; FE &iexcl; OE &iexcl; PE &iexcl;EMPT&iexcl;RDDY&iexcl;TRDY&iexcl;
+              ----_----_----_----_----_----_----_----
+
+        DSR     8253  data set ready                  (1=  ?? detected)
+        BRK     8251  break detection                 (1=detected)
+        FE      8251  frame error flag                (1=error detected)
+        OE      8251  overrun error flag              (1=error detected)
+        PE      8251  parity error flag               (1=parity error detected)
+        EMPT    8251  transmitter buffer empty status (1=buffer is empty)
+        RRDY    8251  receiver buffer status          (1= data is present)
+        TRDY    8251  transmitter status              (1=transmission possible)
+
+       (WRITE)
+
+
+0E9H  (Write)    b7   b6   b5   b4   b3   b2   b1   b0
+               &Aring;----\----\----\----\----\----\----\----&atilde;
+      mode     &iexcl; S2 &iexcl; S1 &iexcl; EP &iexcl; PEN&iexcl; L2 &iexcl; L1 &iexcl; B2 &iexcl; B1 &iexcl;
+               ----_----_----_----_----_----_----_----
+               &Aring;----\----\----\----\----\----\----\----&atilde;
+      command  &iexcl; EH &iexcl; IR &iexcl;RIE &iexcl; ER &iexcl;SBRK&iexcl; RE &iexcl;TIE &iexcl;TEN &iexcl;
+               ----_----_----_----_----_----_----_----
+&lt;638                                                 CHAPTER 2 HARDWARE     &gt;
+    EH    normally set to 0
+    IR    normally set to 0
+    RIE   MIDI IN transmission enablen   (1=enable; 0=disable)
+    ER    error reset                    (1=reset error flags; 0=no operation)
+    SBRK  normally set to 0
+    PE    MIDI IN receive enable          (1=enable; 0=disable)
+    TIE   8253 timer (counter #2)         (1=enable; 0=disable)
+          transmission enable
+    TEN   MIDI OUT transmission enable    (1=enable; 0=disable)
+
+
+2.4
+CHECK MIDI
+In case of bit 0 of adres 002EH of the MAIN ROM being 1  MSX MIDI is built in.
+The versionnumber ([002DH) is 3 or more the built-in MSX MIDI can be used.
+The internal type and the external type have another hook. The difference is
+because of the application. In chapter 4- 3.2 the hooks are shown.
+The difference between an internal type and an external type can be seen at
+the adres 4018 beginning data.
+
+     chart 4.1  data differences of the MSX MIDI
+------------------------------------------------------------------
+ADRES         INTERNAL        EXTERNAL
+------------------------------------------------------------------
+4018H         41H(A)          ??H(?)
+4019H         50H(P)          ??H(?)
+401AH         52H(R)          ??H(?)
+401BH         4CH(L)          ??H(?)
+401CH         4FH(O)          4DH(M)
+401DH         50H(P)          49H(I)
+401EH         4CH(L)          44H(D)
+401FH         4CH(L)          49H(I)
+------------------------------------------------------------------
+In the external cartridge starting at adres 4018H 4 bytes makercode that
+can change is located. From adres 401CH the data [MIDI] is located.
+&lt; way of distinction of presence of the MIDI interface              639&gt;
+
+2.5 way of distinction of presence of the MIDI interface
+
+The presence of the MIDI interface can be detected by the following ways.
+
+1. In case bit 0 of adres 002EH of the MAIN ROM equals 1 the MIDI interface is
+   present.
+
+2. In case the versionnumber of the MAIN ROM (002DH) is 3 or higher and in a
+   slot the following can be found.
+
+    DB &quot;MIDI&quot;
+
+   When that is so, the external cartridge is installed.
+
+3. If the above is not so, because the MIDI interface is not present, the MIDI
+   functions can't be used.
+
+4. In case the version nummer (002DH) equals 2 or lower, a MIDI interface can't
+   be used.
+&lt;650                                                                       &gt;
+-----------------------------------------------------------------------------
+CHAPTER 3
+HOOKS
+------------------------------------------------------------------------------
+The hook for MSX MUSIC is used 1/60 second (NTSC) or 1/50 second (PAL) but
+MIDI from MSX BASIC the 8253 uses the hook every 5 milisecond.
+
+3.2 HOOKS
+In the MSX Turbo R the following hooks are present related with the internal
+MIDI interface.
+
+    diagram 4.2 Hooks of the internal MSX-MIDI
+----------------------------------------------------------------------------
+adres         name      old name     contents
+----------------------------------------------------------------------------
+0FF75H        H.MDIN    H.OKNORM     MIDI IN hook
+0FF93H        H.MDTM    H.FRQINT     8253 timer hook
+----------------------------------------------------------------------------
+In case of using an external cartridge, the hooks above can't be used
+therefore we advise you to use the hook H.KEYI.
+For the details of the usage please see chapter 4 [development of applications]
+
+   diagram 4.3 Hook of the external MSX-MIDI
+----------------------------------------------------------------------------
+adres      name
+----------------------------------------------------------------------------
+0FD9AH     H.KEYI
+----------------------------------------------------------------------------
+&lt;643                                                                    &gt;
+----------------------------------------------------------------------------
+CHAPTER 4
+development of applications
+----------------------------------------------------------------------------
+4.1 advice details for development of applications.
+
+If you will make MSX MIDI compatible programs please take care of the
+following things.
+
+1. The hook of the internal MIDI interface is different than the external MIDI
+   interface. When using interrupt hooks, verify if the type, if it is
+   internal or external.
+
+2. After the initialization of the MIDI interface the interrupt hooks are
+   allowed, because of the mobility of the interrupt flags that can set,
+   interrupt flags must be resetted.
+   The interrupt flags that are available are below
+
+      diagram 4.4 interrupt flags of the MIDI interface
+-------------------------------------------------------------------------
+kind of hook    hook direction               way of handling
+-------------------------------------------------------------------------
+timer          bit 7 (DSR) of 0E9H or 0E1H    write the option to 0EAH
+MIDI IN        bit 1 (RRDY)of 0E9H or 0E1H    read with an IN-instruction 0E8H
+-------------------------------------------------------------------------
+
+3. With an external MIDI interface external hooks MIDI IN and 8253 timer come
+   also to H.KEYI.
+   The hooks must be written from this adres. To detect if there is MIDI IN
+   interrupt or not you have to verify bit 1 of I/O port 0E9H.
+   To verify if there is an interrupt from the 8253 timer you will have to
+   verify bit 7 of I/O port 0E9H.
+&lt;644                                    CHAPTER 4 DEVELOPMENT OF APPLICATIONS&gt;
+4. The generation of MIDI IN interrupt signals is done every 320 u.sec.
+   when a RST 30H instruction is used when a hook is read by a routine, it
+   takes time to make an interslot call ,therefore there is not enough time
+   for the interrupt signals handling.
+   Therefore we advise to create the following handling routine
+
+   * place the procudure routine in page 3
+   * Jump with a JP instruction to the handling routine
+
+4.2 Sample program
+
+For more details about the MIDI interface and the flags please see the sample
+program (THRU.MAC).
+&lt;645                                                                         &gt;
+------------------------------------------------------------------------------
+                CHAPTER 5
+              BASIC EXPANSIONS
+------------------------------------------------------------------------------
+5.1 OUTLINE OF THE BASIC EXPANSIONS.
+
+The names of the commands for using MSX MIDI have been simplified and have
+been included in basic commands. The MSX-MIDI basic commands have been
+supported in the expansion of commands like CALL MUSIC. CALL an be substituted
+by '_' (underscore). With the MIDI interface external MIDI deveices can be
+used. Therefore, commands have been modificated and supplemented. Further,
+because both MML and MIDI must be corresponding, commands have been changed.
+
+5.2 Explanation of the BASIC expansions
+
+CALL MUSIC
+------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;Funktion   &iexcl;   Initialize MSX MIDI System
+-----------
+&Aring;-----------&atilde;
+&iexcl; Form      &iexcl;   CALL MUSIC[([&lt;MODE&gt;],[,[0][,&lt;single channel used for PLAY 1&gt;
+-----------    [,&lt;single channel used for PLAY2&gt;[,...[,&lt;single channel used
+                 for PLAY 9&gt;]]]]]]]]]])]
+&Aring;-----------&atilde;
+&iexcl;Explanation&iexcl;   When the built in sound chip LSI is designated how much
+-----------   FM channels per voice, the MIDI interface is also designated.
+                After the initialisation after the CALL MUSIC, it is not
+                possible to use other expansion BASIC statements.
+
+                * &lt;MODE&gt;
+&lt;646                                           CHAPTER 5 BASIC EXPANSION&gt;
+-------------------------------------------------------------------------
+designation     meaning
+-------------------------------------------------------------------------
+   0            No use of rythme
+   1            Use of rythme
+-------------------------------------------------------------------------
+
+* channel
+ in each mode the channels to be used  are shown below.
+-------------------------------------------------------------------------
+mode     rythme         maximum per channel
+-------------------------------------------------------------------------
+  0      no             9
+  1      yes            6 fm channels + 1 rythme
+                        8 MIDI channels + 1 rythme
+-------------------------------------------------------------------------
+With mode 1 when using midi the number of voices used per channel can be
+increased up to 8.
+For the play command the number of OPLL channels used by  built-in FM
+soundprocessor have to be designated. To use 0 voices is not possible.
+With the OPLL only channels 9 voices can be used. With mode 1 3 channels
+are used for rythme. In mode 0 9 channels can be used as maximum. In Mode 1 6
+channels can be used as maximum.
+In case of using MIDI, a play line is assigned to 1 MIDI channel.
+A value of 2 or more is designated the meaning doesn't change.
+With the channels of the FM processor the number of channels can be changed.
+Because with MIDI 1 play line is assigned to 1 MIDI channel, in this occasion
+it can be designated as 1, 2, 3, .... .
+To change this is possible using the MML command @Hn.
+In case this parameter was set to 1 or more, the other value of this parameter
+can be 0. It is not possible to leave 0 out int the CALL MUSIC command.
+Please look at the following commands.
+
+ CALL MUSIC (0,0,0,5,0)
+                 &iexcl;   &iexcl;
+  It is not possible to designate 0.(Illegal function call will be generated.)
+
+ CALL MUSIC (0,0,1,,2)
+                  &iexcl;
+  It is not possible to leave the parameter out.(Syntax error will be
+                                                  generated.)
+&lt;5.3 explanations of the BASIC expansions                               647&gt;
+
+  CALL MUSIC (1,0,1,1,1,1,1,1,0,0)
+                              &iexcl; &iexcl;
+  In mode 1 channel 7 and 8 must be designated.
+
+ In case of PLAY #1
+   Channel 1-8 are assigned for MIDI
+   Channel 9 is assigned for MIDI rythme
+   Channel 10 - 12 are assigned for the PSG
+
+ In case of PLAY #2
+   Channel 1-6 are assigned for the FM soundprocessor
+   Channel 7 and 8 can't be used
+   Channel 9 is assigned for rythme sounds
+   Channel 10-12 are assigned for the PSG.
+
+When it is used without parameters it is the same as CALL MUSIC (1,0,1,1,1).
+If CALL MUSIC is used because the systemhook is linked to the MSX MIDI
+software, the access of the handling routine is increased and the
+suruuputo(??) of the system decreases. Because of the workarea space of a
+CLEAR must be given, HIMEN ( 2 byte parameter of the CLEAR instruction) will
+be 807 bytes lower.
+
+&Aring;-------&atilde;
+&iexcl;example&iexcl;  CALL MUSIC
+-------  Default setting.
+
+           CALL MUSIC (0,0,1,1,1,1,1,1,1,1,10
+           One channel per PLAY line is assigned.
+
+CALL MDR
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;Funktion   &iexcl; Designation of the MIDI note numbers for the rytme sounds in MML
+-----------
+&Aring;-----------&atilde;
+&iexcl; Form      &iexcl; CALL MDR (&lt;MIDI note number of B&gt;,&lt;MIDI note number of S&gt;,&lt;MIDI
+-----------           note number of M&gt;,&lt;MIDI note number of C&gt;,&lt;MIDI note
+                        number of H&gt;)
+&Aring;-----------&atilde;
+&iexcl;Explanation&iexcl; The in MML used rythme B,S,M,C,H commands can be designated to
+----------- MIDI note numbers.
+&lt;648                                                CHAPTER 5 BASIC EXPANSION&gt;
+
+Because there are a lot of MIDI sounds, with 1 channel the rythme sounds can be
+assigned to the deveice (exclusive use of 1 track). In the PLAY line one
+channel can be assigned. In the same time multipal sounds of rythme  in the
+exclusive rythme track is not allowed.
+This to the rythme assigned track is different per MIDI deveice. For the
+handling of the MIDI deveice please see for details in it's manual.
+The parameter must be between 0 and 127. It may not be left out. Initial value
+is 0.
+&Aring;--------&atilde;
+&iexcl;example &iexcl; CALL MDR(35,38,45,49,42)
+--------
+PLAY
+
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;Funktion   &iexcl; Plays the in MML complied music.
+-----------
+&Aring;-----------&atilde;
+&iexcl; Form      &iexcl; PLAY [#&lt;MODE&gt;,]&lt;line 1&gt;[,&gt;line 2&gt;],&lt;line 3&gt; .. [,&lt;line 12&gt;]
+-----------
+&Aring;-----------&atilde;
+&iexcl;Explanation&iexcl; With the play command the music is performed. Up to 12 tones can 
+----------- be produced, 9 from the built-in soundprocessor + 3 PSG and 
+              furthermore 9 from the MIDI deveice + 3 PSG.
+              The in &lt;line n&gt; written MML data is performed. A call or other 
+              instruction is not needed.
+              &lt;mode&gt; must be a value between 0 and 3. The play command and the 
+              mode give the following possibility.
+
+              * When 0 or no data is given it is equal a the normal play 
+                commando in basic. Up to 3 PSG channels can be used.
+              * When it is 1, the MIDI deveice and the PSG can be used.
+                The relations between the playlines is the following :
+                &lt;MIDI deveice play line 1&gt;, ... &lt;MIDI deveice play line n&gt;,
+                &lt;MIDI deveice rythme line&gt;,
+                &lt;PSG play line 1&gt;,&lt;PSG play line 2&gt;,&lt;PSG play line 3&gt;
+              * When it is 2 or 3, the FM soundprocessor and PSG can be used.
+                 (the use of 2 or 3 is exactly the same.)
+                The relations between the play lines is the following.
+                &lt;FM play line 1&gt;,...&lt;fm play line n&gt;
+                &lt;FM rythme line&gt;,
+                &lt;PSG play line 1&gt;,&lt;PSG play line 2&gt;,&lt;PSG play line 3&gt;
+
+              n is the number of MML playlines designated with CALL MUSIC.
+              In case a mode is designated with no use of rythme wtih the CALL
+              MUSIC the rythme play line as well as the komma (,) must be left 
+              out.
+
+&Aring;--------&atilde;
+&iexcl;example &iexcl; PLAY #1,&quot;CD&quot;,&quot;EF&quot;,&quot;GA&quot;
+--------
+USAGE OF MML FOR MIDI DEVEICES
+
+Here we explain the supplied and changed MML for the usage of MIDI deveices.
+
+       figure 4.5 supplemented MML for the use of MIDI deveices.
+------------------------------------------------------------------------
+Character  Meaning                                      Value
+------------------------------------------------------------------------
+@Hn        Designates the used MIDI channel number.     1 &oacute; n &oacute; 16
+@Cm,n      Send a control change.
+           m = control change, n = value of the         1 &oacute; m &oacute; 127
+           control number to be changed.                1 &oacute; n &oacute; 127
+@Sn        Instruction related to the MIDI realtime clock
+           n=0 Sends FCH(STOP) out, stop the clock
+           n=1 Sends FAH(START) out, starts the clock
+           n=2 Sends FBH(CONTINUE) out, continues the clock
+           The tempo of the clock will be the same as defined in playline 1.
+------------------------------------------------------------------------
+
+       figure 4.6 changed MML for the use of MIDI deveices.
+------------------------------------------------------------------------
+Character  Meaning                                     Value
+------------------------------------------------------------------------
+Ln         Designates the length                        1 &oacute; n &oacute; 96
+Rn         Designates the rest length                   1 &oacute; n &oacute; 96
+@Wn        Continue the length with n                   1 &oacute; n &oacute; 96
+Vn         This differss with the MIDI deveices,        1 &oacute; n &oacute; 15
+           8 times the values of the velocity is
+           send out.
+@Vn        Volume (Control change #7) is send out.      1 &oacute; n &oacute; 127
+@n         With the built in FM soundprocessor the
+           color of the sound is changed but            1 &oacute; n &oacute; 63
+           with MIDI deveices it is different , a
+           program change is send out.                  1 &oacute; n &oacute; 127
+Zn         1 byte MIDI data is send out.                1 &oacute; n &oacute; 255
+------------------------------------------------------------------------
+&lt;650                                            CHAPTER 5 BASIC EXPANSION &gt;
+USAGE of rythme MML data
+
+Below here the supplied and changed MML for MIDI deveices are shown.
+
+         figure 4.7  supplied MML for rythme data
+------------------------------------------------------------------------
+Character   Meaning
+------------------------------------------------------------------------
+@n          Different with MIDI deveices is that a program change is
+            send out. For the built-in FM soundprocessor this is ignored.
+-------------------------------------------------------------------------
+
+         figure 4.8 changed MML for rythme data
+------------------------------------------------------------------------
+Character   Meaning
+------------------------------------------------------------------------
+@An         This is different for MIDI deveices, it is the same as Vn,
+            the velocity is designated.
+------------------------------------------------------------------------
+&lt;5.2 explanation of BASIC expansions                              651&gt;
+
+  figure 4.9 ???????
+------------------------------------------------------------------------
+Character       MIDI            FM              PSG
+------------------------------------------------------------------------
+  Mn            -               -               O
+  Sn            -               -               O
+  Vn            O [0~15]        O               O
+  Ln            O               O               O
+  Qn            O               O               -
+  On            O               O               O
+  &lt;             O               O               O
+  &gt;             O               O               O
+  Tn            O               O               O
+  Nn *1         O               O               O
+  Rn            O               O               O
+  A~G           O               O               O
+  +             O               O               O
+  -             O               O               O
+  #             O               O               O
+  .             O               O               O
+  =x;           O               O               O
+  Xx;           O               O               O
+  &amp;             O               O               O
+  {}n           O               O               x
+  @n            O [0~127]       O[0~63]         -
+  @Vn           O [0~127]       O[0~127]        -
+  @Wn           O               O               the same as Rn
+* @Hn           O [1~16]        -               -
+* @Cm, n        O [0~127]       -               -
+  Yr,d          -               O               -
+  Zn            O [0~255]       - (x)           -
+* @Sn           O [0~2]         -               -
+------------------------------------------------------------------------
+*1 The value of n is not the MIDI note number. It is the musical scale 
+   according that is existing.(???)
+*  Changed commands for MSX MIDI
+x  Creates an error
+-  Can't be used
+[] Range of the parameter
+() The equivalence of the old MSX MUSIC
+&lt;652                                            CHAPTER 5 BASIC EXPANSIONS&gt;
+     figure 4.10  Rythme sounds MML
+-------------------------------------------------------------------------
+Command         MIDI            FM
+-------------------------------------------------------------------------
+   B *1         O               O
+   S *1         O               O
+   M *1         O               O
+   C *1         O               O
+   H *1         O               O
+   n            O               O
+   !            O               O
+   Vn           O               O
+   @An          O               O
+   @Vn          O [0~127]       O
+   Tn           O               O
+   Rn           O               O
+   =x;          O               O
+   Xx;          O               O
+   Yr,d         -               O
+*  @Hn          O [1~16]        -
+*  @Cm,n        O [0~127]       -
+*  @n           O [0~127]       - (x)
+   Zd           O               - (x)
+------------------------------------------------------------------------
+1  In case of using MIDI deveices, the note number must be changed with
+   CALL MDR.
+*  Changed command in MSX MIDI
+x  Generates an error
+-  Can't be used
+[] Range of the parameter
+() The equivalence of the old MSX MUSIC
+
+5.3 STATEMENTS THAT DON'T EFFECT MIDI DEVEICES
+
+ The following statements have no meaning for the MIDI deveices.
+
+ CALL AUDREG
+ CALL PITCH
+ CALL TEMPER
+ CALL TRANSPOSE
+ CALL VOICE
+
+CALL VOICE can't be used in combination with MIDI deveices, please use the MML 
+command @n.
+&lt;5.4 MIDI DATA FORMAT                                                   &gt;
+
+5.4 MIDI DATA FORMAT
+
+Below here the MIDI data format from the MSX MIDI BASIC expansion is shown.
+
+5.4.1    transmission data 
+
+  1. note data
+     * note on
+         status      1001nnnn (9nH)  n = 0 ~ 15 MIDI channel number
+         note number 0kkkkkkk        k = 24 (C0) &&not 119 (B7)
+         velocity    0vvvvvvv        v =  8 * i : i= 0 ~ 15
+         The velocity value, 8 times the value designated in @An, is send out.
+     * note off
+         status      1001nnnn (9nH)  n = 0 ~ 15 MIDI channel number
+         note number 0kkkkkkk        k = 24 (C0) &&not 119 (B7)
+         velocity    00000000 (v=0)  velocity off
+         when if the rythme is used at the same time, both the music and 
+         rythme is stopped, the running-status is send out.
+
+  2. control changes
+
+     * @Vv (volume)
+         status         1011nnnn (BnH)  n = 0 ~ 15 MIDI channel number
+         control number 00000111        c = 7
+         control value  0vvvvvvv        v = 0 ~ 127
+
+     * @Cc, v (control change)
+         status         1011nnnn (BnH)  n = 0 ~ 15 MIDI channel number
+         control number 0ccccccc        c = 0 ~ 127
+         control value  0vvvvvvv        v = 0 ~ 127
+
+  3. program changes
+
+     * @p (program changes)
+         status         1100nnnn (CnH)  n = 0 ~ 15 MIDI channel number
+         program number 0ppppppp        p = 0 ~ 127
+
+  4. system-realtime-message
+
+     * timingclock
+        status   11111000(F8H)
+        The timingclock can be started with @S1 and @S2, used in a play line.
+        When a playline has ended, the clock is stopped then STOP (FCH) has not 
+        to be used.
+
+     * @S1  start
+        status       11111010 (FAH)
+        The starting of the clock is send out.
+
+     * @S2 continue
+        status       11111011 (FBH)
+        The starting of the clock is send out.
+
+     * @S0 stop
+        status       11111100 (FCH)
+        The stopping of the clock is send out.
+
+5.4.2 Receiving data
+
+With the BASIC expansion receiving data is not posible.
+&lt;5.4 MIDI DATA FORMAT                                           655&gt;
+
+     figure 4.11 MSX MIDI BASIC EXPANSION MML MIDI IMPLIMENTATION CHART 
+&Aring;-------------------------------\---------------\----------------------&atilde;
+&iexcl;  Function                     &iexcl; send signal   &iexcl; Remarks              &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; BASIC         channels on     &iexcl; 1 - 9         &iexcl;                      &iexcl;
+&iexcl; CHANNELS      available       &iexcl; 1 - 16        &iexcl; @Hn                  &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl;               channels on     &iexcl; 3             &iexcl;                      &iexcl;
+&iexcl;  MODE         message         &iexcl; x             &iexcl;                      &iexcl;
+&iexcl;               substitution    &iexcl; *********     &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; NOTE NUMBER                   &iexcl; O 24 - 119    &iexcl; 01C - 08B            &iexcl;
+&iexcl;               voice range     &iexcl; *********     &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; velocity      note on         &iexcl; O 9nH, v=8xn  &iexcl; Vn, @An(n=0-15)      &iexcl;
+&iexcl;                               &iexcl;               &iexcl; @An is rythme only   &iexcl;
+&iexcl;               note off        &iexcl; x 9nH, v=0    &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; Aftertouch     key            &iexcl; x             &iexcl;                      &iexcl;
+&iexcl;                channel        &iexcl; x             &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; Pitch handle                  &iexcl; x             &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl;                               &iexcl; O (7)         &iexcl; @Vn                  &iexcl;
+&iexcl;                               &iexcl; O (0-127)     &iexcl; @Cm, n               &iexcl;
+&iexcl; Control change                &iexcl;               &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; program change                &iexcl; O             &iexcl; @n                   &iexcl;
+&iexcl;              other posibility &iexcl; *********     &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; access kuruushibu(??)         &iexcl; x             &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl;             song portion      &iexcl; x             &iexcl;                      &iexcl;
+&iexcl; common      song select       &iexcl; x             &iexcl;                      &iexcl;
+&iexcl;             chain             &iexcl; x             &iexcl;                      &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl; Real time     clock           &iexcl; O             &iexcl;                      &iexcl;
+&iexcl;               command         &iexcl; O             &iexcl; @Sn                  &iexcl;
+-----------------------------------------------------------------------&cent;
+&iexcl;               local on/off    &iexcl; x             &iexcl;                      &iexcl;
+&iexcl;               all note off    &iexcl; O             &iexcl; [CTRL] + [STOP]      &iexcl;
+&iexcl; rest          active sensing  &iexcl; x             &iexcl;                      &iexcl;
+&iexcl;               reset           &iexcl; x             &iexcl;                      &iexcl;
+------------------------------------------------_----------------------&cent;
+&iexcl; remarks                       &iexcl; Zn : send 1 byte MIDI data           &iexcl;
+&iexcl;                               &iexcl;                                      &iexcl;
+-------------------------------_--------------------------------------
+ O = Available
+ x = Not available
+MODE 1 : OMNI ON,POLY           MODE 2 : OMNI ON,MONO
+MODE 3 : MONI OFF,POLY          MODE 4 : OMNI OFF,MONO
+************** means that the output data has no meaning.
+&lt;656                                                                    &gt;
+&lt;657                                                                    &gt;
+APPENDIX
+------------------------------------------------------------------------
+&lt;658                                                                    &gt;
+&lt;659                                                                    &gt;
+------------------------------------------------------------------------
+                          A
+                R800 INSTRUCTION CHARTS
+------------------------------------------------------------------------
+In these charts instructions of the R800, grouped in kind of instructions 
+are collected. Of the mnemonics in these charts the name of the instruction, 
+usage of this instruction are smplified showed.
+In the column of the usage of an instruction when there is an &lt;- symbol The 
+details of the left side are shown on the rightside
+The KAKKO (??) means the details of the memory by the shown belonging 
+register. (???)
+For example if there is :
+
+    r &lt;- [.hl]
+
+the details of the memory of the shown HL register is is going to 8 bit (???)
+The in/out-put instructions [n] and [.c] are the equivalence of the in/out-put 
+ports.
+In the flag column the flags used are shown. OPcode column the machinecode of 
+every different instruction is written down in HEX and BIN format.
+The B stands for the length of the code in bytes, the C stands for the length 
+of the code in clock cycles.The shown mnemonics that have changed for the R800 
+can't be guaranteed to work properly on the Z80 because they are not the same 
+as the z80 instructions. (??)
+&lt;660                                         APPENDIX A R800 INSTRUCTION CHART&gt;
+
+remarks
+
+  &Aring;-------\---------------------------------------------------------------&atilde;
+  &iexcl;.a{7}  &iexcl;The highest bit of register .a                                 &iexcl;
+  &iexcl;.{4..7}&iexcl;Bit 4-7 of register .a                                         &iexcl;
+  &iexcl;;      &iexcl;Punctuation of the usage                                       &iexcl;
+  &iexcl;.de:.hl&iexcl;.de is the upper 16bit and .hl is the lower 16 bit and 32 bit  &iexcl;       &iexcl;                                                               &iexcl;
+  &iexcl;       &iexcl;  formed.                                                      &iexcl;
+  &iexcl;[.ix+d]&iexcl;adres is formed when the 8bit of d is added to .ix             &iexcl;
+  &iexcl;C      &iexcl;carry flag                                                     &iexcl;
+  &iexcl;Z      &iexcl;zero flag                                                      &iexcl;
+  &iexcl;P/v    &iexcl;parity overflow                                                &iexcl;
+  &iexcl;S      &iexcl;sign flag                                                      &iexcl;
+  &iexcl;N      &iexcl;substraction flag                                              &iexcl;
+  &iexcl;H      &iexcl;half clear flag                                                &iexcl;
+  &iexcl;
+      &iexcl;flag don't change                                              &iexcl;
+  &iexcl;-      &iexcl;flag changed in commando used                                  &iexcl;
+  &iexcl;0      &iexcl;flag is set to 0                                               &iexcl;
+  &iexcl;1      &iexcl;flag is set to 1                                               &iexcl;
+  &iexcl;?      &iexcl;becomes uncertain                                              &iexcl;
+  &iexcl;V      &iexcl;uses the overflow flag                                         &iexcl;
+  &iexcl;P      &iexcl;uses the parity flag                                           &iexcl;
+  &iexcl;i(iff) &iexcl;value of the interrupt flipflop is attained                    &iexcl;
+  &iexcl;r,r'   &iexcl;8 bit register, .a,.b,.c,.d,.e,.h,.l                           &iexcl;
+  &iexcl;u,u'   &iexcl;8 bit register, .a,.b,.c,.d,.e,.ixh,.ixl                       &iexcl;
+  &iexcl;v,v'   &iexcl;8 bit register, .a,.b,.c,.d,.e,.iyh,.iyl                       &iexcl;
+  &iexcl;p      &iexcl;8 bit register, .ixh,.ixl                                      &iexcl;
+  &iexcl;q      &iexcl;8 bit register, .iyh,.iyl                                      &iexcl;
+  &iexcl;ss     &iexcl;16 bit register,.bc,.de,.hl,.sp                                &iexcl;
+  &iexcl;pp     &iexcl;16 bit register,.bc,.de,.ix,.sp                                &iexcl;
+  &iexcl;rr     &iexcl;16 bit register,.bc,.de,.iy,.sp                                &iexcl;
+  &iexcl;qq     &iexcl;16 bit register,.bc,.de,.hl,.af                                &iexcl;
+  &iexcl;e      &iexcl;8 bit value of short branch   (+127~128)                       &iexcl;
+  &iexcl;k      &iexcl;adres of the brk comando, 00h,08h,10h,18h,20h,28h,30h,38h      &iexcl;
+  &iexcl;nn     &iexcl;direct value of 16 bit, positive adres                         &iexcl;
+  &iexcl;n      &iexcl;direct value of 8 bit                                          &iexcl;
+  &iexcl;b      &iexcl;value shown number of bits for the bits of the mathematical    &iexcl;
+  &iexcl;       &iexcl;  operation??                                                  &iexcl;
+  &iexcl;NOT    &iexcl;bit rotation (??)                                              &iexcl;
+  &iexcl;\/     &iexcl;taking the OR of the bits                                      &iexcl;
+  &iexcl;\-/    &iexcl;taking the XOR of the bits                                     &iexcl;
+  &iexcl;/\     &iexcl;taking the AND of the bits                                     &iexcl;
+  &iexcl;tmp    &iexcl;temporary value   (??)                                         &iexcl;
+  &iexcl;B      &iexcl;number of bytes of the instruction                             &iexcl;
+  &iexcl;C      &iexcl;number of clock cycles of the instruction                      &iexcl;
+  -------_---------------------------------------------------------------
+???
+&lt;A1 8 bit transfer instructions                                        661&gt;
+
+A.1   8 BIT TRANSFER INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld r,r'     &iexcl; r &lt;- r'                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;01 r  r'&iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld r,n      &iexcl; r &lt;- n                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00 r 110&iexcl;   &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld r,[.hl]  &iexcl; r &lt;- [.hl]                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;01 r 110&iexcl;   &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld r,[.ix+d]&iexcl; r &lt;- [.ix+d]               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 r 110&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld r,[.iy+d]&iexcl; r &lt;- [.iy+d]               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 r 110&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.hl],r  &iexcl;[.hl] &lt;- r                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;10110 r &iexcl;   &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.ix+d],r&iexcl; [.ix+d] &lt;- r               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01110 r &iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.iy+d],r&iexcl; [.iy+d] &lt;- r               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01110 r &iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld u,u'     &iexcl; u &lt;- u'                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 u  u'&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld v,v'     &iexcl; v &lt;- v'                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 v  v'&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld u,n      &iexcl; u &lt;- n                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00 u 110&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld v,n      &iexcl; v &lt;- n                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00 v 110&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.hl],n  &iexcl; [.hl] &lt;- n                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00110110&iexcl;36 &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.ix+d],n&iexcl; [.ix+d] &lt;- n               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00110110&iexcl;36 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.iy+d],n&iexcl; [.iy+d] &lt;- n               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00110110&iexcl;36 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;662                                  APPENDIX A R800 instruction chart&gt;
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .a,.i    &iexcl; .a &lt;- .i                   &iexcl;- - 0 i   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01010111&iexcl;57 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .a,.r    &iexcl; .a &lt;- .r                   &iexcl;- - 0 i   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01011111&iexcl;5F &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .i,.a    &iexcl; .i &lt;- .ax+d]               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01000111&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .r,.a    &iexcl; .r &lt;- .a                   &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01001111&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .a,[.bc] &iexcl; .a &lt;- [.bc]                &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00001010&iexcl;0A &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .a,[.de] &iexcl; .a &lt;- [.de]                &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00011010&iexcl;1A &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .a,[nn]  &iexcl; .a &lt;- [nn]                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00111010&iexcl;3A &iexcl;3&iexcl;4&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- NNl-&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- NNh-&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.bc],.a &iexcl; [.bc] &lt;- .a                &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00000010&iexcl;02 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [.de],.a &iexcl; [.de] &lt;- .a                &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00010010&iexcl;12 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [nn],.a  &iexcl; [nn] &lt;- .a                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00110010&iexcl;32 &iexcl;3&iexcl;4&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- NNl-&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- NNh-&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&Aring;-\----\----\----\----\----\----\----\----&atilde;
+&iexcl; &iexcl;000 &iexcl;001 &iexcl;010 &iexcl;011 &iexcl;100 &iexcl;101 &iexcl;110 &iexcl;111 &iexcl;
+------------------------------------------&cent;
+&iexcl;r&iexcl; .b &iexcl; .c &iexcl; .d &iexcl; .e &iexcl; .h &iexcl; .l &iexcl;    &iexcl; .a &iexcl;
+------------------------------------------&cent;
+&iexcl;u&iexcl; .b &iexcl; .c &iexcl; .d &iexcl; .e &iexcl;.ixh&iexcl;.ixl&iexcl;    &iexcl; .a &iexcl;
+------------------------------------------&cent;
+&iexcl;v&iexcl; .b &iexcl; .c &iexcl; .d &iexcl; .e &iexcl;.iyh&iexcl;.iyl&iexcl;    &iexcl; .a &iexcl;
+-_----_----_----_----_----_----_----_----
+
+A.2     16 bit TRANSFER INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld ss,nn    &iexcl; ss &lt;- nn                   &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00ss0001&iexcl;   &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .ix,nn   &iexcl; .ix &lt;- nn                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;4&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00100001&iexcl;21 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .iy,nn   &iexcl; .iy &lt;- nn                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;4&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00100001&iexcl;21 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .sp,.hl  &iexcl; .sp &lt;- .hl                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111001&iexcl;F9 &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .sp,.ix  &iexcl; .sp &lt;- .ix                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11111001&iexcl;F9 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .sp,.iy  &iexcl; .sp &lt;- .iy                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11111001&iexcl;F9 &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;A.2 16 bit transfer instructions                                   663&gt;
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld ss,[nn]  &iexcl; ssh &lt;- [nn+1]              &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;4&iexcl;6&iexcl;
+&iexcl;            &iexcl; ssl &lt;- [nn]                &iexcl;             &iexcl;01ss1011&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .hl,[nn] &iexcl; .h &lt;- [nn+1]               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00101010&iexcl;2A &iexcl;3&iexcl;5&iexcl;
+&iexcl;            &iexcl; .l &lt;- [nn]                 &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .ix,[nn] &iexcl;.ixh &lt;- [nn+1]              &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;6&iexcl;
+&iexcl;            &iexcl;.ixl &lt;- [nn]                &iexcl;             &iexcl;00101010&iexcl;2A &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld .iy,[nn] &iexcl;.iyh &lt;- [nn+1]              &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;6&iexcl;
+&iexcl;            &iexcl;.iyl &lt;- [nn]                &iexcl;             &iexcl;00101010&iexcl;2A &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [nn],ss  &iexcl;[nn+1] &lt;- ssh               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;4&iexcl;6&iexcl;
+&iexcl;            &iexcl;[nn] &lt;- ssl                 &iexcl;             &iexcl;01ss0011&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [nn],.hl &iexcl;[nn+1] &lt;- .h                &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00100010&iexcl;22 &iexcl;3&iexcl;5&iexcl;
+&iexcl;            &iexcl;[nn] &lt;- .l                  &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [nn],.ix &iexcl;[nn+1] &lt;- .ixh              &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;6&iexcl;
+&iexcl;            &iexcl;[nn] &lt;- .ixl                &iexcl;             &iexcl;00100010&iexcl;22 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ld [nn],.iy &iexcl;[nn+1] &lt;- .iyh              &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;6&iexcl;
+&iexcl;            &iexcl;[nn] &lt;- .iyl                &iexcl;             &iexcl;00100010&iexcl;22 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&Aring;--\---\---\---\---&atilde;
+&iexcl;  &iexcl;00 &iexcl;01 &iexcl;10 &iexcl;11 &iexcl;
+-------------------&cent;
+&iexcl;ss&iexcl;.bc&iexcl;.de&iexcl;.hl&iexcl;.sp&iexcl;
+--_---_---_---_---
+&lt;664                            appendix A r800 instruction chart       &gt;
+
+A.3    EXCHANGE INSTRUCTIONS
+&Aring;-------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC     &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;             &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;             &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+--------------------------------------------------------------------------&cent;
+&iexcl;xch .de,.hl  &iexcl;.de &lt;-&gt; .hl                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101011&iexcl;EB &iexcl;1&iexcl;1&iexcl;
+--------------------------------------------------------------------------&cent;
+&iexcl;xch .af,.af' &iexcl;.af &lt;-&gt; .af'                &iexcl;- - - -   - -&iexcl;00001000&iexcl;08 &iexcl;1&iexcl;1&iexcl;
+--------------------------------------------------------------------------&cent;
+&iexcl;xch [.sp],.hl&iexcl;.l &lt;-&gt; [.sp];.h &lt;-&gt; [sp+1]  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11100011&iexcl;E3 &iexcl;1&iexcl;5&iexcl;
+----------- --------------------------------------------------------------&cent;
+&iexcl;xch [.sp],.ix&iexcl;.ixl &lt;-&gt; [.sp]              &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;6&iexcl;
+&iexcl;             &iexcl;.ixh &lt;-&gt; [.sp+1]            &iexcl;             &iexcl;11100011&iexcl;E3 &iexcl; &iexcl; &iexcl;
+--------------------------------------------------------------------------&cent;
+&iexcl;xch [.sp],.iy&iexcl;.iyl &lt;-&gt; [.sp]              &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;6&iexcl;
+&iexcl;             &iexcl;.iyh &lt;-&gt; [.sp]              &iexcl;             &iexcl;11100011&iexcl;E3 &iexcl; &iexcl; &iexcl;
+--------------------------------------------------------------------------&cent;
+&iexcl;xchx         &iexcl;.bc &lt;-&gt; .bc';.de &lt;-&gt; de';   &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011001&iexcl;D9 &iexcl;1&iexcl;1&iexcl;
+&iexcl;             &iexcl;.hl &lt;-&gt; .hl'                &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------_----------------------------_-------------_--------_---_-_-
+
+A.4  STACK OPERATION INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;push qq     &iexcl;[.sp-2]&lt;-qql;[sp-1]&lt;-qqh    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11qq0101&iexcl;   &iexcl;1&iexcl;4&iexcl;
+&iexcl;            &iexcl;.sp &lt;- .sp-2                &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;push .ix    &iexcl;[.sp-2]&lt;-.ixl;[.sp-1]&lt;-.ixh &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp &lt;- .sp-2                &iexcl;             &iexcl;11100101&iexcl;E5 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;push .iy    &iexcl;[.sp-2]&lt;-.iyl;[.sp-1]&lt;-.iyh &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp &lt;- .sp-2                &iexcl;             &iexcl;11100101&iexcl;E5 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;pop qq      &iexcl;qql&lt;-[.sp];qqh&lt;-[.sp+1]     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11qq0001&iexcl;   &iexcl;1&iexcl;3&iexcl;
+&iexcl;            &iexcl;.sp &lt;- .sp+2                &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;pop .ix     &iexcl;.ixl&lt;-[.sp];.ixh&lt;-[.sp+1]   &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;4&iexcl;
+&iexcl;            &iexcl;.sp &lt;- .sp+2                &iexcl;             &iexcl;11100001&iexcl;E1 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;pop .iy     &iexcl;.iyl&lt;-[.sp];.iyh&lt;-[.sp+1]   &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;4&iexcl;
+&iexcl;            &iexcl;.sp &lt;- .sp+2                &iexcl;             &iexcl;11100001&iexcl;E1 &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&Aring;--\---\---\---\---&atilde;
+&iexcl;  &iexcl;00 &iexcl;01 &iexcl;10 &iexcl;11 &iexcl;
+-------------------&cent;
+&iexcl;qq&iexcl;.bc&iexcl;.de&iexcl;.hl&iexcl;.af&iexcl;
+--_---_---_---_---
+ In case of pop .af, all flags are changed
+
+&lt;A.5 block move instructions                                        665&gt;
+
+     A.5 BLOCK MOVE INSTRUCTIONS
+&Aring;------------\------------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION           &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                              &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                              &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+---------------------------------------------------------------------------&cent;
+&iexcl;move[.hl++],&iexcl;[.de]&lt;-[.hl];.de&lt;-.de+1       &iexcl;
+ 
+ 0 -   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.de++],    &iexcl;.hl&lt;-.hl+1;.bc&lt;-.bc-1         &iexcl;      *1     &iexcl;10100000&iexcl;A0 &iexcl; &iexcl; &iexcl;
+---------------------------------------------------------------------------&cent;
+&iexcl;move[.hl--],&iexcl;[.de]&lt;-[.hl];.de+.de-1        &iexcl;
+ 
+ 0 -   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.de--]     &iexcl;.hl&lt;-.hl-1;.bc&lt;-.bc-1         &iexcl;      *1     &iexcl;10101000&iexcl;A8 &iexcl; &iexcl; &iexcl;
+---------------------------------------------------------------------------&cent;
+&iexcl;movem [.hl++&iexcl;repeat;[.de]&lt;-[.hl];.de&lt;-.de+1&iexcl;
+ 
+ 0 0   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl; ],[.de++]  &iexcl;.hl&lt;-.hl+1;.bc&lt;-.bc-1;until.bc=0&iexcl;           &iexcl;10110000&iexcl;B0 &iexcl; &iexcl; &iexcl;
+--------------------------------------------\-_----------------------------&cent;
+&iexcl;movem [.hl--&iexcl;repeat;[.de]&lt;-[.hl];.de&lt;-.de-1&iexcl;
+ 
+ 0 0   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl; ],[.de--]  &iexcl;.hl&lt;-.hl-1;.bc&lt;-.bc-1;until.bc=0&iexcl;           &iexcl;10111000&iexcl;B8 &iexcl; &iexcl; &iexcl;
+------------_--------------------------------_-----------_--------_---_-_-
+*1 when .bc-1 = 0 it will be set to 0 else it will be set to 1
+
+A.6  BLOCK SEARCH INSTRUCTION
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp         &iexcl;.a-[.hl];.hl&lt;-.hl+1         &iexcl;- - - -   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;  .a,[.hl++]&iexcl;.bc&lt;-.bc-1                  &iexcl;  *2  *1     &iexcl;10100001&iexcl;A1 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp         &iexcl;.a-[.hl];.hl&lt;-.hl-1         &iexcl;- - - -   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;  .a,[.hl--]&iexcl;.bc&lt;-.bc-1                  &iexcl;  *2  *1     &iexcl;10101001&iexcl;A9 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmpm        &iexcl;repeat;.a-[.hl];.hl&lt;-.hl+1  &iexcl;- - - -   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;5&iexcl;
+&iexcl;   .a,[hl++]&iexcl;.bc&lt;-.bc-1;until .bc=0      &iexcl;  *2  *1     &iexcl;10110001&iexcl;B1 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;  or .a=[.hl]               &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmpm        &iexcl;repeat;.a-[.hl];.hl&lt;-.hl-1  &iexcl;- - - -   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;5&iexcl;
+&iexcl;   .a,[hl--]&iexcl;.bc&lt;-.bc-1;until .bc=0      &iexcl;  *2  *1     &iexcl;10111001&iexcl;B9 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;  or .a=[.hl]               &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+ *1 when bc-1=0 it will be set to 0 else it will be set to 1
+ *2 when .a=[.hl] it will be set to 1 else it will be set to 0
+
+   A.7  MULTIPLICATION INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\--&atilde; 
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl;  &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl;  &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C &iexcl;
+--------------------------------------------------------------------------&cent;
+&iexcl;mulub .a,r  &iexcl;.hl&lt;-.a*r                   &iexcl;0 - 
+ 0   
+ -&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;14&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11 r 001&iexcl;   &iexcl; &iexcl;  &iexcl;
+--------------------------------------------------------------------------&cent;
+&iexcl;muluw .hl,ss&iexcl;.de:.hl&lt;-.hl*ss             &iexcl;0 - 
+ 0   
+ -&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;36&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11ss0011&iexcl;   &iexcl; &iexcl;  &iexcl;
+------------_----------------------------_-------------_--------_---_-_--
+With the mulub function when .b,.c,.d,.e are excluded of r the usage can't be
+  guaranteed. (???)
+With the muluw function then .bc,.sp are excluded of ss the usage can't be
+  guaranteed. (???)
+&lt;666                                    appendix a r800 instruction chart&gt;
+A.8    ADD INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add .a,r    &iexcl;.a&lt;-.a+r                    &iexcl;- - - v   0 -&iexcl;10000 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add .a,p    &iexcl;.a&lt;-.a+p                    &iexcl;- - - V   0 -&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10000 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add .a,q    &iexcl;.a&lt;-.a+q                    &iexcl;- - - V   0 -&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10000 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add .a,[.hl]&iexcl;.a&lt;-.a+[.hl]                &iexcl;- - - V   0 -&iexcl;10000110&iexcl;86 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add         &iexcl;.a&lt;-.a+[.ix+d]              &iexcl;- - - V   0 -&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl; .a,[.ix+d] &iexcl;                            &iexcl;             &iexcl;10000110&iexcl;86 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add         &iexcl;.a&lt;-.a+[.iy+d]              &iexcl;- - - V   0 -&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl; .a,[.iy+d] &iexcl;                            &iexcl;             &iexcl;10000110&iexcl;86 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add a,n     &iexcl;.a&lt;-.a+n                    &iexcl;- - - V   0 -&iexcl;11000110&iexcl;C6 &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent; 
+&iexcl;addc .a.r   &iexcl;.a&lt;-.a+r+C                  &iexcl;- - - V   0 -&iexcl;10001 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;addc .a,p   &iexcl;.a&lt;-.a+p+C                  &iexcl;- - - V   0 -&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10001 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;addc .a,q   &iexcl;.a&lt;-.a+q+C                  &iexcl;- - - V   0 -&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10001 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;addc.a,[.hl]&iexcl;.a&lt;-.a+[.hl]+C              &iexcl;- - - V   0 -&iexcl;10001110&iexcl;8E &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;addc        &iexcl;.a&lt;-.a+[.ix+d]+C            &iexcl;- - - V   0 -&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl; .a,[.ix+d] &iexcl;                            &iexcl;             &iexcl;10001110&iexcl;8E &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;addc        &iexcl;.a&lt;-.a+[.iy+d]+C            &iexcl;- - - V   0 -&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl; .a,[.iy+d] &iexcl;                            &iexcl;             &iexcl;10001110&iexcl;8E &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;addc .a,n   &iexcl;.a&lt;-.a+n+C                  &iexcl;- - - V   0 -&iexcl;11001110&iexcl;CE &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;addc .hl,ss &iexcl;.hl&lt;-.hl+ss+C               &iexcl;- - ? V   0 -&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01ss1010&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add .hl,ss  &iexcl;.hl&lt;-.hl+ss                 &iexcl;
+ 
+ ? 
+   0 -&iexcl;00ss1001&iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add .ix,pp  &iexcl;.ix&lt;-.ix+pp                 &iexcl;
+ 
+ ? 
+   0 -&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00pp1001&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;add .iy,rr  &iexcl;.iy&lt;-.iy+rr                 &iexcl;
+ 
+ ? 
+   0 -&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00rr1001&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;A.8 ADD INSTRUCTIONS                                           667&gt;
+
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc r       &iexcl;r&lt;-r+1                      &iexcl;- - - V   0 
+&iexcl;00 r 100&iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc p       &iexcl;p&lt;-p+1                      &iexcl;- - - V   0 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00 p 100&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc q       &iexcl;q&lt;-q+1                      &iexcl;- - - V   0 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00 q 100&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc [.hl]   &iexcl;[.hl]&lt;-[.hl]+1              &iexcl;- - - V   0 
+&iexcl;00110100&iexcl;34 &iexcl;1&iexcl;4&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc [.ix+d] &iexcl;[.ix+d]&lt;-[.ix+d]+1          &iexcl;- - - V   0 
+&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;7&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00110100&iexcl;34 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc [.iy+d] &iexcl;[.iy+d]&lt;-[.iy+d]+1          &iexcl;- - - V   0 
+&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;7&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00110100&iexcl;34 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc ss      &iexcl;ss&lt;-ss+1                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00ss0011&iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc .ix     &iexcl;.ix&lt;-.ix+1                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00100011&iexcl;23 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inc .iy     &iexcl;.iy&lt;-.iy+1                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00100011&iexcl;23 &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&Aring;--\---\---\---\---&atilde;
+&iexcl;  &iexcl;00 &iexcl;01 &iexcl;10 &iexcl;11 &iexcl;
+-------------------&cent;
+&iexcl;ss&iexcl;.bc&iexcl;.de&iexcl;.hl&iexcl;.sp&iexcl;
+-------------------&cent;
+&iexcl;pp&iexcl;.bc&iexcl;.de&iexcl;.ix&iexcl;.sp&iexcl;
+-------------------&cent;
+&iexcl;rr&iexcl;.bc&iexcl;.de&iexcl;.iy&iexcl;.sp&iexcl;
+--_---_---_---_---
+&Aring;-\----\----\----\----\----\-----\----\----&atilde;
+&iexcl; &iexcl;000 &iexcl;001 &iexcl;010 &iexcl;011 &iexcl;100 &iexcl;101  &iexcl;110 &iexcl;111 &iexcl;
+-------------------------------------------&cent;
+&iexcl;p&iexcl;    &iexcl;    &iexcl;    &iexcl;    &iexcl;.ixh&iexcl;.ixl &iexcl;    &iexcl;    &iexcl;
+-------------------------------------------&cent;
+&iexcl;q&iexcl;    &iexcl;    &iexcl;    &iexcl;    &iexcl;.iyh&iexcl;.iyl &iexcl;    &iexcl;    &iexcl;
+-_----_----_----_----_----_-----_----_----
+&lt;668                                   APPENDIX A R800 INSTRUCTION CHART&gt;
+   A.9  DECREASE INSTRUCTION
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;sub .a,r    &iexcl;.a&lt;.a-r                     &iexcl;- - - V   1 -&iexcl;10010 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;sub .a,p    &iexcl;.a&lt;-.a-p                    &iexcl;- - - V   1 -&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10010 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;sub .a,q    &iexcl;.a&lt;-.a-q                    &iexcl;- - - V   1 -&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10010 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;sub .a,[.hl]&iexcl;.a&lt;-.a-[.hl]                &iexcl;- - - V   1 -&iexcl;10010110&iexcl;96 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;sub .a,     &iexcl;.a&lt;-.a-[.ix+d]              &iexcl;- - - V   1 -&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;  [.ix+d]   &iexcl;                            &iexcl;             &iexcl;10010110&iexcl;96 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;sub .a,     &iexcl;.a&lt;-.a-[.iy+d]              &iexcl;- - - V   1 -&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;  [.iy+d]   &iexcl;                            &iexcl;             &iexcl;10010110&iexcl;96 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;sub .a,n    &iexcl;.a&lt;-.a-n                    &iexcl;- - - V   1 -&iexcl;11010110&iexcl;D6 &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc .a,r   &iexcl;.a&lt;-.a-r-C                  &iexcl;- - - V   1 -&iexcl;10011 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc .a,p   &iexcl;.a&lt;-.a-p-C                  &iexcl;- - - V   1 -&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10011 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc .a,q   &iexcl;.a&lt;-.a-q-C                  &iexcl;- - - V   1 -&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10011 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc .a,    &iexcl;.a&lt;-.a-[.hl]-C              &iexcl;- - - V   1 -&iexcl;10011110&iexcl;9E &iexcl;1&iexcl;2&iexcl;
+&iexcl;     [.hl]  &iexcl;                            &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc .a,    &iexcl;.A&lt;-.A-[.IX+D]+c            &iexcl;- - - V   1 -&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;   [.ix+d]  &iexcl;                            &iexcl;             &iexcl;10011110&iexcl;9E &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc .a,    &iexcl;.a&lt;-.a-[.iy+d]+c            &iexcl;- - - V   1 -&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;   [.iy+d]  &iexcl;                            &iexcl;             &iexcl;10011110&iexcl;9E &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc a,n    &iexcl;.a&lt;-.a-n-C                  &iexcl;- - - V   1 -&iexcl;11011110&iexcl;DE &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;subc .hl,ss &iexcl;.hl&lt;-.hl-ss-C               &iexcl;- - ? V   1 -&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01ss0010&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;A.10 DECREASE INSTRUCTION                                      669&gt;
+
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec r       &iexcl;r&lt;-r-1                      &iexcl;- - - V   1 
+&iexcl;00 r 101&iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec p       &iexcl;p&lt;-p-1                      &iexcl;- - - V   1 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00 p 101&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec q       &iexcl;q&lt;-q-1                      &iexcl;- - - V   1 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00 q 101&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec [.hl]   &iexcl;[.hl]&lt;-[.hl]-1              &iexcl;- - - V   1 
+&iexcl;00110101&iexcl;35 &iexcl;1&iexcl;4&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec [.ix+d] &iexcl;[.ix+d]&lt;-[.ix+d]-1          &iexcl;- - - V   1 
+&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;7&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00110101&iexcl;35 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec [.iy+d] &iexcl;[.iy+d]&lt;-[.iy+d]-1          &iexcl;- - - V   1 
+&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;7&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00110101&iexcl;35 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec ss      &iexcl;ss&lt;-ss-1                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00ss1011&iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec .ix     &iexcl;.ix&lt;-.ix-1                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00101011&iexcl;2B &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dec .iy     &iexcl;.iy&lt;-.iy-1                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00101011&iexcl;2B &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+
+A.10  COMPARISON INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp .a,r    &iexcl;.a-r                        &iexcl;- - - V   1 -&iexcl;10111 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp .a,r    &iexcl;.a-p                        &iexcl;- - - V   1 -&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10111 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp .a,q    &iexcl;.a-q                        &iexcl;- - - V   1 -&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10111 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp .a,[.hl]&iexcl;.a-[.hl]                    &iexcl;- - - V   1 -&iexcl;10111110&iexcl;BE &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp .a,     &iexcl;.a-[.ix+d]                  &iexcl;- - - V   1 -&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;  [.ix+d]   &iexcl;                            &iexcl;             &iexcl;10111110&iexcl;BE &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp .a,     &iexcl;.a-[.iy+d]                  &iexcl;- - - V   1 -&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;  [.iy+d]   &iexcl;                            &iexcl;             &iexcl;10111110&iexcl;BE &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;cmp .a,n    &iexcl;.a-n                        &iexcl;- - - V   1 -&iexcl;11111110&iexcl;FE &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt; 670                                 APPENDIX A R800 INSTRUCTION CHART&gt;
+
+A.11 LOGIC OPERATION INSTRUCTION
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;and .a,r    &iexcl;.a&lt;-.a/\r                   &iexcl;- - 1 P   0 0&iexcl;10100 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;and .a,p    &iexcl;.a&lt;-.a/\p                   &iexcl;- - 1 P   0 0&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10100 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;and .a,q    &iexcl;.a&lt;-.a/\q                   &iexcl;- - 1 P   0 0&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10100 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;and .a,[.hl]&iexcl;.a&lt;-.a/\[.hl]               &iexcl;- - 1 P   0 0&iexcl;10100110&iexcl;A6 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;and .a,     &iexcl;.a&lt;-.a/\[.ix+d]             &iexcl;- - 1 P   0 0&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;    [.ix+d] &iexcl;                            &iexcl;             &iexcl;10100110&iexcl;A6 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;and .a,     &iexcl;.a&lt;-.a/\[.iy+d]             &iexcl;- - 1 P   0 0&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;    [.iy+d] &iexcl;                            &iexcl;             &iexcl;10100110&iexcl;A6 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;and .a,n    &iexcl;.a&lt;-.a/\n                   &iexcl;- - 1 P   0 0&iexcl;11100110&iexcl;E6 &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;or  .a,r    &iexcl;.a&lt;-.a\/r                   &iexcl;- - 0 P   0 0&iexcl;10110 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;or .a,p     &iexcl;.a&lt;-.a\/p                   &iexcl;- - 0 P   0 0&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10110 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;or .a,q     &iexcl;.a&lt;-.a\/q                   &iexcl;- - 0 P   0 0&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10110 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;or .a,[.hl] &iexcl;.a&lt;-.a\/[.hl]               &iexcl;- - 0 P   0 0&iexcl;10110110&iexcl;B6 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;or .a,      &iexcl;.a&lt;-.a\/[.ix+d]             &iexcl;- - 0 P   0 0&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;   [.ix+d]  &iexcl;                            &iexcl;             &iexcl;10110110&iexcl;B6 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;or .a,      &iexcl;.a&lt;-.a\/[.iy+d]             &iexcl;- - 0 P   0 0&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;   [.iy+d]  &iexcl;                            &iexcl;             &iexcl;10110110&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;or .a,n     &iexcl;.a&lt;-.a\/n                   &iexcl;- - 0 P   0 0&iexcl;11110110&iexcl;F6 &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  &gt; &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;xor .a,r    &iexcl;.a&lt;-.a\-/r                  &iexcl;- - 0 P   0 0&iexcl;10101 r &iexcl;   &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;xor .a,p    &iexcl;.a&lt;-.a\-/p                  &iexcl;- - 0 P   0 0&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10101 p &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;xor .a,q    &iexcl;.a&lt;-.a\-/q                  &iexcl;- - 0 P   0 0&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10101 q &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;xor .a,[.hl]&iexcl;.a&lt;-.a\-/[.hl]              &iexcl;- - 0 P   0 0&iexcl;10101110&iexcl;AE &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;xor .a,     &iexcl;.a&lt;-.a\-/[.ix+d]            &iexcl;- - 0 P   0 0&iexcl;11011101&iexcl;DD &iexcl;3&iexcl;5&iexcl;
+&iexcl;   [.ix+d]  &iexcl;                            &iexcl;             &iexcl;10101110&iexcl;AE &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;xor .a,     &iexcl;.a&lt;-.a\-/[.iy+d]            &iexcl;- - 0 P   0 0&iexcl;11111101&iexcl;FD &iexcl;3&iexcl;5&iexcl;
+&iexcl;   [.iy+d]  &iexcl;                            &iexcl;             &iexcl;10101110&iexcl;AE &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;xor .a,n    &iexcl;.a&lt;-.a\-/n                  &iexcl;- - 0 P   0 0&iexcl;11101110&iexcl;EE &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;A.12 BIT OPERATION INSTRUCTION                                 671&gt;
+
+      A.12 BIT OPERATION INSTRUCTION
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bit b,r     &iexcl;z&lt;-NOT r{b}                 &iexcl;? - 1 ?   0 
+&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 b  r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bit b,[.hl] &iexcl;z&lt;-NOT [.hl]{b}             &iexcl;? - 1 ?   0 
+&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bit b,      &iexcl;z&lt;-NOT [.ix+d]{b}           &iexcl;? - 1 ?   0 
+&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;5&iexcl;
+&iexcl;  [.ix+d]   &iexcl;                            &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bit b,      &iexcl;z&lt;-NOT [.iy+d]{b}           &iexcl;? - 1 ?   0 
+&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;5&iexcl;
+&iexcl;  [.iy+d]   &iexcl;                            &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;set b,r     &iexcl;r{b}&lt;-1                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11 b  r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;set b,[.hl] &iexcl;[.hl]{b}&lt;-1                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;set b,      &iexcl;[.ix+d]{b}&lt;-1               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;  [.ix+d]   &iexcl;                            &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;set b,      &iexcl;[.iy+d]{b}&lt;-1               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;7&iexcl;
+&iexcl;  [.iy+d]   &iexcl;                            &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;clr b,r     &iexcl;r{b}&lt;-0                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10 b  r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;clr b,[.hl] &iexcl;[.hl]{b}&lt;-0                 &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;clr b,      &iexcl;[.ix+d]{b}&lt;-0               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;  [.ix+d]   &iexcl;                            &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;= d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;clr b,      &iexcl;[.iy+d]{b}&lt;-0               &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;7&iexcl;
+&iexcl;  [.iy+d]   &iexcl;                            &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;10 b 110&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;672                                    APPENDIX A R800 INSTRUCTION CHART&gt;
+A.13 ROTATE INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol a       &iexcl;C&lt;-.a{7};.a&lt;-.a*2;a{0}&lt;-C   &iexcl;
+ 
+ 0 
+   0 -&iexcl;00000111&iexcl;07 &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ror a       &iexcl;C&lt;-.a{0};.a&lt;-.a/2;a{7}&lt;-C   &iexcl;
+ 
+ 0 
+   0 -&iexcl;00001111&iexcl;0F &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rolc a      &iexcl;tmp&lt;-C;C&lt;-.a{7};.a&lt;-.a*2;   &iexcl;
+ 
+ 0 
+   0 -&iexcl;00010111&iexcl;17 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;    .a{0}&lt;-tmp              &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rorc a      &iexcl;tmp&lt;-C;C&lt;-.a{0};.a&lt;-.a/2;   &iexcl;
+ 
+ 0 
+   0 -&iexcl;00011111&iexcl;1F &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;    .a{7}&lt;-tmp              &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol r       &iexcl;C&lt;-r{7}                     &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;r&lt;r*2;r{0}&lt;-c               &iexcl;             &iexcl;00000 r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol [.hl]   &iexcl;C&lt;-[.hl]{7}                 &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;[.hl]&lt;-[.hl]*2;[.hl]{0}&lt;-C  &iexcl;             &iexcl;00000110&iexcl;06 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol [.ix+d] &iexcl;C&lt;-[.ix+d]{7}               &iexcl;- - 0 P   0 -&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;[.ix+d]&lt;-[.ix+d]*2          &iexcl;             &iexcl;        &iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]{0}&lt;-C               &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00000110&iexcl;06 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol [.iy+d] &iexcl;C&lt;-[.iy+d]{7}               &iexcl;- - 0 P   0 -&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;[.iy+d]&lt;-[.iy+d]*2          &iexcl;             &iexcl;        &iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]{0}&lt;-C               &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00000110&iexcl;06 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ror r       &iexcl;C&lt;-r{0}                     &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;r&lt;-r/2;r{7}&lt;-C              &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ror [.hl]   &iexcl;C&lt;-[.hl]{0}                 &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;[.hl]&lt;-[.hl]/2;[.hl]{7}&lt;-C  &iexcl;             &iexcl;00001110&iexcl;0E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ror [.ix+d] &iexcl;C&lt;-[.ix+d]{0}               &iexcl;- - 0 P   0 -&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;[.ix+d]&lt;-[.ix+d]/2          &iexcl;             &iexcl;        &iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]{7}&lt;-C               &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00001110&iexcl;06 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol [.iy+d] &iexcl;C&lt;-[.iy+d]{0}               &iexcl;- - 0 P   0 -&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;[.iy+d]&lt;-[.iy+d]/2          &iexcl;             &iexcl;        &iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]{7}&lt;-C               &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00001110&iexcl;06 &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;A.13   ROTATE INSTRUCTIONS                                            673&gt;
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rolc r      &iexcl;tmp&lt;-C;C&lt;-r{7}              &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;r&lt;-r*2;r{0}&lt;-tmp            &iexcl;             &iexcl;00010 r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rolc [.hl]  &iexcl;tmp&lt;-C;C&lt;-[.hl]{7}          &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;[.hl]&lt;-[.hl]*2;[.hl]{0}&lt;-tmp&iexcl;             &iexcl;00010110&iexcl;16 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rolc [.ix+d]&iexcl;tmp&lt;-C                      &iexcl;- - 0 P   0 -&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;C&lt;-[.ix+d]{7}               &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]&lt;-[.ix+d]*2          &iexcl;             &iexcl;&lt;- b  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]{0}&lt;-tmp             &iexcl;             &iexcl;00010110&iexcl;16 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rolc [.iy+d]&iexcl;tmp&lt;-C                      &iexcl;- - 0 P   0 -&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;C&lt;-[.iy+d]{7}               &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]&lt;-[.iy+d]*2          &iexcl;             &iexcl;&lt;- b  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]{0}&lt;-tmp             &iexcl;             &iexcl;00010110&iexcl;16 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rorc r      &iexcl;tmp&lt;-C;C&lt;-r{0}              &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;r&lt;-r/2;r{7}&lt;-tmp            &iexcl;             &iexcl;00011 r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rorc [.hl]  &iexcl;tmp&lt;-C;C&lt;-[.hl]{0}          &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;[.hl]&lt;-[.hl]/2;[.hl]{7}&lt;-tmp&iexcl;             &iexcl;00011110&iexcl;1E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rorc [.ix+d]&iexcl;tmp&lt;-C                      &iexcl;- - 0 P   0 -&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;C&lt;-[.ix+d]{0}               &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]&lt;-[.ix+d]/2          &iexcl;             &iexcl;&lt;- b  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]{7}&lt;-tmp             &iexcl;             &iexcl;00011110&iexcl;16 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rorc [.iy+d]&iexcl;tmp&lt;-C                      &iexcl;- - 0 P   0 -&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;C&lt;-[.iy+d]{0}               &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]&lt;-[.iy+d]/2          &iexcl;             &iexcl;&lt;- b  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]{7}&lt;-tmp             &iexcl;             &iexcl;00011110&iexcl;1E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol4 [.hl]  &iexcl;tmp&lt;-.a{0..3}               &iexcl;- - 0 P   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;.a{0..3}&lt;-[.hl]{4..7}       &iexcl;             &iexcl;11101111&iexcl;6F &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.hl]{4..7}&lt;-[.hl]{0..3}    &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.hl]{0..3}&lt;-tmp            &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;rol4 [.hl]  &iexcl;tmp&lt;-.a{0..3}               &iexcl;- - 0 P   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;.a{0..3}&lt;-[.hl]{4..7}       &iexcl;             &iexcl;11100111&iexcl;67 &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.hl]{4..7}&lt;-[.hl]{0..3}    &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.hl]{0..3}&lt;-tmp            &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;674                                    APPENDIX A R800 INSTRUCTION CHART
+
+A.14 SHIFT INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shl r       &iexcl;C&lt;-r{7}                     &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;shla        &iexcl;r&lt;-r*2                      &iexcl;             &iexcl;00100 r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shl [.hl]   &iexcl;C&lt;-[.hl]{7}                 &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;shla        &iexcl;[.hl]&lt;-[.hl]*2              &iexcl;             &iexcl;00100110&iexcl;26 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shl [,ix+d] &iexcl;C&lt;-[.ix+d]{7}               &iexcl;- - 0 P   0 -&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;shla        &iexcl;[.ix+d]&lt;-[.ix+d]*2          &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00100110&iexcl;26 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shl [,iy+d] &iexcl;C&lt;-[.iy+d]{7}               &iexcl;- - 0 P   0 -&iexcl;11111101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;shla        &iexcl;[.iy+d]&lt;-[.iy+d]*2          &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00100110&iexcl;26 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shr r       &iexcl;C&lt;-r{0}                     &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;r&lt;-r/2                      &iexcl;             &iexcl;00111 r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shr [.hl]   &iexcl;C&lt;-[.hl]{0}                 &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;[.hl]&lt;-[.hl]/2              &iexcl;             &iexcl;00111110&iexcl;3E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shr [,ix+d] &iexcl;C&lt;-[.ix+d]{0}               &iexcl;- - 0 P   0 -&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;[.ix+d]&lt;-[.ix+d]/2          &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00111110&iexcl;3E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shr [,iy+d] &iexcl;C&lt;-[.iy+d]{0}               &iexcl;- - 0 P   0 -&iexcl;11111101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;[.iy+d]&lt;-[.iy+d]/2          &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;00111110&iexcl;3E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shra r      &iexcl;tmp&lt;-r{7};C&lt;-r{0}           &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;r&lt;-r/2;r{7}&lt;-tmp            &iexcl;             &iexcl;00101 r &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shra [.hl]  &iexcl;tmp&lt;-[.hl]{7};C&lt;-[.hl]{0}   &iexcl;- - 0 P   0 -&iexcl;11001011&iexcl;CB &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;[.hl]&lt;-[.hl]/2;[.hl]{7}&lt;-tmp&iexcl;             &iexcl;00101110&iexcl;2E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shra [.ix+d]&iexcl;tmp&lt;-[.ix+d]{7}             &iexcl;- - 0 P   0 -&iexcl;11011101&iexcl;DD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;C&lt;-[.ix+d]{0}               &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]&lt;-[.ix+d]/2          &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.ix+d]{7}&lt;-tmp             &iexcl;             &iexcl;00101110&iexcl;2E &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;shra [.iy+d]&iexcl;tmp&lt;-[.iy+d]{7}             &iexcl;- - 0 P   0 -&iexcl;11111101&iexcl;FD &iexcl;4&iexcl;7&iexcl;
+&iexcl;            &iexcl;C&lt;-[.iy+d]{0}               &iexcl;             &iexcl;11001011&iexcl;CB &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]&lt;-[.iy+d]/2          &iexcl;             &iexcl;&lt;- d  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;[.iy+d]{7}&lt;-tmp             &iexcl;             &iexcl;00101110&iexcl;2E &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+The shl instruction and the shla instruction are exectly the same and use the 
+same operand.
+&lt;A.15  BRANCH INSTRUCTIONS                                              675&gt;
+
+A.15 BRANCH INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;br nn       &iexcl;.pc&lt;-nn                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11000011&iexcl;C3 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bnz nn      &iexcl;if z=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11000010&iexcl;C2 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;.pc&lt;-nn                     &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bz nn       &iexcl;if z=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001010&iexcl;CA &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;.pc&lt;-nn                     &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bnc nn      &iexcl;if c=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11010010&iexcl;D2 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;.pc&lt;-nn                     &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bc nn       &iexcl;if c=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011010&iexcl;DA &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;.pc&lt;-nn                     &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bpo nn      &iexcl;if P/v=0                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11100010&iexcl;E2 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;.pc&lt;-nn                     &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bpe nn      &iexcl;if P/v=1                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101010&iexcl;EA &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;.pc&lt;-nn                     &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bp nn       &iexcl;if s=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11110010&iexcl;F2 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;.pc&lt;-nn                     &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;bm nn       &iexcl;if s=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111010&iexcl;FA &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;br [.hl]    &iexcl;.pc&lt;-.hl                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101001&iexcl;E9 &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;br [.ix]    &iexcl;.pc&lt;-.ix                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011101&iexcl;DD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11101001&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;br [.iy]    &iexcl;.pc&lt;-.iy                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111101&iexcl;FD &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;11101001&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;676                                    APPENDIX A R800 INSTRUCTION CHART&gt;
+
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;short       &iexcl;.pc&lt;-.pc+e                  &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00011000&iexcl;18 &iexcl;2&iexcl;3&iexcl;
+&iexcl;br e        &iexcl;                            &iexcl;             &iexcl;&lt;- e-2-&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;short       &iexcl;if z=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00100000&iexcl;20 &iexcl;2&iexcl;2&iexcl;
+&iexcl;bnz e       &iexcl;.pc&lt;-.pc+e                  &iexcl;             &iexcl;&lt;- e-2-&gt;&iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;short       &iexcl;if z=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00101000&iexcl;28 &iexcl;2&iexcl;2&iexcl;
+&iexcl;bz e        &iexcl;.pc&lt;-.pc+e                  &iexcl;             &iexcl;&lt;- e-2-&gt;&iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;short       &iexcl;if c=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00110000&iexcl;30 &iexcl;2&iexcl;2&iexcl;
+&iexcl;bnc e       &iexcl;.pc&lt;-.pc+e                  &iexcl;             &iexcl;&lt;- e-2-&gt;&iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;short       &iexcl;if c=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00111000&iexcl;38 &iexcl;2&iexcl;2&iexcl;
+&iexcl;bc e        &iexcl;.pc&lt;-.pc+e                  &iexcl;             &iexcl;&lt;- e-2-&gt;&iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;dbnz e      &iexcl;.b&lt;-.b-1;if .b&lt;&gt;0           &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00010000&iexcl;10 &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;.pc&lt;-.pc+e                  &iexcl;             &iexcl;&lt;- e-2-&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+
+A.16 CALL INSTRUCTIONS
+
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call nn     &iexcl;[.sp-2]&lt;-.spl;[.sp-1]&lt;-.sph &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001101&iexcl;CD &iexcl;3&iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call nz,nn  &iexcl;if z=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11000100&iexcl;C4 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call z,nn   &iexcl;if z=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001100&iexcl;CC &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call nc,nn  &iexcl;if c=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11010100&iexcl;D4 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call c,nn   &iexcl;if c=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011100&iexcl;DC &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call po,nn  &iexcl;if P/v=0                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11100100&iexcl;E4 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call pe,nn  &iexcl;if P/v=1                    &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101100&iexcl;EC &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call p,nn   &iexcl;if s=0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11110100&iexcl;F4 &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;call m,nn   &iexcl;if s=1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111100&iexcl;FC &iexcl;3&iexcl;3&iexcl;
+&iexcl;            &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;             &iexcl;&lt;-nnl -&gt;&iexcl;   &iexcl; &iexcl;5&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pc&lt;-nn          &iexcl;             &iexcl;&lt;-nnh -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;A.16 CALL INSTRUCTIONS                                         677
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret         &iexcl;.pcl&lt;-[.sp];.pch&lt;-[.sp+1]   &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001001&iexcl;C9 &iexcl;1&iexcl;3&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp+2                  &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret nz      &iexcl;if z=0 ; .pcl&lt;-[.sp]        &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11000000&iexcl;C0 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret z       &iexcl;if z=1 ; .pcl&lt;-[.sp]        &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11001000&iexcl;C8 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret nc      &iexcl;if c=0 ; .pcl&lt;-[.sp]        &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11010000&iexcl;D0 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret c       &iexcl;if c=1 ; .pcl&lt;-[.sp]        &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011000&iexcl;D8 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret po      &iexcl;if P/v=0 ; .pcl&lt;-[.sp]      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11100000&iexcl;E0 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret pe      &iexcl;if P/v=1 ; .pcl&lt;-[.sp]      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101000&iexcl;E8 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret p       &iexcl;if s=0 ; .pcl&lt;-[.sp]        &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11110000&iexcl;F0 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret m       &iexcl;if s=1 ; .pcl&lt;-[.sp]        &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111000&iexcl;F8 &iexcl;1&iexcl;1&iexcl;
+&iexcl;            &iexcl;.pch&lt;-.[.sp+1];.sp&lt;-.sp+2   &iexcl;             &iexcl;        &iexcl;   &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret i       &iexcl;interrupt return            &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01001101&iexcl;4D &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ret n       &iexcl;Non Maskable Interrupt      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;5&iexcl;
+&iexcl;            &iexcl;  return                    &iexcl;             &iexcl;01000101&iexcl;45 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;brk k       &iexcl;[.sp-2]&lt;-.pcl;[.sp-1]&lt;-.pch &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11   111&iexcl;C0 &iexcl;1&iexcl;4&iexcl;
+&iexcl;            &iexcl;.sp&lt;-.sp-2;.pcl&lt;-k;pch&lt;-0   &iexcl;             &iexcl;  k/8   &iexcl;   &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;678                                    APPENDIX A R800 INSTRUCTION CHART&gt;
+
+A.17      INOUT/OUTPUT INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;in .a,[n]   &iexcl;.a&lt;-[n]                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11011011&iexcl;DB &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;in r,[.c]   &iexcl;r&lt;-[.c]                     &iexcl;- - 0 P   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 r 000&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;in .f,[.c]  &iexcl;.f&lt;-[.c]                    &iexcl;- - 0 P   0 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01110000&iexcl;70 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;in          &iexcl;[.hl]&lt;-[.c];.b&lt;-.b-1        &iexcl;? - ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.hl++],[.c]&iexcl;.hl&lt;-.hl+1                  &iexcl;  *1         &iexcl;10100010&iexcl;A2 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;in          &iexcl;[.hl]&lt;-[.c];.b&lt;-.b-1        &iexcl;? - ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.hl--],[.c]&iexcl;.hl&lt;-.hl-1                  &iexcl;  *1         &iexcl;10101010&iexcl;AA &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inm         &iexcl;repeat;[.hl]&lt;-[.c];.b&lt;-.b-1 &iexcl;? 1 ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.hl++],[.c]&iexcl;.hl&lt;-.hl+1;until .b=0       &iexcl;             &iexcl;10110010&iexcl;B2 &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;inm         &iexcl;repeat;[.hl]&lt;-[.c];.b&lt;-.b-1 &iexcl;? 1 ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.hl--],[.c]&iexcl;.hl&lt;-.hl-1;until .b=0       &iexcl;             &iexcl;10111010&iexcl;BA &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;out [n],.a  &iexcl;[n]&lt;-.a                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11010011&iexcl;D3 &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;&lt;- n  -&gt;&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;out [.c],r  &iexcl;[.c]&lt;-r                     &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01 r 001&iexcl;   &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;out         &iexcl;[.c]&lt;-[.hl];.b&lt;-.b-1        &iexcl;? - ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.c],[.hl++]&iexcl;.hl&lt;-.hl+1                  &iexcl;  *1         &iexcl;10100011&iexcl;A3 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;out         &iexcl;[.c]&lt;-[.hl];.b&lt;-.b-1        &iexcl;? - ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.c],[.hl--]&iexcl;.hl&lt;-.hl-1                  &iexcl;  *1         &iexcl;10101011&iexcl;AB &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;outm        &iexcl;repeat;[.c]&lt;-[.hl];.b&lt;-.b-1 &iexcl;? 1 ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.c],[.hl++]&iexcl;.hl&lt;-.hl+1;until .b=0       &iexcl;             &iexcl;10110011&iexcl;B3 &iexcl; &iexcl;3&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;outm        &iexcl;repeat;[.c]&lt;-[.hl];.b&lt;-.b-1 &iexcl;? 1 ? ?   1 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;4&iexcl;
+&iexcl;[.c],[.hl--]&iexcl;.hl&lt;-.hl-1;until .b=0       &iexcl;             &iexcl;10111011&iexcl;BB &iexcl; &iexcl;3&iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+*1 als .b-1=0 it is set to 1 else it is 0
+dependent of the external port which the .c register of in.f,[.c] desginates,
+flags will be changed. It doesn't matter where the external port is.(???)
+&lt;A.18 CPU CONTROL INSTRUCTIONS                                          679&gt;
+
+A.18  CPU CONTROL INSTRUCTIONS
+&Aring;------------\----------------------------\-------------\------------\-\-&atilde;
+&iexcl;MNEMONIC    &iexcl; INSTRUCTION ACTION         &iexcl; FLAGS       &iexcl; OPCODE     &iexcl; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;             ---------\---&cent; &iexcl; &iexcl;
+&iexcl;            &iexcl;                            &iexcl;S Z H P/v N C&iexcl;76543210&iexcl;HEX&iexcl;B&iexcl;C&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;adj .a      &iexcl;adjust to decimal           &iexcl;- - - P   
+ -&iexcl;00100111&iexcl;27 &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;not .a      &iexcl;.a&lt;-NOT .a                  &iexcl;
+ 
+ 1 
+   1 
+&iexcl;00101111&iexcl;2F &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;neg .a      &iexcl;.a&lt;-NOT .a+1                &iexcl;- - - V   1 -&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;2&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01000100&iexcl;44 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;not c       &iexcl;C&lt;-NOT C                    &iexcl;
+ 
+ ? 
+   0 -&iexcl;00111111&iexcl;3F &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;set c       &iexcl;C&lt;-1                        &iexcl;
+ 
+ 0 
+   0 1&iexcl;00110111&iexcl;37 &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;nop         &iexcl;NO operation                &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;00000000&iexcl;00 &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;halt        &iexcl;HALT                        &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;01110110&iexcl;76 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;di          &iexcl;IFF&lt;-0                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11110011&iexcl;F3 &iexcl;1&iexcl;2&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;ei          &iexcl;IFF&lt;-1                      &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11111011&iexcl;FB &iexcl;1&iexcl;1&iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;im 0        &iexcl;interrupt mode 0            &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01000110&iexcl;46 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;im 1        &iexcl;interrupt mode 1            &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01010110&iexcl;56 &iexcl; &iexcl; &iexcl;
+-------------------------------------------------------------------------&cent;
+&iexcl;im 2        &iexcl;interrupt mode 2            &iexcl;
+ 
+ 
+ 
+   
+ 
+&iexcl;11101101&iexcl;ED &iexcl;2&iexcl;3&iexcl;
+&iexcl;            &iexcl;                            &iexcl;             &iexcl;01011110&iexcl;5E &iexcl; &iexcl; &iexcl;
+------------_----------------------------_-------------_--------_---_-_-
+&lt;680                                                                    &gt;
+&lt;681                                                                    &gt;
+------------------------------------------------------------------------
+                                B
+                       R800 MULTIPLICATION MACRO
+------------------------------------------------------------------------
+B.1 MULTIPLICATION INSTRUCTIONS OF THE R800
+  The following multiplication instructions are available.
+
+B.1.1   8 bit MULTIPLICATIONS
+  Two of the same kind 8 bit registers are filled and the result appears in 
+register HL. The multiplication is performed with an instruction.
+The instruction are shown below.
+----------------------------------------------------------------------------
+operation     instruction          clock cycles
+----------------------------------------------------------------------------
+HL&lt;-A*B         ED C1                   14
+HL&lt;-A*C         ED C9                   14
+HL&lt;-A*D         ED D1                   14
+HL&lt;-A*E         ED D9                   14
+---------------------------------------------------------------------------
+
+B.1.2    16 bit MULTIPLICATIONS
+  Two of the same kind 16 bit registers are filled and the result appears in
+registers DE:HL. The multiplication is performed with an instruction.
+The instruction are shown below.
+----------------------------------------------------------------------------
+operation     instruction          clock cycles
+----------------------------------------------------------------------------
+DE:HL&lt;-HL*BC    ED C3                   36
+DE:HL&lt;-HL*SP    ED F3                   36
+----------------------------------------------------------------------------
+&lt;682                                    APPENDIX A R800 INSTRCUCTION CHART&gt;
+
+B.2      MULTIPLICATION MACRO FOR M80
+
+When using multiplications in M80, this macro can be used.
+
+         mult8  macro  reg
+                ifidn &lt;reg&gt;,&lt;b&gt;
+                defb 0edh,0c1h
+                else
+                ifidn &lt;reg&gt;,&lt;B&gt;
+                defb 0edh,0c1h
+                else
+                ifidn &lt;reg&gt;,&lt;c&gt;
+                defb 0edh,0c9h
+                else
+                ifidn &lt;reg&gt;,&lt;C&gt;
+                defb 0edh,0c9h
+                else
+                ifidn &lt;reg&gt;,&lt;d&gt;
+                defb 0edh,0d1h
+                else
+                ifidn &lt;reg&gt;,&lt;D&gt;
+                defb 0edh,0d1h
+                else
+                ifidn &lt;reg&gt;,&lt;e&gt;
+                defb 0edh,0d9h
+                else
+                ifidn &lt;reg&gt;,&lt;E&gt;
+                defb 0edh,0d9h
+                else
+                if1
+                .printx *MULT8: illegal argument*
+                defb 00h,00h
+                err
+                endif
+                endif
+                endif
+                endif
+                endif
+                endif
+                endif
+                endif
+                endif
+                endm
+
+         mult16 macro  reg
+                ifidn &lt;reg&gt;,&lt;bc&gt;
+                defb   0edh, 0c3h
+                else
+                ifidn &lt;reg&gt;,&lt;BC&gt;
+                defb   0edh,0c3h
+                else
+&lt;B.2 MULTIPLICATION MACRO FOR M80                                       683&gt;
+                ifidn &lt;reg&gt;,&lt;sp&gt;
+                defb   0edh, 0f3h
+                else
+                ifidn &lt;reg&gt;,&lt;SP&gt;
+                defb   0edh,0f3h
+                else
+                if1
+                .printx *MULT16: illegal argument*
+                defb    00h, 00h
+                err
+                end if
+                end if
+                end if
+                end if
+                end if
+                endm
+&lt;684                                                                    &gt;
+&lt;                                                                    685&gt;
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

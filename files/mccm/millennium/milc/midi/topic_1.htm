@@ -1,0 +1,473 @@
+<html>
+
+<head>
+<title>MILC - Topic Algemene info over MIDI</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Algemene info over MIDI</b><br>
+    <i>Onbekend</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+     M I D I      (Musical Instruments Digital Interface)   
+
+   -Introductie.
+Midi werd ontwikkeld in de late zeventiger jaren. Het werd in 1983
+gelanceerd, en sindsdien is de opmars niet te stuiten.
+Hoewel aanvankelijk de opzet nogal simpel was, n.l. het bespelen
+van meerdere synthesizers d.m.v. ‚‚n keyboard, is Midi uitgegroeid
+tot een volwaardige systeemtaal, met vele commando's (Midi-protocol).
+Hoe ziet Midi eruit ? Welnu, nogal simpel, in de synthesizer zit een
+(ge‹ntegreerde) interface, met een aantal connectors naar 'buiten'. 
+                                                   +--------------+
+Koppeling gebeurd via de wel-bekende DIN-pluggen,  |     2        |
+helaas, want zoals we weten is dit een kwetsbaar   |  5     4  DIN|
+systeem. Zoals computers hun data kunnen versturen | 3       1    |
+via een modem, kan de synthesizer dit via de Midi- +--------------+
+interface. Met een snelheid van 31.25 Kbaud, de baudrate, verloopt de
+data overdracht serieel. Tamelijk snel, maar langzaam genoeg om in
+complexe set-up's storend te zijn. Verder beschikt Midi over talrijke
+commando's, die het mogelijk maken om meerdere interfaces met elkaar
+te laten communiceren. Deze communicatie binnen Midi verloopt via 16
+aparte kanalen (telefoonlijnen), zodat je gedifferentieerd kunt
+werken. We komen hier nog uitgebreid op terug.
+
+De oorspronkelijke opzet van MIDI :
+
+fig 1 : het midi gedeelte van een synthesizer, de in- en outputs :
+
+     +---------------------------------------+
+     |    +-----------ontvangt Midi-info     |
+     |    |    +------stuurt Midi-info       |
+     |    |    |    +-stuurt de Midi-in door |
+     |    |    |    |                        |      fig. 1
+     | +--+----+----+--------+               |                  
+     | | in   out   thru     |               | 
+     | |                     |               |              
+     | | Midi apparaat       |               |
+     | +---------------------+               |
+     +---------------------------------------+
+
+fig 2 : de koppeling middels Midi van 3 synthesizers
+
++-----------------------------------------------------------------+
+|    +--------------------------------------------&lt;---+           |
+|    |                                                |    fig. 2 |
+|    |   +-&gt;------------+   +--&gt;-------------+        |           |
+|   ++---+---------+   ++---+-----------+   ++--------+-------+   |
+|   |in  out  thru |   |in  out  thru   |   |in  out  thru    |   |
+|   +--------------+   +----------------+   +-----------------+   |
+|   |              |   |                |   |                 |   |
+|   +-||||||||||||-+   +-||||||||||||||-+   +--||||||||||||||-+   |
+|                                                                 |
++-----------------------------------------------------------------+
+
+De wens om een dergelijk systeem te kunnen opzetten, kwam voort uit
+het feit, dat men in deze tijd slechts de beschikking had over
+matig (dun) klinkende synthesizers, niet te vergelijken met de
+huidige (digitale) apparaten. Een aantal klanken tegelijk hoorbaar
+maken door slechts op ‚‚n toets te drukken leek derhalve ideaal.
+Niemand kon op dat moment de huidige expansie voorzien. 
+
+    -Wat doet Midi?
+Welnu, op het moment dat je een synthesizer bespeelt,
+voer je een aantal handelingen uit;
+                je drukt ‚‚n of meerdere toetsen in,
+                je doet dit hard of zacht (aanslaggevoeligheid), 
+                houdt ze lang of kort aan, 
+                moduleert de noten met een spelknuppel of bender,
+                enz enz.
+Midi nu, registreert al deze handelingen, en kan ze doorgeven ! 
+
+Een eenvoudig voorbeeld.
+
+Stel je speelt op synthesizer 1,   drie seconden een ' E '. 
+Midi registreert dat, en zet e.e.a. op de Midi-out. Een tweede
+synthesizer krijgt dat binnen op zijn Midi-in, en stuurt deze
+gegevens naar zijn eigen klankbron.
+
+                  +------------------------+
+                  |      Versterker        |
+                  +----+-------------+-----+
+                       |             |
+                       |             |
+                       |             |
+  +--------------------+------+------+-----------------------+
+  |  synthesizer 1            |        synthesizer 2         geluid
+  |                           |                              |
+  |  E----------------E       |        E----------------E    |
+  +------------------------&thorn;--+---&thorn;--------------------------+
+  |                        | MIDI |                          midi
+a |  E                   midi-----midi  E                    |
+b |  note on   note off  out------in    note on   note off   |
+c |  1       2        3                 1       2        3   |
+  +----------------------------------------------------------+
+
+a welke noot
+b welk commando
+c hoe lang
+
+Gevolg : 2 synthesizers die met 1 toetsaanslag beiden een klank
+         voortbrengen. Kies vervolgens 2 totaal verschillende
+         geluiden, en de opzet wordt ineens duidelijk. Wat hier
+         ook duidelijk wordt, is dat synthesizer 2 z'n toetsen
+         niet nodig heeft; hij krijgt immers de directe informatie
+         via synthesizer 1. De module is geboren. 
+
+fig 3 : het aansturen van een soundmodule middels een 'master key-
+        board' (een toetsenbord dat zelf g‚‚n klank-opwekkings-
+        systeem aan boord heeft, maar alleen Midi informatie kan
+        voortbrengen).
+          
+      +-&gt;--------------+ 
++-----+------------+  ++-------------+ zoals uit de tekening blijkt 
+|in  out  thru     |  |in  out  thru | brengt de soundmodule het
+| master keyboard  |  |soundmodule   | geluid voort, en zorgt het
++------------------+  +-----+--------+ keyboard enkel voor de aan-
+|                  |        |          sturing ervan.
++||||||||||||||||||+        |
+                            |audio-out
+                            |
+                    +-------+--------+
+                    |mixer\versterker|
+                    +----------------+
+
+De volgende mogelijkheid is het aansturen van meerdere modules
+over verschillende kanalen. Dat wil zeggen, dat als je Midi-
+informatie verstuurd over kanaal 1, en ‚‚n der soundmodules
+laat ontvangen op kanaal 1, je een exclusieve lijn hebt. Andere
+modules ontvangen weliswaar ook de betreffende informatie, maar
+doen hier niets mee, omdat ze ontvangen op andere kanalen.
+Wel geven ze (via Midi-thru) het signaal door aan de volgende
+module in de lijn !
+               +------------------&gt;---------+
+               |1                           |
++--------------+---+                  +-----+------+
+| master keyboard  |                  +-----+------+5
++||||||||||||||||||+                  +-----+------+
+                                      +-----+------+7
+                                      +-----+------+
+                          muziek -----+-----+------+1
+                                      +-----+------+
+                                      +------------+3
+Het is misschien wat lastig voor te stellen hoe Midi-informatie
+er uit ziet. De commando's zijn geschreven in een soort computer
+taal, en zien er uit als een onbegrijpelijke hoop cijfers.
+Niet d t je hier iets van ziet, maar ze zijn er wel.              
+Het aardige nu is, dat je deze data ook kunt opnemen, zoals je
+muziek kunt opnemen op een bandrecorder. 
+Nu is het niet zo handig hiervoor een bandrecorder te nemen, dit is
+wat al te omslachtig, beter is een elektronisch geheugen, zoals ook
+de computer dat kent (RAM). We noemen dit een sequencer. Het komt er
+dus op neer, dat als je een partij speelt op je synthesizer, je dit
+kunt opnemen op de sequencer, en vervolgens weer kunt afspelen ! Het
+maakt de klankbron namelijk niets uit of hij zijn data krijgt van het
+keyboard of vanuit een sequencer.
+Hij geeft gewoon het geluid af, waarom gevraagd wordt middels de data.
+
++-----------------+         +-----------+            +------------+
+|master keyboard  +out----in+ sequencer +out-------in+  module    |
++|||||||||||||||||+         |           |            +------------+
+                            +-----------+                          
+Op de sequencer kun je de eenmaal opgenomen data net zo vaak
+afspelen als je wilt. Ook kun je de data opslaan op een floppy.
+
+We hebben het nu steeds gehad over data, aansturen, ontvangen, maar
+de grote vraag blijft hierbij, WAT kun je nu zoal versturen of
+ontvangen? Kortom, waaruit bestaat de taal Midi. Hoewel je momenteel
+Midi voor bijna alles kunt gebruiken (routing binnen een mengtafel,
+het 'syncen' van apparatuur), zijn er voor de synth een aantal
+belangrijke commando's.
+Hier komen er een aantal:
+
+    Note on
+    Note off
+    Velocity
+    Note number
+    After touch 
+
+Op het moment dat je een toets van een synth indrukt, ziet Midi 
+een Note on. Als je daarna deze toets weer loslaat, noteert Midi
+een Note off. Vermits de synthesizer aanslaggevoelig is, wordt ook
+bekeken 'hoe hard' je de toets indrukte; de Velocity. Uiteraard
+onthoudt Midi w‚lke toets (noot) je indrukte; het Note number.
+Op de betere synth's kun je vervolgens via het d&cent;&cent;rdrukken van de
+toets een noot b.v. moduleren, of van extra effecten voorzien; dit
+is de After touch. 
+ 
+Zoals gezegd, Midi kijkt en noteert (Big Brother is watching).
+Het noteren gaat aan de hand van een aantal schalen.
+De parameter Velocity kan een waarde krijgen van 1 (heel zacht) tot
+127 (heel hard). Elke noot heeft zijn eigen Note number, van 1 tot
+127. De meeste synth's hebben echter minder toetsen dan het klassieke
+pianoklavier, en geven derhalve slechts van b.v. 24 tot 108 door (=
+5 oktaven). 
+
+De notatie 3:04:004 staat voor de indeling van Measure:Beat:Ticks. Het
+is een vrij precieze notatie van de plaats van een noot of commando
+binnen een track. Een track kan bijvoorbeeld lopen van 1:01:00 tot
+130:04:120 (130 maten dus). Aan de hand van deze notatie kun je altijd
+alles terug vinden wat hieraan gerelateerd is. 
+
+   -Sequencer.  Ze zijn er in talloze uitvoeringen, maar slechts in
+twee types. Een hardware- of software type. Dat wil zoveel zeggen, dat
+de hardware uitvoering een kleine compacte kast is, met een groot of
+kleiner geheugen, en de software-sequencer een computer met daarin de
+software sequencer. Het geheugen is vaak net zo groot als de computer
+zelf. Beiden hebben zo hun specifiek voor- en nadelen, maar op beide
+apparaten doe je in principe het zelfde:
+Midi-data opslaan, eventueel editten, en reproduceren. Dat de
+computers hierbij qua bedienings-comfort en mogelijkheden voor op
+lopen, mag voor zich zelf spreken.
+
+Noot.
+Uit het voorgaande mag blijken hoe gedetailleerd je muziek kunt vatten
+in midi-cijfers. Een ieder die altijd riep dat sequencer-muziek
+eentonig en koud klinkt, mag gelijk hebben. Echter, als dat zo is dan
+ligt dat aan de muzikant die de betreffende muziek heeft ingespeeld.
+Het is heel wel mogelijk om een klassiek piano-concert vast te leggen
+via Midi-notatie. De repro zal in dat geval exact zo klinken als dat
+het klonk bij de live-uitvoering.
+W‚l goede spulletjes gebruiken...
+
+Nu we eenmaal gezien hebben dat muziek om te zetten is in 'getallen',
+of liever nog, data, kun je je vast voorstellen hoe, gemakkelijk het
+is deze data te 'manipuleren', of beter nog, te  editten. Verwijder
+uit de toonladder (blz 44) C 5, en maak er C 6 van. En zie, de repro
+speelt opeens een octaaf hoger ! Vindt je de F 5 toch wat te zacht,
+maak dan een velocity van 80 i.p.v. de oorspronkelijke waarde '3'. En
+alweer, de sequencer volgt probleemloos. Maar de mogelijkheden gaan
+verder, zet de gehele track 7 'n octaaf hoger, of lager, of later, of
+harder, of, of, of, .....
+Fout nootje gespeeld ? Pak je muis, klik de foute noot aan en zet
+hem op de juiste plaats. W‚g missers, timingsfouten...
+
+      Vaak kun je binnen een sequencer op verschillende niveaus de
+Midi-data benaderen en editten. We gaan nu even uit van ‚‚n van de
+vele sequencers, Cakewalk 4.0. Deze indeling vind je bij alle andere
+sequencers terug, soms echter onder een andere naam.
+ 
+1 Note View      : overzicht van alle gespeelde noten
+2 Track View     : overzicht van alle normale functies (main menu)
+3 Measure View   : overzicht van alle gespeelde maten (birds view)
+4 Event View     : basaal niveau met midi gegevens
+
+     Nu eenmaal het samenspel duidelijk is tussen keyboard,     
+synthesizer en sequencer, gaan we over naar de multitrack.
+Ook een sequencer is -tegenwoordig- een multitrack. Voorwaarde
+is echter dat je over meerdere synthesizers\modules beschikt.
+
+Hoewel.
+
+Wil je n.l. meerdere partijen tegelijk horen, dan moet je deze
+ook kunnen aanspreken. Met de huidige generatie synthesizers
+is het geenszins nodig om er vele te hebben. De  fabrikanten
+brachten omstreeks 1986 de eerste multitimbrale synthesizers uit.
+Want, stop 8 synthesizers in ‚‚n kastje, integreer dat tot ‚‚n
+geheel, en voila, een multitimbrale synthesizer/module.
+Een krachtig verkoop-argument, hetgeen een nieuwe impuls gaf aan
+de verkoop van merken als Yamaha, Korg, Roland, Kawai en anderen.
+E.e.a. geeft je de mogelijkheid om te multi-tracken op je sequencer.
+Stel dat je module 8-stemmig multitimbraal is, en beschikt over
+32 oscilatoren, dan kun je dus 8 partijen opnemen (sync) en -via
+hun eigen midi kanaal- weergeven. De drums nemen in die zin geen
+b˜zonder plaats in, want ook dat zijn in feite gewone klanken.
+Stel dat er ook nog kwalitatief hoogstaande samples gebruikt worden,
+dan kun je de band wel thuis laten...
+
++--------------------out--in----------++out-----in+------------+
+| master keyboard    |     |sequencer ||          +-bas-----2--+
++||||||||||||||||||||+     +----------++         t+-piano---4--+
+                           | 8 sporen ||         h+-strings-5--+
+                           +----------++         r+-brass---7--+
+                           | memory   ||         u+-voices--15-+
+                           +----------++          +-guitar--8--+
+                                                  +-organ---3--+ 
+                                                  +-drums---10-+ 
+                                                  +------------+
+                                                  |multitimbr. |
+                                                  |module      |
+                                                  +------------+
+
+Eind tachtiger jaren deden de fabrikanten er n&cent;g een schepje boven op.
+Men kwam uit met synthesizers, die onder de klep zowel
+        - sequencer (8   16 sporen)
+        - digitale klankbron (multitimbraal)
+        - effectsectie (digitaal)
+        - drums
+hadden. Het workstation was er. Binnen deze ene synthesizer was het
+hele bovenstaande proces mogelijk, inclusief het toevoegen van vele
+tientallen digitale effects (galm, panning, chorus, enz.).
+De gehele produktie van b.v. een jingle was nu mogelijk, al zittend
+op je krent achter ‚‚n synthesizer !
+
+Wie ooit de diverse demo's uit b.v. de Roland D20, Korg M1, Yamaha W30
+gehoord heeft, snapt wat ik bedoel. 
+
+      De mogelijkheden van dergelijke workstations's mogen er zijn.
+Je kunt binnen de Combi-modes vaak kiezen tussen verschillende
+manieren van opbouw van een klank. Je kunt een enkele klank (single
+voice) spelen, maar ook meer 'samengestelde' klanken. Zo is er de
+Layer, een samengestelde klank bestaande uit 2 of meerdere voices
+tegelijk. Ook heb je de Split, waarbij het keyboard in 2 of meer
+gedeeltes verschillende klanken kan aanroepen. Links speel je b.v. op
+de onderste twee octaven een baspartij, terwijl de rechterhand
+de overige octaven bespeelt met een pianoklank.
+Nog verfijnder is de velocity-switch, waarbij je bij 'normaal'
+aanslaan de ene klank krijgt, en bij 'harder' aanslaan de andere (of
+een combinatie van beide). In 8.8 werd reeds de multi-mode besproken.
+
+Bovenstaande in ogenschouw nemende, zal een ieder vaststellen
+dat de mogelijkheden enorm zijn. Toch, wat zou er mooier zijn
+dan het bedenken van een link naar het gehele analoge gedeelte van
+je studio. Je kunt weliswaar het instrumenten-gedeelte in zijn
+geheel binnen je workstation opzetten, maar voor een fraaie zang-
+partij kun je nog steeds geen midi-kabel in je navel steken. Zo 
+ook het opnemen van 'echte' gitaarpartijen, drumpartijen; voorlopig
+nog blijft een link naar analoog wenselijk.
+Welnu, ook daarin voorziet de hele set-up. Net als in het echte
+leven kun je ook binnen je studio een set-up maken van master
+en slave. Via bekabeling kun je vanuit je sequencer een audio-
+verbinding leggen naar de analoge multi-track recorder. Door nu 
+‚‚n van de tracks te 'strippen' met een puls-signaal vanuit de
+sequencer, kun je sync gaan werken tussen Midi-sequencer en
+multi-track recorder. Hierbij wordt de recorder de 'master', en
+de midi-sequencer de 'slave'(baas en knecht). Om nu opname of weergave
+op ‚‚n van beide systemen in werking zetten, zet je de multi-track
+recorder op play of record, en de gehele midi-set-up volgt. Een
+dergelijke verbinding zien we ook bij sequencer en aparte
+drumcomputer. De een is master, de ander slave. En eenmaal gesynct
+volgen ze elkaar (meestal) probleemloos.
+Het strippen van de band, of het syncen van de drumcomputer kan
+volgens verschillende protocollen.
+Via Midi kun je de drumcomputer syncen (m‚t songpointers), en de
+tape kun je strippen met FSK of SMPTE. De laatste geniet de voorkeur,
+want bij FSK moet je steeds vooraan het nummer beginnen, omdat het
+niet bij kan houden in welke maat je zit. SMPTE doet dat wel en werkt
+daarom net als Midi (songpointers) veel effici‰nter.
+Het verhaal gaat n&cent;g verder, want ook een -professionele- video kun
+je middels SMPTE probleemloos in de keten opnemen. Vermits je de
+juiste verdeling maakt in master-slave, zal alles exact in de maat
+lopen. Hoewel dat soms enige seconden kan duren (tape- en video re-
+corders werken mechanisch en moeten elkaar soms even 'opzoeken). 
+
+ +++++++++++++++++++stop |
+ ++++++++++++++++++++    |
+                         |
+   FSK strip-signaal     |
+                         |  
+                         |  
+ +1+2+3+4+5+6+7+8+9+     |
+ ++++++++++++++++++++    |
+                         |
+  SMPTE strip-signaal    |
+
+Uit voorgaande zou je kunnen opmaken dat het strippen van een band
+de enige manier van syncen is. Dit is echter geenszins het geval. Een
+veel betere koppeling is de directe manier, waarbij een recorder in
+staat is door zijn eigen interface Midi of SMPTE te ontvangen, te
+sturen en te verwerken. Bij de professionele video's is dit al het
+geval, maar bij de analoge recorders nog niet altijd. Een Fostex A80
+en R8 hebben weliswaar al aansluitingen voor besturing, maar de
+noodzakelijke interface moet los bijgekocht worden voor een bedrag
+waar je leuk van op vakantie kunt. In dit soort gevallen kun je dus
+beter ‚‚n spoortje van je multi-track opofferen; bovendien spaar je
+genoeg analoge sporen uit door het gebruik van de multi-track
+sequencer. Dat in de nabije toekomst deze koppelingen standaard zullen
+zijn ‚n betaalbaar, mag duidelijk zijn.
+
+   +++-------------------------------+
+   |||     M i d i   accessoires     ++                     
+   |+++++++++++++++++++++++++++++++--+++-------------------------+
+   ++-+++++++++++++++++++++++++++++--+-+                         |
+   | Merger   f 300   Voegt meerdere midi kanalen samen tot ‚‚n  |
+   |                  nieuw kanaal. Op deze wijze kun je met je  |
+   |                  midi-band tegelijk spelen en je sequencer  |
+   |                  aansturen (die vaak maar 1 ingang heeft).  |
+   |                                                             |
+   | Thru-box f 150   Splitst het binnenkomende midi signaal uit |
+   |                  in drie gelijke uitgangen.                 |
+   |                                                             |
+   | Splitter f 300   Splitst het binnenkomende midi signaal uit |
+   |                  in 8 zones. Kan bijvoorbeeld de linker- en |
+   |                  rechterhand uitsplitsen van een pianopartij|
+   |                                                             |
+   | Filter   f 300   Filtert geselecteerde midi-data uit op     |
+   |                  vooraf bepaalde midi kanalen.              |
+   |                                                             |
+   | Panic    f 300   Verzendt op verzoek het 'All Notes off'    |
+   |                  commando. De manier om de storende         |
+   |                  hangende noten tot zwijgen te brengen.     |
+   |                                                             |
+   | Record   f 500   Kleine ‚‚nkanaals sequencer (15.000 events)|
+   +-------------------------------------------------------------+
+                                 -gezien in Midi magazine 1-
+    
+Bijlage MIDI / SYNTHESIZERS
+
+Schema :
+    +-----------------------------+                   &Uuml;&Uuml;&Uuml;&Uuml;&Uuml;&Uuml;&Uuml;
+    +-----------------------------+                in &Uuml;     &Uuml;
+    |                keyboard     +--------&gt;----------&Uuml;MIDI &Uuml;
+    +|||||||||||||||||||||||||||||+                   &Uuml;     &Uuml;
+                                                      &Uuml;seq. &Uuml;
+                                                      &Uuml;     &Uuml;
+                                                      &Uuml;     &Uuml;
++--------------+      +---------------+           out &Uuml;     &Uuml;
+| VCO / DCO    | bron | Samples       +----&lt;----------&Uuml;&Uuml;&Uuml;&Uuml;&Uuml;&Uuml;&Uuml;
+|              |      |               |                  | thru
++---+----------+      +-+-------------+                  |  
+    |                   |                                |  
+    &thorn;                   &thorn;                                |  
+ +------+ +------+ +------+                              |  
+ |adrs  | |      | |c o re|                       +------+-------+
+ |E G   | |LFO   | |VCF   |                       |MODULE 2      |
+ +------+ +------+ +------+                       +--------------+
+    +----------------+     bewerking                        enz.
+    | effecten/ VCA /|                                          
+    | extra VCF LFO  |                                          
+    +------------+---+                                          
+                 |                                              
+                 |                                               
+                 |                                        
+                 &thorn;       
+                         
+   +------------------------+
+   &thorn;                        &thorn;
+   --------------------------
+   -                        -
+   -  VERSTERKER            -
+   -                        -
+   -                        -
+   --------------------------
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

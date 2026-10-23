@@ -1,0 +1,483 @@
+<html>
+
+<head>
+<title>MILC - Topic Errors</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_7.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Errors</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+6.   ERRORS
+===========
+
+     All  the new  MSX-DOS 2  functions (function  codes above 40h) return an 
+&quot;error code&quot; in A. This is zero if the operation was successful. If non-zero, 
+then the error code explains the exact nature of the error.
+
+     Since  MSX-DOS  2  performs  an  &quot;OR A&quot;  instruction immediately  before 
+returning  from a  function call,  a &quot;JR NZ&quot; instruction is often used in the 
+transient program  immediately after the &quot;CALL 5&quot; instruction to test whether 
+an  error occurred.  Frequently the destination of this error jump just loads 
+the error  code into  B and does a &quot;Terminate with Error Code&quot; function. This 
+then  passes the  error code back to the command interpreter which prints the 
+appropriate message.
+
+     A transient program may also itself get the actual message for any error 
+returned by  an MSX-DOS  2 function  call by  using the  &quot;Explain Error Code&quot; 
+function. See the Function Specification for details.
+
+     The error codes start at 0FFh and descend in value. Values less than 40h 
+are 'user  errors' and  will never  be used  by the system and can be used by 
+transient programs to return their own errors. User errors below 20h returned 
+to the command interpreter will not have any message printed.
+
+     If  the   &quot;Explain  Error   Code&quot;  function   call  (see   the  Function
+Specification) is asked to explain an error code for which it does not have a 
+message,  then the  string returned will be &quot;System error &lt;n&gt;&quot; or &quot;User error 
+&lt;n&gt;&quot; as appropriate, where &lt;n&gt; is the error number.
+
+     Below  is  a  list  of  all currently  defined error  numbers and  their 
+messages  and meanings.  Also given is the mnemonic, which is often used as a 
+symbol in  a source file and is used throughout the MSX-DOS 2 system to refer 
+to a particular error.
+
+   6.1   DISK ERRORS
+
+     The  errors in  this group  are those  which are  usually passed to disk 
+error handling  routines. By  default they will be reported as &quot;Abort, Retry&quot; 
+errors.  These errors except the one from &quot;format disk&quot; will be passed to the 
+error handling routine, so they will not be returned as the return value from 
+BDOS.
+
+Incompatible disk (.NCOMP, 0FFh)
+
+     The disk  cannot be accessed in that drive (eg. a double sided disk in a 
+single sided drive).
+
+Write error (.WRERR, 0FEh)
+
+     General error occurred during a disk write.
+
+Disk error (.DISK, 0FDh)
+
+     General unknown disk error occurred.
+
+Not ready (.NRDY, 0FCh)
+
+     Disk drive did not respond, usually means there is no disk in the drive.
+
+Verify error (.VERFY, 0FBh)
+
+     With  VERIFY enabled,  a sector  could not be read correctly after being 
+written.
+
+Data error (.DATA, 0FAh)
+
+     A disk  sector could  not be  read because  the CRC  error checking  was 
+incorrect, usually indicating a damaged disk.
+
+Sector not found (.RNF, 0F9h)
+
+     The  required sector  could not  be found  on the  disk, usually means a 
+damaged disk.
+
+Write protected disk (.WPROT, 0F8h)
+
+     Attempt to write to a disk with the write protect tab on.
+
+Unformatted disk (.UFORM, 0F7h)
+
+     The disk  has not  been formatted,  or it  is a  disk using  a different 
+recording technique.
+
+Not a DOS disk (.NDOS, 0F6h)
+
+     The  disk  is  formatted  for  another  operating  system and  cannot be 
+accessed by MSX-DOS.
+
+Wrong disk (.WDISK, 0F5h)
+
+     The  disk has  been changed while MSX-DOS was accessing it. Must replace 
+the correct disk.
+
+Wrong disk for file (.WFILE, 0F4h)
+
+     The  disk  has been  changed while  there is  an open  file on  it. Must 
+replace the correct disk.
+
+Seek error (.SEEK, 0F3h)
+
+     The required track of the disk could not be found.
+
+Bad file allocation table (.IFAT, 0F2h)
+
+     The file  allocation table  on the disk has got corrupted. CHKDSK may be 
+able to recover some of the data on the disk.
+
+(.NOUPB, 0F1h)
+
+     This  error has  no message  because it  is always trapped internally in 
+MSX-DOS as part of the disk change handling.
+
+Cannot format this drive (.IFORM, 0F0h)
+
+     Attempt to  format a drive which does not allow formatting. Usually as a 
+result of trying to format the RAM disk.
+
+   6.2   MSX-DOS FUNCTION ERRORS
+
+     The  following errors are those which are normally returned from MSX-DOS 
+function calls. See the Function Specification document for details of errors 
+from particular MSX-DOS functions.
+
+Internal error (.INTER, 0DFh)
+
+     Should never occur. 
+
+Not enough memory (.NORAM, 0DEh)
+
+     MSX-DOS  has  run out  of memory  in its  16k kernel  data segment.  Try 
+reducing the  number of  sector buffers or removing some environment strings. 
+Also occurs if there are no free segments for creating the RAMdisk.
+
+Invalid MSX-DOS call (.IBDOS, 0DCh)
+
+     An  MSX-DOS call  was made with an illegal function number. Most illegal 
+function calls  return no  error, but  this error  may be  returned if a &quot;get 
+previous error code&quot; function call is made.
+
+Invalid drive (.IDRV, 0DBh)
+
+     A  drive number parameter, or a drive letter in a drive/path/file string 
+is one which does not exist in the current system.
+
+Invalid filename (.IFNM, 0DAh)
+
+     A filename  string is  illegal. This is only generated for pure filename 
+strings, not drive/path/file strings. 
+
+Invalid pathname (.IPATH, 0D9h)
+
+     Can  be  returned  by  any  function  call  which  is  given  an  ASCIIZ 
+drive/path/file  string. Indicates that the syntax of the string is incorrect 
+in some way.
+
+Pathname too long (.PLONG, 0D8h)
+
+     Can  be  returned  by  any  function  call  which  is  given  an  ASCIIZ 
+drive/path/file  string.  Indicates that  the complete  path being  specified 
+(including current directory if used) is longer than 63 characters.
+
+File not found (.NOFIL, 0D7h)
+
+     Can be  returned by  any function  which looks for files on a disk if it 
+does  not find  one. This error is also returned if a directory was specified 
+but not found. In other cases, .NODIR error (see below) will be returned.
+
+Directory not found (.NODIR, 0D6h)
+
+     Returned if  a directory  item in  a drive/path/file string could not be 
+found.
+
+Root directory full (.DRFUL, 0D5h)
+
+     Returned  by &quot;create&quot;  or &quot;move&quot;  if a new entry is required in the root 
+directory and it is already full. The root directory cannot be extended.
+
+Disk full (.DKFUL, 0D4h)
+
+     Usually results from a write operation if there was insufficient room on 
+the disk for the amount of data being written. May also result from trying to 
+create or extend a sub-directory if the disk is completely full.
+
+Duplicate filename (.DUPF, 0D3h)
+
+     Results  from  &quot;rename&quot; or  &quot;move&quot; if  the destination  filename already 
+exists in the destination directory.
+
+Invalid directory move (.DIRE, 0D2h)
+
+     Results from  an attempt  to move  a sub-directory  into one  of its own 
+descendants.  This is  not allowed as it would create an isolated loop in the 
+directory structure.
+
+Read only file (.FILRO, 0D1h)
+
+     Attempt to write to or delete a file which has the &quot;read only&quot; attribute 
+bit set.
+
+Directory not empty (.DIRNE, 0D0h)
+
+     Attempt to delete a sub-directory which is not empty.
+
+Invalid attributes (.IATTR, 0CFh)
+
+     Can result  from an  attempt to change a file's attributes in an illegal 
+way,  or trying  to do  an operation  on a  file which  is only possible on a 
+sub-directory. Also results from illegal use of volume name fileinfo blocks.
+
+Invalid . or .. operation (.DOT, 0CEh)
+
+     Attempt to  do an  illegal operation  on the  &quot;.&quot; or  &quot;..&quot; entries  in a 
+sub-directory, such as rename or move them.
+
+System file exists (.SYSX, 0CDh)
+
+     Attempt  to  create  a  file  or sub-directory  of the  same name  as an 
+existing system file. System files are not automatically deleted.
+
+Directory exists (.DIRX, 0CCh)
+
+     Attempt  to  create  a  file  or sub-directory  of the  same name  as an 
+existing sub-directory. Sub-directories are not automatically deleted.
+
+File exists (.FILEX, 0CBh)
+
+     Attempt  to create a sub-directory of the same name as an existing file. 
+Files are not automatically deleted when creating sub-directories.
+
+File already in use (.FOPEN, 0CAh)
+
+     Attempt to  delete, rename,  move, or  change the attributes or date and 
+time  of a  file which  has a  file handle  already open to it, other than by 
+using the file handle itself.
+
+Cannot transfer above 64K (.OV64K, 0C9h)
+
+     Disk transfer area would have extended above 0FFFFh.
+
+File allocation error (.FILE, 0C8h)
+
+     The cluster  chain for a file was corrupt. Use CHKDSK to recover as much 
+of the file as possible.
+
+End of file (.EOF, 0C7h)
+
+     Attempt  to read  from a  file when  the file  pointer is  already at or 
+beyond the end of file.
+
+File access violation (.ACCV, 0C6h)
+
+     Attempt to  read or  write to  a file  handle which  was opened with the 
+appropriate  access bit  set. Some of the standard file handles are opened in 
+read only or write only mode.
+
+Invalid process id (.IPROC, 0C5h)
+
+     Process id number passed to &quot;join&quot; function is invalid.
+
+No spare file handles (.NHAND, 0C4h)
+
+     Attempt  to  open or  create a  file handle  when all  file handles  are 
+already in use. There are 64 file handles available in the current version.
+
+Invalid file handle (.IHAND, 0C3h)
+
+     The  specified  file handle  is greater  than the  maximum allowed  file 
+handle number.
+
+File handle not open (.NOPEN, 0C2h)
+
+     The specified file handle is not currently open.
+
+Invalid device operation (.IDEV, 0C1h)
+
+     Attempt to  use a  device file  handle or  fileinfo block for an invalid 
+operation such as searching in it or moving it.
+
+Invalid environment string (.IENV, 0C0h)
+
+     Environment item name string contains an invalid character.
+
+Environment string too long (.ELONG, 0BFh)
+
+     Environment  item name or value string is either longer than the maximum 
+allowed length of 255, or is too long for the user's buffer.
+
+Invalid date (.IDATE, 0BEh)
+
+     Date parameters passed to &quot;set date&quot; are invalid.
+
+Invalid time (.ITIME, 0BDh)
+
+     Time parameters passed to &quot;set time&quot; are invalid.
+
+RAM disk (drive H:) already exists (.RAMDX, 0BCh)
+
+     Returned from the &quot;ramdisk&quot; function if trying to create a RAM disk when 
+one already exists.
+
+RAM disk does not exist (.NRAMD, 0BBh)
+
+     Attempt to  delete the  RAM disk  when it  does not  currently exist.  A 
+function  which tries  to access  a non-existent  RAM disk  will get  a .IDRV 
+error.
+
+File handle has been deleted (.HDEAD, 0BAh)
+
+     The file  associate with  a file  handle has  been deleted  so the  file 
+handle can no longer be used.
+
+(.EOL, 0B9h)
+
+     Internal error should never occur.
+
+Invalid sub-function number (.ISBFN, 0B8h)
+
+     The  sub-function number passed to the IOCTL function (function 4Bh) was 
+invalid.
+
+   6.3   PROGRAM TERMINATION ERRORS
+
+     The following  errors are those which may be generated internally in the 
+system  and passed  to &quot;abort&quot;  routines. They  will not normally be returned 
+from function  calls. Note that an abort routine can also be passed any error 
+which  a transient program passes to the &quot;terminate with error code&quot; function 
+call.
+
+Ctrl-STOP pressed (.STOP, 09Fh)
+
+     The Ctrl-STOP key is tested in almost all places in the system including 
+all character I/O.
+
+Ctrl-C pressed (.CTRLC, 09Eh)
+
+     Ctrl-C is  only tested  for on  those character  functions which specify 
+status checks.
+
+Disk operation aborted (.ABORT, 09Dh)
+
+     This  error  occurs  when  any  disk  error  is aborted  by the  user or 
+automatically  by the  system. The original disk error code will be passed to 
+the abort routine in B as the secondary error code.
+
+Error on standard output (.OUTERR, 09Ch)
+
+     Returned if any error occurred on a standard output channel while it was 
+being  accessed through  the character  functions (functions  01h...0Bh). The 
+original error  code is  passed to  the abort  routine in  register B  as the 
+secondary  error code.  This error  will normally only occur if a program has 
+altered the standard file handles.
+
+Error on standard input (.INERR, 09Bh)
+
+     Returned if  any error occurred on a standard input channel while it was 
+being  accessed through  the character  functions (functions  01h...0Bh). The 
+original error  code is  passed to  the abort  routine in  register B  as the 
+secondary error code. The most likely error is end of file (.EOF). This error 
+will normally only occur if a program has altered the standard file handles.
+
+   6.4   COMMAND ERRORS
+
+     The following errors will not be returned from an MSX-DOS function call, 
+but  are used  by the  command interpreter.  They are included here because a 
+transient program  may find  it useful  to return  some of them. The &quot;Command 
+Specification&quot;  document gives  more details  of what these errors means from 
+the command interpreter.
+
+Wrong version of COMMAND (.BADCOM, 08Fh)
+
+     COMMAND2.COM loaded  it's transient part from disk but it's checksum was 
+not what was expected.
+
+Unrecognized command (.BADCM, 08Eh)
+
+     A  given command was not an internal command and a .COM or .BAT file was 
+not found with the same name.
+
+Command too long (.BUFUL, 08Dh)
+
+     The command in a batch file exceeded 127 characters in length.
+
+(.OKCMD, 08Ch)
+
+     An internal  error used after executing a command passed to COMMAND2.COM 
+on the command line. (There is no message for this error code.)
+
+Invalid parameter (.IPARM,      08Bh)
+
+     The  parameter to  a command was invalid in some way eg. a number out of 
+range.
+
+Too many parameters (.INP, 08Ah)
+
+     After parsing  all the  parameters required  for a  command, there  were 
+still more non-separator characters on the command line.
+
+Missing parameter (.NOPAR, 089h)
+
+     Where a parameter was expected the end of line was found.
+
+Invalid option (.IOPT, 088h)
+
+     The  letter given  after a  / on  the command  line was invalid for that 
+command.
+
+Invalid number (.BADNO, 087h)
+
+     Non-digit characters appeared where a number was expected.
+
+File for HELP not found (.NOHELP, 086h)
+
+     The  help  file was  not found  or the  parameter was  not a  valid HELP 
+parameter.
+
+Wrong version of MSX-DOS (.BADVER, 085h)
+
+     This error  is never  used by  the command  interpreter, it  has its own 
+internal  message  for  this  error.  However  it  is provided  for transient 
+programs which may find it useful to return this error. 
+
+Cannot concatenate destination file (.NOCAT, 084h)
+
+     The destination file in CONCAT is matched by the source specification.
+
+Cannot create destination file (.BADEST, 083h)
+
+     In COPY, creating the destination file would overwrite one of the source 
+files (or another file that is already in use).
+
+File cannot be copied onto itself (.COPY, 082h)
+
+     In  COPY, the  destination file  if created  would overwrite  the source 
+file.
+
+Cannot overwrite previous destination file (.OVDEST, 081h)
+
+     In  COPY,  an  ambiguous  source  was  specified  with  a non-ambiguous, 
+non-directory, non-device destination.
+
+                              * * * * *
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

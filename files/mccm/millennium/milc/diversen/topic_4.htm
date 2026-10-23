@@ -1,0 +1,158 @@
+<html>
+
+<head>
+<title>MILC - Topic Overzicht I/O poorten</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_3.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_5.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Overzicht I/O poorten</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                                +----------------------+
+                          |||  I/O-poort adressen  |||
+                            +----------------------+
+
+In de hiernavolgende opsomming van I/O-poort adressen en adres-gebieden, worden
+de MSX-specificaties gegeven. Het is echter heel goed mogelijk dat een bepaalde
+fabrikant afwijkt van deze specificatie. Het is daarom niet gegarandeerd, dat
+deze adressen exact overeenkomen met de in uw computer gebruikte adressen. Het
+is zelfs ten sterkste af te raden programma's voor gebruik op meerdere computers
+te schrijven, waarin deze adressen rechtstreeks worden aangeroepen. Dergelijke
+programma's dienen altijd gebruik te maken van de beschikbare BIOS-entry points.
+
+
+Adres(sen);    Functie;
+&amp;H00 - &amp;H7F    Gereserveerd,
+&amp;H80 - &amp;H83    RS232C-support (USART 8251);
+&amp;H8O           DATA-register van de 8251-chip.
+&amp;H81           Status/commando-register van de 8251 chip.
+&amp;H82           Status/interrupt masker van de 8251-chip.
+&amp;H83           Gereserveerd.
+
+&amp;HB4 - &amp;H87    Programmable Timer 8253.
+
+&amp;H88 - &amp;H8B    Gereserveerd voor de Video Display Processor 9938
+               voor MSX1 adaptor.
+
+&amp;H8C - &amp;H8D    Gereserveerd voor Modem.
+&amp;H8E - &amp;H8F    Gereserveerd.
+&amp;H90 - &amp;H91    Printer-poort:
+&amp;H90           Control:
+                   write     bit 0 = strobe.
+                   read      bit 1 = status.
+&amp;H91           Data.
+
+&amp;H92 - &amp;H97    Gereserveerd.
+
+&amp;H98 - &amp;H9B    Gereserveerd voor de Video Display Processor. (MSX1 en MSX2).
+
+&amp;H9C - &amp;H9F    Gereserveerd.
+
+&amp;HA0 - &amp;HA3    Sound processor (kY-3-8910):
+&amp;HA0           Adres-register
+&amp;HA1           Data naar register schrijven.
+&amp;HA2           Data uit register lezen.
+
+&amp;HA4 - &amp;HA7    Gereserveerd.
+
+&amp;HA8 - &amp;HAB    Parallel I/O-poort (8255):
+&amp;HA8           Poort A lezen en schrijven.
+&amp;HA9           Poort B lezen en schrijven.
+&amp;HAA           Poort C lezen en schrijven.
+&amp;HAB           Mode setting register.
+
+&amp;HAC - &amp;HAF    Gereserveerd.
+
+&amp;HB0 - &amp;HB3    Extern geheugen (8255):
+&amp;HB0           Poort A: Adreslijnen A0-A7.
+&amp;HB1           Poort B: Adreslijnen A8-A10, A13-A15, CONTROL, R/W.
+&amp;HB2           Poort C: Adreslijnen A11-A12, datalijnen D0-D7
+&amp;HB3           Mode setting register.
+
+&amp;HB4 - &amp;HB5    Kalender klok (RP-5C01):
+&amp;HB4           Adres register.
+&amp;HB5           Data lezen en schrijven.
+
+&amp;HB6 - &amp;HB7    Gereserveerd.
+&amp;HB8 - &amp;HBB    Licht-pen.
+&amp;HBC - &amp;HBF    VHD Control.
+&amp;HC0 - &amp;HC1    MSX-audio.
+&amp;HC2 - &amp;HC7    Gereserveerd.
+&amp;HC8 - &amp;HCF    MSX-interface.
+
+&amp;HD0 - &amp;HD7    Floppy disk controller.
+
+&amp;HD8 - &amp;HDB    KANJI-ROM:
+&amp;HD8           Adreslijnen A5-A0 (minst significant)
+&amp;HD9           Adreslijnen A5-A0 (meest significant)
+               of bij lezen datalijnen D7-D0.
+
+&amp;HDC - &amp;HF4    Gereserveerd.
+
+&amp;HF5           Systeem Controle:
+               De bits van deze I/O-poort geven aaan
+               welke devices in het systeem aanwezig
+               zijn. Een 1 wil zeggen aanweziq, een 0
+               betekent niet aanwezig. Deze poort kan
+               zowel worden gelezen als beschreven.
+               Door het betreffende bit 0 te maken
+               verwijdert u het device als het ware uit
+               het systeem:
+
+               bit 0 - KANJI-ROM.
+               bit 1 - gereserveerd.
+               bit 2 - MSX-AUDIO.
+               bit 3 - Super impose.
+               bit 4 - MSX-interface.
+               bit 5 - RS232C-interface.
+               hit 6 - Licht-pen
+               bit 7 - Kalender-klok.
+
+&amp;HF6           color bus I/O
+
+&amp;HF7           A/V-control.
+               De betekenis van de bits op dit I/O adres is als volgt:
+
+               blt 0 - Audio Rechts
+               bit 1 - Audlo Links
+               bit 2 - Video Input Select
+               bit 3 - Vidso Input Sense (lezen)
+               bit 4 - A/V-control.
+               bit 5 - Ym control.
+               bit 6 - Ys control.
+               bit 7 - Video Select.
+
+&amp;HF8 - &amp;HFB    Gereserveerd.
+&amp;HFC - &amp;HFF    Memory mapper.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

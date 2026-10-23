@@ -1,0 +1,62 @@
+<html>
+
+<head>
+<title>MILC - Topic Muziekmodule: timers</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_8.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_10.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Muziekmodule: timers</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+   Timers
+   -----------------------------------------------------------------------------
+   De soundprocessor bevat ook nog twee timers.In elke timer kan (via register 
+   2 of 3) een beginwaarde gezet worden. Nadat de timer is gestart (register 4) 
+   telt deze waarde af tot nul en zet dan in het statusregister een vlag die 
+   een interrupt veroorzaakt. De beginwaarde wordt opnieuw geladen en de timer 
+   wacht op een nieuw startbevel.
+
+   Timer-1 telt af met een wachttijd van 80 microseconde per stap. De totale 
+   teltijd T1 is als volgt afhankelijk van de beginwaarde N1:
+
+    T1=(256-N1)*0.08 msec
+
+   De maximale teltijd (N1=0) voor Timer-1 is ruim 20 msec.
+   Timer-2 telt af op gelijke wijze maar dan met 320 microseconde per stap:
+
+    T2=(256-N2)*0.32 msec.
+
+   Hiervoor is de maximale teltijd 82 msec.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_10.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

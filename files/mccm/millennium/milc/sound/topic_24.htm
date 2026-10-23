@@ -1,0 +1,255 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-Music</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_23.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_25.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-Music</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+    FM-PAC / MSX-MUSIC ( Yamaha YM-2413 )
+    -------------------------------------
+
+    In  deze tekst  zal alleen  het direct  programmeren van  de MSX-MUSIC 
+    besproken worden,  dus niet de FM-BASIC mogelijkheden, omdat deze uit&uacute; 
+    eindelijk toch gebruik maken van de directe aansturing.
+
+    De MSX-MUSIC of de FM-PAC neemt voor de aansturing twee I/O poorten in 
+    gebruik. Helaas  worden deze  registers alleen gebruikt om van de com&uacute; 
+    puter  naar de  FM-PAC te  schrijven, dus  lezen van  registers van de 
+    FM-PAC/MSX-MUSIC is niet mogelijk.
+
+     07C h           - Adrespoort.
+     07D h           - Data Poort.
+
+    Om  deze poorten  juist aan te sturen in machine-taal is het handig om 
+    het volgende programma te gebruiken:
+
+     ;Reg. D bevat register nummer voor FM-PAC.
+     ;Reg. E bevat data voor gekozer register.
+
+     SET_FM: LD   A,D
+             OUT  (07CH),A
+             LD   A,E
+             OUT  (07DH),A
+             EX   (SP),HL     ;Deze 2 commando's dienen slechts als korte
+             EX   (SP),HL     ;pauze om de PAC de data te laten verwerken
+             RET              ;voor er weer nieuwe data wordt gestuurt.
+
+    De  FM-PAC bevat  43 programmeerbare  registers voor het instellen van 
+    frequentie,  volume,  instrumenten,  drums  en eventueel  samples. Dit 
+    laatste is nogal moeilijk aangezien de FM-PAC geen ingebouwde hardware 
+    heeft om dit zelfstandig zoals de MUSIC-MODULE af te spelen moet hier&uacute; 
+    voor zelf  in ML-code  een routine worden geschreven die via de nodige 
+    registers de sample data in de FM-PAC stuurt, zodat deze dit sample op 
+    de geluids output zet.
+
+     #0Fh            FM.TST
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     | - | - | - | - |SND| - | - |SMP|
+     +---+---+---+---+---+---+---+---+
+
+    SND  - 1=Sound output van de chip is uit.
+    SAMP - 1=Sample mode aan, een vier bit's sample kan geschreven worden
+            naar register #10h, de 4 hoogste bit's.
+
+     #10h - #18h     LOWFRQ
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |FQ7|FQ6|FQ5|FQ4|FQ3|FQ2|FQ1|FQ0|
+     +---+---+---+---+---+---+---+---+
+
+     #20h - #28h     SELECT
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     | - | - |SUS|KEY|OC2|OC1|OC0|FQ8|
+     +---+---+---+---+---+---+---+---+
+
+
+    FQ 8/0  - Frequency van kanaal 1 tot 9.
+    OC 2/0  - Octaaf van kanaal 1 tot 9.
+    KEY     - Als er een nieuwe toon aan geslagen moet worden dan moet dit
+              eerst op 0 gezet worden. Vervolgens kan de nieuwe data inge-
+              laden worden (Frequentie, Instrument en volume), daarna dit
+              bit weer op 1 zetten.
+    SUS     - Staat dit bit op 1 dan vloeit de toon langzaam af nadat het
+              KEY bit op 0 is gezet. Staat SUS op 0 dan stopt de toon me-
+              teen wanneer het KEY bit uitgezet wordt.
+
+
+     #30h - #38h     VOLINS
+
+       7   6   5   4   3   2   1   0
+    + ---+---+---+---+---+---+---+---+
+     |IN3|IN2|IN1|IN0|VL3|VL2|VL1|VL0|
+     +---+---+---+---+--- ---+---+---+
+
+    VL 3/0  - Volume van kanaal 1 tot 9. Bij binair 0000 wordt het hoogste
+              volume bereikt.
+    IN 3/0  - Instrumen van kanaal 1 tot 9. Er zijn 16 Instrumenten, waar-
+              van instrument nummer 0, via de registers #00 tot #07 ge-
+              programmeert kan worden.
+
+
+     NR:   Instrument:
+
+     00    Software Instrument
+     01    Violin
+     02    Guitar
+     03    Piano
+     04    Flute
+     05    Clarinet
+     06    Oboe
+     07    Trumpet
+     08    Organ
+     09    Tube
+     10    Synthesizer
+     11    Harpsicord
+     12    Vibraphone
+     13    Synthesizer Bass
+     14    Electric Piano 1
+     15    Electric Piano 2
+
+
+     #03h            DRMSEL
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     | - | - |SEL|BD |SD |TOM|CIM|HH |
+     +---+---+---+---+---+---+---+---+
+
+    SEL   - Als dit bit 1 is dan zullen de kanalen 7 tot 9 worden gebruikt
+            voor de drum instellingen en de bit's 4 tot 0 kunnen worden
+            gebruikt om een drum aan te sturen.
+    BD    - Bass Drum :1 = Activeer, mits SEL op 1 staat.
+    SD    - Snare Drum.
+    TOM   - Tom-Tom.
+    CIM   - Cimbal.
+    HH    - Hi Hat.
+
+    De Frequenties en volumen van de Drum's zijn als volgt verdeelt:
+
+    Reg:  Gebruik:
+    #16h  Frequentie bit 7 tot 0 voor de BassDrum.
+    #17h  Frequentie bit 7 tot 0 voor de SnareDrum en de HiHat.
+    #18h  Frequentie bit 7 tot 0 voor de TomTom en de Cimbal.
+    #26h  Octaaf bit 2 tot 0 en Frequentie bit 8 voor BassDrum.
+    #27h  Octaaf bit 2 tot 0 en Frequentie bit 8 voor SnareDrum en de HiHat
+    #28h  Octaaf bit 2 tot 0 en Frequentie bit 8 voor Tom-Tom en de Cimbal.
+    #36h  Low nibble is volume van Bass Drum. ( 0 is het hoogste volume)
+    #37h  High nibble is volume van Hi Hat.
+          Low nibble is volume van Snare Drum.
+    #38h  High nibble is volume van Cimbal.
+          Low nibble is volume van Tom-Tom.
+
+
+    Programmeren van het Software-Instrument.
+
+    De  FM bevat  voor elk instrument 2 operatoren. Het geluid wordt opge&uacute; 
+    wekt via  de FM-synthese dat staat voor Frequency Modulation. Het Sys&uacute; 
+    teem  werkt het zelfde als dat van de Music-module/MSX-Audio alleen de 
+    maximum waarden  zullen niet  altijd overeen komen, maar de theorie is 
+    het zelfde.
+
+
+     #00h/01h        SET.B / SET.A.
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     | AM|VBR|S/D|RKS|MS3|MS2|MS1|MS0|
+     +---+---+---+---+---+---+---+---+
+
+     #00H voor operator B en #01h voor operator A.
+
+     AM      - Amplitude Modutation.
+     VBR     - Vibrato.
+     S/D     - 0 = Decay; 1 = Sustain.
+     RKS     - Rate Key Scale.
+     MS3/0   - Multi sample wave selection.
+
+
+     #02h            KSCMOD
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |LK1|LK0|MD5|MD4|MD3|MD2|MD1|MD0|
+     +---+---+---+---+---+---+---+---+
+
+     LK1/0   - Level Key Scale.
+     MD5/0   - Modulation Control.
+
+
+     #03h            FEED
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |LK1|LK0| - |DS2|DS1|FD2|FD1|FD0|
+     +---+---+---+---+---+---+---+---+
+
+     LK1/0   - Level Key Scale.
+     DS2/1   - Distorted Wave Form.
+     FD2/0   - FM-Feedback constant.
+
+
+     #04h / #05h     CTRL.B / CTRL.A
+
+       7   6   5   4   3   2   1   0
+    + ---+---+---+---+---+---+---+---+
+     |AT3|AT2|AT1|AT0|DC3|DC2|DC1|DC0|
+     +---+---+---+---+---+---+---+---+
+
+     AT3/0   - Attack envelope rate.
+     DC3/0   - Decay envelope rate.
+
+
+     #06h / #07h     IND.B / IND.A
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |IN3|IN2|IN1|IN0|RL3|RL2|RL1|RL0|
+     +---+---+---+---+---+---+---+---+
+
+     IN3/0   - Indication Decay / Sustain level.
+     RL3/0   - Release envelope rate.
+
+    De FM-synthese  zit nogal  ingewikkeld in  elkaar, vooral  voor de be&uacute; 
+    ginner is het gewoon een kwestie van proberen. Gelukkig zijn er aardig 
+    wat muziek programma's op de markt die dit zelf behandelen.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_23.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_25.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

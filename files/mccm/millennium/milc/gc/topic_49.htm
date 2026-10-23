@@ -1,0 +1,302 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX gericht programmeren</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_48.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_50.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX gericht programmeren</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+       M S X  G E R I C H T  P R O G R A M M E R E N
+      ===============================================
+
+TurboPascal  wordt   als  programmeertaal   door  veel  MSX- 
+programmeurs  niet  echt  serieus genomen,  dit voornamelijk 
+omdat  er door TurboPascal geen gebruik wordt gemaakt van de 
+speciale  krachtige  eigenschappen  van  het  MSX  computer- 
+systeem. TurboPascal  op een  PC kan,  en doet hetzelfde als 
+TurboPascal  op een  MSX, trage  uitvoersnelheid en absoluut 
+geen goede grafische ondersteuning.
+
+Bovenstaande mag  waar zijn,  maar in TurboPascal zitten een 
+aantal  functies waardoor  de programmeur  toch gebruik  kan 
+maken  van  MSX  mogelijkheden.  Kennis  van  Machinetaal is 
+overigens wel  een vereiste. Door op deze manier de snelheid 
+van machinetaal te koppelen aan de overzichtelijke structuur 
+van  TurboPascal kan een snel werkend, grafisch volledig, en 
+vooral MSX waardig programma geschreven worden.
+
+------------------------------------------------------------
+absolute
+
+addr(&lt;variabele, functie of pointer&gt;): pointer;
+
+mem: array[0..$FFFF] of byte;
+
+port: array[0..255] of byte;
+
+bdos(func; parm);
+
+bdos(func; parm): integer;
+
+bdoshl(func; parm): integer;
+
+inline(byte,byte..);
+------------------------------------------------------------
+
+Wanneer er achter de declaratie van een variabele &quot;absolute&quot; 
+met  daarachter  een  adres  wordt  geplaatst,  dan  zal  de 
+geheugen plaats waar die variabele opgeslagen wordt beginnen 
+op het meegegeven adres. 
+
+var width   : byte absolute $F3B1;
+
+In bovenstaand  voorbeeld staat  de waarde  van de variabele 
+&quot;width&quot;  op  adres  F3B1  hex,  op dat  adres slaat  het MSX 
+systeem  de schermbreedte op. Indien nu de variabele &quot;width&quot; 
+op bijvoorbeeld  25 wordt gezet, dan komt in het geheugen op 
+adres F3B1 hex ook 25 te staan. 
+
+
+Met de  variabele &quot;mem&quot;  wordt precies hetzelfde bereikt als 
+met  &quot;absolute&quot;, alleen  is het  nu niet mogelijk om met een 
+variabele te  werken, de waarde wordt direct in het geheugen 
+geplaatst. MEM is te vergelijken met PEEK en POKE samen. 
+
+mem[$F3B1]:=25;  of  mem[$F3B1]:=width;
+
+width:=mem[$F3B1];
+
+In het  eerste voorbeeld wordt 25 in geheugenadres F3B1H ge- 
+plaatst,  en in  het tweede  voorbeeld wordt  de inhoud  van 
+geheugenadres F3B1 hex in de variabele &quot;width&quot; gezet.
+
+De   variabele  &quot;port&quot;   is  te  vergelijken  met  de  BASIC 
+commando's OUT en INP, met behulp hiervan is het mogelijk de 
+MSX direct  aan te sturen. Een grondige kennis van de opbouw 
+van  de computer is dan echter wel nodig, voor wie die (nog) 
+niet bezit  is het  makkelijker om in machinetaal, en met de 
+BIOS routines te werken. (zie verder) 
+
+waarde:=port[$AA];
+
+port[$AA]:=1;  of  port[$AA]:=waarde;
+
+Het  eerste voorbeeld  leest een  byte uit poort AA hex, het 
+tweede schrijft een waarde naar poort AA hex. 
+
+Met  behulp  van de  functie &quot;addr&quot;  is het  mogelijk om  de 
+adressen te  achterhalen waar  TurboPascal de  variabelen en 
+procedures  opslaat. Dit is vooral handig om vanuit machine- 
+taal routines in TurboPascal (zie verder) toch de variabelen 
+en procedures te kunnen gebruiken. 
+
+loop:=addr(print_screen);
+
+writeln(addr(loop));
+
+Het eerste  voorbeeld kent  het beginadres  van de procedure 
+&quot;print_screen&quot;  toe  aan  de variabele  loop. In  het tweede 
+voorbeeld  wordt het  adres van  de variabele  &quot;loop&quot; op het 
+scherm geschreven. 
+
+
+Met voorgaande  functies is  het mogelijk  meer met  het ge- 
+heugen te werken dan normaal onder TurboPascal, maar daarmee 
+is  er  nog  geen  echt  MSX  programma  gemaakt. Om  de MSX 
+volledig  te  besturen  is het  noodzakelijk machinetaal  te 
+kunnen  gebruiken binnen  TurboPascal, de procedure &quot;inline&quot; 
+maakt dat mogelijk. 
+
+Na &quot;inline&quot;  staan tussen  haakjes een  aantal getallen, ge- 
+scheiden door komma's. Deze getallen zijn de machinecode, en 
+kunnen  bijvoorbeeld met behulp van een assembler geschreven 
+worden. De  machinecode wordt  in het  geheugen gezet, en de 
+program  counter (PC) wordt gelijk gemaakt aan het adres van 
+het eerste  getal. Met  andere woorden,  de getallen  vormen 
+samen ‚‚n machinetaal routine die direct aangeroepen wordt. 
+
+De  getallen mogen  direct worden  ingevoerd, maar het mogen 
+ook variabelen  zijn. Nu  het mogelijk  is om machinetaal te 
+gebruiken  kunnen  we  om te  beginnen twee  routines maken, 
+waarin  we opzoeken  in welke slots de BIOS, en de MSX2-BIOS 
+zitten, en deze daarna aanroepen. 
+
+------------------------------------------------------------
+Onderstaande staat ook als losse file (BIOS.INC) op disk.
+
+var  regA,regBC,regDE,regHL,regF,regIX,regIY : integer;
+
+procedure store;
+begin
+ inline($3a/regA/$ed/$4b/regBC/$ed/$5b/regDE/
+ $2a/regHL/$dd/$2a/regIX/$fd/$2a/regIY);
+end;
+
+procedure restore;
+begin
+ inline($32/regA/$ed/$43/regBC/$ed/$53/regDE/
+ $22/regHL/$dd/$22/regIX/$fd/$22/regIY);
+end;
+
+procedure msxbios(entry:integer);
+begin
+  inline(
+    $F5/$C5/$D5/$E5/$DD/$E5/$FD/$E5/$3A/regA/$ED/$4B/
+    regBC/$ED/$5B/regDE/$2A/regHL/$DD/$2A/entry/$FD/
+    $2A/$C0/$FC/$CD/$1C/$00/$32/regA/$ED/$43/regBC/$ED/
+    $53/regDE/$22/regHL/$DD/$22/regIX/$FD/$22/regIY/
+    $F5/$E1/$22/regF/$AF/$32/regA+1/$32/regF+1/$FD/
+    $E1/$DD/$E1/$E1/$D1/$C1/$F1/$FB)
+end;
+
+procedure msx2bios(entry:integer);
+begin
+  inline(
+    $F5/$C5/$D5/$E5/$DD/$E5/$FD/$E5/$3A/regA/$ED/$4B/
+    regBC/$ED/$5B/regDE/$2A/regHL/$DD/$2A/entry/$FD/
+    $2A/$F7/$FA/$CD/$1C/$00/$32/regA/$ED/$43/regBC/$ED/
+    $53/regDE/$22/regHL/$DD/$22/regIX/$FD/$22/regIY/
+    $F5/$E1/$22/regF/$AF/$32/regA+1/$32/regF+1/$FD/
+    $E1/$DD/$E1/$E1/$D1/$C1/$F1/$FB)
+end;
+------------------------------------------------------------
+
+In de eerste regel worden variabelen gedeclareerd die gelijk 
+zijn aan de registers van de Z80, voor het aanroepen van een 
+routine  kunnen  deze  worden  ingevuld,  en  na  de aanroep 
+gelezen.
+
+Als  de variabelen  gevuld zijn staan de waarden nog niet in 
+de  echte  registers, hiervoor  is de  routine &quot;store&quot;,  bij 
+aanroep plaatst &quot;store&quot; alle variabelen in de registers.
+
+Met  de procedure &quot;msxbios&quot; en &quot;msx2bios&quot; is het mogelijk om 
+elke BIOS  routine uit  te voeren, zorg er wel voor dat alle 
+registers  vooraf goed zijn ingevuld, en met &quot;store&quot; naar de 
+echte Z80 registers geschreven zijn.
+
+Als de  BIOS routine getallen via registers terug geeft, dan 
+staan  deze getallen  alleen in de echte Z80 registers, niet 
+in de  variabelen. De  procedure &quot;restore&quot;  plaatst alle Z80 
+registers  in de  variabelen, zodat deze direct te gebruiken 
+zijn. Het is natuurlijk net zo gemakkelijk om de procedure's 
+&quot;store&quot;  en   &quot;restore&quot;  in   de  procedures   &quot;msxbios&quot;  en 
+&quot;msx2bios&quot;  te plaatsen, maar ze staan hier los omdat ze ook 
+nodig zijn bij de BDOS functie aanroep.
+
+In elke  MSX computer  met diskdrive  zit naast  een BIOS en 
+MSX2BIOS  ook nog  een BDOS, deze &quot;BIOS&quot; zorgt ervoor dat de 
+computer de diskdrives kan gebruiken. Alle MSX computers met 
+diskdrive hebben  de gewone  BDOS, wie  onder MSX-DOS2 werkt 
+heeft  in plaats van die gewone BDOS de nieuwe DOS2-BDOS. De 
+nieuwe functies  uit die  BDOS zijn  ook te gebruiken vanuit 
+TurboPascal.
+
+------------------------------------------------------------
+type st8 = string[8];
+
+function date:st8;
+var     inv  : st8;
+        inv1 : st8;
+begin
+ bdos($2a);
+ restore;
+ str(lo(regDE),inv);
+ if lo(regDE) &lt; 10 then insert('0',inv,1);
+ str(hi(regDE),inv1);
+ if hi(regDE) &lt; 10 then insert('0',inv1,1);
+ inv:=inv+'-'+inv1+'-';
+ str(regHL,inv1);
+ inv:=inv+copy(inv1,3,2);
+ date:=inv;
+end;
+-------------------------------------------------------------
+
+Er  is ‚‚n  procedure en  twee functies  om de  BDOS aan  te 
+roepen. Het makkelijkst is om gewoon met de procedure &quot;bdos&quot; 
+te werken en alle registers via de variabelen door te geven, 
+behalve het  C register, wat altijd wordt gebruikt om aan de 
+geven welke functie uitgevoerd moet worden, register C wordt 
+tussen haakjes achter de procedure geplaatst.
+
+Eventueel  is   het  ook   mogelijk  de  functie  &quot;bdos&quot;  te 
+gebruiken,  in dat geval wordt register DE als waarde van de 
+functie  teruggegeven.   Het  is  ook  mogelijk  de  functie 
+&quot;bdoshl&quot;  te gebruiken, in dat geval wordt niet register DE, 
+maar register HL als waarde van de functie teruggegeven.
+
+In  bovenstaand  voorbeeld  wordt  gebruik  gemaakt  van  de 
+procedure &quot;bdos&quot;  om de huidige datum uit te lezen. Er wordt 
+gebruik gemaakt van de BDOS functie &quot;GET DATE&quot;. (2A hex)
+
+GET DATE (2AH)
+
+Parameters:  C = 2AH (_GDATE)
+Results   : HL = Year 1980...2079
+             D = Month (1=Jan...12=Dec)
+             E = Date (1...31)
+             A = Day of week (0=Sun...6=Sat)
+ 
+ 
+                                               Misha van Tol
+
+------------------------------------------------------------
+LITERATUUR
+
+
+Alle BDOS en 2.20 BDOS routines staan oa.in;
+
+Programme Reference Manual 1
+Programme Reference Manual 2, beide van HSH.
+
+
+Alle MSX1 BIOS routines staan oa. in;
+
+MSX-HANDBOEK voor gevorderden
+Kluwer Technische Boeken
+ISBN 90 201 1925 7
+
+
+Alle MSX1 BIOS en MSX2 BIOS routines staan oa. in;
+
+MSX2 BASIC met monitorgegevens
+Kluwer Technische Boeken
+ISBN 90 201 1961 3
+
+Msx Computer Magazine
+BIOS-tabelen
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_48.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_50.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

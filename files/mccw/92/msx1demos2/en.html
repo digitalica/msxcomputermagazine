@@ -1,0 +1,810 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>23 steps to high resolution on MSX1</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Antti Silvast">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 92, March/April/May">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#008000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#008000">
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../Tilburg2000/en.html">Big computer meeting 2000</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        issue
+        92,
+        March/April/May&nbsp;2000<BR>
+</FONT><A HREF="../contents/en.html#msx1demos2">Back to contents</A></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../contents/en.html">MCCW Contents</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>part 2/23</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>23 steps to high resolution on MSX1</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>
+  In the previous episode we talked about theories, principles, numbers,
+mathematics and stuff like that. But, we computer-oriented people are all
+a bit of practicalist &mdash;&nbsp;who usually just tend to get bored to death with
+anything involving a pen and a paper&nbsp;&mdash; so let&#8217;s get down to business.
+Let&#8217;s see what we really can do and even dish out a bit of source code
+along.
+</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#688878" HEIGHT="20"><B><I><A HREF="mailto:asilvast@cc.hut.fi"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Antti Silvast</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par5">Planarity revealed</A>
+<BR>
+<A HREF="#Par9">Interference rings $0.00</A>
+<BR>
+<A HREF="#Par18">Twisting bars $0.00</A>
+<BR>
+<A HREF="#Par30">Next up</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="CENTER" BGCOLOR="#D0F8D8"><B><FONT COLOR="#000000">
+                                    References
+                                  </FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT"><FONT COLOR="#FFFFFF">1.</FONT>&nbsp;<A HREF="MAKEINT.BAS"><FONT COLOR="#FFFFFF">MAKEINT.BAS</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">2.</FONT>&nbsp;<A HREF="INT.GEN"><FONT COLOR="#FFFFFF">INT.GEN</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">3.</FONT>&nbsp;<A HREF="FILE.INC"><FONT COLOR="#FFFFFF">FILE.INC</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">4.</FONT>&nbsp;<A HREF="INTER.LZH"><FONT COLOR="#FFFFFF">INTER.LZH</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">5.</FONT>&nbsp;<A HREF="PRETWIST.PAS"><FONT COLOR="#FFFFFF">PRETWIST.PAS</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">6.</FONT>&nbsp;<A HREF="TW.GEN"><FONT COLOR="#FFFFFF">TW.GEN</FONT></A>
+<BR>
+<FONT COLOR="#FFFFFF">7.</FONT>&nbsp;<A HREF="TWIST.LZH"><FONT COLOR="#FFFFFF">TWIST.LZH</FONT></A>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+  There&#8217;s three kinds of effects I&#8217;ve produced with the MSX:
+pattern based effects, chunky based effects and character
+based effects. Pattern based effects dump to the <I>pattern table</I>, chunky
+based effects to the <I>colour table</I> and character based to the <I>name table</I>.
+In this article I will go more in depth to the
+truly most spectacular thing you can do on the MSX1 &mdash;&nbsp;that is, before
+you&#8217;ve discovered the character based effects&nbsp;&mdash; pattern based effects.
+</P>
+<A NAME="Par2"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  But still on a more general level, somewhere in between the masses of
+ignorance our demos are achieving worldwide I&#8217;ve sensed a bit of
+disappointment towards the fact that our effects are all so polite;
+even running correctly on top of emulators and definitely not stretching
+the limits of MSX1&#8217;s hardware features. We&#8217;ll, we&#8217;d sure like to, but
+there aren&#8217;t any; at least much of use.
+</P>
+<A NAME="Par3"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  When I divided the effects a moment ago an MSX2-demowatcher would&#8217;ve
+instantentionally pointed out the total absence of sprite and videobeam
+based effects. Yes, I know they&#8217;ve multiplexed the four
+&mdash;&nbsp;or whatever&nbsp;&mdash; sprites C64 has all over again and we have a massive amount
+of 32 even without multiplexing. But then the MSX-standard features the
+four sprites per line limit, a limit that you can&#8217;t
+as far as I know overcome anyhow at all, since the Z80 is too slow to do
+almost anything during one scanline. Someone correct me if I&#8217;m wrong,
+I haven&#8217;t got any numbers one me and haven&#8217;t ever tried to overcome the
+four sprites limitation; I did however try to multiplex the 32 sprites from
+the upper part of the screen to the lower and couldn&#8217;t get even that
+working.
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  And as for the videobeam, we&#8217;ve already proved it is possible
+to do raster tricks even without a horizontal retrace or some nice
+memory place updating the current videobeam line: just make a big cpu-loop
+out of it, it takes about four <TT>NOP</TT>&#8217;s for one scanline during the retrace.
+After the effect truly takes up all cpu-time, the display is all
+flickery and you&#8217;ll have to rewrite your music players all over again,
+but that wouldn&#8217;t be a real problem if this trick was of any
+use which it isn&#8217;t. This is MSX1, we haven&#8217;t got any scroll registers,
+just the crummy base registers that all work on at least 6 bits
+a granularity. The only real use I can think of for this trick is to
+change the background color (<TT>vdp 7</TT>) for every row which works fine,
+but why would you want to since it&#8217;s just as possible in <TT>SCREEN</TT>&nbsp;<TT>2</TT>?
+Aside from that, if I never ever was to touch <TT>SCREEN</TT>&nbsp;<TT>3</TT> again that could
+prove to have some implementations: improving the resolution, color
+flickering, maybe using hires-borders in <TT>SCREEN</TT>&nbsp;<TT>2</TT> and switching the
+display mode in between the retrace. But alas, I&#8217;m not.
+</P>
+<A NAME="Par5"></A>
+<P CLASS="bodynoindent">
+<B>Planarity revealed</B>
+<BR>
+  Let&#8217;s get to the pattern based effects which truly are one form of
+art. The display mapping in <TT>SCREEN</TT>&nbsp;<TT>0</TT>, <TT>1</TT> and <TT>2</TT> is planar, that is,
+8 pixels of graphics are packed into 8 bits or one byte. Every byte has
+two colours, but you can change the colours for every 8&times;1 a tile -
+see the previous article for more on this.
+</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  For a 32-bit-programmer this planarity will seem inconvenient, but for
+us it&#8217;s a true blessing and the reason you can make 1&times;1 dumping effects
+fast on the MSX. It&#8217;s all in the numbers: at 16 colours a chunky buffer
+will take up one byte to store two pixels. A planar buffer takes one
+byte to store eight pixels so that&#8217;s four times the speed. Remember,
+it&#8217;s all on how fast you can output your effect. Plus we get 1&times;1 accuracy
+where chunky pixels can only be four pixels wide on the MSX1. If you&#8217;re still
+a bit confused thinking about the locations of different pixels stored
+in the byte, don&#8217;t be: we&#8217;re never going to touch them. Of course it would
+be dead slow and fiddly to start shifting and masking the byte to
+alter one individual pixel, but the magic is never to touch anything
+smaller than one byte, 8 pixels.
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  If you&#8217;re not used to planarity, this will take some readaptation.
+How do you produce a dumping effect that cannot change every pixel?
+Just make it row based. A truly simple example would be a vertical
+scroller: you always dump the entire screen row using the same row from
+the virtual buffer. You won&#8217;t need to change the way the pixels are packed
+inside the bytes. A horizontal scroller on the other hand wouldn&#8217;t be
+possible in a straightforward manner since for different frames you&#8217;d
+need to alter the positions of the pixels in horizontal direction.
+</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  I will now introduce two of my previous effects, the interference rings
+and the twisting bars. But first let&#8217;s correct a few misunderstandings.
+Someone once claimed these effects take up all the cpu-time. Well, they
+don&#8217;t, in fact, neither of them outputs the 2&nbsp;kB we could on one blank;
+so both of them waste precious time just waiting for the vblank, time
+that could be used for instance to play a background digital sample.
+In fact, the day I write an impossible effect for the MSX you&#8217;ll have my
+word it isn&#8217;t running on the MSX at all.
+</P>
+<A NAME="Par9"></A>
+<P CLASS="bodynoindent">
+</P><TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5" WIDTH="266">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="intxm.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;1:
+                  </B><I>
+Interfering two waveforms
+</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+<B>Interference rings $0.00</B>
+<BR>
+For the principle on interfering rings see figure 1.
+Just like we&#8217;ve learned in physics, interfering is summing two
+waveforms and that&#8217;s how we create the interference rings: sum two
+images of rings. Now to optimize it for the pattern based techniques
+let&#8217;s set two restrictions: First, the interfering images can only
+move up and down. Second, both the images will be two-coloured with
+colours 0 and 1 such that when interfering 0+0=0, 1+0=1, 0+1=1,
+1+1=0. After that we can store both the images in planar buffers
+and never have to change the way pixels are packed within the bytes since
+the images can&#8217;t move sidewards. And as for our summing-operations, it
+turns out that <TT>XOR</TT> has exactly the properties required: 0 <TT>XOR</TT> 0=0,
+1 <TT>XOR</TT> 0=1, 0 <TT>XOR</TT> 1=1, 1 <TT>XOR</TT> 1=0. Since our pixels are packed as
+individual bits inside a byte, we can <TT>XOR</TT> an entire of 8 pixels at a
+time, at the cost of one operation. After we&#8217;re done <TT>XOR</TT>ring, that will
+be the corresponding screen value, so we can directly output the obtained
+value. Here&#8217;s the Z80 inner loop for interfering and outputting:
+</P>
+<A NAME="Par10"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT>INLOOP.GEN</TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+        ; ...
+    _innerloop:
+        ld a,(de) ; de is image 1
+        xor (hl)  ; hl is image 2
+        out (#98),a ; output to screen
+        inc hl
+        inc de
+        djnz _innerloop ; dec b, loop if &gt; 0
+        ; ...
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Next up, let&#8217;s think about the size of the thing. Let&#8217;s say our
+output window is <I>x</I>&times;<I>y</I> pixels large where <I>x</I> is dividable by 8. As you recall
+we can do 8 pixels at a time, so this window actually requires
+<I>x</I>/8&times;<I>y</I>
+outputs. As I said in the previous article, we can only do 2048 outputs
+per frame, so our formula becomes <I>x</I>/8&times;<I>y</I>=2048. So the window could be
+for instance 128&times;128. For this particular effect we will however only
+use 128&times;96 for symmetry reasons to get four sets of interference rings
+on screen: this is what I meant by wasting resources.
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" ALIGN="LEFT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5">
+<TR>
+<TD ALIGN="LEFT">
+<TABLE BORDER="0" ALIGN="LEFT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="namet1.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;2:
+                  </B><I>
+<I>name table</I> and <I>pattern table</I> as a default
+</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+  Last of, we&#8217;re in a character based screenmode, so we&#8217;ll have to
+consider how to characters are organized in the memory. The basic layout
+goes as seen in figure 2.
+  As you can see, this could be all right if we wanted to output text,
+but as far as pattern based effects go, it&#8217;s really clumsy. First the
+eight horizontal neighbouring pixels are packed into one byte. Then the
+following byte will be the eight pixels below these. After we&#8217;re done
+with the eight rows a character has, we&#8217;ll have to move eight pixels
+back up and eight pixels sidewards. How would you implement anything
+when dealing with an order like this?
+</P>
+<A NAME="Par13"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Luckily, we don&#8217;t have to. Enter the pseudolinear mode; It&#8217;s clear
+that we cannot change the way the <I>pattern table</I> is formed, but what we
+can do is change the order of the characters via the <I>name table</I>.
+We construct our <I>name table</I> to look like figure 3.
+</P><TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5" WIDTH="362">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="namet2.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;3:
+                  </B><I>
+<I>name table</I> and <I>pattern table</I> in pseudolinear
+<TT>SCREEN</TT>&nbsp;<TT>2</TT>
+</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+Check out the source <TT>INT.GEN</TT> for an example on how this is actually
+done.
+</P>
+<A NAME="Par14"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Now, the eight neighbouring pixels are still packed within one byte and
+we cannot do anything about it, but it doesn&#8217;t matter since we never
+want to touch anything smaller than eight pixels anyway. After that the
+bytes below each other are stored sequentially in the memory for each
+column, which is really nice for us. Not as good as a real linear mode,
+but this is as close as we get on the MSX.
+</P>
+<A NAME="Par15"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  After we&#8217;re done with these basics, we can start coding the effect.
+First, let&#8217;s precalc. I used MSX-BASIC, I know it&#8217;s slow, but I&#8217;ve really
+no clue how the graphic commands work on my Borland Pascal 1.0 or even
+if there are any. If someone actually does, please drop me a mail.
+Here&#8217;s the program: [<A HREF="MAKEINT.BAS">1</A>].
+Just type <TT>BASIC</TT> from the command prompt, then <TT>LOAD
+"MAKEINT.BAS"</TT> and
+<TT>RUN</TT>. The program first draws the circles and then writes the precalced
+data which will take a while. About the only thing worth of notice is
+that we write each column twice: this is because it would&#8217;ve been too
+complicated to check for overflows when actually scrolling and updating
+two interfering images, so when the display does overflow, it
+overflows to an other incarnation of the same image.
+</P>
+<A NAME="Par16"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Now we have the data file <TT>INTER.DAT</TT> and it&#8217;s time to start writing
+the real effect. Here&#8217;s the basic procedure:
+</P><OL STYLE="text-align: justify">
+ <LI> Load the datafile.</LI>
+ <LI> Setup screen mode with one <I>pattern table</I> and <I>colour
+table</I> for <TT>SCREEN</TT>&nbsp;<TT>2</TT>; see the source code.</LI>
+ <LI> Make an other incarnation of the image from slightly a different position
+for interfacing. Of course it could, and probably even should, be a completely
+different image, but I&#8217;m going cheap tonight.</LI>
+ <LI> Setup the <I>name table</I> in pseudolinear mode like described
+            above. Use four copies of the same characters.</LI>
+ <LI> Mix the two images and output.</LI>
+ <LI> Update scrolls.</LI>
+ <LI> Go to 5.</LI>
+</OL><P CLASS="body">
+</P>
+<A NAME="Par17"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Here&#8217;s the source code, you&#8217;ll need both these files on your diskette:
+[<A HREF="INT.GEN">2</A>] and
+[<A HREF="FILE.INC">3</A>].
+Type <TT>GEN80 INT.GEN</TT> from the command prompt and after that
+<TT>INT INTER.DAT</TT> to run. And there you have it. Use <TT CLASS="key">SPACE</TT> to
+quit.
+  For a package of all the files and precompiled executables download this
+package 
+[<A HREF="INTER.LZH">4</A>].
+</P>
+<A NAME="Par18"></A>
+<P CLASS="bodynoindent">
+</P><TABLE BORDER="0" ALIGN="LEFT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5">
+<TR>
+<TD ALIGN="LEFT">
+<TABLE BORDER="0" ALIGN="LEFT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="barxm1.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;4:
+                  </B><I>Rotating bar sequence</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+<B>Twisting bars $0.00</B>
+<BR>
+  Now that we&#8217;ve covered the interference rings, let&#8217;s get to the twisting
+bars. Have a look through this sequence of a rotating bar in figure 4.
+  This is just an illustration, in reality we will have a real texture
+and more frames than just six. The rotation is only pseudo, that is,
+we only really rotate about the y-axis, the data for different
+rows remains linear.
+</P>
+<A NAME="Par19"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Let&#8217;s have a few restrictions: First, the following face of the bar
+&mdash;&nbsp;marked grey in the picture&nbsp;&mdash; should always be the same as the current
+one, so we&#8217;ll only need to store the rotation sequence once and then
+repeat the same set of images for all the four faces. Second, the texture
+should repeat itself between a constant number of lines, say every eight
+rows. After that we only need to store the eight rows of the rotation,
+the rest is always the same as our pseudorotation is vertically linear.
+This has got nothing to do with speed, it just saves us some valuable
+memory. If you feel like it, make all the faces look different and have
+us large a texture you will, the 40&nbsp;kB or so won&#8217;t fit that much though.
+</P>
+<A NAME="Par20"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5" WIDTH="141">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="barxm2.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;5:
+                  </B><I>Principle of twisting bars</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+  After this is done with, we&#8217;ll make the bar twist. The principle is as
+stated in figure 5.
+  It&#8217;s really simple: when dumping your bar to the screen, instead of
+displaying every row using the same amount of rotation, alter it
+depending on the row. Since we&#8217;re going to be working with precalced
+data, this can be done really fast: just display a different row of
+a precalced animation for each row. The size our effect is determined just
+as earlier with the interference rings. Let&#8217;s pick 80&times;192 and use three
+copies of the same bar twisting about the screen.
+</P>
+<A NAME="Par21"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  I&#8217;d like to go through the dumper inner loop in a bit greater focus
+since it takes a really clever use of the stack on the Z80. The thing is,
+if you want to load data sequentially, the stack is by far the fastest
+way to do it... and you get 16 bits a <TT>POP</TT> so it&#8217;s faster to load 16 bits
+sequentially than it is 8 bits! The only drawback is that you&#8217;ll have
+disable the interrupts because we&#8217;re messing with <TT>stack pointer</TT> and a jump to the
+interrupt handler would absolutely mess everything up. So if you&#8217;re,
+for instance, using a music player that updates the notes through
+v-interrupt, you&#8217;ll have to divide your dumper to smaller pieces and
+wait for the retrace in between if the music starts to slow down.
+</P>
+<A NAME="Par22"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Once again we&#8217;re operating with the pseudolinear nametable, so our
+inner loop would look something like this in pseudocode:
+</P>
+<A NAME="Par23"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>Pseudo-listing:
+                            <TT>twist.psd</TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+  for x:=0 to 9 do
+    for y:=0 to 191 do begin
+      a:=byte(image[(frame+word(twister[y])) and 63*80+
+                    (y and 7)*10+
+                    x
+                    ]);
+      port[$98]:=a;
+    end;
+
+  frame:=frame+1;
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par24"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Where image is the buffer of prerotated bars and twister has the
+twisting function that takes the row as a parameter. It&#8217;s clear to see
+that our inner loop requires some more precalcs. Here&#8217;s an improved one:
+</P>
+<A NAME="Par25"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>Pseudo-listing:
+                            <TT>twist2.psd</TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+  for y:=0 to 191 do
+    pre_calc[y]:=twister[y]*80+(y and 7)*10
+
+  for x:=0 to 9 do begin
+      a:=byte(image[word(pre_calc[y])+frame]);
+      port[$98]:=a;
+    end;
+    inc(frame);
+  end;
+  frame:=frame-10;
+  frame:=frame+80;
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par26"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Now it looks real good for us, just two table lookups for 8 pixels.
+The other 16-bit one looks slow though, but this is where the stack
+steps in. In Z80 the inner loop looks this simple:
+</P>
+<A NAME="Par27"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT>TWINNER.GEN</TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+  ; pre_calc already precalced
+
+  di            ; no interrupts
+  ld (spede),sp ; store sp
+
+  ld de,(k)     ; k=(frame and 63*80)
+  ld hl,image
+  add hl,de
+  ld d,h
+  ld e,l        ; de = k+image
+
+  ld c,10
+ _outer:
+  ld sp,pre_calc
+  ld b,192
+ _inner:
+  pop hl        ; hl = word(pre_calc[y]), y=y+2
+  add hl,de     ; hl = pre_calc[y]+frame*80+x
+  ld a,(hl)     ; a=image[hl]
+  out (#98),a   ; output to screen
+  djnz _inner
+
+  inc de ; x=x+1
+  dec c
+  jp nz,_outer
+
+  ld sp,(spede)
+  ei
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par28"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  Let&#8217;s precalc. Since I&#8217;m a bit of a good programmer implementing good
+programming style and since we used BASIC for the previous precalc, we&#8217;re
+going for Pascal this time &mdash;&nbsp;have I ever mentioned that I truly hate
+programming theory?&nbsp;&mdash; for convenience. Speaking frankly, Pascal is all right for this effect
+since we won&#8217;t be needing the graphical commands for anything. Here&#8217;s
+the source:
+[<A HREF="PRETWIST.PAS">5</A>].
+  You can find the compiled executable &#8216;pretwist.com&#8217; in the package
+at the end of the paragraph. There isn&#8217;t really much to explain about
+the source, just draw the rotating bars, convert the chunky data to
+planar and output to a file. Note that we output the same buffer twice
+once more, since we want to prevent overflows. It takes 5 &nbsp;kB&#8217;s more memory
+but it&#8217;s worth the speed.
+</P>
+<A NAME="Par29"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+  After that it&#8217;s just the question of coding the inner loop above and
+that&#8217;s about it. Here&#8217;s the assembly source:
+[<A HREF="TW.GEN">6</A>] and
+[<A HREF="FILE.INC">3</A>].
+  Once again type <TT>GEN80 TW.GEN</TT>
+ to compile and then <TT>TW TWISTED.DAT</TT>
+to run. Here&#8217;s a package of all of the above:
+[<A HREF="TWIST.LZH">7</A>].
+</P>
+<A NAME="Par30"></A>
+<P CLASS="bodynoindent">
+<B>Next up</B>
+<BR>
+  Okay, that&#8217;s all for now. Be sure the tune in next episode for the
+following chapter in this ever-mutating demotutorial series:
+Chunky based effects; how to write just as boring effects as seen on
+PC-intros and -demos.
+</P>
+<A NAME="Par31"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+<I>Note from the editors:</I>
+<BR>
+If you want to see these effects in action,
+you could download some demos from the
+<A HREF="http://www.hut.fi/~asilvast/bw/">Bandwagon page</A>.
+Antti is too humble to mention this, so we do it instead...
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../Tilburg2000/en.html">Big computer meeting 2000</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        issue
+        92,
+        March/April/May&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../contents/en.html">MCCW Contents</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

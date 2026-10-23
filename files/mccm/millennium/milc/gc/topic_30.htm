@@ -1,0 +1,219 @@
+<html>
+
+<head>
+<title>MILC - Topic De diskette nader bekeken</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_29.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_31.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">De diskette nader bekeken</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                  DE DISKETTE NADER BEKEKEN
+
+In dit artikel  wil  ik  proberen  wat  meer  helderheid  te
+scheppen over  de  diskette.  Ik  ga  hier  natuurlijk  geen
+verhaal houden over LOAD, SAVE en MERGE, het zal  meer  gaan
+over SEKTOREN, de FAT etc. Om aan te geven wat  er  ongeveer
+vertelt  gaat  worden,  met  onderstaande  kennis  moet  het
+2ogelijk zijn een  programma  als  DISKIT  van  FILOSOFT  te
+schrijven. Maar nu genoeg inleiding, aan de slag:
+
+                     De diskette zelf
+
+Om  een  diskette  te  gebruiken  moet  hij   eerst   worden
+geformateerd. Dit houdt in dat er sporen op de schijf worden
+geschreven,  ook  wel  tracks   genoemd.   Bij   enkelzijdig
+formateren hebben we te maken met 80 tracks, en bij  dubbel-
+zijdig met 80 tracks aan de bovenkant en 80  tracks  aan  de
+onderkant.
+
+Deze tracks zijn onderverdeeld in elk 9 sektoren  dat  houdt
+dus in dat als we met een  enkelzijdige  diskette  te  maken
+hebben, we 80 tracks * 9 = 720 sektoren hebben. Zo'n  sektor
+is als volgt opgebouwd :
+
+1. Sektor nummer   (Ook wel sektor identifier)
+2. Data area       (Hier is ruimte voor 512 bytes )
+3. Ruimte tussen twee sektoren
+
+Deze liggen achter elkaar op  een  track  samen  met  nog  8
+andere sektoren. Dus als we weer een sommetje maken voor  de
+enkelzijdige disk: 720 sektoren * 512 bytes = 368640 bytes.
+
+Als er een programma op de schijf wordt gezet  komt  dit  op
+verschillende sektoren te staan.  Er  moet  dus  ook  op  de
+diskette staan,  welke  sektoren  het  programma  in  beslag
+neemt. Om te weten waar dit staat moeten we eerst  wat  meer
+over de diskette weten.
+
+De diskette is onderverdeeld in vier verschillende  gebieden
+: 1. De BOOT-sektor
+  2. De Directory
+  3. De FAT ( File Allocation Table )
+  4. Het eigenlijke opslag-gebied voor programma's
+
+We zullen ze een voor een uitgebreid bespreken .
+
+                      De BOOT-sektor
+
+Dit is sektor 0 op de schijf, de eerste sektor. Hierop staat
+een heleboel standaard-informatie:
+
+1. Type             : 3 bytes ( Altijd EB of E9 )
+2. Naam             : 8 bytes
+3. Bytes / Sector   : 2 bytes ( Altijd 512 )
+4. Sekt. / Kluster  : 1 byte
+5. Reserved Sectors : 2 bytes ( Sektoren die geen data -area
+                                zijn . bv. de BOOT -sector )
+6. Nr.FAT's         : 1 byte  ( Aantal FATS )
+7. Directory entries: 2 bytes ( Maximaal  aantal  files   in
+                                directory )
+8. Sectors on disk  : 2 bytes
+9. Med. Descriptor  : 1 byte
+10.Sektors / FAT    : 2 bytes ( Aantal sektoren per FAT )
+11.Sektors / track  : 2 bytes ( Altijd 9 )
+12.Aantal Zijden    : 2 bytes
+13.Hidden Sektors   : 2 bytes ( Wordt niet gebruikt )
+14.De BOOT - routine
+
+De BOOT-sektor  kan  gewoon  vanuit  basic  gelezen  worden,
+hierbij maken wij gebruik  van  het  commando  DSKI$  (x,y).
+Waarbij x het drivenummer is en y het sektor nummer. Bij dit
+commando maken we gebruik van een zogenaamde dummy:
+
+A$=DSKI$ (1,0)
+
+In a$ staat nu niks, in de adressen F351 en F352 staat  waar
+de sektor in het geheugen is opgeslagen. Hieronder volgt een
+programma om de BOOT-sektor te lezen:
+
+10 A$=DSKI$(1,0) :' Haal sektor van diskette
+20 AD=PEEK (&amp;HF351) + 256 * PEEK (&amp;HF352) : ' Adres
+30 FOR A=0 TO 7 : NM$=NM$+CHR$(PEEK(AD+3+A)) : NEXT A ' Naam
+40 PRINT &quot;Naam             : &quot;;NM$
+50 PRINT &quot;Bytes / Sektor   :&quot;;PEEK(AD+11)+256*PEEK(AD+12)
+60 PRINT &quot;Sektors / Kluster:&quot;;PEEK(AD+13)
+
+U kunt  het  programma  zo  zelf  afmaken  met  bovenstaande
+informatie. Met het kommando DSKI$ kunnen we natuurlijk elke
+sektor  onderzoeken,  hieronder  vindt  U  een  heel  simpel
+voorbeeld van een SEKTOR-monitor.
+
+10 CLS : INPUT &quot;WELKE SEKTOR &quot;;A:I$=DSKI$(1,A):Q=0
+20 AD=PEEK(&amp;HF351)+256*PEEK(&amp;HF352)
+30 IF Q=1 THEN X=256 ELSE Q=1:X=0
+40 FORI=0TO15:LOCATE 0,I:PRINT I*16;
+50 FORJ=0TO15
+60 LOCATE 10+J*3,I:PRINT HEX$(PEEK(AD+X+I*16+J));
+70 LOCATE 64+J,I  :PRINT CHR$(PEEK(AD+X+I*16+J));
+80 NEXTJ:NEXTI
+90 A$=INPUT$(1):IF X=0 THEN CLS : GOTO 30 ELSE END
+
+U vraagt zich wellicht af: &quot;Waarom al deze  informatie  over
+de BOOT-sektor?&quot; Het  zal  U  duidelijk  worden  waarom  dit
+onderwerp als eerste is behandeld. Het stelt U in staat, als
+U  bijvoorbeeld  Uw  eigen  SEKTOR-monitor  maakt,  vast  te
+stellen hoeveel sektoren zich op de diskette bevinden. En zo
+zijn er nog veel meer toepassingen.
+
+
+                       De Directory
+
+In de directory staan alle gegevens van de bestanden die  op
+de disk zijn opgeslagen.  De  gegevens  nemen  32  bytes  in
+beslag per bestand, er passen dus 16 bestand-gegevens in een
+sektor. De volgende gegevens van het  bestand  staan  in  de
+directory:
+
+1. File-naam               8 bytes
+2. Extentie                3 bytes
+3. File-attributen         1 byte   Altijd 00 onder MSX
+4. Niet Gebruikt          10 bytes
+5. Tijd                    2 bytes
+6. Datum                   2 bytes
+7. Eerste kluster van file 2 bytes
+8. file grootte            4 bytes
+
+Opmerkingen :
+
+File-naam : Als  het eerste byte E5 bevat , is  dit  bestand
+            gewist .
+Tijd      : Is binair als volgt opgeslagen :
+            MMMSSSSS en HHHHHMMM
+            Waarbij &quot;H&quot; uren,&quot;M&quot; minuten en &quot;S&quot; seconden is.
+Datum     : Is binair als volgt opgeslagen :
+            MMMDDDDD en JJJJJJJM
+            Waarbij &quot;J&quot; jaren,&quot;M&quot; maanden en &quot;D&quot; dagen is .
+            Bij Jaren : 0=1980 en 20=2000 etc.
+
+Uit  de  BOOT-sektor  kunnen  we  lezen  waar  de  directory
+-sectoren zich op de schijf bevinden. In de directory  staat
+ook, waar het eerste kluster van het programma zich bevindt.
+En in de eerste byte van dit kluster  (Dat  uit  2  sektoren
+bestaat, meestal), staat aangegeven wat voor soort programma
+dit is. Bij een basic programma is dit eerste byte  FF,  bij
+een ASCII bestand tussen 30 en 39, en  bij  een  machinetaal
+programma FE.
+
+Als we te maken hebben  met  een  machinetaal-programma  dan
+staan in de 6 bytes daarna, achtereenvolgens het begin,  het
+eind en het startadres van het programma.
+
+Er is echter een probleem. Als we het kluster-nummer  hebben
+weten  we  nog  niet  welke  sector  dit  betreft,  en   dit
+sektor-nummer hebben  we  wel  degelijk  nodig  als  we  het
+commando  DSKI$  willen  gebruiken.  Door  middel  van   een
+ingewikkelde formule kunnen we dit echter wel berekenen:
+
+Aantal FATs * Aantal sektoren + Aantal directory sectoren  +
+Aantal  gereserveerde  sektoren   +   Aantal   gereserveerde
+sektoren * Aantal sektoren per kluster - klusternummer =
+HET SEKTORNUMMER
+
+De volgende  keer  gaan  we  verder  met  onder  andere  een
+programma waarin alle bovenstaande  gegevens  zullen  worden
+toegepast.  Het  programma  toont  U  van   de   eerste   16
+programma's op uw  diskette:  Naam,  grootte,  tijd,  datum,
+cluster, type, sector en eventueel zelfs de begin , start en
+eind adressen. Volgende keer gaan we ook  uitgebreid  verder
+in op de FAT en behandelen we onderwerpen die  nooit  eerder
+gepubliceerd zijn.
+
+Voor Opmerkingen , suggesties , vragen en toevoegingen :
+
+Ronald Egas
+De Blauwe Wereld 53
+1398 EP Muiden
+02942-3813 ('s avonds en in de weekenden)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_29.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_31.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<html>
+
+<head>
+<title>MILC - Topic Joystick MIDI-out</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Joystick MIDI-out</b><br>
+    <i>H.G.</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MSX JOYSTICK MIDI-OUT WITH ST2 DRIVER
+=====================================
+
+I'm terribly sorry folks but here is another text about MIDI,
+but this time it is for people who do not have a Turbo R A1GT
+or a MIDI-interface.
+
+Written by H.G. for MSX Club Gouda.
+
+
+In this text you can read how to make your own very cheap
+MIDI-out channel for your favourite computersystem. All you
+need is 2 resistors, 2 connectors (DIN 8 for MIDI and DB9 for
+the Joystickport) plus some cable with at least 2 wires and 1
+shield. This MIDI-out will not be working with already existing
+programs but with the included ST2 driver you can use it in
+your own programs or you can replace old ST2 drivers with the
+one I made for JoyMIDI.
+
+I did this litle project while I was waiting for Arjan to visit
+me with some nice software etc. It actually took less than 1
+hour to make and test so it should be real easy for you too.
+
+What I used was this:
+
+SVI-738 (running at 3.5MHz), CM-32L, 2 resistors at 220 Ohm
+each, 1 DB9 female connector, 1 DIN8 male and 2 meters of
+shielded cable with at least 2 wires in it.
+
+How to connect it:
+------------------
+Do the following connections from the Joystick port.
+
+Pin 6 (Trg1)--&gt; 220 Ohm --&gt; Midi pin 5 (MIDI 2)
+Pin 5 (+5V) --&gt; 220 Ohm --&gt; Midi pin 4 (MIDI 1)
+Pin 9 --------------------&gt; Midi pin 2 (SHIELD)
+
+you can also add a Zener diode to protect your Joystick port
+this is done this way:
+
+(might be difficult to show in QUASAR)
+
+  Pin 6
+    |
+  \-+-\
+   / \
+  ----- DTZ5.6A or other at aprox. 5 Volts + a bit.
+    |
+    |
+ GND pin 9
+
+Inside the joystickport at pin 6, there is a Open Collector
+buffer just like in a real MIDIport. This midiout will be
+electrically almost identical with the one in the Turbo R.
+
+Now to the teory behind this project.
+
+MIDI is sent with baudrate 31250 bits/sec. This is aprox. 114
+clockcycles on a 3.579545 MHz machine, which is plenty of time
+for us to software emulate a MIDI serial chip. At first it
+might seem a waste of CPU time, since the CPU has to generate
+all 10 bits, Startbit, Data bit0 to Data bit7 and finally the
+Stopbit. This is not so ! For each note you want to play you
+have to send 3 bytes to the midiinstrument, and later 3 more to
+release it again. The most used Uart chip (8251, also used in
+MSX RS232 interfaces) only has room for 1 byte in its
+transmitbuffer, therefore we have to wait for it to finish the
+last transmission each time we want send a new one. In
+Pseudocode, it would look like this :
+
+        Wait for the Uart to finish the last byte.
+        Send Noteon
+        Wait for the Uart
+        Send Note number
+        Wait for the Uart
+        Send Velocity
+        (here my routine will have to spend some CPUtime.)
+
+In most SoundTracker files, there are often several notes to
+play at the same time. In the worst case of 8 notes it will
+take 0.01536 sec with Joymidi and 0.01504 sec for real Uarts so
+there we will not be able to notice any difference. With fewer
+notes the Joymidi will always use 0.00032 sec. more than on a
+machine with a real Uart, this time is equal to the last byte
+in each transmission.
+
+Now to the software.
+
+I have re-used the SoundTracker driver that I made for the
+Turbo R MIDI. With a litle subroutine, just about 1 screen of
+code, the program will now send all 10 bits to the
+Joystickport. This is a very sensitive routine. Do not run it
+at any other speed than 3.579 MHz, else it wont work. If you
+have to make it work at 7 Mhz or other speeds, you can adjust
+the numbers of NOP's in the GEN file but then it will only work
+on your machine.
+
+The ST2 driver will work just like the old one for the Turbo R
+or the original one. It plays fully interruptdriven and should
+not steal too much CPU time from Basic.
+There are some nice extra features in the driver program:
+
+* You can load files to VRAM (any 16k segment) and then move
+them to adr. #4000 with a USR statement. Therefore you do not
+need to lift the Basicbottom.
+* You can load several musicfiles at once and then play them
+later. (This is done by using different mapper pages.)
+* The computer is not jammed if you load from disk while
+playing or if you call the play or stoproutine twice in a row.
+(should be foolproof. I hope.)
+* You can send single bytes from Basic using &quot;USR9(int)&quot;, Usr9
+is automaticly set up when you load &quot;ST2JOY1.BIN&quot;,r but can be
+changed to any other USR#.
+
+You tell the playroutine which mapperpage it shall play simply
+by writing the value to #FD before you start the music.
+
+Example:
+OUT &amp;HFD,5 : A=USR2(0) 'Start playing musicfile in page 5.
+
+This playroutine is using the RAM in a transparent way, so you
+can actually use the area from #4000-#BFFF for other purposes
+at the 'same' time. The only thing you must not do is to write
+over the routine at #D000-D???. (Surprised?)
+
+If you have a MIDI module and want to try OUT JOYMIDI then you
+should look for all the &quot;ST2JOY1.*&quot; files on this disk. See
+ST2JOY1.BAS if you want to know more about how to use it, you
+can also read my text on Quasar #16 for the Turbo R ST2 driver.
+
+If you want to test it fast:
+
+Clear 200,&amp;HCFFF
+BLOAD&quot;ST2JOY1.BIN&quot;,R
+A=USR9(&amp;h91):A=USR9(66):A=USR9(64)
+
+This will send a note on to channel 1. You should also see the
+Kana-led flicker whenever you send some data. (Only if you have
+a Japanese machine.) This can be changed in the GEN file, I
+used it mostly for testpurposes.
+
+Good luck ! (You do not need it.)
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

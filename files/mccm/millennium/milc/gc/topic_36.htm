@@ -1,0 +1,303 @@
+<html>
+
+<head>
+<title>MILC - Topic Kanji/JE/JIS (2)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_35.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_37.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Kanji/JE/JIS (2)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+VERVOLG:
+
+     M S X - J E,   J I S   E N   K A N J I   B A S I C
+    ====================================================
+
+(Deze  tekst  was  te  lang  voor  de  layout van  ClubGuide 
+Special.  Vandaar  dat  we  hem  over  twee  teksten  hebben 
+verdeeld. We pakken de draad nu weer op waar het vorige deel 
+stopte.)
+
+
+                TEKST OP GRAFISCHE SCHERMEN
+
+Zoals gezegd kan de KANJI BASIC gebruikt worden om op SCREEN 
+5  en  hoger  teksten  te  plaatsen  zonder  OPEN  en PRINT# 
+instrukties.  Dit   kan  gewoon  door  LOCATE  en  PRINT  te 
+gebruiken.  Er kan dan echter niet met logische operaties of 
+halve letters  worden gewerkt,  bovendien is de positie niet 
+zo precies te bepalen; LOCATE is nogal grof. Om dat allemaal 
+wel te kunnen gebruiken we het PUT KANJI commando.
+
+Op  SCREEN 11  en 12 zul je merken dat het teken 'uitloopt'. 
+Dit komt  omdat de  J- en K-waarden van de omliggende pixels 
+worden  verminkt.  Men  kan  dit  probleem omzeilen  door te 
+zorgen  dat alleen  de Y-waarde van de letters anders is dan 
+die  van  de  achtergrond,  de  J-  en K-waarden  moeten dus 
+hetzelfde blijven. Bijvoorbeeld COLOR &amp;B11111000,&amp;B00001000.
+
+
+                        JIS1 &amp; JIS2
+
+In de  bovenstaande tekst  heb ik  het al vaak over JIS ROMs 
+gehad.  Deze  zitten  boordevol  met  16x16 karakters.  Alle 
+tekens  die  je  je  maar  kunt bedenken  komen er  in voor. 
+Europese letters, Griekse letters, Russische letters en ALLE 
+Japanse  en Chinese  tekens. En  dat zijn  er heel erg veel. 
+Bovendien  zitten  er nog  een aantal  handige symbolen  in, 
+zoals een telefoontje en eenheden (mm, cm, m2, cm3, Hz, dl). 
+Verder nog kleine tekeningetjes. Bijvoorbeeld een konijntje, 
+een   zeepaardje,   een   vlinder,   een  parapluutje,   een 
+voetafdruk,   pijltjes,   een  straaljager,   een  zeilboot, 
+gezichtjes, bananen. Zoals ik zei: alles wat je je maar kunt 
+bedenken!
+
+Deze  tekens moeten worden opgeroepen met een nummer. Dit is 
+een hexadecimaal getal van vier cijfers, minimaal &amp;H2121. Ik 
+heb tabellen gemaakt van de tekens die wij Europeanen zullen 
+gebruiken,  en   die  op   deze  diskette  gezet.  Het  zijn 
+gecrunchte  SCREEN 5  plaatjes. Je  kunt ze bekijken met het 
+programma  SHOW-JIS.ART,  dat  in  het  softwaremenu  is  te 
+vinden. (NB:  dit programma  draait ook  op een  gewone MSX2 
+(het  zijn per  slot van  rekening gewoon SCREEN 5 plaatjes, 
+zodat  de  MSX2  gebruikers  kunnen  zien  wat  ze  allemaal 
+missen!)  Je  kunt  deze  tekens oproepen  met de  hierboven 
+besproken  KANJI  BASIC commando's,  of door  middel van  de 
+MSX-JE, die ik nu zal bespreken.
+
+
+                           MSX-JE
+
+Bij de  KANJI BASIC  wordt de  MSX-JE ROM  ook al veelvuldig 
+gebruikt,  maar er  is nog  een toepassing van de MSX-JE die 
+niet met commando's werkt. Deze zogenaamde JE-balk is alleen 
+in de  direct mode op te roepen, als je je in een KANJI mode 
+bevindt.
+
+De  besturing  van  deze  balk  kan  per  computer enigszins 
+verschillen,  ik ga  hier uit  van de situatie zoals die bij 
+mijn computer is (een Panasonic FS-A1ST MSX turbo R).
+
+
+                         DE JE-BALK
+
+Je kunt de balk oproepen door op [CTRL]+[SPATIE] of [GRAPH]+ 
+[SELECT]  te  drukken.  Op  de plaats  van de  F-key teksten 
+verschijnt nu  een witte  balk. Als  je nu  gaat typen,  dan 
+wordt  alles wat  je typt  (indien mogelijk)  automatisch in 
+Hiraganaschrift  vertaald.   Het  Hiragana   is  een  Japans 
+fonetisch  schrift, elk  teken stelt  een lettergreep  voor. 
+Er   zijn   geen   tekens   voor  losse   medeklinkers,  met 
+uitzondering van de N. Je krijgt dat teken door twee maal op 
+de [N]  te drukken. Voor de klinkers zijn wel aparte tekens. 
+Wil  je toch  een losse  medeklinker, dan  moet je  er een u 
+(soms een o) achter zetten. Mijn naam wordt bijvoorbeeld:
+
+                          sutefann
+
+De  computer  maakt  daar  5  Japanse  Hiragana tekens  van. 
+Drukken we  nu op  [F2], dan  wordt het omgezet in Katakana, 
+het  andere  Japanse  lettergrepenschrift. Dit  werkt verder 
+hetzelfde, alleen de tekens zijn anders. Drukken we op [F3], 
+dan komt de smalle (8x16 in plaats van 16x16) versie in Kana 
+tevoorschijn.   Met  [ESC]  gaan  we  weer  terug  naar  het 
+oorspronkelijke Hiragana.  Je kunt  deze tekst op het scherm 
+zetten door op [F5] of [RETURN] te drukken.
+
+Typ maar  eens konami in en druk dan op [F2]. Iemand die wel 
+eens een Japans blad heeft gelezen ziet nu drie heel bekende 
+tekentjes!
+
+De  eerste  mogelijkheid  van  de  MSX-JE-balk  is  dus  het 
+omzetten     van     fonetisch-europees     schrift     naar 
+fonetisch-Japans schrift.  Maar dat is niet alles, de MSX-JE 
+is niet voor niets 512 kB!
+
+Drukken  we op  [F1], dan  kunnen we gewoon tekens invoeren, 
+alleen dan  verschijnen ze  in 16x16. Ook deze tekens kunnen 
+naar het scherm gestuurd worden met [F5] of [RETURN]. Dit is 
+dus  de manier  waarop je  van 'gewone'  tekens (die met het 
+toetsenbord  zijn  in  te  voeren) de  KANJI-equivalent kunt 
+krijgen.  Op  deze  manier  moeten  de  16x16  tekens  in de 
+voorbeelden bij  de KANJI BASIC commando's worden ingevoerd.
+
+Het is ook mogelijk om een willekeurig teken uit de JIS ROMs 
+op te  roepen met  de JE-balk.  Typ eerst  het nummer  in (4 
+cijfers  hexadecimaal). Let  op: als er een A, B, C, D, E of 
+F  in voorkomt  is het nodig om eerst op [F1] te drukken! Is 
+het  nummer  ingevoerd,  druk  dan op  [F4] en  het karakter 
+verschijnt.  Probeer  783A  maar  eens,  dan  krijg  je  een 
+konijntje! Met  behulp van de tabellen die op deze ClubGuide 
+Special  staan kun  je het  nummer van  een bepaald karakter 
+opzoeken,  met SHOW-JIS.ART kun je de tabellen bekijken. Dit 
+zijn bij lange na niet alle tekens, het zijn er veel en veel 
+meer! De  andere tekens zijn echter bijna allemaal Japans of 
+Chinees, en daarom niet interessant voor ons.
+
+Staan er  Japanse Hiragana of Katakana tekens en je drukt op 
+de  cursortoetsen  boven  of  onder  of  de  spatiebalk, dan 
+verschijnen  er allerlei  ingewikkelde Japanse Kanji tekens. 
+Een Japanner begrijpt dit vast wel, maar dit gaat boven mijn 
+pet. Iemand  die geen Japans kent, heeft daar natuurlijk ook 
+niets aan.
+
+Met [SHIFT] samen met cursortoets links of rechts ga je naar 
+het begin of het einde van de tekst in de invoerbalk, en met 
+[SHIFT]  samen met  de spatiebalk kun je een spatie typen in 
+die invoerbalk. Druk je de spatiebalk in zonder [SHIFT], dan 
+verschuift de normale cursor.
+
+
+                       EEN VOORBEELD
+
+Ik  heb een  klein voorbeeldje  gemaakt waarin  veel van  de 
+hierboven behandelde  theorie wordt  toegepast. Deze routine 
+zet  een tekst (die in gewone karakters is gegeven) in grote 
+(16x16 Kanji)  karakters op het scherm. De afstand tussen de 
+letters   bedraagt  15  pixels  en  elke  letter  heeft  een 
+'schaduw'. De  tekst wordt  midden op  het scherm geplaatst. 
+Eerst het hele programma:
+
+        100 SCREEN7
+        110 COLOR,0,0:CLS
+        120 _KANJI
+        130 S$=&quot;GENIC's ClubGuide Special&quot;
+        140 Y=100:X=256-7.5*LEN(S$)
+        150 _AKCNV(T$,S$)
+        160 _KLEN(L,T$)
+        170 FORI=1TOL
+        180 _KMID(K$,T$,I)
+        190 _JIS(N$,K$)
+        200 N=VAL(&quot;&amp;H&quot;+N$)
+        210 PUTKANJI(1+X+(I-1)*15,1+Y),N,5
+        220 PUTKANJI(X+(I-1)*15,Y),N,15,TPSET
+        230 NEXT
+        240 GOTO240
+
+Regel  100 en  110 spreken  voor zich. In regel 120 wordt de 
+Kanji mode  aangezet. Omdat  we in SCREEN 7 zitten passen er 
+64  normale of  32 extra grote (Kanji) tekens op het scherm. 
+In regel  130 wordt  de tekst  bepaald, die  dus maximaal 32 
+tekens  lang mag  zijn. Regel 140 bepaalt de coordinaten. De 
+y-coordinaat is  100, de  x-coordinaat wordt zo berekend dat 
+de tekst precies in het midden van het scherm komt te staan. 
+
+        140 Y=100:X=256-7.5*LEN(S$)
+
+SCREEN  7 is  512 pixels  breed, 256  is dus  precies op  de 
+helft. De  letterafstand is  15, als  we dus de helft van 15 
+maal  de lengte  van de  string van  256 aftrekken,  komt de 
+string precies in het midden van het scherm.
+
+        150 _AKCNV(T$,S$)
+
+Regel 150  zet de  string om  van normale  tekens naar Kanji 
+tekens. T$ bevat nu de string in Kanji tekens.
+
+        160 _KLEN(L,T$)
+
+Met  regel 160  bepalen we de lengte van de string. Die komt 
+in L te staan.
+
+        170 FORI=1TOL
+        180 _KMID(K$,T$,I)
+        190 _JIS(N$,K$)
+
+De variabele  I loopt  de letters  ‚‚n voor  ‚‚n af.  Met de 
+_KMID  instruktie in  regel 180  wordt het  Ide teken uit de 
+string genomen  en in  K$ gezet.  In regel 190 wordt het JIS 
+nummer  daarvan opgevraagd. Dit hexadecimale nummer staat in 
+N$.
+
+        200 N=VAL(&quot;&amp;H&quot;+N$)
+
+We bereken  de waarde  van die  hexadecimale string  door er 
+eerst &amp;H voor te zetten en daarna de waarde op te vragen met 
+VAL.
+
+        210 PUTKANJI(1+X+(I-1)*15,1+Y),N,5
+        220 PUTKANJI(X+(I-1)*15,Y),N,15,TPSET
+        230 NEXT
+        240 GOTO240
+
+Regel  210 zet  het teken in het blauw op een positie 1 naar 
+rechts en   1 naar  onder ten opzichte van de witte letters. 
+De  letter staan  15 pixels uitelkaar, maar de eerste letter 
+moet als  X-coordinaat X+0  krijgen, dus we trekken 1 af van 
+I.  Het  wordt  dus (I-1)*15.  In regel  220 wordt  de witte 
+letter  geplaatst. De  logische bewerking TPSET zorgt ervoor 
+dat de  blauwe letter  niet wordt uitgewist. Regel 230 zorgt 
+ervoor dat alle letters worden afgewerkt, en regel 240 wacht 
+totdat de gebruiker [CTRL]+[STOP] heeft ingedrukt.
+
+Dit  programmaatje  staat  ook  op  de disk,  onder de  naam 
+KANJI.ART.  Het  is te  vinden in  het softwaremenu  (dat je 
+kunt bereiken door op [F4] te drukken).
+
+
+           INGEBOUWDE TEKSTVERWERKER MSX TURBO R
+
+Je  kunt de  karakters uit de JIS1 &amp; JIS2 ROMs ook gebruiken 
+in de ingebouwde tekstverwerker van de turbo R (eerste keuze 
+in het  menu dat  je krijgt als je de turbo R opstart met de 
+HIRO/BASIC toets in de linker stand). Kies eerst voor menu 1 
+(dit  kan  door op  [CTRL] te drukken of met de muis, midden 
+onderaan  het scherm  staat een 'breuk' die aangeeft in welk 
+menu je  zit). Druk  daarna op  [F5]. Je krijgt dan een menu 
+met  tien keuzes. Achter elke keuze zit een groep karakters. 
+De vierde  van boven  aan de  linkerkant is het leukst: hier 
+zitten  de konijntjes,  gezichtjes, etc.  achter. Ook kun je 
+hier de  Griekse en  Russische tekens  vinden en  tekens met 
+acccenten.  Voor de  Japanners is  het kiezen van een Japans 
+teken erg  makkelijk gemaakt.  Met de  derde optie van boven 
+aan  de  rechterkant  krijg je  een scherm  vol met  Japanse 
+tekens,  je zou  dat de 'basistekens' kunnen noemen. Je kunt 
+er daar  ‚‚n van  uitkiezen. Daarna  keer je  weer naar  het 
+gewone  scherm  terug.  Onderin bevindt  zich nu  echter een 
+balk,  waarin alle  tekens staan die van het basisteken zijn 
+afgeleid. Het  in de tekst plaatsen van een teken is simpel: 
+gewoon er naartoe sturen en op de 'Ja'-deadkey drukken.
+
+Wist je  dat er  ook een  zwart/wit tekenprogramma bijzit om 
+tekeningetjes tussen de tekst te plaatsen? Of dat je zinnen, 
+letters  of woorden  in een  andere kleur kan zetten? Of dat 
+allerlei  bewerkingen  zoals  italics,  90 graden  gedraaid, 
+bold, underlined,  outline, etc. ook mogelijk zijn en op het 
+scherm  worden weergegeven? De MSX-JE wordt in de ingebouwde 
+tekstverwerker  ook  gebruikt, het  'vertalen' in  fonetisch 
+schrift gebeurt  automatisch. Ook  is er  een Europese  (!!) 
+mode. Maar daarover misschien een andere keer meer.
+
+                                                Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_35.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_37.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<title>MILC - Topic Machinetaal in Turbo Pascal</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Machinetaal in Turbo Pascal</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Het gebruik van machinetaal in Turbo Pascal
+--------------------------------------------
+
+Het is vrij eenvoudig om in uw eigen Turbo Pascal programma's machinetaal
+routines te verwerken. Dit gaat met het commando INLINE. Een voorbeeld:
+
+Procedure Beep;
+begin
+  inline($FD/$2A/$C0/$FC/$DD/$21/$C0/$00/$CD/$1C/$00)
+end;
+
+Dit is een stukje machinetaal dat de BIOS-call voor de functie BEEP aanroept.
+Zoals u ziet begint de MT met het commando INLINE. Daarna volgen de hexadecimale
+codes, zoals een assembler die produceerd.
+
+Het kan echter ook anders. Met behulp van de onderstaande routine MSXBIOS en
+MSX2BIOS kunt u alle aanwezige BIOS-calls aanroepen. Om de Z80 registers te
+laden maken we gebruik van nep-registers. Dit zijn gewone variabelen waarvan we
+de inhoud overhevelen naar de echte registers.
+
+
+VAR regA,regF,regBC,regDE,regHL,regIX,regIY: INTEGER;
+
+PROCEDURE MSXBios (entry: INTEGER);
+BEGIN
+   inline ($3a/regA/$ed/$4b/regBC/$ed/$5b/regDE/$2a/regHL/$dd/$2a/entry/
+           $fd/$2a/$c0/$fc/
+           $cd/$1c/$00/$32/regA/$ed/$43/regBC/$ed/$53/regDE/$22/regHL/
+           $dd/$22/regIX/$fd/$22/regIY/$f5/$e1/$22/regF/$af/$32/regA+1/
+           $32/regF+1/$fb)
+END;
+
+PROCEDURE MSX2Bios (entry: INTEGER);
+BEGIN
+   inline ($3a/regA/$ed/$4b/regBC/$ed/$5b/regDE/$2a/regHL/$dd/$2a/entry/
+           $fd/$2a/$f7/$fa/
+           $cd/$1c/$00/$32/regA/$ed/$43/regBC/$ed/$53/regDE/$22/regHL/
+           $dd/$22/regIX/$fd/$22/regIY/$f5/$e1/$22/regF/$af/$32/regA+1/
+           $32/regF+1/$fb)
+END;
+
+Zoals u misschien ziet kunt u tussen de machinetaal codes ook variabelen
+plaatsen. De eerder genoemde procedure BEEP ziet er met behulp van bovenstaande
+procedure zo uit:
+
+procedure BEEP;
+begin
+  msxbios ($C0);
+end;
+
+Dit is natuurlijk heel wat overzichtelijker dan de eerste procedure. Nog wat
+voorbeelden waarbij ook van de registers gebruik wordt gemaakt:
+
+function GetKey: char;
+begin
+  msxbios ($9F);
+  GetKey := chr(RegA);
+end;
+
+procedure PutChar (teken: char);
+begin
+  RegA := Ord(teken);
+  msxbios ($A2);
+end;
+
+Natuurlijk zijn dit soort dingen ook mogelijk met de BDOS, waar alle
+diskfuncties in verborgen zitten. Daarvoor gebruiken we onderstaande procedure:
+
+Procedure BDOS (Entry : Integer);
+Begin;
+  InLine ($ED/$4B/Entry/$ED/$5B/RegDE/$2A/RegHL/$CD/$05/$00/$32/RegA/
+          $ED/$53/RegDE/$22/RegHL/$FB);
+End;
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

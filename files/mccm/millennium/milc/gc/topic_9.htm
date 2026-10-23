@@ -1,0 +1,245 @@
+<html>
+
+<head>
+<title>MILC - Topic New Modem Basic (2)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_8.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_10.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">New Modem Basic (2)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+VERVOLG:
+
+
+_LOGFILE(A$),I       Wordt    alleen   gebruikt   in   een 
+                     Terminal-programma.   A$    moet   de 
+                     filenaam             hebben,eventueel 
+                     voorafgegaan door de driveletter.
+                     Bv:
+                     A$=&quot;TEST&quot;   Een logfile met naam TEST 
+                                 komt op de default-drive.
+                     A$=&quot;C:TEST&quot; De logfile  komt op drive 
+                                 C.
+                     In    I    komt    na   afloop    een 
+                     controle-code.
+                     0 = geen fouten
+                     1 = carrier weg
+                     6 = disk vol
+                     8 = schrijffout.      Disk      write 
+                         protected/offline
+
+Als  de lofgfile  aan staat,wordt  alles wat op het scherm 
+komt,in  een   tekst-file  opgeslagen,zodat   men  na   de 
+uitlog,&quot;thuis&quot; alles nog eens rustig kan nalezen.
+GRAPH-S sluit de logfile weer.
+
+
+
+_LEN(A$),L           Geeft de lengte van een string zonder 
+                     eindspaties,in L.
+
+_MC(A$)              MC =  Make Capital.Zet  de letters in 
+                     een  string om in hoofdletters.In dit 
+                     geval dus in A$.
+
+_MSTART(I)           Maakt  het  modem verder  gereed voor 
+                     datacommunicatie. I  = 0 is Ok. Heeft 
+                     I  een andere  waarde,dan is  er iets 
+                     mis met het modem.
+
+_MSTOP               Stopt de modem-funkties.
+
+
+_MRING(I)            Controleert of de telefoon overgaat.
+                     0 = telefoon gaat over
+                     1 = telefoon gaat niet over
+                     2 = CODE toets is ingedrukt
+                     MRING   moet   dus   in   een   &quot;lus&quot; 
+                     herhaaldelijk  worden  aangeroepen om 
+                     te kijken welke code er terugkomt.
+
+
+_ONHOOK              Legt de &quot;hoorn&quot; op de haak.
+
+_OFFHOOK             Neemt de &quot;hoorn&quot; van de haak.
+
+_PDIAL(A$),I         Wordt   alleen    gebruikt   in   een 
+                     Terminal-programma.
+                     Belt via pulse-dial het nummer in A$
+                     Bv:A$=&quot;05110-5034&quot;:_PDIAL(A$),I
+                     I geeft een controle-code terug.
+                     I = 0 : invoer was correct
+                     I = 1 : invoer was NIET correct
+
+                     Toegestane input: 0123456789-
+                     Bij een - wordt 1 sec gewacht.
+
+
+_TDIAL(A$),I         Zelfde als PDIAL,nu via tone-dialing. 
+                     Toegestane                     input: 
+                     0123456789-AaBbCcDd*#
+
+_RTSON               Zet de  carrier aan.RTS  = Request To 
+                     Send
+
+_RTSOFF              Zet   de   carrier   uit.Deze   beide 
+                     commando's   werken  alleen  als  DTR 
+                     aanstaat,via _DTRON.
+
+
+P=0:_RECFILE(A$),P
+P=3:_RECFILE(A$),P   Ontvang     een     file.A$     heeft 
+                     (drive)+filenaam.
+                     P bepaalt  met welk  protocol de file 
+                     ontvangen wordt.
+                     0 = Xmodem  of  Xmodem-1K,de  routine 
+                         kijkt zelf wat het is.
+                     3 = Ymodem
+                     Na  afloop heeft P een controle-code. 
+                     Zie controle-codes up-en download.
+                     Als  een filenaam al bestaat,wordt de 
+                     eerste  letter  van  de  filenaam een 
+                     $.Bestaat die  ook al  dan ook  de 2e 
+                     letter.  Dit gaat door tot 5 letters. 
+                     De  file  wordt dan  pas overschreven 
+                     door de  nieuwe. Bij  Ymodem protocol 
+                     kunnen   meerdere  files  in  1  keer 
+                     achter elkaar ontvangen worden.
+
+P=1:_SENDFILE(A$),P
+P=2:_SENDFILE(A$),P
+P=3:_SENDFILE(A$),P  Zend      een      file.A$      heeft 
+                     (drive)+filenaam.
+                     P bepaalt  met welk  protocol de file 
+                     verzonden wordt.
+                     1 = Xmodem
+                     2 = Xmodem-1K
+                     3 = Ymodem
+                     Na afloop  heeft P een controle-code. 
+                     Zie  controle-codes  up-en  download. 
+                     Via  het Ymodem-protocol kan (nu nog) 
+                     slechts  1  file  tegelijk  verzonden 
+                     worden.
+
+                     _SPEAKERON  Geeft   mogelijkheid  tot 
+                     meeluisteren  bij het  maken van  een 
+                     verbinding.
+
+_SPEAKEROFF          Zet de luidspreker weer uit.
+
+_TERMINAL(I)         Wordt    alleen   gebruikt   in   een 
+                     Terminal-programma. Dit  is het meest 
+                     gebruikte deel in een Terminal. Bijna 
+                     alle   toetsen  die   U  geeft,worden 
+                     verzonden over  de telefoon-lijn. Wat 
+                     van de telefoon-lijn terug komt wordt 
+                     op   het  scherm  gezet.  Zo  kunt  U 
+                     communiceren  met  een  BBS.  Sommige 
+                     toets-codes brengen  U weer  terug in 
+                     Basic. Zie onderstaande.
+
+                     I geeft dan een controle code terug.
+
+                     1   = Carrier weg (verbinding meestal 
+                           verbroken)
+                     5   = Teken voor auto-inlog ontvangen 
+                           (van BBS)
+                     220 = Er is op Graph-I gedrukt,U bent 
+                           weer  in Basic. Kan bv gebruikt 
+                           worden om &quot;handmatig&quot; uw naam + 
+                           password te  versturen als  het 
+                           BBS geen auto-inlog kent.
+                     11  = Home-toets.U bent wederom terug 
+                           in  Basic. Kan  gebruikt worden 
+                           om  naar  een Terminal-menu  te 
+                           gaan.
+
+                     Code 220 en 11 kunnen ALLEEN door het 
+                     toetsenbord
+                     veroorzaakt zijn.
+
+Controle-codes up-en download:
+File-transfer met CRC check of Checksum
+---------------------------------------
+ 0 = file is goed verzonden/ontvangen
+ 1 = carrier weg
+ 2 = Initial Time Out.(Up of download is niet gestart)
+ 3 = afgebroken met CTRL-X
+ 4 = teveel timeout's
+ 5 = n.v.t.
+ 6 = disk vol
+ 7 = file niet gevonden
+ 8 = schrijffout,disk write protected/offline
+ 9 = file is leeg
+10 = teveel retries
+
+Modem-snelheden in een Terminal programma.
+Bv: I=3:_INIMDM(I)
+R=Receive (ontv-snelheid) T=Transmit (zend-snelh) E=Equal
+---------------------------------------------------------
+0 = V21 300R   /   300T    Originate (Beller)
+1 = V21 300R   /   300T    Answer (Degene die gebeld wordt)
+2 = V23 1200R  /   75T
+3 = V23 75T    /   1200R
+4 = V23 1200RE /   75RE    Equalizer   aan,  extra   sterk 
+                           signaal voor als de
+5 = V23 75RE   /   1200RE  verbinding slecht is.Normaliter 
+                           niet gebruiken
+6 = V23 600R   /   75T
+7 = V23 75R    /   600T
+
+De ANSWER-routine herkent alleen sneheden 1,2 en 3.
+
+Toetsen bij gebruik in BBS-programma:
+-------------------------------------
+
+Pauzeren   : CTRL-S of S
+Weer verder: elke toets
+Afbreken   : CTRL-C of C
+
+==========================================================
+
+Dit  is  een  (heel)  groot  gedeelte  van  de  meegeleverde 
+handleiding.  Dit hebben we echter expres gedaan want u moet 
+dit programma  echt hebben  als u  de beschikking heeft over 
+een Philips of een MT-Telcom II modem.
+
+Met dank aan: Pier Feddema sysop Philemon
+
+BBS Online: Ma - Vr  20.30 - 22.00
+            Za vanaf 18.00 t/m Zo 18.00 (24 uur)
+            Tel:05110-5034
+
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_10.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

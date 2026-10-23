@@ -1,0 +1,471 @@
+<html>
+
+<head>
+<title>MILC - Topic Overzicht van alle BDOS Calls</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Overzicht van alle BDOS Calls</b><br>
+    <i>CYBERNETICS</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                                      BDOS Calls
+				 ============
+
+Wanneer aan de MSX-computer een diskdrive met controller is aangesloten, dan
+bevinden zich alle disk-routines zich (net als de BASIC I/O System routines)
+in het geheugen van de computer. Ook voor deze diskroutines geldt, dat ze
+vanuit een applicatieprogramma kunnen worden aangeroepen. Om te voorkomen dat
+een programma wel op de ene maar niet op een andere computer werkt, moeten ook
+deze diskroutines (BDOS-routines) door middel van een speciale manier van
+aanroepen worden gebruikt.
+
+De manier om deze routines aan te roepen is als volgt:
+
+ 1 - Laadt het functienummer van de aan te roepen routine in register C van de
+     Z80 microprocessor.
+
+ 2 - CALL het adres &amp;HF37D, indien het programma onder Disk BASIC draait.
+     CALL het adres &amp;H0005, indien het programma onder MSX-DOS draait.
+
+In de hierna volgende opsomming van de BDOS calls worden van iedere call de
+volgende gegevens opgenomen:
+
+	NUMMER
+	NAAM
+	FUNCTIE
+	INPUT
+	OUTPUT
+	
+NUMMER is het functie nummer, dat register C moet worden geplaatst voordat 
+adres &amp;HF37D of &amp;H0005 wordt aangeroepen.
+
+NAAM is de naam van de aan te roepen functie
+
+FUNCTIE is een korte uitleg van wat de functie doet
+
+INPUT geeft een opsomming van de registers die moeten worden geladen met
+gegevens die de functie nodig heeft om het gewenste resultaat op te leveren.
+
+OUTPUT geeft een opsomming van de registers die het resultaat van de functie 
+bevatten.
+  
+Indien ‚‚n van de voornoemde punten niet van toepassing is, zal het 
+betreffende punt uit de beschrijving worden weggelaten.
+
+==============================================================================
+
+&amp;H00	SYSTEM RESET
+	----------------------------------------------------------------------
+	Springt naar de &quot;warme start&quot; van Disk BASIC of naar adres &amp;H0000 
+	indien de functie onder MSX-DOS werd aangeroepen.
+
+&amp;H01	CONSOLE INPUT
+	----------------------------------------------------------------------
+	Leest een teken van console en zit dit in register A. Voert functie 
+	&amp;H00 uit indien CTRL+C werd ingedrukt. Start output van beeldscherm- 
+	info naar de printer wanneer CTRL+P werd ingedrukt en be‰indigt dit 
+	weer indien CTRL+N werd ingedrukt. Stuurt het ingevoerde teken naar
+	het beeldscherm.
+	OUTPUT		A: het ingetoetste teken
+	
+&amp;H02	CONSOLE OUTPUT
+	----------------------------------------------------------------------
+	Stuurt het teken dat register E staat naar de console.
+	INPUT		E: het naar console te schrijven teken
+	
+&amp;H03	AUX INPUT
+	----------------------------------------------------------------------
+	Leest een teken van het AUX-device (bijvoorbeeld RS232) en zet dit in
+	register A. 
+	OUTPUT		A: het gelezen teken
+	
+&amp;H04	AUX OUTPUT
+	----------------------------------------------------------------------
+	Schrijft het teken uit register E naar het AUX-device.
+	INPUT		E: het naar AUX te schrijven teken
+	
+&amp;H05	LST OUTPUT
+	----------------------------------------------------------------------
+	Schrijft het teken uit register E naar de printer. 
+	INPUT		E: het af te drukken teken
+	
+&amp;H06	DIRECT CONSOLE I/O
+	----------------------------------------------------------------------
+	Stuurt het teken dat in register E staat naar de console, tenzij in 
+	register E de code &amp;HFF staat. In dit geval wordt van het console 
+	gelezen. Het gelezen teken wordt in register A gezet, zonder dat er op 
+	de ingetoetste code wordt gechecked en zonder dat het ingetoetste 
+	teken naar console wordt gestuurt. Indien er niets wordt ingetoetst 
+	zal register A de waarde 0 bevatten.
+	INPUT		E: &amp;HFF indien moet worden gelezen. Iedere andere code
+			   wordt naar console geschreven.
+	OUTPUT		A: het ingelezen teken.
+	
+&amp;H07	DIRECT INPUT
+	----------------------------------------------------------------------
+	Leest een teken van console en zet dat in register A. Er wordt niet 
+	op de code van het teken gechecked, en het teken wordt niet naar 
+	console teruggestuurd.
+	OUTPUT		A: het ingelezen teken.
+	
+&amp;H08	DIRECT INPUT
+	----------------------------------------------------------------------
+	Leest een teken van console en zet dat in register A. Controleert of
+	CTRL+C, CTRL+P of CRTL+N is ingedrukt. Stuurt het ingetoetste teken 
+	niet terug naar console.
+	OUTPUT		A: het ingetoetste teken.
+	
+&amp;H09	STRING OUTPUT
+	----------------------------------------------------------------------
+	Schijft de string waarvan het startadres in registerpaar DE staat, 
+	naar console. Het schrijven gaat door totdat een $-teken wordt 
+	gevonden.
+	INPUT		DE: het startadres van de string.
+	
+&amp;H0A	BUFFERED INPUT
+	----------------------------------------------------------------------
+	Leest een string van console en zet deze in het geheugen vanaf het in
+	registerpaar DE gegeven adres + 2. CR (return) be‰indigt de string.
+	De lengte van de string wordt op het in registerpaar DE gegeven adres
+	+ 1 gezet. CR wordt niet meegeteld in de lengte. De maximale lengte
+	van de string wordt doorgegeven via de geheugenlocatie die met het 
+        adres in registerpaar DE wordt aangewezen.
+	INPUT		DE: pointer naar string-ruimte
+	
+&amp;H0B	CONSOLE STATUS
+	----------------------------------------------------------------------
+	Controleert of er input van console wordt gedaan. Zet 0 in register A
+	indien er geen input is. Zet &amp;HFF in register A indien er wel input is.
+	OUTPUT		A: console status
+	
+&amp;H0C	GET VERSION NUMBER
+	----------------------------------------------------------------------
+	Zet het versie nummer in registerpaar HL.
+	OUTPUT		H: &amp;H00
+			L: &amp;H22
+			
+&amp;H0D	DISK RESET
+	----------------------------------------------------------------------
+	Stelt drive A: in als default drive, zet het transfer-adres op &amp;H80 en
+	verwijdert alle sectoren in het geheugen die zijn gewijzigd, maar nog
+	niet naar schijf zijn geschreven.
+	
+&amp;H0E	SELECT DISK
+	----------------------------------------------------------------------
+	Maakt de in register E gegeven disk de default drive (0=drive A)
+	INPUT		E: drive nummer
+	
+&amp;H0F	OPEN FILE
+	----------------------------------------------------------------------
+	Opent een file volgens de specificaties in het FCB waar met het adres
+	in registerpaar DE naar toe wordt verwezen. De volgende velden van het
+	FCB worden gevuld vanuit de directory:
+		File Size
+		Date
+		Time
+		Device-ID
+		Directory Location
+		First Cluster
+		Last Cluster
+		Last Accessed Cluster
+	De volgende velden van het FCB zijn ge-set na uitvoering van deze 
+	functie:
+		Record Size
+		Current Block
+		Current Record
+		Random Record
+	Indien de functie succesvol is uitgevoerd zal register A de waarde 
+	&amp;H00 bevatten, zoniet, dan zal register A de waarde &amp;HFF bevatten.
+	INPUT		DE: FCB-adres
+	OUTPUT		A:  &amp;H00 - succesvol
+			    &amp;HFF - niet succesvol
+			    
+&amp;H10	CLOSE FILE
+	----------------------------------------------------------------------
+	Sluit de file die in het FCB staat dat met het adres in registerpaar
+	DE wordt aangewezen. Indien de file succesvol is gesloten zal register
+	A de waarde &amp;H00 bevatten, zoniet, dan de waarde &amp;HFF
+	INPUT		DE: FCB-adres
+	OUTPUT		A:  &amp;H00 - succesvol
+			    &amp;HFF - niet succesvol
+			    
+&amp;H11    SEARCH FIRST
+        ----------------------------------------------------------------------
+        Zoekt vanaf het begin van de directory naar het voorkomen van de file,
+        die in het FCB dat met het adres in registerpaar DE wordt aangewezen
+        staat aangegeven, in de directory en copieert de directory-entry (32
+        bytes lang) naar het transfer-adres. Indien de file in directory wordt
+        gevonden zal bovendien register A met &amp;H00 worden geladen. Wordt de
+        file niet gevonden, dan wordt niets naar het transfer-adres gecopieert
+        en wordt register A met de waarde &amp;HFF geladen. In de filenaam (in het
+        FCB) mag gebruik worden gemaakt van de tekens * en ?.
+        INPUT           DE: FCB-adres
+        OUTPUT          A:  &amp;H00 - file gevonden
+                            &amp;HFF - file niet gevonden
+			    
+&amp;H12	SEARCH NEXT
+	----------------------------------------------------------------------
+	Zoekt in de directory vanaf de plaats waar met de laatste SEARCH- 
+	functie een gezochte file werd gevonden naar het volgende voorkomen
+	van die filenaam in de directory. Werkt voor het overige precies zoals
+	de SEARCH FIRST-functie (hierboven).
+	INPUT		DE: FCB-adres
+	OUPUT		A:  &amp;H00 - file gevonden
+			    &amp;HFF - file niet gevonden
+			    
+&amp;H13	DELETE FILE
+	----------------------------------------------------------------------
+        Wist de file die in het FCB waar met het adres in registerpaar DE naar toe wordt
+	verwezen uit de directory door in de directory het eerste teken van de
+	filenaam te vervangen door de code &amp;HE5 en de FAT de door de file ge-
+	bruikte clusters vrij te maken.
+	INPUT		DE: FCB-adres
+        OUTPUT          A : &amp;H00 - file gewist
+			    &amp;HFF - file niet (geheel) gewist
+
+&amp;H14    SEQUENTIAL READ
+        ----------------------------------------------------------------------
+        Leest een record (128 bytes). De file, het blok binnen de file waarin
+        het record zich bevindt en het record zelf staan aangegeven in de
+        velden. Filenaam, Current Block en Current Record van het FCB dat met
+        het adres in registerpaar DE wordt aangewezen. De gelezen informatie
+        wordt in het geheugen gezet vanaf het ingestelde transfer-adres. De
+        velden Current Block en Current Record in het FCB worden automatisch
+        met 1 verhoogd.
+        INPUT           DE: FCB-adres
+        OUTPUT          A : &amp;H00 - record gelezen
+			    &amp;H01 - record niet (goed) gelezen
+			    
+&amp;H15    SEQUENTIAL WRITE
+        ----------------------------------------------------------------------
+        Schrijft een record (van 128 bytes) naar de file die met het File
+        Control Block met het adres in registerpaar DE wordt aangewezen. De
+        data, die het record vormt, staat in ht RAM-geheugen, vanaf het
+        &quot;transfer&quot;-adres. Het record (op schijf) wordt bepaald door de velden
+        current block en current record in het FCB. Deze velden worden
+        automatisch met 1 verhoogd.
+        INPUT           DE: FCB-adres
+        OUTPUT          A : &amp;H00 = record geschreven
+                            &amp;H01 = record niet geschreven
+
+&amp;H16    CREATE FILE
+        ----------------------------------------------------------------------
+        Creeert een file, volgens de gegevens in het File Control Block, dat
+        wordt aangewezen met het adres in registerpaar DE. Indien de file reeds bestaat
+        wordt deze overschreven. Na uitvoering zijn de volgende velden
+        vastgelegd:
+                Record Size, Current Block, Current Record, Random Record.
+        Of de file wel of niet is gecreeerd wordt teruggemeld in register A.
+        INPUT           DE: FCB-adres
+        OUTPUT          A : &amp;H00 = file gecreeerd
+                            &amp;H01 = file niet gecreeerd
+
+&amp;H17    RENAME FILE
+        ----------------------------------------------------------------------
+        Geeft de file, die wordt aangewezen met het FCB dat wordt aangewezen
+        met het adres in registerpaar DE, de filenaam uit het FCB dat wordt
+        aangewezen door het adres in DE plus 16. In de filenaam mag gebruik
+        worden gemaakt van de tekens * en ?
+        INPUT           DE   : FCD-adres te hernoemen file.
+                        DE+16: FCB-adres met nieuwe filenaam.
+        OUTPUT          A    : &amp;H00 = file hernoemd
+                               &amp;H01 = file niet hernoemd
+
+&amp;H18    GET LOGIN VECTOR
+        ----------------------------------------------------------------------
+        Geeft in het registerpaar HL een bit-tabel waaruit kan worden
+        opgemaakt welke drives on-line zijn.
+        OUTPUT          HL: bit-tabel
+
+&amp;H19    GET DEFAULT DRIVE NAME
+        ----------------------------------------------------------------------
+        Zet de default drive naam in register A.
+        OUTPUT          A: default drive naam.
+
+&amp;H1A    SET TRANSFER ADRES
+        ----------------------------------------------------------------------
+        Stelt het RAM-adres, waar de data die naar moet of van de disk wordt
+        gelezen, in op het in registerpar DE gegeven adres.
+        INPUT           DE: RAM-adres
+
+&amp;H1B    GET ALLOCATION
+        ----------------------------------------------------------------------
+        Geeft informatie over de in register E aangegeven diskdrive. In de
+        aangegeven disknaam niet geldig is zal register A na uitvoering de
+        waarde &amp;HFF bevatten.
+        INPUT           E : drivenaam
+        OUTPUT          A : aantal sectors per cluster
+                        BC: aantal bytes per sector
+                        DE: aantal clusters opde schrijf
+                        HL: aantal vrije clusters
+                        IX: Device Parameter Block adres
+                        IY: File Allocation Tabel (FAT) adres
+
+&amp;H21    RANDOM READ
+        ----------------------------------------------------------------------
+        Leest een record uit een file, die wordt aangegeven met het FCB dat
+        wordt aangewezen met het adres in registerpaar DE. Het te lezen record
+        wordt bepaald door het random block veld in het FCB. De data van het
+        record wordt in het RAM-geheugen gezet vanaf het &quot;transfer&quot;-adres. De
+        record lengte is altijd 128 bytes.
+        INPUT           DE: FCB-adres
+        OUTPUT          A : &amp;H00 = record gelezen
+                            &amp;H01 = record niet (goed) gelezen
+
+&amp;H22    RANDOM WRITE
+        ----------------------------------------------------------------------
+        Schrijft een record naar een file, die wordt aangegeven met het FCB
+        dat wordt aangewezen met het adres in registerpaar DE. Het te
+        schrijven record wordt bepaald door het random block veld in het FCB.
+        De data van het record begint op het &quot;transfer&quot;-adres.
+        INPUT           DE: FCB-adres
+        OUTPUT          A : &amp;H00 = record geschreven
+                            &amp;H01 = record niet (goed) geschreven
+
+&amp;H23    GET FILE SIZE
+        ----------------------------------------------------------------------
+        Berekent de lengte van de file uit het FCB dat wordt aangewezen door
+        het adres in registerpaar DE. De lengte van de file wordt als een
+        veelvoud van 128 gegeven en opgeslagen in het random record veld in
+        het FCB.
+        INPUT           DE: FCB-adres
+        OUTPUT          A : &amp;H00 = Lengte berekend
+                            &amp;H01 = Lengte niet berekend
+
+&amp;H24    SET RANDOM RECORD
+        ----------------------------------------------------------------------
+        Berekent de positie van het &quot;current record&quot; met behulp van de velden
+        current block en current record uit het FC dat wordt aangewezen met
+        het adres in registerpaar DE en plaatst het resultaat van de
+        berekening in het veld random record van hetzelfde FCB.
+        INPUT           DE: FCB-adres
+
+&amp;H26    RANDOM BLOCK WRITE
+        ----------------------------------------------------------------------
+        Schrijft record(s) naar de file uit het FCB dat wordt aangewezen door
+        het adres in registerpaar DE. De data voor het record begint op het
+        &quot;transfer&quot;-adres. Het te beschrijven record in de file wordt bepaald
+        door het random block veld uit het FCB. Het veld current random record
+        wordt automatisch verhoogd met het aantal geschreven records. Het
+        aantal records wordt bepaald door de waarde in registerpaar HL. De
+        recordlengte wordt bepaald door het record size veld uit het FCB.
+        INPUT           DE: FCB-adres
+                        HL: Aantal records
+        OUTPUT          A : &amp;H00 = record(s) geschreven
+                            &amp;H01 = record(s) niet geschreven
+
+&amp;H27    RANDOM RECORD READ
+        ----------------------------------------------------------------------
+        Leest record(s) uit de file uit het FCB dat wordt aangewezen door het
+        adres in registerpaar DE in het geheugen naar het &quot;transfer&quot;-adres.
+        Het te lezen record in de file wordt bepaald door het random block
+        veld uit het FCB. Het veld current random record wordt automatisch
+        verhoogd met het aantal gelezen records. Het aantal records wordt
+        bepaald door de waarde in registerpaar HL. De recordlengte wordt
+        bepaald door het record size veld uit het FCB. Het werkelijk aantal
+        gelezen records wordt in HL gezet.
+        INPUT           DE: FCB-adres
+                        HL: Aantal records
+        OUTPUT          A : &amp;H00 = record(s) gelezen
+                            &amp;H01 = record(s) niet gelezen
+                        HL: Aantal gelezen records
+
+&amp;H28    RANDOM WRITE WITH ZERO-FILL
+        ----------------------------------------------------------------------
+        Schrijft een record naar de file die wordt aangegeven in het FCB met
+        adres in registerpaar DE. Welk record (in de file) wordt geschreven
+        wordt bepaald door het veld random block in het FCB. De record lengte
+        is altijd 128 bytes. Wanneer een file wordt uitgebreid (extended),
+        zullen alle records die niet zijn geschreven met nullen worden gevuld.
+        INPUT           DE: FCB-adres
+        OUTPUT          A : &amp;H00 = Record geschreven
+                            &amp;H01 = Record niet geschreven
+
+&amp;H2A    GET DATE
+        ----------------------------------------------------------------------
+        Leest de datum en zet deze in de Z80-registers.
+        OUTPUT          A : dag van de week
+                        D : dag
+                        E : maand
+                        HL: jaar
+
+&amp;H2B    SET DATE
+        ----------------------------------------------------------------------
+        Stelt de datum in op de in registerparen DE en HL opgegeven datum.
+        INPUT           D : dag
+                        E : maand
+                        HL: jaar
+        OUTPUT          A : &amp;H00 = datum ingesteld
+                            &amp;H01 = datum niet ingesteld
+
+&amp;H2C    GET TIME
+        ----------------------------------------------------------------------
+        Leest de tijd en zet deze in de Z80-registers.
+        OUTPUT          E : honderdsten van seconden
+                        D : seconden
+                        L : minuten
+                        H : Uren
+
+&amp;H2D    SET TIME
+        ----------------------------------------------------------------------
+        Stelt de tijd in op de in registerparen DE en HL opgegeven tijd.
+        INPUT           E : honderdsten van seconden
+                        D : seconden
+                        L : minuten
+                        H : Uren
+        OUTPUT          A : &amp;H00 = tijd ingesteld
+                            &amp;H01 = tijd niet ingesteld
+
+&amp;H2E    SET VERIFY VLAG
+        ----------------------------------------------------------------------
+        Zet de Verify  Flag aan of uit, afhankelijk van register E.
+        INPUT           E: &amp;H00 = verify-flag ge-reset
+                           &amp;H01 = verify-flag ge-set
+
+&amp;H2F    ABSOLUTE DISK READ
+        ----------------------------------------------------------------------
+        Leest sector(s) in van schrijf en zet de inhoud van die sector(s) in
+        het RAM-geheugen van het &quot;transfer&quot;-adres.
+        INPUT           DE: sectornummer
+                        H : aantal te lezen sectoren
+                        L : drivernummer
+
+&amp;H30    ABSOLUTE DISK WRITE
+        ----------------------------------------------------------------------
+        Schrijft sector(s) nar schijf vanuit het RAM-geheugen, beginnende op
+        het &quot;transfer&quot;-adres.
+        INPUT           DE: sectornummer
+                        H : aantal te schijven sectoren
+                        L : drivenummer
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

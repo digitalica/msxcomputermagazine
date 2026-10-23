@@ -1,0 +1,247 @@
+<html>
+
+<head>
+<title>MILC - Topic 128kB VRAM gebruiken in ML</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_13.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_15.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">128kB VRAM gebruiken in ML</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Nvdr.  De  nu  volgende  tekst  is  ook  te  vinden  op   de
+BBS-Waterland en is geschreven door Ramon van der Winkel die
+GENIC toestemming heeft gegeven voor deze publicatie.
+
+Aan de publicatie van dit artikel hebben meegewerkt:
+
+Ramon van der Winkel  (De schrijver van het artikel)
+Rudy Oppers           (De man van de modem)
+Alex van der Wal      (Initiatiefnemer &amp; editor)
+
+
+       G E B R U I K   1 2 8 K B   V R A M   I N   M L
+      =================================================
+
+In deze tekstfile wordt uiteengezet hoe  het  volledige  128
+Kilobytes van het video RAM van de MSX te gebruiken is.
+
+Het VRAM is, net zoals bij een memory mapper,  onderverdeeld
+in pagina's van 16  kilobytes.  In  totaal  zijn  er  dus  8
+pagina's die met maar 1 pagina  tegelijk  aan  te  schakelen
+zijn.
+
+Om een pagina en een adres daarbinnen te kiezen,  moeten  we
+een aantal waardes achter elkaar op de commando poort van de
+VDP zetten, waarna we  via  de  datapoort  het  VRAM  kunnen
+uitlezen of schrijven.
+
+De commando poort is standaard poort 099h en de datapoort is
+standaard 098h. Deze twee poorten zijn ook via adres 0006 en
+0007 van de mainrom te vinden (voor de commando poort er een
+bij optellen), maar het zijn nu al weet ik hoeveel jaar lang
+dezelfde poorten geweest, dus  rechtstreeks  gebruik  zonder
+controle kan geen kwaad.
+
+We kunnen de data-transfer altijd maar een kant tegelijk  op
+doen. Het is dus niet mogelijk  om  10  bytes  te  lezen  en
+daarna, zonder opnieuw te adresseren, 21 bytes te  schrijven
+en dan meteen er maar weer 5 te lezen. We geven met  bit  10
+van het adres op of we willen schrijven. Raar bit,  die  bit
+10,  maar  dat  is  heeleenvoudig  te  verklaren:  Omdat  er
+pagina's zijn van 16 kilobytes (16384 bytes,  4000h)  kunnen
+we nooit meer als 16 Kilobytes in een keer verplaatsen.  Dus
+als we willen schrijven, dan OR-en we 40h bij  het  MSB  van
+het adres en versturen we dit naar de vdp, anders kunnen  we
+lezen.
+
+Stel, we willen  vanaf  pagina  5,  adres  2BF5  lezen,  dan
+versturen we de volgende reeks codes door  de  vdp  commando
+poort (99h): 05h, 8Eh, 0F5h, 2Bh. Willen we  schrijven,  dan
+wordt de reeks: 05h, 8Eh, 0F5h, 6Bh. 6Bh is dus 2Bh or 40h.
+
+De 8E die je in allebij de reeksen ziet staan,  is  voor  de
+vdp  een  aanduiding  dat  we  register  #14  (0Eh)   willen
+schrijven (or 80h). Dit is een  standaard  methode  voor  de
+vdp. Wat we dan doen, is  eerst  de  data  op  door  de  vdp
+commando poort sturen en daarna het register nummer OR  80h.
+In dit geval moeten we na de pagina in de data-byte  (eerste
+code) ook nog eens het adres erachteraan  sturen  (derde  en
+vierde code).
+
+Het is mogelijk om van de ene pagina door te schrijven  naar
+de volgende. Na iedere byte die gelezen  of  geschreven  is,
+wordt het adres automatisch  verhoogd.  Na  adres  3FFFh  in
+bijvoorbeeld pagina 2, komt meteen adres 0000h in pagina  3.
+Wat er na pagina 7, adres 3FFFh gebeurd weet  ik  niet,  dat
+heb ik nog nooit geprobeerd.
+
+Tijd voor een universele routine, waarbij we in A het pagina
+nummer opgeven en in HL het adres, waarbij bit 10  al  gezet
+moet zijn als we willen schrijven:
+
+VRMADR: DI                    DI
+        OUT (099H),A   of:    LD C,099H
+        LD A,08Eh             OUT (C),A
+        OUT (099H),A          LD A,08EH
+        LD A,L                OUT (C),A
+        OUT (099H),A          OUT (C),L
+        LD A,H                OUT (C),H
+        OUT (099H),A
+
+Nu willen we data gaan transporteren. Dat doen we via de VDP
+datapoort. Nadat we het adres geschreven  hebben,  staat  de
+datapoort klaar om tekens te ontvangen  of  versturen  (ligt
+aan bit 10 van het adres). Door poort 098h te lezen, krijgen
+we de data binnen, door hem te schrijven gaat het  naar  het
+VRAM.
+
+Nu hebben we echter nog een probleem:  Timing.  Ik  heb  net
+daarboven twee routines naast elkaar  gezet.  Waarschijnlijk
+zal de linker wel werken  en  de  rechter  niet  zondermeer.
+Waarom niet zou je zeggen? Als data op de  bus  van  de  vdp
+zetten, dan heeft die tijd nodig om deze er vanaf te  halen.
+Sturen we de data nu zo snel dat de geen tijd  genoeg  heeft
+om hem er vanaf te halen, dan werkt het simpelweg niet.  Dit
+geld  overigens  alleen  voor  de  commando  poort,  bij  de
+datapoort kunnen we  net  zo  snel  data  versturen  als  we
+willen.
+
+Een NOP tussen alle outs in de rechter  routine  zou  genoeg
+moeten zijn, anders twee keer een EX (SP),HL of  twee  stack
+operaties ofzo. Het is mij opgevallen dat als je wilt  lezen
+van het VRAM, je twee EX (SP),HL 's of een PUSH en  een  POP
+achter de adressering van  de  linker  routine  moet  zetten
+(daar blijf ik voorlopig maar bij). In het  voorbeeld  staat
+een PUSH en een POP.
+
+Nu dan twee routines die een deel van het VRAM naar het  RAM
+kunnen verplaatsen en de andere kant op. In register B  moet
+het aantal  bytes  staan,  wat  in  blokken  van  256  bytes
+verstuurd  gaat  worden.  Een  kleine  modificatie  in  deze
+routine en je kan iedere hoeveelheid bytes vanplaatsen. Voor
+de verplaatsing van en  naar  het  VRAM  heb  ik  even  twee
+routines gemaakt, zodat bit 10 van het adres niet meer gezet
+hoeft te worden en omdat er bij de het lezen met IN's en bij
+het schrijven met OUT's moet worden gewerkt:
+
+
+;
+; TOVRAM - Verplaats B blokken van 256 bytes vanaf pagina A
+;          en adres HL naar het VRAM, vanaf RAM, adres DE
+;
+TOVRAM:    DI               ;Voorkom ander vram gebruik
+           OUT (099H),A     ;Pagina
+           LD A,08EH        ;VDP #14 &lt;- Pagina
+           OUT (099H),A
+           LD A,L           ;Adres LSB
+           OUT (099H),A
+           LD A,H           ;Adres MSB
+           AND 03FH         ;Maximaal 16K en wis bit 10
+           OR 40H           ;Zet bit 10 voor schrijven
+           OUT (099H),A
+           PUSH DE          ;Adres naar HL voor OTIR
+           POP HL
+           LD E,B           ;Aantal blokken
+           LD C,098H        ;VDP datapoort voor OTIR
+TOVLUS:    LD B,0           ;Aantal bytes voor OTIR
+           OTIR             ;Verplaats de data
+           DEC E            ;Nog meer blokken?
+           JR NZ,TOVLUS     ;Ja!
+           RET
+
+;
+; FRMVRM - Verplaats B blokken van 256 bytes vanuit het ram
+;          vanaf adres DE naar het vram, pagina A adres HL
+;
+FRMVRM:    DI               ;Voorkom ander vram gebruik
+           OUT (099H),A     ;Pagina
+           LD A,08EH        ;VDP#14 &lt;- Pagina
+           OUT (099H),A
+           LD A,L           ;Adres LSB
+           OUT (099H),A
+           LD A,H           ;Adres MSB
+           AND 03FH         ;Maximaal 16K, wis bit 10
+           OUT (099H),A
+           PUSH DE          ;Adres naar HL voor INIR
+           POP HL           ; maar ook meteen delay
+           LD E,B           ;Aantal blokken
+           LD C,098H        ;VDP datapoort voor INIR
+FRVLUS     LD B,0           ;256 bytes per verplaatsing
+           INIR             ;Lees uit het vram
+           DEC E            ;Nog meer blokken?
+           JR NZ,TOVLUS     ;Ja
+           RET
+
+Ik hoop dat deze gegevens een beetje te gebruiken zijn.  Het
+adresseren van de videochip en het verplaatsen van een  naar
+het VRAM kan natuurlijk ook met de MAINROM, maar dan moet je
+de routines daar een beetje gaan misleiden om bij de  2e  64
+kB te kunnen komen. Dit kan door op adres 0FAF6h de waarde 0
+voor de 1e 64K en de waarde 1 voor de 2e 64K neer te  zetten
+en daarna NSETRD en NSETWR aan te roepen. Dit komt  ongeveer
+overeen met set pagina ,0 en set page ,1 op  screen  8.  Het
+adres bevat in ieder geval de 'active page'. Op adres 0FAF5h
+staat de 'diplay page', maar dat is verder niet zinnig om te
+weten.
+
+Kijk voor het gebruik van meer dan  16  kilobytes  vram  wel
+even hoeveel VRAM er aanwezig is. Dit kan door op  pagina  3
+en 7 op adres 0000h bijvoorbeeld de waarde 3 in pagina 3  en
+daarna de waarde 7 in pagina 7 te schrijven. Als  er  daarna
+in pagina 3 een 7 staat, dan is er  dus  maar  64  Kilobytes
+aanwezig. Ook kan je  naar  adres  0FAFCh  kijken.  De  MSX2
+SUBROM heeft daar al neergezet  hoeveel  VRAM  die  gevonden
+heeft. Ik geloof dat bit 4 daar  gezet  is  als  er  128  kB
+aanwezig is en bit 2 als  er  64  kB  aanwezig  is.  Het  is
+natuurlijk gewoon uit te proberen: Voor screen 0 tot en  met
+4 is maar 16 Kilobyte nodig, voor screen  5  en  6  maar  64
+kilobyte en voor de rest minimaal 128. Door  bijvoorbeeld  2
+op 0FAFCh te poken en dan SCREEN 8 in te typen, dan zal  dat
+waarschijnlijk niet werken.  Het  is  ook  handig  voor  een
+RAMdisk programma bijvoorbeeld, om de originele  waarde  van
+dit adres op te slaan en er 0 ofzo neer  te  zetten  als  de
+RAMdisk het VRAM benut. Dan kan ten eerste er geen data meer
+verminkt worden door  een  screen  commando  en  ten  tweede
+kunnen andere 'nette' programma's aan adres 0FAFCh zien  dat
+het VRAM al in gebruik is.
+
+Veel plezier ermee,
+
+                                       Ramon van der Winkel
+
+
+(Nvdr. deze technieken worden toegepast bij de  SCREEN  5/12
+superimpose routine. U kunt daar dus meteen  een  toepassing
+bekijken.)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_13.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_15.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

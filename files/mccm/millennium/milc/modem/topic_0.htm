@@ -1,0 +1,410 @@
+<html>
+
+<head>
+<title>MILC - Topic Uitleg AT-commando's</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Uitleg AT-commando's</b><br>
+    <i>Onbekend</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                               ======================
+			    UITLEG AT-COMMANDO'S
+			   ======================
+
+B. AT-commandostructuur.
+-------------------------
+Elk commando  wordt vooraf gegaan door de 'AT'-string. Iedere keer als
+de  AT-string  door  het  modem  wordt  ontvangen  (als  het  modem in
+commandotoestand staat),  detecteert het modem de baudsnelheid en past
+het zich automatisch aan de snelheid  en pariteitsinstellingen  van de
+computer aan. (DTE)
+
+
+'AT' is de afkorting van ATtention.
+
+Het  modem is of in commandotoestand,  of in onlinetoestand.
+Het modem gaat van comm&iacute;ndo- naar onlinetoestand na:
+
+a) een geslaagde verbinding in zowel autodial- als autoanswertoestand.
+b) geforceerd op de lijn te zijn gezet.
+
+
+Het modem gaat van online- naar commandotoestand indien:
+
+a) de verbinding verbroken wordt.
+b) de 'escapestring' is gegeven.
+
+De escapestring.
+Als U  het modem  een verbinding  hebt laten  leggen, dan zal het niet
+meer  luisteren  naar  eventuele  ingevoerde  commando's.   Het  modem
+verkeert dan  in onlinetoestand.  Dat is maar goed ook, want als we in
+een over te seinen tekst de zin
+
+WAT ZAG U OP MIJN SCHERM ?
+
+zouden hebben staan, dan zouden de letters 2, 3, en  4 door  het modem
+als het commando ATZ worden opgevat en dat zou betekenen dat het modem
+de verbinding meteen verbreekt ! Betekent dat dan dat we de verbinding
+alleen  nog  kunnen  verbreken  door  het  modem  uit  te  schakelen ?
+Gelukkig niet! Het modem  reageert wel  degelijk nog  op een commando,
+maar  dat  is  een  commando  dat  uit  een  vrijwel  niet voorkomende
+combinatie bestaat. Het is het enige commando waarop  wordt gereageerd
+en  bovendien,  mocht  het  commando  toch  nog  in  bepaalde gevallen
+ongelukkig zijn gekozen, dan kunt U  het  zonder  meer  wijzigen  ! We
+noemen dit commando de escapestring. Na deze string luistert
+het modem  weer naar  de AT-commando's.  Deze string ziet er als volgt
+uit:
+
+   ~ +++ ~
+
+Hierin geeft ~ een seconde pauze aan. Wordt er dus  gedurende minimaal
+1  seconde   geen  signaal  gedetecteerd  en  daarna  drie  plustekens
+ontvangen, waarna  tenminste  1  seconde  weer  geen  informatie wordt
+overgedragen,  dan   gaat  het   modem  weer  naar  de  AT-commandoset
+luisteren.
+
+Overzicht van de commando's.
+
+
+1. DIALING: Het kiezen van een nummer.
+
+D    Cijfers 0-9
+     subcommando's: P  Pulse kiezen. (draaischijf)
+                    T  Touch Tone kiezen.
+                    ,  Dialing pauze, 2 seconde.
+                    ;  Terug naar COMMANDOTOESTAND na dialing
+                    R  Wordt gebruikt bij het bellen van
+		       originate-only modems.
+                    W  Wacht op kiestoon.
+		    @  Wacht op 'stil antwoord'. (5 sec. stilte na
+		       ringdetect).
+		    !  'Flash'.  (1/2 sec. hoorn op de haak)
+    AT  d p w 0 , 04750 , 15492 @
+
+Het apestaartje (@) wordt op plaatsen gebruikt waar  het afscannen van
+de verschillende baudrates veel tijd in beslag neemt. Logt U in op een
+bulletinboard  dat  wel  erg  lang  doet  over  het   scannen  van  de
+verschillende baudrates,  dan kan het gebeuren dat het modem meldt dat
+het geen carrier kan ontdekken en  de verbinding  verbreekt voordat er
+van  enige  communicatie  sprake  kon  zijn.  Vooral de HCC FIDO-nodes
+hadden hier nogal eens last van. Met een apestaartje achter het nummer
+wacht Uw modem de stilte af, net zolang tot het de carrier tegenkomt.
+
+A/   Voert het laatst uitgevoerde commando nogmaals uit.
+
+2. ANSWERING: Automatisch beantwoorden van gesprekken.
+
+A   Handmatig een binnenkomend gesprek beantwoorden.
+
+N.B. Het  modem wordt  niet met ATA in autoanswertoestand gezet. Er is
+het modem namelijk nog  niet  gezegd  na  hoeveel  rings  (S0)  het de
+telefoon  moet  aannemen.  Men  kan  dus stellen dat het modem met het
+commando AT S0 = 1 in autoanswer toestand wordt gezet.
+
+
+3. Modeminstellingen.
+
+-C  C0 Forceert het DCD signaal op V24 interface (PIN 8) UIT.
+    C1 Forceert het DCD signaal op V24 interface (PIN 8) AAN.
+
+Sommige   communicatieprogrammas   zoals   X-talk,   Mirror   en  MITE
+(FRAMEWORK)  werken  nauw  samen  met  het DCD-signaal op pin 8.  Deze
+programma's kijken naar de status van pin 8. Als de carrier weg  is en
+pin 8  laag,  gaat het programma naar 'off-line' toestand. Zodra pin 8
+hoog gaat, kan de gebruiker naar terminalmodus gaan,  tenzij DCD wordt
+geforceerd met C1.
+
+-E  E0 Alle commando's die U intikt worden NIET geecho'd.
+    E1 Echo AAN.
+
+-F  F0 Half duplex (Online lokale echo aan)
+    F1 Full duplex
+
+-H  H0 Modem op de haak. (ophangen)
+    H1 Modem van de haak. (bezet)
+
+-M  M0 Modem speaker uit.
+    M1 Speaker aan totdat er een carrier wordt gedetecteerd.
+    M2 Speaker altijd aan.
+
+-I  0  Geeft produkt code door aan DTE
+    1  Geeft produkt checksum aan DTE
+    2  Geeft produkt checksum aan DTE
+    3  Geeft produkt id code (bijvoorbeeld COMNET 3012 SA v.3.2)
+
+-L  L0-L3 regelt het volume van de audiospeaker.
+
+-O  Keert terug naar online-toestand.
+
+-Q  Q0  Modem stuurt resultaatcodes naar de DTE.
+    Q1  Modem stuurt geen restultaatcodes naar de DTE.
+
+-Sr?  Leest de waarde van register r.
+      (Zie registers)
+
+-Sr=n  Zet register r gelijk aan de waarde n
+
+-V  V0  Resultaatcodes zijn cijfers.
+    V1  Resultaatcodes zijn Engelse woorden.
+
+-Xn   Inschakelen uitgebreide resultaatcodeset.
+ X0   Het modem meldt &quot;CONNECT&quot; wanneer een carrier wordt ontdekt,
+      ongeacht de snelheid: 300 of 1200 of 2400 baud.
+ X1   Het modem meldt &quot;CONNECT&quot; op 300 baud, &quot;CONNECT 1200&quot; op 1200
+      baud en &quot;CONNECT 2400&quot; op 2400 baud.
+ X2   als X1, bovendien wacht het modem op de kiestoon voordat het
+      nummer wordt  gekozen. Wordt binnen 4 seconden geen kiestoon
+      gedetecteerd, dan wordt de melding &quot;NO DIALTONE&quot; gegeven. In
+      gesprek wordt niet herkend.
+ X3   als X1, bovendien kiest het modem blind, dus zonder op een
+      kiestoon te wachten. Wordt het in-gespreksignaal  gedetecteerd,
+      dan wordt &quot;BUSY&quot; gemeld.
+ X4   als X1, bovendien wacht het modem op de kiestoon voordat het
+      nummer wordt gekozen. Wordt binnen 40 seconden geen kiestoon
+      gedetecteerd, dan  wordt &quot;NO DIALTONE&quot; gemeld. Wordt het
+      in-gespreksignaal gedetecteerd, dan wordt &quot;BUSY&quot; gemeld. Indien
+      de 'handshaking'  (V25) niet succesvol verliep, komt het modem
+      met de melding &quot;NO CARRIER&quot;
+
+
+
+REGISTERINSTELLINGEN.
+
+Het modem heeft ook een aantal registers. Deze kunt U voorzien van
+verschillende waarden. De registers  worden  voor  het  overgrote deel
+gebruikt om bepaalde waarden groter of kleiner te maken. Zo kan met de
+registerinstellingen  het  aantal  belsignalen  waarna  een  modem  de
+telefoon moet  opnemen (S0) worden ingesteld, de tijdsduur hoelang een
+modem op kiestoon moet wachten, en  nog veel  meer. De  nieuwe en meer
+geavanceerde  modems  beschikken  over  'non volatile memory'. In deze
+modems kunnen  registerinstellingen blijvend  worden bewaard.   Dit is
+ideaal, want  op deze  manier zijn dipswitches overbodig, en kunnen de
+modems op veel meer  parameters  vast  worden  ingesteld  dan  met een
+dipswitchblok (8-9). Het TS 2424 modem beschikt over zo'n non volatile
+memory.
+
+Registers die te maken hebben met DIALING.
+
+S6
+Funktie:    Bepaalt hoe lang het modem op de kiestoon moet wachten.
+Parameters: 2-255 seconde
+Defaultwaarde: 2
+Bereik:  1 t/m 255
+Dit register bepaalt hoe lang het modem moet wachten op de
+kiestoon nadat de hoorn van de haak is genomen en voordat het
+abonneenummer wordt gedraaid. De minimumtijd is 1 seconde.
+
+S8
+Funktie:    Bepaalt de pauzeduur voor het pauzeteken &quot;,&quot; (komma)
+Parameters:  0-255 seconde
+Defaultwaarde: 2
+Bereik:  0 t/m 255
+De komma wordt gebruikt als pauzeteken in het abonneenummer.
+(Bijvoorbeeld bij het kiezen van een nummer in een huiscentrale).
+Normaliter is een pauze van 2 seconden voldoende. Meerdere
+komma's achter elkaar kunnen worden gebruikt om de pauze te
+verlengen.
+
+S11
+Funktie:    Bepaalt de snelheid bij het toonkiezen.
+Parameters: 50-255 milliseconde
+Defaultwaarde: 70
+Bereik:  50 t/m 255
+
+
+Registers die te maken hebben met ANSWERING .
+
+S0
+Funktie: Bepaalt het aantal belsignalen waarna moet worden opgenomen.
+Parameters: 0-255 rings
+Defaultwaarde: 0
+Bereik:  0 t/m 255
+Door een waarde van 1 t/m 255 toe te kennen aan dit register,
+wordt het modem in auto-answermodus geplaatst. S0=0 zet deze
+autoanswermodus uit. Het modem zal niet antwoorden op een
+binnenkomend belsignaal.
+
+S1
+Funktie:    Telt het aantal belsignalen.
+Parameters: 0-255 rings
+Defaultwaarde: 0
+Bereik:  0 t/m 255
+Register S1 wordt iedere keer wanneer er een belsignaal wordt
+geregistreerd, met 1 verhoogd. Voor de meeste applicaties zult U
+niets met dit register hoeven te doen, maar het kan gelezen of
+ingesteld worden.
+
+
+Registers die te maken hebben met zowel DIALING als ANSWERING
+
+S7
+Funktie: De tijd dat het modem wacht op een carrier nadat er
+	 gekozen of geantwoord is.
+Parameters: 1-255 seconde
+Defaultwaarde: 30
+Bereik:  1 t/m 255
+Nadat gekozen of geantwoord is, wacht het modem S7 seconden op de
+carrier. Als het modem het carriersignaal niet binnen S7 seconden
+dectecteert, verbreekt het de verbinding en geeft de
+resultaatcode &quot;NO CARRIER&quot; waarna het terugkeert naar de
+commandomodus.
+
+S9
+Funktie:    Carrier detectie response tijd.
+Parameters: 1-255 (1/10 seconde)
+Defaultwaarde: 6
+Bereik:  1 t/m 255
+De carrierdetectie responsetijd is de duur dat een carrier
+aanwezig moet zijn, voordat het modem het als zodanig herkent.
+
+S10
+Funktie:    Bepaalt de tijd tussen het verlies van de carrier en het
+            verbreken van de verbinding.
+Parameter:  1-255 (1/10 seconde)
+Defaultwaarde: 2
+Bereik:  1 t/m 255
+De vertragingstijd tussen het verlies van de carrier en het
+verbreken van de verbinding maakt het mogelijk een korte pauze in
+te voegen zonder dat de verbinding wordt verbroken. Wanneer S10 =
+255, zal het modem de carrier negeren en zal het functioneren
+alsof de carrier doorlopend aanwezig is.
+
+
+Registers die te maken hebben met KARAKTERDEFINITIE
+
+S2
+Funktie:    Bepaalt de waarde van de ESC-code.
+Parameter:  0-127 (ASCII)
+Defaultwaarde: 43
+Bereik:  1 t/m 127
+S2 &gt; 127 schakelt de ESC-code uit. De defaultwaarde voor S2 = 43.
+Dit is een ASCII &quot;+&quot;. S2 kan op elke waarde van 0 t/m 255 worden
+ingesteld. Waarden groter dan ASCII 127 stellen de ESC-code buiten
+werking en garanderen een geheel transparante verzending van
+gegevens. Door de ESC-code buiten werking te stellen, wordt
+voorkomen dat de gebruiker per ongeluk het verzenden van gegevens
+afbreekt.
+
+S3
+Funktie:    Bepaalt de waarde van de Carriage Return. (CR)
+Parameter:  0-127 (ASCII)
+Defaultwaarde: 13
+Bereik:  0 t/m 127
+Normaliter is de ASCII waarde voor Carriage Return 13. Wanneer U
+apparatuur hebt waarbij dat niet standaard is, kunt U de waarde
+voor de Carriage Return code veranderen.
+
+S4
+Funktie:    Bepaalt de waarde van de line feed. (LF)
+Defaultwaarde: 10
+Bereik:  1 t/m 127
+Parameter:  0-127 (ASCII)
+De waarde voor de Linefeed wordt alleen in het Engels
+weergegeven. indien U geen linefeed wenst, kun U deze waarde
+veranderen in de &quot;nul&quot;-code.
+
+S5
+Funktie:    Bepaalt de waarde van de backspace. (BS)
+Parameter:  0-32 or 127 (ASCII)
+Defaultwaarde: 8
+Bereik:  1 t/m 127
+Dit is de terug-tik-toets, (backspace) die gebruikt wordt om de
+cursor een positie terug te zetten en in de commandobuffer
+een positie te wissen. De backspacetoets wist niet de AT
+(attentie)-code. (Omdat AT geen ruimte in de commando buffer in
+beslag neemt)
+
+
+Registers die SPECIALE FUNCTIES hebben.
+
+S12
+Funktie: Bepaalt de tijd waarmee de escapekarakters omsloten worden.
+Parameters: 0-255 (1/50 seconde)
+Defaultwaarde: 50
+Bereik:  20 t/m 255
+Dit is de tijd tussen de laatste datakarakters en de eerste
+escapekarakters. Zie: XXXX  ~+++~ XXXX.  &quot;~&quot; is de escapecode
+wachttijd.
+
+S13 - S15  (bit mapped)
+
+S16   (bit mapped)
+Funktie:    Testregister waarden.
+Parameters: 0  normaal bedrijf
+            1  analoge online loopbacktest
+            2  dtmf toontest
+            4  digitale loopbacktest
+
+S17   (bit mapped)
+Funktie:   Testregister waarden.
+Parameters: 0  volumebesturing bit 0 (ALCO)
+            1  volumebesturing bit 1 (ALC1)_
+            2 0 - kiestoondetectie uitgeschakeld
+              1 - kiestoondetectie ingeschakeld
+            3 0 - bezettoondetectie uitgeschakeld
+              1 - bezettoondetectie ingeschakeld
+            4 0 - hoge transmissiesnelheid
+              1 - lage transmissiesnelheid
+            5 0 - Pulsekiezen
+              1 - Dubbeltoonkiezen
+            6 1 - Speaker ingeschakeld tot de carrier
+            7 1 - Speaker doorlopend ingeschakeld
+
+
+-&amp;C 0 Forceer het DCD signaal (Pin 8) hoog.
+    1 Laat het DCD signaal alleen dan hoog gaan indien er
+      daadwerkelijk een carrier wordt gedetecteerd.
+
+-&amp;D 0 Forceer het DTR signaal (Pin 20) hoog.
+    1 Ga terug naar  commando toestand  na het  verliezen van  het DTR
+      signaal.
+    2 Ga  terug naar  commando toestand  na het  verliezen van het DTR
+      signaal en geen autoanswer.
+    3 Ga terug naar de fabrieks-instellingen na het  verliezen van het
+      DTR-signaal.
+
+-&amp;G 0 Geen guard toon
+    1 550 Hz guard toon
+    2 1800 Hz guard toon
+
+-&amp;L 0 Telefoon lijnen
+    1 Gehuurde lijnen
+
+-&amp;W  Schrijf de instellingen weg naar non volatile memory.
+
+-&amp;F  Terug naar fabrieksinstellingen.
+
+-&amp;Zn  Schrijf telefoonnummer (n) naar non volatile memory.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<title>MILC - Topic Programmeertips</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_41.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_43.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Programmeertips</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                P R O G R A M M E E R T I P S
+               ===============================
+
+                          INLEIDING
+
+Programmeertips is een  nieuwe  rubriek,  voor  en  door  de
+lezers van de ClubGuide. In deze rubriek horen handige PEEKs
+en POKEs, kleine programmaatjes en handige programmeertruuks
+thuis.
+
+Omdat ClubGuide #9 nog maar net uit is als  ik  dit  schrijf
+heb ik nog geen reakties ontvangen. Ik heb daarom zelf  maar
+een tip geschreven. Vanaf ClubGuide #11 hoop ik bergen  tips
+van u te kunnen plaatsen. Alles is van harte welkom.
+
+               Stuur uw programmeertips naar:
+
+                       Stichting GENIC
+                     T.a.v. Stefan Boer
+                         Postbus 258
+                       8470 AE Wolvega
+
+
+               WILLEKEURIGE GETALLEN IN BASIC
+
+Het komt vaak voor  dat  u  toevalsgetallen  nodig  hebt  in
+Basic. Basic heeft daarvoor de functie RND(X). Er zit echter
+een nadeel aan het RND commando: bij verkeerd gebruik  geeft
+hij elke keer dezelfde &quot;toevals&quot;getallen.  Probeert  u  maar
+eens:
+
+10 FOR I = 1 TO 10
+20 PRINT RND(1)
+30 NEXT
+
+Als u het voor de tweede keer RUNt, dan zult u zien dat  het
+weer precies dezelfde getallen zijn.
+
+Er is echter wel een oplossing. Voordat ik die geef, zal  ik
+eerst even de syntax van het RND commando behandelen.
+
+U kunt bij RND(X) voor X de waarde 0, een positieve  of  een
+negatieve waarde invullen. Die waardes hebben  het  volgende
+gevolg:
+
+0:  U krijgt het vorige RND getal nog eens.
++:  U krijgt het volgende RND getal uit de lijst.
+-:  U krijgt het getal met nummer X uit de lijst.
+
+We maken gebruik van de variabele TIME. Dat  is  een  teller
+die 50 of 60 keer  per  seconde  (afhankelijk  van  VDP(10))
+wordt verhoogd. Een heleboel Basic handboeken raden u aan de
+instruktie RND(-TIME) herhaaldelijk te gebruiken. Dat  geeft
+echter geen mooie gespreide  toevalsgetallen.  Beter  is  de
+computer aan het begin van het programma op een willekeurige
+plaats in de lijst te  zetten  met  R=RND(-TIME)  en  daarna
+willekeurige getallen op te vragen met RND(1).
+
+Tot slot nog even dit: de functie  RND(X)  geeft  een  getal
+tussen 0 en 1. U kunt daar een ander bereik van  maken  door
+het met het juiste getal te vermenigvuldigen.
+
+Voorbeeld:  u  wilt  een  geheel  getal  tussen  50  en   75
+(inclusief grenzen, dus [50,75] ). De volgende  Basic  regel
+is dan van toepassing:
+
+A = 50 + INT(26*RND(1))
+
+En niet (zoals je zou  verwachten)  25*RND(1)!  25*.99999999
+levert namelijk een getal op dat kleiner is dan 25,  en  dus
+door INT afgerond wordt naar  24.  A  zou  dan  als  hoogste
+waarde 74 aan kunnen nemen.
+
+                                                Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_41.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_43.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

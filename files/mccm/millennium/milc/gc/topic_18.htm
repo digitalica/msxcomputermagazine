@@ -1,0 +1,253 @@
+<html>
+
+<head>
+<title>MILC - Topic VDP cursus (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_17.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_19.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">VDP cursus (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                   MSX2/2+ VDP CURSUS (1)
+                  ========================
+
+                          Inleiding
+
+In dit artikel zullen alle VDP registers  uitgebreid  worden
+behandeld. Aangezien dat er nogal veel zijn, zal het artikel
+over meerdere Clubguides worden verdeeld. Je kunt veel  meer
+uit de VDP halen door hem rechtstreeks aan te sturen.  Zelfs
+in basic zijn er al aanmerkelijke snelheidsverbeteringen mee
+te realiseren.
+
+Dit artikel is zowel voor  MSX2  als  voor  MSX2+-gebruikers
+bestemd. De V9938 (MSX2) en de V9958 (MSX2+)  zijn  namelijk
+grotendeels hetzelfde. Alleen waar er verschillen zijn,  zal
+het artikel opsplitsen in een MSX2 en  een  MSX2+  deel.  De
+informatie in dit artikel  is  zeer  betrouwbaar,  want  het
+meeste komt rechtstreeks uit de  Technical  Data  Books  van
+Yamaha. Met dank aan Eelco Wicherts, die voor het  Technical
+Data Book V9938 heeft gezorgd.
+
+
+            LEZEN EN SCHRIJVEN VAN VDP-REGISTERS
+
+Het leek me wel verstandig om te beginnen met uit te  leggen
+hoe je de  registers  aan  kunt  sturen.  Dit  kan  op  drie
+manieren, namelijk in basic, in machinetaal en  door  recht-
+streeks I/O poorten te beschrijven. Die zal ik nu  een  voor
+een bespreken.
+
+                            Basic
+
+In basic kun je VDP-registers uitlezen  of  beschrijven  met
+het VDP(N) commando. Voor N moet je meestal NIET het  regis-
+ter nummer invullen, zoals die verder in dit artikel  worden
+gebruikt.  Een  register  wordt  aangegeven   met   R#nummer
+(bijvoorbeeld R#23) en een statusregister met  S#nummer.  In
+Basic moet je de volgende omrekentabel gebruiken:
+
+Register:          N:                  Lezen/Schrijven:
+------------------------------------------------------------
+R#00-R#07           0- 7               L/S
+R#08-R#23           9-24               L/S
+R#25-R#27          26-28 (alleen 2+)   L/S
+R#32-R#46          33-47               L/S
+S#00                 8                 L
+S#01-S#09          -1 - -9             L
+------------------------------------------------------------
+Schrijven doe je met VDP(N)=waarde en lezen met W=VDP(N).
+
+
+                         MACHINETAAL
+
+In machinetaal kun je de routines gebruiken die  al  in  het
+ROM van je MSXje zitten. Dat zijn:
+
+0047H     WRTVDP Schrijft naar VDP-register.
+          Invoer: C = register, B = data
+          Verandert: AF,BC
+013EH     RDVDP  Lezen van S#0 van VDP.
+          Uitvoer: A = data
+012DH EXT WRTVDP Schrijft naar VDP-register.
+          Invoer: C = register, B = data
+          Verandert: AF,BC
+
+(EXT betekent dat de routine in het Extended ROM  staat.  Je
+moet zo'n routine aanroepen door het adres in IX te laden en
+daarna CALL 015FH te geven.)
+
+0131H EXT VDPSTA Lezen van statusregister van VDP.
+          Invoer: A = register (0-9)
+          Uitvoer: A = data
+          Wijzigt: F
+
+Voor het lezen van niet-statusregisters is er (voor zover ik
+weet) geen routine in het ROM. Wel staat er een copie van de
+registers 0-7 in het RAM vanaf adres F3DFH.
+
+
+               VDP BESCHRIJVEN VIA I/O POORTEN
+
+1) Direct
+
+Schrijf eerst de data en daarna het registernummer naar port
+#1. Welke I/O poort dat is  kan  per  computer  verschillen,
+maar deze tabel geldt meestal:
+
+port #0            I/O &amp;H98
+port #1            I/O &amp;H99
+port #2            I/O &amp;H9A
+port #3            I/O &amp;H9B
+
+Als dit op jouw computer  niet  werkt,  moet  je  met  PRINT
+HEX$(PEEK(6)) het adres VDP.DR uitlezen. Het  getal  dat  je
+dan  krijgt  is  het  I/O  portnummer  van   Port   #0.   In
+bovenstaande tabel zou daar dus &amp;H98 staan.
+
+Het gaat volgens het volgende schema: (binair)
+
+                  MSB  7  6  5  4  3  2  1  0  LSB
+Port #1 First Byte    D7 D6 D5 D4 D3 D2 D1 D0   DATA
+        Second Byte    1  0 R5 R4 R3 R2 R1 R0   REGISTER  #
+
+Voorbeeld:
+
+Stel je wilt NTSC (60 Hz)  inschakelen.  In  Basic  zou  dat
+VDP(10) = 0 zijn. Dat wordt nu:
+
+OUT &amp;H99,0
+OUT &amp;H99,9+128
+
+Uitleg: Eerst wordt de data geschreven (0), daarna wordt het
+        registernummer geschreven  (VDP(10)  is  gelijk  aan
+        R#9). Er moet 128 bij worden opgeteld  omdat  bit  7
+        geset moet zijn (er staat een 1 in het schema).
+
+(Ik raad je niet aan deze manier  te  gebruiken,  omdat  het
+omslachtig is en omdat de interrupt erop kan  storen,  zodat
+het noodzakelijk is dat je altijd eerst de interrupt uitzet.
+Dat kan met DI (ML), of door bit 5 van R#1 te resetten.)
+
+
+2) Indirect
+
+Zet eerst het registernummer in R#17, dat  kan  niet  op  de
+indirekte manier. Schrijf daarna de data naar port  #3.  Dit
+is vooral erg handig als je een reeks opeenlopende registers
+wilt beschrijven (bijvoorbeeld de  commando  registers  R#32
+t/m R#43). Als  je  namelijk  AII  (bit  7  van  R#17,  Auto
+Increment  Inhibit)  op  0  zet,  wordt   R#17   automatisch
+verhoogd. In schema gaat het als volgt:
+
+                  MSB  7  6  5  4  3  2  1  0  LSB
+R#17                 AII  0 R5 R4 R3 R2 R1 R0   REGISTER #
+Port #3 First Byte    D7 D6 D5 D4 D3 D2 D1 D0   DATA
+Port #3 Second Byte   D7 D6 D5 D4 D3 D2 D1 D0   DATA
+...
+Port #3 nth Byte      D7 D6 D5 D4 D3 D2 D1 D0   DATA
+
+Voorbeeld:
+
+Stel je wilt de volgende waardes in  de  volgende  registers
+zetten:
+
+REGISTER:          DATA:
+32                 134
+33                 1
+34                 200
+35                 0
+
+Dat wordt dan:
+
+VDP(18)=32        'zet startregister in R#17
+OUT &amp;H9B,134      'waarde 1 (voor R#32) naar Port #3
+OUT &amp;H9B,1        'waarde 2 (voor R#33) naar Port #3
+OUT &amp;H9B,200      'waarde 3 (voor R#34) naar Port #3
+OUT &amp;H9B,0        'waarde 4 (voor R#35) naar Port #3
+
+Verdere  bespreking  van  deze   manier   van   rechtstreeks
+aansturen  van  de  VDP  volgt  in  een  van   de   volgende
+afleveringen, die de commando registers zal behandelen.
+
+3) Palette Registers
+
+Je kunt ook de  palette-registers  rechtstreeks  beschrijven
+via I/O poorten. Daarvoor moet je eerst het  kleurnummer  in
+R#16 zetten. Daarna moet je  de  data  bytes  naar  port  #2
+schrijven. Wederom een schema:
+
+                  MSB  7  6  5  4  3  2  1  0  LSB
+R#16                   0  0  0  0 C3 C2 C1 C0   KLEURNUMMER
+Port #2 First Byte     0 R2 R1 R0  0 B2 B1 B0   DATA
+                           ROOD       BLAUW
+Port #2 Second Byte    0  0  0  0  0 G2 G1 G0   DATA
+                                      GROEN
+
+Voorbeeld:
+
+De instruktie COLOR=(13,3,5,1) kun je ook zo geven:
+VDP(17)=13         'zet kleurnummer in R#16
+OUT &amp;H9A,&amp;H31      'rood = 3, blauw =1 naar Port #2
+OUT &amp;H9A,&amp;H05      'groen = 5 naar Port #2
+
+
+
+          VDP STATUSREGISTERS LEZEN VIA I/O POORTEN
+
+Als je de statusregisters van de VDP  (S#0-S#9)  wilt  lezen
+moet je eerst het registernummer in R#15 zetten.  Vervolgens
+moet je port #1 uitlezen. Hier het schema:
+
+                  MSB  7  6  5  4  3  2  1  0  LSB
+R#15                   0  0  0  0 S3 S2 S1 S0   STATREG #
+Port #1 Read data     D7 D6 D5 D4 D3 D2 D1 D0   DATA
+
+Voorbeeld:
+
+Stel je wilt controleren of er twee sprites botsen. Als  dat
+zo is, is bit 5 van S#0 geset.
+
+VDP(16)=0          'statusregisternummer 0 in R#15
+D = INP(&amp;H99)      'Port #1 uitlezen
+IF (D AND &amp;B00100000) THEN PRINT&quot;SPRITES BOTSEN!&quot;
+
+Zo, dat was het voor deze keer. De volgende  keer  begin  ik
+met het overzicht van ALLE registers. Dat zijn er 48 bij  de
+MSX2 en 51 bij de  MSX2+  !!  Ook  het  rechtstreeks  lezen/
+schrijven van het VRAM komt nog aan  bod.  Tot  de  volgende
+keer!
+
+Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_17.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_19.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

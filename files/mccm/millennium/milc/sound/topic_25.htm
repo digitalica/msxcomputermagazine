@@ -1,0 +1,236 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-Music registers</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_24.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_26.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-Music registers</b><br>
+    <i>R.M.</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+            M S X - M U S I C   R E G I S T E R S
+           =======================================
+
+                         WRITE ONLY
+
+De registers van het MSX-MUSIC systeem, zoals te  vinden  is
+in: FM-Pac, FM-Stereo-Pak, MSX 2+ en TurboR computers, wordt
+aangestuurd via de poorten &amp;H7C en &amp;H7D. De aansturing werkt
+volgens hetzelfde principe als bij MSX-Audio en de PSG.  Het
+register wordt opgegeven in 7C en de data in 7D.
+Helaas zijn dit Write Only poorten, zodat  er  niet  gelezen
+kan worden.
+
+
+                     KLANK-INSTELLINGEN
+
+De OPLL data (original instrument)  wordt  opgegeven  in  de
+registers 0-7. Deze data komt overeen met de data die u kunt
+opvragen in de Sound-Editor van SynthSaurus, dus u kunt mak-
+kelijk een zelfgemaakt instrument opvragen  en  die  waarden
+naar de registers 0-7 schrijven.
+
+Hieronder volgt de opbouw van de registers 0-7 (OPLL-instr.)
+
+Reg.nr.    Bit:    Functie:
+------------------------------------------------------------
+0,1        0-3     Multi sample golven/harmonische relaties
+           4       Rate key schaal
+           5       Vasthoudend/uitlopend (1=vast 0=uitl)
+           6       Vibration aan/uit     (1=aan  0=uit)
+           7       Amplitude modulatie   (1=aan  0=uit)
+
+2          0-5     Modulatie index
+           6-7     Level key schaal
+
+3          0-2     FM terugslag
+           3-4     Dragende en gemoduleerde golfvorm
+                   koppeling (FM/AM)
+           6-7     Level key schaal
+
+4,5        0-3     Decay verandering
+           4-7     Attack verandering (aanzwelling)
+
+6,7        0-3     Openen van de veranderingsbesturing
+           4-7     Grote van Attack/Decay
+------------------------------------------------------------
+
+
+                    INSTRUMENT AANSTURING
+
+De hieronder afgedrukte registers dienen voor de  instrument
+selectie/frequentie/octaaf/volume en het zogenaamde Sustain.
+
+Reg.nr.    Bit:    Functie:
+------------------------------------------------------------
+&amp;H10-&amp;H18  0-7     Frequentie noot LSB (8 bits)
+
+&amp;H20-&amp;H28  0       Frequentie noot MSB (1 bit)
+           1-3     Octaaf nr. (0-7, 0=octaaf 1, 7=octaaf 8)
+           4       Key aan/uit (1=aan, 0=uit)
+           5       Sustain (vasthouden, 1=aan, 0=uit)
+
+&amp;H30-&amp;H38  0-3     Volume (0=vol.15, F=vol.0 !)
+           4-7     Instrumenten keuze (0=original, &lt;&gt;0=FM
+                                       instrument)
+------------------------------------------------------------
+
+
+                       FM-INSTRUMENTEN
+
+Het MSX-MUSIC systeem heeft 15  voorgeprogrammeerde  klanken
+die afzonderlijk van elkaar kunnen worden gebruikt.
+
+0 = Original (zelf ontworpen instr. zie KLANK-INSTELLINGEN)
+1 = Viool                    9 = Hoorn
+2 = Guitaar                  A = Synthesizer
+3 = Piano                    B = Harpsichore
+4 = Fluit                    C = Vibraphone
+5 = Clarinet                 D = Synthesizer Bas
+6 = Hobo                     E = ElektrPiano2/Acoust. Bas
+7 = Trompet                  F = ElektrPiano1/ElektrGitaar
+8 = Orgel
+
+
+                           RHYTHM
+
+Register &amp;H0E bevat de drumselectie, bit 5 moet  echter  wel
+geschreven worden voordat er een drum te horen is. De  drums
+kunnen ook enigszins van klank worden veranderd,  doch  vrij
+beperkt en een beetje chaotisch. Hieronder volgt  een  tabel
+met de drum waardes die kunnen worden geschreven in register
+&amp;H0E:
+
+bit 0 = HiHat                bit 3 = Snare drum/Field drum
+bit 1 = Cymbal               bit 4 = Bass drum
+bit 2 = TomTom               bit 5 = selectie (1 = Ritme,
+                                      0 = Instrumenten)
+
+Natuurlijk kunnen hiermee meerdere drums tegelijkertijd wor-
+den aangestuurd. De rhythm klank is als volgt opgebouwd:
+
+Drum soort:   Reg.   Bit:    Functie:
+------------------------------------------------------------
+Bass drum     &amp;H16   0-7     Frequentie LSB (8 bits)
+              &amp;H26   0       Frequentie MSB (1 bit)
+                     1-3     Octaaf (0-7)
+              &amp;H36   0-4     Volume Bass drum
+
+Snare en      &amp;h17   0-7     Frequentie LSB (8 bits)
+HiHat         &amp;H27   0       Frequentie MSB (1 bit)
+                     1-3     Octaaf (0-7)
+              &amp;H37   0-3     Volume Snare
+                     4-7     Volume HiHat
+
+Cymbal en     &amp;H18   0-7     Frequentie LSB (8 bits)
+TomTom        &amp;H28   0       Frequentie MSB (1 bit)
+                     1-3     Octaaf (0-7)
+              &amp;H38   0-3     Volume Cymbal
+                     4-7     Volume TomTom
+------------------------------------------------------------
+
+
+                       BASIC REGISTERS
+
+De registers van het MSX-MUSIC systeem worden, onder BASIC!,
+bijgehouden vanaf adres &amp;HF9C0 tot &amp;HF9C0+&amp;H38.  De  instel-
+lingen van deze registers zijn na het  commando  CALL  MUSIC
+gevuld met de volgende waardes:
+
+                                  Reg.nr.        Waarde:
+------------------------------------------------------------
+Register paar 1:   Instruments    &amp;H10-&amp;H15      &amp;H56
+                   Drums          &amp;H16           &amp;H20
+                                  &amp;H17           &amp;H50
+                                  &amp;H18           &amp;HC0
+
+Register paar 2:   Instruments    &amp;H20-&amp;H25      &amp;H00
+                   Drums          &amp;H26           &amp;H05
+                                  &amp;H27           &amp;H05
+                                  &amp;H28           &amp;H01
+
+Register paar 3:   Instruments    &amp;H30-&amp;H35      &amp;H30
+                   Drums          &amp;H36           &amp;H01
+                                  &amp;H37           &amp;H11
+                                  &amp;H38           &amp;H11
+------------------------------------------------------------
+
+
+                           GEBRUIK
+
+Wanneer men deze informatie gaat gebruiken  in  bijvoorbeeld
+een interrupt gestuurd muziekstuk, dan moet u met de volgen-
+de dingen rekening houden.
+
+1) Als er een nieuwe frequentie van een instrument wordt op-
+   gegeven, moet eerst bit 4 van het desbetreffende register
+   uit worden geschakeld. Ter verduidelijking: als in kanaal
+   1 een nieuwe frequentie moet worden ingevoerd,  dan  moet
+   bit 4 van register &amp;H10 worden uitgezet. Daarna wordt  de
+   frequentie geschreven, na dit alles wordt bit 4 weer aan-
+   gezet (reg. &amp;H10). Voor andere kanalen  wordt  natuurlijk
+   een ander register beschreven.
+
+2) Als er een  instrument  wordt  gespeeld  dat  'uitsterft'
+   (Release), dan moete r herhaling voor in machinetaal:
+
+         LD   B,3    ;ongeveer 3!
+   LOOP: DJNZ LOOP
+
+3) De frequenties van de noten zijn:
+
+   Noot:     LSB       MSB (bit 0 van reg &amp;H20-&amp;H28)
+   ---------------------------------------------------------
+   C         &amp;HAD      0
+   C#        &amp;HB7      0
+   D         &amp;HC2      0
+   D#        &amp;HCD      0
+   E         &amp;HD9      0
+   F         &amp;HE6      0
+   F#        &amp;HF4      0
+   G         &amp;H03      1
+   G#        &amp;H12      1
+   A         &amp;H22      1
+   A#        &amp;H34      1
+   B         &amp;H46      1
+   ---------------------------------------------------------
+
+Met deze informatie kunt u nu in  staat  zijn  om  via  deze
+registers het MSX-MUSIC systeem aan te sturen. Veel succes!
+
+                            R.M.
+
+(Even voor alle duidelijkheid: ik weet niet wie R.M. is, 
+maar ik ben het niet! - RM-FCS)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_24.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_26.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

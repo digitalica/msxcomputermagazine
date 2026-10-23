@@ -1,0 +1,125 @@
+<html>
+
+<head>
+<title>MILC - Topic Barcode reader</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Barcode reader</b><br>
+    <i>Jeffrey Timmer</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+; Dit programma leest de BAR CODE READER onder interrupt uit
+; en stopt het dan in de toetsenbordbuffer
+; Het is dus gewoon een leuk probeerseltje
+; Dit programma is dus zeer geschikt om uitgebreid te worden
+; Dus ik hoop dat jullie er wat mee doen als je er zin en TIJD voor hebt
+; Gemaakt door FCS  Jeffrey Timmer
+; Succes!!
+
+        ORG   0D000H
+
+BH1:    DI
+        LD    HL,0FD9FH
+        LD    DE,HOOK
+        LD    BC,5
+        LDIR
+        LD    HL,BARCOD
+        LD    (0FDA0H),HL
+        LD    A,0C3H
+        LD    (0FD9FH),A
+        EI
+        LD    C,18H           ; Initialiseer de BAR CODE READER
+        LD    A,00000000B
+        HALT
+        OUT   (C),A
+        LD    A,01111111B
+        HALT
+        OUT   (C),A
+        LD    A,10110011B
+        HALT
+        OUT   (C),A
+        LD    A,11001000B
+        HALT
+        OUT   (C),A
+        RET
+BH2:    LD    HL,HOOK
+        LD    DE,0FD9FH
+        LD    BC,5
+        LDIR
+        RET
+
+BARCOD: LD    A,(0FBEBH)
+        CP    11011101B
+        JR    Z,BH2
+        LD    A,(IDBYTE)
+        CP    0
+        JR    NZ,READ
+        IN    A,(18H)
+        BIT   7,A
+        JR    NZ,HOOK
+
+        EX    AF,AF
+        LD    A,1
+        LD    (IDBYTE),A
+        IN    A,(0AAH)
+        XOR   01000000B
+        OUT   (0AAH),A
+        EX    AF,AF
+        RES   5,A
+        LD    HL,0FBF0H
+        LD    (0F3FAH),HL
+        JR    READSI
+READ:   LD    HL,0FBF0H
+        LD    (0F3FAH),HL
+        IN    A,(18H)
+        BIT   7,A
+        JR    NZ,STOPR
+READSI: LD    (HL),A
+        INC   HL
+        LD    (0F3F8H),HL
+        JR    HOOK
+
+STOPR:  RES   7,A
+        LD    (HL),A
+        INC   HL
+        LD    (0F3F8H),HL
+        XOR   A
+        LD    (IDBYTE),A
+        IN    A,(0AAH)
+        XOR   01000000B
+        OUT   (0AAH),A
+HOOK:   DEFS  5
+
+IDBYTE: DEFB  0
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

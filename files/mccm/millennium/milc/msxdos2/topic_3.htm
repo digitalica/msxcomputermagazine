@@ -1,0 +1,568 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-DOS 2.20 functions [4/5]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-DOS 2.20 functions [4/5]</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+  3.60   GET/SET FILE ATTRIBUTES (50H)
+
+     Parameters:    C = 50H (_ATTR) 
+                   DE = Drive/path/file ASCIIZ string
+                                or fileinfo block pointer
+                    A = 0 =&gt; get attributes
+                        1 =&gt; set attributes
+                    L = New attributes byte (only if A=1)
+     Results:       A = Error
+                    L = Current attributes byte
+
+   This function  is normally  used to  change the  attributes of  a file  or 
+sub-directory.  It can  also be  used to  find out the current attributes but 
+this is  more usually  done with  the &quot;find  first entry&quot;  function (function 
+40h).  If A=0  then the current attributes byte for the file or sub-directory 
+will just be returned in register L.
+
+   If A=1  then the attributes byte will be set to the new value specified in 
+register  L, and this new value will also be returned in register L. Only the 
+system, hidden,  read only  and archive  bits may  be altered for a file, and 
+only  the hidden  bit for a sub-directory. An &quot;.IATTR&quot; error will be returned 
+if an  attempt is made to alter any other attribute bits. If a fileinfo block 
+is  passed then  the attributes  byte in  it will not be updated with the new 
+setting.
+
+   Global filename  characters are  not allowed  so only  one object (file or 
+sub-directory)  can have  its attributes set by this function. The attributes 
+of the  root directory  cannot be  changed because  it does not have any. The 
+attributes  of a  file cannot be changed if there is a file handle open to it 
+(&quot;.FOPEN&quot;  error).  The  attributes  of the  &quot;.&quot; and  &quot;..&quot; directory  entries 
+however can  be changed.  If a device name such as &quot;CON&quot; is specified then no 
+error  will be  returned but  the device's  attributes will  not actually  be 
+changed (since it does not have any).
+
+  3.61   GET/SET FILE DATE AND TIME (51H)
+
+     Parameters:    C = 51H (_FTIME) 
+                   DE = Drive/path/file ASCIIZ string
+                                or fileinfo block pointer
+                    A = 0 =&gt; get date and time
+                        1 =&gt; set date and time 
+                   IX = New time value (only if A=1)
+                   HL = New date value (only if A=1)
+     Results:       A = Error
+                   DE = Current file time value
+                   HL = Current file date value 
+
+   If  A=1 then  this function sets the date and time of last modification of 
+the file or sub-directory specified by the drive/path/file string or fileinfo 
+block. Global  filename characters  are not allowed in any part of the string 
+so  only one  file can have its date and time modified by this function. If a 
+device name such as &quot;CON&quot; is specified then no error will be returned but the 
+device's date and time will not actually be changed.
+
+   The date  and time  format are exactly as contained in the directory entry 
+and  fileinfo blocks  (see the  &quot;Program Interface Specification&quot;). No checks 
+are done for sensible dates or times, the values are simply stored. Note that 
+if a fileinfo block is passed then the date and time stored in it will not be 
+updated by this function.
+
+   If  A=0 then  the current values are just returned. Note that although the 
+time value is passed in IX, it is returned in DE. The date and time of a file 
+cannot be altered (although it can be read) if there is a file handle open to 
+the file (&quot;.FOPEN&quot; error).
+
+  3.62   DELETE FILE HANDLE (52H)
+
+     Parameters:    C = 52H (_HDELETE) 
+                    B = File handle
+     Results:       A = Error
+
+   This function  deletes the  file handle associated with the specified file 
+and  closes the file handle. A file handle cannot be deleted if there are any 
+other separately  opened file handles open to the same file (&quot;.FOPEN&quot; error). 
+If  there are any duplicates of the file handle (created by a &quot;duplicate file 
+handle&quot; or  &quot;fork&quot; function), then these duplicates will be marked as invalid 
+and any attempt to use them will produce an &quot;.HDEAD&quot; error.
+
+   The  error conditions  for this  function are  the same as for the &quot;delete 
+file or  sub-directory&quot; function  (function 4Dh). The file handle will always 
+be closed, even if there is an error condition such as &quot;.FILRO&quot; or &quot;.FOPEN&quot;.
+
+  3.63   RENAME FILE HANDLE (53H)
+
+     Parameters:    C = 53H (_HRENAME) 
+                    B = File handle
+                   HL = New filename ASCIIZ string 
+     Results:       A = Error
+
+   This  function renames  the file associated with the specified file handle 
+with the  new name  in the  string pointed to by HL. Apart from the fact that 
+the  file is  specified by  a file  handle rather  than an ASCIIZ string or a 
+fileinfo  block,   this  function   is  identical  to  the  &quot;rename  file  or 
+subdirectory&quot; function (function 4Eh), and has the same error conditions.
+
+   A file  handle cannot  be renamed if there are any other separately opened 
+file  handles for  this file  (&quot;.FOPEN&quot; error), although it can be renamed if 
+there are  copies of  this file  handle, and  in this case the copies will be 
+renamed.  Renaming a  file handle will not alter the file pointer but it will 
+do an implicit &quot;ensure&quot; operation.
+
+  3.64   MOVE FILE HANDLE (54H)
+
+     Parameters:    C = 54H (_HMOVE) 
+                    B = File handle
+                   HL = New path ASCIIZ string 
+     Results:       A = Error
+
+   This function  moves the file associated with the specified file handle to 
+the  directory specified  by the new path string pointed to by HL. Apart from 
+the fact  that the  file is  specified by a file handle rather than an ASCIIZ 
+string  or a  fileinfo block, this function is identical to the &quot;move file or 
+subdirectory&quot; function (function 4Fh), and has the same error conditions.
+
+   A file  handle cannot  be moved  if there  are any other separately opened 
+file  handles for  this file  (&quot;.FOPEN&quot; error),  although it  can be moved if 
+there are  copies of  this file handle, and in this case the copies will also 
+be moved. Moving a file handle will not alter the file pointer but it will do 
+an implicit &quot;ensure&quot; operation.
+
+  3.65   GET/SET FILE HANDLE ATTRIBUTES (55H)
+
+     Parameters:    C = 55H (_HATTR) 
+                    B = File handle
+                    A = 0 =&gt; get attributes
+                        1 =&gt; set attributes
+                    L = New attributes byte (only if A=1)
+     Results:       A = Error
+                    L = Current attributes byte
+
+   This function gets or sets the attributes byte of the file associated with
+the specified  file handle. Apart from the fact that the file is specified by 
+a file handle rather than an ASCIIZ string or a fileinfo block, this function 
+is  identical to  the &quot;get/set  file attributes&quot; function (function 50h), and 
+has the same error conditions.
+
+   A  file handle  cannot have  its attributes  changed (although they can be 
+read) if  there are  any other  separately opened  file handles for this file 
+(&quot;.FOPEN&quot;  error).  The  file pointer  will not  be altered  but an  implicit 
+&quot;ensure&quot; operation will be done.
+
+  3.66   GET/SET FILE HANDLE DATE AND TIME (56H)
+
+     Parameters:    C = 56H (_HFTIME) 
+                    B = File handle
+                    A = 0 =&gt; get date and time
+                        1 =&gt; set date and time 
+                   IX = New time value (only if A=1)
+                   HL = New date value (only if A=1)
+     Results:       A = Error
+                   DE = Current file time value
+                   HL = Current file date value 
+
+   This  function gets  or sets the date and time of the file associated with 
+the specified  file handle. Apart from the fact that the file is specified by 
+a file handle rather than an ASCIIZ string or a fileinfo block, this function 
+is identical to the &quot;get/set file date and time&quot; function (function 51h), and 
+has the same error conditions.
+
+   A  file handle cannot have its date and time changed (although they can be 
+read) if  there are  any other  separately opened  file handles for this file 
+(&quot;.FOPEN&quot;  error).  The  file pointer  will not  be altered  but an  implicit 
+&quot;ensure&quot; operation will be done.
+
+  3.67   GET DISK TRANSFER ADDRESS (57H)
+
+     Parameters:    C = 57H (_GETDTA) 
+     Results:      DE = Current disk transfer address
+
+   This  function returns  the current disk transfer address. This address is 
+only used  for the  &quot;traditional&quot; CP/M  style FCB  functions and the absolute 
+sector read and write functions.
+ 
+  3.68   GET VERIFY FLAG SETTING (58H)
+
+     Parameters:    C = 58H (_GETVFY) 
+     Results:       B = 00H =&gt; verify disabled
+                        FFH =&gt; verify enabled
+
+   This  function simply  returns the  current state of the verify flag which
+can be set with MSX-DOS function 2Eh.
+
+  3.69   GET CURRENT DIRECTORY (59H)
+
+     Parameters:    C = 59H (_GETCD) 
+                    B = Drive number (0=current, 1=A: etc)
+                   DE = Pointer to 64 byte buffer 
+     Results:       A = Error
+                   DE = Filled in with current path
+
+    This  function  simply  gets  an  ASCIIZ  string representing  the current
+directory of the specified drive into the buffer pointed to by DE. The string 
+will not  include a drive name or a leading or trailing &quot;\&quot; character, so the 
+root directory is represented by a null string. The drive will be accessed to 
+make sure that the current directory actually exists on the current disk, and 
+if  not then  the current  directory will  be set back to the root and a null 
+string returned.
+
+  3.70   CHANGE CURRENT DIRECTORY (5AH)
+
+     Parameters:    C = 5AH (_CHDIR) 
+                   DE = Drive/path/file ASCIIZ string
+     Results:       A = Error
+
+   The drive/path/file  string must  specify a  directory rather than a file. 
+The  current directory  of the drive will be changed to be this directory. If 
+the  specified  directory does  not exist  then the  current setting  will be 
+unaltered and a &quot;.NODIR&quot; error returned.
+
+  3.71   PARSE PATHNAME (5BH)
+
+     Parameters:    C = 5BH (_PARSE) 
+                    B = Volume name flag (bit 4)
+                        DE = ASCIIZ string for parsing
+     Results:       A = Error
+                   DE = Pointer to termination character
+                   HL = Pointer to start of last item
+                    B = Parse flags
+                    C = Logical drive number (1=A: etc)
+
+   This function is purely a string manipulation function, it will not access
+the disks  at all  and it  will not  modify the  user's string  at all. It is 
+intended to help transient programs in parsing command lines.
+
+   The volume  name flag (bit 4 of register B; it is in the same bit position
+as  the volume  name bit in an attributes byte) determines whether the string 
+will be  parsed as  a &quot;drive/path/file&quot;  string (if  the bit is cleared) or a 
+&quot;drive/volume&quot; string (if the bit is set).
+
+   The pointer  returned in DE will point to the first character which is not 
+valid in a pathname string, and may be the null at the end of the string. See 
+the &quot;Command Specification&quot; for details of the syntax of pathname strings and 
+also for a list of valid characters.
+
+   The  pointer returned  in HL will point to the first character of the last 
+item of  a string  (filename portion). For example, when a string &quot;A:\XYZ\P.Q 
+/F&quot; was passed, DE will point to the white space character before &quot;/F&quot; and HL 
+will  point to &quot;P&quot;. If the parsed string ends with a character &quot;\&quot; or is null 
+(apart from  drive name),  then there  will be no &quot;last item&quot;, thus HL and DE 
+will  point to the same character. In this case, some special procedures will 
+be needed to all the programs which use this function.
+
+   The  drive number returned in register C is the logical drive specified in
+the string.  If the  string did not start with a drive letter then register C 
+will  contain the  default drive  number, since  the default  drive has  been 
+implicitly specified. Register C will never be zero.
+
+   The  parse flags  returned in  register B  indicate various  useful things 
+about the  string. For  a volume  name bits  1, 4,  5, 6 and 7 will always be 
+clear. For a filename, bits 3 to 7 relate to the last item on the string (the 
+&quot;filename&quot; component). The bit assignments are as follows: 
+
+b0 - set if any characters parsed other than drive name
+b1 - set if any directory path specified
+b2 - set if drive name specified
+b3 - set if main filename specified in last item
+b4 - set if filename extension specified in last item
+b5 - set if last item is ambiguous
+b6 - set if last item is &quot;.&quot; or &quot;..&quot;
+b7 - set if last item is &quot;..&quot;
+
+  3.72   PARSE FILENAME (5CH)
+
+     Parameters:    C = 5CH (_PFILE) 
+                   DE = ASCIIZ string for parsing
+                   HL = Pointer to 11 byte buffer
+     Results:       A = Error (always zero)
+                   DE = Pointer to termination character
+                   HL = Preserved, buffer filled in
+                    B = Parse flags
+
+   This function is purely a string manipulation function, it will not access
+disks at  all and will not modify the string at all. It is intended mainly to 
+help  transient programs  in printing  out filenames  in a formatted way. The 
+ASCIIZ string will be parsed as a single filename item, and the filename will 
+be  stored  in the  user's 11  byte buffer  in expanded  form, with  both the 
+filename and the extension padded out with spaces.
+
+   The parse  flags returned  in register  B are  identical to  those for the 
+&quot;parse  pathname&quot; function  above (function 5Bh), except that bits 0, 1 and 2 
+will always  be clear.  The user's  buffer will  always be filled in, even if 
+there  is no  valid filename  in the string, in which case the buffer will be 
+filled with spaces. &quot;*&quot; characters will be expanded to the appropriate number 
+of &quot;?&quot;s.  If either  the filename  or the filename extension is too long then 
+the excess characters will be ignored.
+
+   The pointer  returned in  register DE will point to the first character in 
+the  string which  was not part of the filename, which may be the null at the 
+end of  the string.  This character  will never be a valid filename character 
+(see the &quot;Command Specification&quot; for details of valid filename characters).
+
+  3.73   CHECK CHARACTER (5DH)
+
+     Parameters:    C = 5DH (_CHKCHR) 
+                    D = Character flags
+                    E = Character to be checked
+     Results:       A = 0 (never returns an error)
+                    D = Updated character flags
+                    E = Checked (upper cased) character
+
+   This  function allow  language independent  upper casing of characters and 
+also helps with handling 16-bit characters and manipulation of filenames. The 
+bit assignments in the character flags are as follows:
+
+   b0   - set to suppress upper casing
+   b1   - set if first byte of 16-bit character
+   b2   - set if second byte of 16-bit character
+   b3   - set =&gt; volume name (rather than filename)
+   b4   - set =&gt; not a valid file/volume name character
+b5...b7 - reserved (always clear)
+
+   Bit 0  is used  to control upper casing. If it is clear then the character
+will be upper cased according to the language setting of the machine. If this 
+bit  is  set  then the  returned character  will always  be the  same as  the 
+character passed.
+
+   The two  16-bit character  flags (bits 1 and 2) can both be clear when the 
+first  character of  a string  is checked  and the  settings returned  can be 
+passed straight  back to  this function  for each  subsequent character. Care 
+must  be taken  with these  flags when moving backwards through strings which 
+may contain 16-bit characters.
+
+   Bit  4 is  set on return if the character is one of the set of filename or 
+volume name  terminator characters. Bit 3 is simply used to determine whether 
+to  test for filename or volume name characters since the sets are different. 
+16-bit characters  (either byte)  are never  considered as volume or filename 
+terminators.
+
+  3.74   GET WHOLE PATH STRING (5EH)
+
+     Parameters:    C = 5EH (_WPATH) 
+                        DE = Pointer to 64 byte buffer 
+     Results:       A = Error
+                   DE = Filled in with whole path string
+                   HL = Pointer to start of last item 
+
+   This  function simply copies an ASCIIZ path string from an internal buffer 
+into the  user's buffer.  The string  represents the whole path and filename, 
+from  the root  directory, of  a file  or sub-directory located by a previous 
+&quot;find first entry&quot; or &quot;find new entry&quot; function. The returned string will not 
+include a  drive, or  an initial &quot;\&quot; character. Register HL will point at the 
+first  character of  the last  item on  the string, exactly as for the &quot;parse 
+path&quot; function (function 5Bh).
+
+   If a  &quot;find first entry&quot; or &quot;find new entry&quot; function call is done with DE 
+pointing to an ASCIIZ string then a subsequent &quot;get whole path&quot; function call 
+will  return a string representing the sub-directory or file corresponding to 
+the  fileinfo   block  returned   by  the  &quot;find&quot;  function.  If  this  is  a 
+sub-directory  then the  fileinfo block  may be passed back in register DE to 
+another &quot;find  first entry&quot;  function call,  which will  locate a file within 
+this  sub-directory. In  this case  the newly located file will be added onto 
+the already  existing whole  path string internally, and so a subsequent &quot;get 
+whole  path string&quot; function call will return a correct whole path string for 
+the located file.
+
+   Great care must be taken in using this function because the internal whole
+path  string is modified by many of the function calls, and in many cases can 
+be invalid.  The &quot;get  whole path&quot;  function call  should be done immediately 
+after  the  &quot;find  first  entry&quot;  or &quot;find  new entry&quot;  function to  which it 
+relates.
+
+  3.75   FLUSH DISK BUFFERS (5FH)
+
+     Parameters:    C = 5FH (_FLUSH) 
+                    B = Drive number (0=current, FFH=all)
+                    D = 00H =&gt; Flush only
+                      = FFH =&gt; Flush and invalidate 
+     Results:       A = Error
+
+   This  function flushes  any dirty disk buffers for the specified drive, or
+for all drives if B=FFh. If register D is FFh then all buffers for that drive 
+will also be invalidated. 
+
+  3.76   FORK TO CHILD PROCESS (60H)
+
+     Parameters:    C = 60H (_FORK) 
+     Results:       A = Error
+                    B = Process id of parent process
+
+   This function  informs the  system that  a child  process is  about to  be 
+started.  Typically this  is a new program or sub-command being executed. For 
+example COMMAND2.COM does a &quot;fork&quot; function call before executing any command 
+or transient program.
+
+A new set of file handles is created, and any current file handles which were 
+opened with the &quot;inheritable&quot; access mode bit set (see the &quot;open file handle&quot; 
+function -  function 43h),  are copied  into the new set of file handles. Any 
+file handles which were  opened with  the &quot;inheritable&quot; bit clear will not be copied and so will 
+not be  available to the child process. The standard file handles (00h...05h) 
+are inheritable and so these will be copied.
+
+   A new process id is allocated for the child process and the process id. of
+the parent  process is  returned so  that a  later &quot;join&quot;  function call  can 
+switch  back to  the parent process. A &quot;.NORAM&quot; error can be produced by this 
+function if there is insufficient memory to duplicate the file handles.
+
+   Because  the child  process now  has a  copy of  the previous file handles 
+rather than  the originals,  if one  of them is closed then the original will 
+remain  open. So  for example if the child process closes the standard output 
+file handle  (file handle number 1) an re-opens it to a new file, then when a 
+&quot;join&quot; function is done to return to the parent process the original standard 
+output channel will still be there.
+
+  3.77   REJOIN PARENT PROCESS (61H)
+
+     Parameters:    C = 61H (_JOIN) 
+                    B = Process id of parent, or zero
+     Results:       A = Error
+                    B = Primary error code from child
+                    C = Secondary error code from child
+
+   This function  switches back  to the  specified parent process and returns
+the  error code  which the child process terminated with in register B, and a 
+secondary error  code from the child in register C. Although the relationship 
+between  parent and  childprocesses is strictly one-to-one, this function can 
+jump back several levels by giving it a suitable process id. A &quot;.IPROC&quot; error 
+will be returned if the process id is invalid.
+
+   The child  process's set  of file handles are automatically closed and the 
+parent  process's set of file handles becomes active again. Also any user RAM 
+segments which the child process had allocated will be freed.
+
+   If the  process id  passed to  this function is zero then a partial system 
+re-initialisatin  is done. All file handles are closed and the standard input 
+and output handles re-opened and all user segments are freed. This should not 
+normally be  done by  a user  program if  it intends to return to the command 
+interpreter  since the  command interpreter will not be in a consistent state 
+after this.
+
+   This function takes great care that the freeing of memory and adjusting of 
+process id  is done  before actually closing any file handles and thus before 
+accessing  the disk. This ensures that if a disk error occurs and is aborted, 
+the join  operation will  have been  done successfully. However if a &quot;join 0&quot; 
+produces a disk error which is aborted, then the re-initialization of default 
+file  handles will not have been done. In this case another &quot;join 0&quot; function 
+call should  be done  and this  will not attempt access disk (because all the 
+files have been closed) and so will be successful.
+
+   Note that  if this function call is made via 0F37Dh then registers B and C
+will  not return  the error  codes. This  is because  program termination and 
+abort handling  must be  done by the application program. The error code will 
+have  been passed  to the abort vector and code there must remember the error 
+code if  it needs  to. See the &quot;terminate with error code&quot; function (function 
+62h) for the meaning of the primary and secondary error code. 
+
+  3.78   TERMINATE WITH ERROR CODE (62H)
+
+     Parameters:    C = 62H (_TERM) 
+                    B = Error code for termination
+     Results:       Does not return
+
+
+   This  function terminates the program with the specified error code, which 
+may be  zero indicating no error. This function call will never return to the 
+caller  (unless a  user abort  routine executes  forces it  to - see function 
+63h). The operation of this function is different depending on whether it was 
+called  from  the  MSX-DOS  environment  via  00005h or  from the  disk BASIC 
+environment via 0F37Dh.
+
+   If called  via 00005h  then if  a user  abort routine  has been defined by 
+function  63h it  will be  called with  the specified  error code (and a zero 
+secondary error code). Assuming that this routine returns, or if there was no 
+user abort  routine defined,  then control  will be  passed back  to whatever 
+loaded  the transient program via a jump at location 00000h. This will almost 
+always  be  the command  interpreter, but  in some  cases it  may be  another 
+transient program.  The error  code will  be remembered by the system and the 
+next  &quot;join&quot; function  (function 61h)  which is  done will  return this error 
+code. The command interpreter will print an error message for any code in the 
+range 20h...FFh, but will not print a message for errors below this.
+
+   If this function is called from the disk BASIC environment via 0F37Dh then 
+control  will be  passed to the abort vector at location &quot;BREAKVECT&quot;. In this 
+environment there  is no  separately defined user abort routine and the error 
+code  must be  remembered by  the code at &quot;BREAKVECT&quot; because &quot;join&quot; will not 
+return the error code.
+
+  3.79   DEFINE ABORT EXIT ROUTINE (63H)
+
+     Parameters:    C = 63H (_DEFAB) 
+                   DE = Address of abort exit routine 
+                        0000H to un-define routine 
+     Results:       A = 0 (never generates errors)
+
+   This function  is only  available when  called via  location 00005h in the
+MSX-DOS  environment. It  cannot be  called at  location 0F37Dh from the disk 
+BASIC environment.
+
+   If  register DE  is zero  then a  previously defined abort routine will be 
+undefined, otherwise  a new  one will  be defined.  The abort routine will be 
+called by the system whenever the transient program is about to terminate for 
+any  reason other  than a direct jump to location 0000h. Programs written for 
+MSX-DOS  2  should  exit  with a  &quot;terminate with  error code&quot;  function call 
+(function 061h) rather than a jump to location 0000h.
+
+   The user  abort routine  will be  entered with the user stack active, with 
+IX,  IY and  the alternate  register set as it was when the function call was 
+made and  with the  whole TPA  paged in.  The termination  error code will be 
+passed to the routine in register A with a secondary error code in register B 
+and  if the  routine executes a &quot;RET&quot; then the values returned in registers A 
+and  B  will  be  stored as  the error  codes to  be returned  by the  &quot;join&quot; 
+function, and  normally printed out by the command interpreter. Alternatively 
+the  routine may jump to some warm start code in the transient program rather 
+than returning. The system will be in a perfectly stable state able to accept 
+any function calls.
+
+   The primary  error code  passed to  the routine  in register A will be the
+code  which the  program itself  passed to  the &quot;terminate  with error  code&quot; 
+function (which  may be  zero) if this is the reason for the termination. The 
+routine will also be called if a Ctrl-C or Ctrl-STOP is detected (&quot;.CTRLC&quot; or 
+&quot;.STOP&quot;  error), if  a disk error is aborted (&quot;.ABORT&quot; error), or if an error 
+occurred  on  one of  the standard  input or  output channels  being accessed 
+through MSX-DOS function calls 01h...0Bh (&quot;.INERR&quot; or &quot;.OUTERR&quot;).
+   
+   The errors &quot;.ABORT&quot;, &quot;.INERR&quot; and &quot;.OUTERR&quot; are generated by the system as 
+a  result of  some other  error. For  example a  &quot;.ABORT&quot; can  result from  a 
+&quot;.NRDY&quot; error,  or a  &quot;.INERR&quot; can result from a &quot;.EOF&quot; error. In these cases 
+the original error code (&quot;.NRDY&quot; or &quot;.EOF&quot;) is passed to the abort routine in 
+register  B as  the secondary  error code.  For all  other errors there is no 
+secondary error code and register B will be zero.
+   
+   If the abort routine executes &quot;POP HL : RET&quot; (or equivalent) rather than a 
+simple  return,  then  control  will  pass  to  the  instruction  immediately 
+following the MSX-DOS call or BIOS call in which the error occurred. This may 
+be useful in conjunction with a disk error handler routine (see function 64h) 
+to  allow  an option  to abort  the current  MSX-DOS call  when a  disk error 
+occurs.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

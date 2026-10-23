@@ -1,0 +1,662 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>MSX-Kanji ontsluierd</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Albert Beevendorp">
+<META NAME="description" LANG="nl" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 91, January/February">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#80C0FF"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#404077" VLINK="#404077" ALINK="#80C0FF">
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../worldexpo99/nl.html">[en] The MSX World Expo &#8216;99 report</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        nummer
+        91,
+        januari/februari&nbsp;2000<BR>
+</FONT><A HREF="../contents/nl.html#KANJI-stuff">Terug naar inhoud</A></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../kolom1/nl.html">Wammes&#8217; kolom</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>het nieuwe van Japan in Europa is nu bruikbaar</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>MSX-Kanji ontsluierd</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>Het zal niemand ontgaan zijn dat vanaf de MSX2+ en/of MSX-DOS 2.20 Europa de Kanji-schermen kent. Sinds mijn niet geringe MSX-collectie werd aangevuld met de MSX&nbsp;turbo&nbsp;R, zijn de Kanji-schermen en het commando <TT>PUT</TT> <TT>KANJI</TT> &mdash;&nbsp;dat overigens in werkelijk <I>iedere</I> MSX2 en hoger zit, ook in de Europese versies&nbsp;&mdash; na flink uitspitten mij een heel stuk duidelijker geworden. Met de Kanji-statements zijn heel leuke dingen te realiseren. Het eerste voordeel die de Kanji biedt is het plaatsen van tekst op een grafisch scherm met simpele <TT>LOCATE</TT>- en <TT>PRINT</TT>-statements, echter de rom bevat veel meer leuke dingen, waaronder een conversiesysteem tussen Katakana-, Hiragana- en Kanji-tekens.</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#808099" HEIGHT="20"><B><I><A HREF="mailto:bifi@msxnet.org"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Albert Beevendorp</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Inhoud
+                  </B>
+<BR>
+<A HREF="#Par2">Kanji-schermen</A>
+<BR>
+<A HREF="#Par5">Kanji-stringmanipulatie</A>
+<BR>
+<A HREF="#Par13">Kanji add-ons</A>
+<BR>
+<A HREF="#Par16">Kanji in machinetaal</A>
+<BR>
+<A HREF="#Par18">Het <TT>PUT</TT> <TT>KANJI</TT>-commando</A>
+<BR>
+<A HREF="#Par29"><TT>PUT</TT> <TT>KANJI</TT> in machinetaal</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">Kanji-tekens zijn voor ons de samengetrokken tekens van de Hiragana-tekens die vaak kleiner boven deze Kanji-tekens staan op de diverse verpakkingen van spellen. De Katakana-tekens worden door de Japanners gebruikt om bijvoorbeeld Engelse woorden fonetisch te kunnen schrijven. Ook worden diverse namen in Katakana-tekens getoond. Hiragana-tekens worden gebruikt om de teksten te kunnen formuleren, maar wat dit alles inhoudt is mij nog geheel onbekend. Het vertalen van Japans naar een andere taal wordt hierdoor maar aan de kenners overgelaten. Dit artikel beperkt zich tot het gebruik van de Kanji-schermen en <TT>PUT</TT> <TT>KANJI</TT>. Naast Kanji-basic is de Kanji-rom beperkt benaderbaar in machinetaal, waarbij ter voorbeeld enkele assemblysources zijn opgenomen.</P>
+<A NAME="Par2"></A>
+<P CLASS="bodynoindent">
+<B>Kanji-schermen</B>
+<BR>
+De MSX Kanji-rom bestaat uit een viertal Kanji-schermen en diverse functies die
+ook buiten deze Kanji-schermen kunnen worden gebruikt. Er zijn zes
+<TT>CALL</TT>-statements die de Kanji-schermen kunnen in- en uitschakelen. De
+tabel &#8220;Kanji-schermen&#8221; geeft een overzicht van de
+<TT>CALL</TT>-statements die de Kanji-schermen kunnen instellen. Het
+<TT>CALL</TT>-statement zelf kan tevens worden vervangen door een underscore
+(_), dus <TT>CALL</TT> <TT>ANK</TT> en <TT>_ANK</TT> hebben hetzelfde resultaat:</P>
+<A NAME="Par3"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+<CAPTION STYLE="color: #FFFFFF; background-color: #808099; text-align: center">
+<B>Kanji-schermen</B>
+</CAPTION>
+<TR>
+<TH ALIGN="CENTER" VALIGN="top">Statement</TH><TH ALIGN="CENTER" VALIGN="top">Resolutie</TH><TH ALIGN="LEFT" VALIGN="top">Opmerking</TH>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top"><TT>_KANJI</TT></TD><TD ALIGN="CENTER" VALIGN="top">(64,13)</TD><TD ALIGN="LEFT" VALIGN="top">Tekenformaat 8&times;16 (<TT>WIDTH</TT> <TT>64</TT> maximaal)</TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top"><TT>_KANJI0</TT></TD><TD ALIGN="CENTER" VALIGN="top">(64,13)</TD><TD ALIGN="LEFT" VALIGN="top">Tekenformaat 8&times;16 (<TT>WIDTH</TT> <TT>64</TT> maximaal)</TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top"><TT>_KANJI1</TT></TD><TD ALIGN="CENTER" VALIGN="top">(80,13)</TD><TD ALIGN="LEFT" VALIGN="top">Tekenformaat 6&times;16 (<TT>WIDTH</TT> <TT>80</TT> maximaal)</TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top"><TT>_KANJI2</TT></TD><TD ALIGN="CENTER" VALIGN="top">(64,24)</TD><TD ALIGN="LEFT" VALIGN="top">Interlaced 8&times;8 (<TT>WIDTH</TT> <TT>64</TT> maximaal)</TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top"><TT>_KANJI3</TT></TD><TD ALIGN="CENTER" VALIGN="top">(80,24)</TD><TD ALIGN="LEFT" VALIGN="top">Interlaced 6&times;8 (<TT>WIDTH</TT> <TT>80</TT> maximaal)</TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top"><TT>_ANK</TT></TD><TD ALIGN="CENTER" VALIGN="top">(80,24)</TD><TD ALIGN="LEFT" VALIGN="top"><TT>SCREEN</TT> <TT>0</TT> of <TT>SCREEN</TT> <TT>1</TT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Na instellen van een Kanji-scherm neemt het toetsenbord de Japanse indeling aan, waardoor de niet-japanse toetsenborden totaal in de war zijn geraakt. Dit is met de MSX-DOS 2.20 duidelijk naar voren gekomen en diverse omgebouwde MSX2+ machines hebben een omgeprogrammeerde eprom die het normale toetsenbord indeling behouden. Maar officieel is de Kanji-rom voor de Japanse markt en daardoor is het de Japanse indeling blijven houden. Met de MSX-DOS 2.20-Kanji is het mogelijk met <TT>CLS</TT> het scherm schoon te maken, terwijl het offici&euml;le Kanji-statement <TT>_CLS</TT> de manier is voor een schoon scherm. Gewoon <TT>CLS</TT> geeft zonder pardon een foutmelding. Ook kunnen de palette-waarden worden gewijzigd binnen de Kanji-schermen met <TT>_PALETTE(C,R,G,B)</TT>. De uitwerking is 100% gelijk aan <TT>COLOR=(C,R,G,B)</TT>, echter op de Kanji-schermen gericht omdat <TT>COLOR=(C,R,G,B)</TT> een gedeelte van het scherm verminkt.</P>
+<A NAME="Par5"></A>
+<P CLASS="bodynoindent">
+<B>Kanji-stringmanipulatie</B>
+<BR>
+Naast de acht Kanji-schermmanipulatie statements zijn er ook nog tien
+Kanji-stringmanipulatie statements opgenomen. De tabel
+&#8220;Kanji-stringmanipulaties&#8221; toont de statements die na de lijst
+uitgebreid worden beschreven:</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+<CAPTION STYLE="color: #FFFFFF; background-color: #808099; text-align: center">
+<B>Kanji-stringmanipulaties</B>
+</CAPTION>
+<TR>
+<TH ALIGN="LEFT" VALIGN="top">Functie</TH><TH ALIGN="LEFT" VALIGN="top">Omschrijving</TH>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_AKCNV(A$,B$)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Converteer een Ank-string naar een Kanji-string.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_JIS(A$,B$)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Zet Jis-code van teken <TT>B$</TT> (met <TT>_KNJ</TT> verkregen) in hexadecimale notatie in <TT>A$</TT>.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_KACNV(A$,B$)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Converteer een Kanji-string naar een Ank-string.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_KEXT(A$,B$,A)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Filter de tekens van het opgegeven type <TT>A</TT> uit string <TT>B$</TT> naar string <TT>A$</TT>.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_KINSTR(A,B,A$,B$)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Komt overeen met <TT>A=INSTR(B,A$,B$)</TT>, echter gericht op de Kanji-strings.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_KLEN(A,A$)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Komt overeen met <TT>A=LEN(A$)</TT>, echter gericht op de Kanji-strings.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_KMID(A$,B$,A,B)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Komt overeen met <TT>A$=MID(B$,A,B)</TT>, echter gericht op de Kanji-strings.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_KNJ(A$,B$)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Zet teken met Jis-code <TT>B$</TT> in <TT>A$</TT>.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_KTYPE(A,A$,B)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Geef het type van het teken op positie <TT>B</TT> van <TT>A$</TT> in <TT>A</TT>.</TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="top"><TT>_SJIS(A$,B$)</TT></TD><TD ALIGN="LEFT" VALIGN="top">Zet ascii-waarden van teken <TT>B$</TT> (met <TT>_KNJ</TT> verkregen) in hexadecimale notatie in <TT>A$</TT>.</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Sommige commando&#8217;s vereisen extra uitleg en voorbeelden om het exacte resultaat duidelijk te maken. Ook zal veel geprobeerd moeten worden om alles echt te begrijpen. Ook kunnen de juiste Japanse tekens getoond worden mits de ondersteuning voor het Japans is geinstalleerd, anders zijn er onduidelijke tekens te zien.</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><TT>_KNJ(A$,B$)</TT> converteert van een Jis-code naar de string die
+gebruikt worden om het teken op de Kanji-schermen te kunnen tonen. In de Japanse
+handboeken worden de karakters in de Jis-code uitgedrukt. Deze standaard code
+wordt door ieder Japans computer-systeem gebruikt om het juiste teken te tonen
+ook al zijn intern de tekens via een heel andere methode aan te spreken. En deze
+conversie dient altijd vanuit de Jis-code te gebeuren. De Jis-code zelf dient in
+<TT>B$</TT> te staan en het resultaat komt in <TT>A$</TT> terecht. Omdat meestal de Jis-code in hexadecimale notatie wordt weergegeven, is dit hier ook gedaan. Ter voorbeeld nemen we Jis-code &#8220;4B62&#8221;. Willen we dit teken op het scherm zien, dan doen we <TT>_KNJ(A$,"4B62")</TT> waarna <TT>A$</TT> het Kanji-teken zal bevatten dat op de Kanji-schermen juist getoond wordt. Op de MSX ziet het teken er zo uit: <IMG SRC="knightchar1.gif" BORDER="0" ALIGN="MIDDLE" ALT=""></P>
+<A NAME="Par9"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Dit Kanji-teken kan weer worden geconverteerd naar de Jis-code met <TT>_JIS(B$,A$)</TT> waarna <TT>B$</TT> de string &#8220;4B62&#8221; zal bevatten. Ook kunnen de twee ascii-tekens in een 4-byte string worden gezet met <TT>_SJIS(C$,A$)</TT> waarna <TT>C$</TT> de waarde &#8220;9682&#8221; zal hebben. Het eerste ascii-teken is dan in dit geval &amp;H96 en het tweede ascii-teken is &amp;H82. Worden deze twee waarden achter elkaar naar een Kanji-scherm geprint, dan verschijnt het teken weer. Ook grappig en veel gebruikt is het converteren tussen een Ank-string en een Kanji-string. Hierdoor wordt in de Kanji-schermen de tekst dubbelbreed op het scherm geplaatst. Minder vaak gebruikt is het converteren van een Kanji-string naar een Ank-string, zij het in beperkte mate, omdat in de Kanji-rom veel meer karakters zijn opgeslagen en het converteren naar een Ank-string zich beperkt tot de karakters die zich in de 256 karakters bevinden.</P>
+<A NAME="Par10"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Willen we een tekst, dus converteren van een Ank-string naar een Kanji-string, dubbelbreed op een Kanji-scherm plaatsen, dan is <TT>_AKCNV(A$,"Hallo")</TT> genoeg. Zetten we <TT>A$</TT> op het Kanji-scherm dan zien we inderdaad de tekst dubbelbreed omdat de Kanji-tekens niet 8, maar 16 pixels breed zijn omdat op het Kanji-scherm voor &eacute;&eacute;n teken dan twee posities worden gebruikt. Willen we deze Kanji-string converteren naar een Ank-string dan doen we <TT>_KACNV(B$,A$)</TT> waarna in <TT>B$</TT> weer netjes &#8220;Hallo&#8221; &mdash;&nbsp;ook buiten de Kanji-schermen&nbsp;&mdash; te lezen is. De Katakana- en Hiragana-tekens zijn na conversie van een Ank-string naar een Kanji-string veel vloeiender doordat het geen 8x8 karakters zijn, maar 16&times;16 karakters uit een heel eigen rom: de Jis-rom.</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Met <TT>_KEXT(A$,B$,A)</TT> is het mogelijk de tekens van het in <TT>A</TT> opgegeven type uit te string te filteren. Het is mogelijk een combinatie van Ank- en Kanji-type tekens in eenzelfde string te gebruiken. Voor <TT>A</TT> zijn twee waarden mogelijk. Als geldt <TT>A=0</TT>, dan worden alle Ank-type tekens uit <TT>B$</TT> in <TT>A$</TT> gefilterd. Als geldt <TT>A=1</TT> dan worden alle Kanji-type tekens uit <TT>B$</TT> in <TT>A$</TT> gefilterd. Op deze manier is het mogelijk de lengte van een string te kunnen bepalen met <TT>_KLEN(A,A$)</TT> voor een of ander doel. Wil je het type van een teken op een bepaalde positie bepalen binnen een string met <TT>_KTYPE</TT> of met <TT>_KMID</TT> een deel van de string op te vragen, dan is het verstandig om eerst de lengte van deze string op te vragen, omdat <TT>A=LEN(A$)</TT> een andere waarde geeft dan <TT>_KLEN(A,A$)</TT> mochten er Kanji-type tekens in staan.</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Met <TT>_KTYPE(A,A$,B)</TT> kan het type van het aangewezen teken binnen een string worden bepaald. Verstandig is eerst met <TT>_KLEN</TT> de lengte van de string op te halen om de laatste positie binnen de string te kunnen bepalen zonder dat er een foutmelding komt. De waarde voor <TT>A=0</TT> als het teken in <TT>A$</TT> op positie <TT>B</TT> een Ank-type teken is en <TT>A=1</TT> als het een Kanji-type teken betrof. Met <TT>_KMID(A$,B$,A,B)</TT> kan een gedeelte van een string worden opgehaald. Ook hier geldt dat er rekening gehouden wordt met Ank-type tekens en Kanji-type tekens binnen dezelfde string, waardoor de lengte van de string opgevraagd dient te worden met <TT>_KLEN</TT>.</P>
+<A NAME="Par13"></A>
+<P CLASS="bodynoindent">
+<B>Kanji add-ons</B>
+<BR>
+In de Kanji-mode, het gebruik van Kanji-schermen, is het mogelijk op een grafisch scherm direct teksten en zetten met het <TT>LOCATE</TT>- en <TT>PRINT</TT>-statement zonder dat er een bestand <TT>"GRP:"</TT> voor geopend hoeft te worden. Helaas is hierdoor het positioneren op pixel-niveau niet mogelijk. Als dat gewenst is, dan is het openen van een bestand <TT>"GRP:"</TT> wel weer nodig en is het <TT>PRINT #1</TT>-statement weer benodigd. Bij het &#8220;introduceren&#8221; van de Kanji in Europa werd dit voor het gemak ook veelvuldig toegepast in de MSX2+ demo&#8217;s die allemaal voorzien waren van een Kanji-rom. Ook veel omgebouwde MSX2-computers naar MSX2+ heeft een Kanji-rom ingebouwd met de internationale toetsenbordindeling en karakterset waardoor wij allen nog het probleem hadden van het moeten leven met de eigen tekenset omdat de Jis-rom niet gevonden kon worden. De kunst van het weglaten zullen we maar zeggen.</P>
+<A NAME="Par14"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>De toetscombinaties <TT CLASS="key">GRAPH</TT>-<TT CLASS="key">SELECT</TT> en <TT CLASS="key">CTRL</TT>-<TT CLASS="key">SPACE</TT> herbergen leuke functies. Als er verschil is tussen deze twee toetscombinaties, dan is mij geheel onbekend wat dit verschil is. Beide toetscombinaties schakelen deze functie weer uit. In deze mode wordt onderin het scherm een cursor getoond, wordt het invoeren van de fonetische uitspraak van woorden automatisch ingeschakeld en zullen er altijd Hiragana-tekens getoond worden. Buiten deze mode, en tevens buiten de Kanji-schermen, is dit mogelijk via de toetscombinatie <TT CLASS="key">SHIFT</TT>-<TT CLASS="key">KANA</TT> waarbij de <TT CLASS="key">CAPS-LOCK</TT> dienst doet als selectie tussen het invoeren van Hiragana-tekens (<TT CLASS="key">CAPS-LOCK</TT> uit) en Katakana-tekens (<TT CLASS="key">CAPS-LOCK</TT> aan).</P>
+<A NAME="Par15"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Bij het invoeren van tekst kan met enkele toetsen nog het een en ander gedaan worden. Met de cursor-toetsen links en rechts is het mogelijk door de tekst heen te wandelen. Wanneer op de cursor-toets omhoog, omlaag of de spatiebalk wordt gedrukt, kan door een selectie van Hiragana naar Kanji conversies worden gewandeld. De <TT CLASS="key">RETURN</TT>-toets zet de tekens zoals deze op dat moment op de regel staan, worden getransfereerd naar het scherm vanaf de cursor-positie. De <TT CLASS="key">KANA</TT>-toets schakelt tussen fonetisch invoeren en directe Hiragana invoer. <TT CLASS="key">F1</TT> schakelt het normale invoeren volgens het alfabet aan en uit, <TT CLASS="key">F2</TT> converteert de invoer van Hiragana naar Katakana in Kanji-type, <TT CLASS="key">F3</TT> doet deze conversie in Ank-type.</P>
+<A NAME="Par16"></A>
+<P CLASS="bodynoindent">
+<B>Kanji in machinetaal</B>
+<BR>
+Er zullen ongetwijfeld meer dingen zijn die via machinetaal met de Kanji-rom te doen zijn, echter de beperking nu ligt bij het schakelen tussen Kanji-schermen, welk Kanji-scherm momenteel actief is en of de Kanji-driver geinstalleerd is. De Kanji-routines worden net zoals de DOS2 memory routines en MST&#8217;s MemMan via de <TT>H.EXTB</TT> aangesproken. De ID-code wordt in register <TT>D</TT> geplaatst en is waarde 17 (&amp;H11) en het &#8216;commando&#8217; wordt in register <TT>E</TT> geplaatst. Voor de machinetaal kenners hier de drie routines in een WB-ASS2 source.</P>
+<A NAME="Par17"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#808099" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#808099"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="kanji.asm"><FONT COLOR="#FFFFFF">KANJI.ASM</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+;
+; Kanji-driver check - BiFi'96/'99
+;
+; Out: Z-flag set when no driver
+;
+KNJCHK: LD    A,255
+        LD    DE,&amp;H1100       ; D = ID-code, E = Command
+        CALL  &amp;HFFCA
+        INC   A
+        RET
+;
+; Read Kanji-mode - BiFi'96/'99
+;
+; Out: A=Current Kanji-mode
+;         =0   ANK
+;         =1   KANJI0
+;         =2   KANJI1
+;         =3   KANJI2
+;         =4   KANJI3
+;
+RD_KNJ: LD    DE,&amp;H1100
+        JP    &amp;HFFCA
+;
+; Set Kanji-mode - BiFi'96/'99
+;
+; In:  A = Kanji-mode
+;
+WRTKNJ: LD    DE,&amp;H1101
+        JP    &amp;HFFCA
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"></P>
+<A NAME="Par18"></A>
+<P CLASS="bodynoindent">
+<B>Het <TT>PUT</TT> <TT>KANJI</TT>-commando</B>
+<BR>
+Een Basic-commando waar, tot nu toe, weinig over bekend was, maar wel degelijk in iedere MSX2 zit, is <TT>PUT</TT> <TT>KANJI</TT>. <TT>PUT</TT> <TT>KANJI</TT> is ongedocumenteerd gebleven, omdat er in de Europese MSX2-computers geen Jis-rom aanwezig is. <TT>PUT</TT> <TT>KANJI</TT> is een grafisch commando. Dat wil zeggen dat het alleen vanuit een grafsich scherm kan worden gebruikt. Ook is in de MSX2 sub-rom een bios-entry opgenomen om de <TT>PUT</TT> <TT>KANJI</TT> in machinetaal te realiseren. Voor de volledigheid wordt deze ook opgenomen in het artikel. De volledige schrijfwijze, syntaxis, van het commando is:</P>
+<A NAME="Par19"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+<TT>PUT</TT> <TT>KANJI [STEP] [(X-coordinaat,Y-coordinaat)], &lt;Jis-code&gt; [,&lt;Kleur&gt;] [,&lt;Logische-operatie&gt;] [,&lt;Afdruk-mode&gt;]</TT>
+</P>
+<A NAME="Par20"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Net zoals zoveel grafische commando&#8217;s kan ook hier met optie <TT>"STEP"</TT> worden gebruikt om relatief te positioneren. Tussen de haakjes staan de (met <TT>STEP</TT> de relatieve) coordinaten voor het teken. &lt;Jis-code&gt; is verplicht en geeft aan welk teken op het scherm getoond moet worden. Aangezien in dit artikel alle Jis-codes in hexadecimale notatie zijn gegeven en hier een decimale notatie vereist is, is het handig ook hier de hexadecimale notatie aan te houden, dus moet het teken met Jis-code &#8220;4B62&#8221; worden getoond, dan moet de Jis-code voor onze leesbaarheid en snelle referentie als <TT>&amp;H4B62</TT> in <TT>PUT</TT> <TT>KANJI</TT> worden opgenomen. &lt;Kleur&gt; is afhankelijk van het aantal kleuren op het grafische scherm. Standaard is &lt;Kleur&gt; de huidige voorgrondkleur. Ook hier wordt de &lt;Logische-operatie&gt; in lettervorm opgenomen. De standaardinstelling voor &lt;Logische-operatie&gt; is <TT>PSET</TT>.</P>
+<A NAME="Par21"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>&lt;Afdruk-mode&gt; vereist extra uitleg. Er zijn drie afdruk-modi en de
+onderstaande tabel geeft de betekenis aan van de drie afdruk-modi:</P>
+<A NAME="Par22"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+<CAPTION STYLE="color: #FFFFFF; background-color: #808099; text-align: center">
+<B><TT>PUT</TT> <TT>KANJI</TT> afdruk-modi</B>
+</CAPTION>
+<TR>
+<TH ALIGN="CENTER" VALIGN="top">Afdruk-mode</TH><TH ALIGN="LEFT" VALIGN="top">Betekenis</TH>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top">0</TD><TD ALIGN="LEFT" VALIGN="top">Gehele KANJI-teken afdrukken</TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top">1</TD><TD ALIGN="LEFT" VALIGN="top">Even lijnen afdrukken</TD>
+</TR>
+<TR>
+<TD ALIGN="CENTER" VALIGN="top">2</TD><TD ALIGN="LEFT" VALIGN="top">Oneven lijnen afdrukken</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par23"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Afdruk-mode 0 toont het hele Kanji-teken op de actieve schermpagina. Dit is de default-mode en wordt gebruikt als er geen interlace mode gewenst is. Afdruk-mode 1 toont alleen de even lijnen op de actieve pagina. De even lijnen dienen wel op een even genummerde schermpagina worden getoond om tezamen met afdruk-mode 2 die op de bijhorende oneven genummerde schermpagina te worden getoond om het hele teken weer interlaced te kunnen weergeven. Nog even ter herinnering: schermpagina&#8217;s 0 en 1 zijn gekoppeld en schermpagina&#8217;s 2 en 3 zijn gekoppeld. De twee voorbeeld programmaatjes tonen het gebruik van <TT>PUT</TT> <TT>KANJI</TT> in Basic. Het eerste programmaatje toont een Jis-tekst in afdruk-mode 0, het tweede programmaatje toont dezelfde tekst in afdruk-modi 1 en 2:</P>
+<A NAME="Par24"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#808099" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#808099"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="kanji1.bas"><FONT COLOR="#FFFFFF">KANJI1.BAS</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+10 SCREEN 5: X=60: Y=80: RESTORE
+20 READ A$: IF A$&lt;&gt;"*" THEN Z=VAL("&amp;H"+A$): GOSUB 40: X=X+16: GOTO 20
+30 I$=INPUT$(1): SCREEN 0: END
+40 PUT KANJI (X,Y),Z,14,PSET,0: RETURN
+50 DATA 234D,2353,2358,2342,2341,2353,2349,2343,*
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"></P>
+<A NAME="Par25"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#808099" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#808099"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="kanji2.bas"><FONT COLOR="#FFFFFF">KANJI2.BAS</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+10 SCREEN 7,,,,,3: X=180: Y=100: RESTORE
+20 SET PAGE ,1: CLS: SET PAGE 1
+30 READ A$: IF A$&lt;&gt;"*" THEN Z=VAL("&amp;H"+A$): GOSUB 50: X=X+16: GOTO 30
+40 I$=INPUT$(1): SCREEN 0,,,,,0: END
+50 SET PAGE ,0: PUT KANJI (X,Y),Z,14,PSET,1
+60 SET PAGE ,1: PUT KANJI (X,Y),Z,14,PSET,2: RETURN
+70 DATA 234D,2353,2358,2342,2341,2353,2349,2343,*
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"></P>
+<A NAME="Par26"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Bovenstaande programmaatjes bevatten de Jis-codes in <TT>DATA</TT> regels. Het kan gemakkelijker door gebruik te maken van de Kanji-rom. Zoals eerder beschreven is het mogelijk een string te converteren van een Ank-type string naar een Kanji-type string en daar per teken de Jis-code van op te vragen. De statements die hiervoor nodig zijn: <TT>_AKCNV</TT>, <TT>_JIS</TT>, <TT>_KLEN</TT> en <TT>_KMID</TT>. De programmaatjes zouden er dan na enig wijzigen als volgt uit zien:</P>
+<A NAME="Par27"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#808099" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#808099"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="kanji3.bas"><FONT COLOR="#FFFFFF">KANJI3.BAS</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+10 SCREEN 5: X=60: Y=80: _AKCNV (A$,"MSXBASIC")
+20 _KLEN (M,A$): FOR L=1 TO M: GOSUB 50: GOSUB 40: X=X+16: NEXT L
+30 I$=INPUT$(1): SCREEN 0: END
+40 PUT KANJI (X,Y),Z,14,PSET,0: RETURN
+50 _KMID (B$,A$,L,1): _JIS (C$,B$): Z=VAL("&amp;H"+C$): RETURN
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"></P>
+<A NAME="Par28"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#808099" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#808099"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="kanji4.bas"><FONT COLOR="#FFFFFF">KANJI4.BAS</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+10 SCREEN 7,,,,,3: X=180: Y=100: _AKCNV (A$,"MSXBASIC")
+20 SET PAGE ,1: CLS: SET PAGE 1
+30 _KLEN (M,A$): FOR L=1 TO M: GOSUB 70: GOSUB 50: X=X+16: NEXT L
+40 I$=INPUT$(1): SCREEN 0,,,,,0: END
+50 SET PAGE ,0: PUT KANJI (X,Y),Z,14,PSET,1
+60 SET PAGE ,1: PUT KANJI (X,Y),Z,14,PSET,2: RETURN
+70 _KMID (B$,A$,L,1): _JIS (C$,B$): Z=VAL("&amp;H"+C$): RETURN
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"></P>
+<A NAME="Par29"></A>
+<P CLASS="bodynoindent">
+<B><TT>PUT</TT> <TT>KANJI</TT> in machinetaal</B>
+<BR>
+In de sub-rom van iedere MSX2 is een bios-entry opgenomen om een <TT>PUT</TT> <TT>KANJI</TT> in machinetaal te doen. De coordinaten dienen te worden geplaatst in <TT>GRPACX</TT> en <TT>GRPACY</TT> en worden automatisch geupdate, de logische operatie is te vinden in <TT>LOGOPR</TT> en de kleur is te vinden in <TT>ATRBYT</TT>. Voor het interlace printen moet <TT>ACPAGE</TT> worden ingesteld voordat de <TT>PUT</TT> <TT>KANJI</TT> wordt gedaan. Tot slot wordt de interlace mode in de VDP ingesteld door bits 2 en 3 van R#9 te setten en de R#2 page de waarde 63 voor page 1 te geven en de waarde 127 voor page 3 om beide pagina&#8217;s interlaced te kunnen zien. De voorbeeld source geeft alleen het bovenstaande voorbeeld van interlaced <TT>PUT</TT> <TT>KANJI</TT>. In deze source zijn wat meer variabelen meegenomen:</P>
+<A NAME="Par30"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#808099" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#808099"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="putkanji.asm"><FONT COLOR="#FFFFFF">PUTKANJI.ASM</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+        ORG   &amp;HC000
+;
+; EQU's (BIOS)
+;
+CHGMOD: EQU   &amp;H5F
+CHGET:  EQU   &amp;H9F
+CLS:    EQU   &amp;HC3
+SUBROM: EQU   &amp;H015F
+KNJPRT: EQU   &amp;H01BD
+;
+; EQU's (Systeem variabelen)
+;
+VDP2RG: EQU   &amp;HF3E1
+ATRBYT: EQU   &amp;HF3F2
+ACPAGE: EQU   &amp;HFAF6
+LOGOPR: EQU   &amp;HFB02
+GRPACX: EQU   &amp;HFCB7
+GRPACY: EQU   &amp;HFCB9
+VDP9RG: EQU   &amp;HFFE8
+;
+; PUT KANJI demo - BiFi'99 - Interlaced versie
+; Non-interlace is heel simpel uit deze source
+; te maken.
+;
+START:  LD    A,7             ; SCREEN 7
+        CALL  CHGMOD
+
+        LD    A,(VDP9RG)      ; Interlace aan
+        OR    12
+        LD    (VDP9RG),A
+        OUT   (&amp;H99),A
+        LD    A,128+9
+        OUT   (&amp;H99),A
+
+        LD    A,63            ; SET PAGE 1,1
+        LD    (VDP2RG),A
+        OUT   (&amp;H99),A
+        LD    A,128+2
+        OUT   (&amp;H99),A
+        LD    A,1
+        LD    (ACPAGE),A
+
+        XOR   A
+        CALL  CLS
+
+        LD    HL,180          ; X = 180
+        LD    (GRPACX),HL
+        LD    HL,100          ; Y = 100
+        LD    (GRPACY),HL
+        LD    HL,TJIS
+
+PRT_LP: LD    C,(HL)          ; Lees Jis-code
+        INC   HL
+        LD    B,(HL)
+        INC   HL
+        LD    A,B             ; Controleer voor tabel einde
+        OR    C
+        JR    Z,PRTDNE
+
+        CALL  PRINT           ; Twee maal PUT KANJI
+        JR    PRT_LP
+
+PRTDNE: CALL  CHGET           ; Wacht op toetsindruk
+        LD    A,(VDP9RG)      ; Interlace uit
+        AND   243
+        LD    (VDP9RG),A
+        OUT   (&amp;H99),A
+        LD    A,128+9
+        OUT   (&amp;H99),A
+        XOR   A               ; SCREEN 0
+        JP    CHGMOD
+;
+PRINT:  LD    DE,(GRPACX)
+        PUSH  DE
+        LD    E,0
+        CALL  KANJI
+        POP   DE
+        LD    (GRPACX),DE
+        LD    E,1
+
+KANJI:  LD    A,14            ; Kleur
+        LD    (ATRBYT),A
+        LD    A,0             ; Logische operatie
+        LD    (LOGOPR),A
+        LD    A,E             ; SET PAGE (actieve deel)
+        LD    (ACPAGE),A
+        INC   A               ; Afdruk-mode
+
+        LD    IX,KNJPRT
+        JP    SUBROM
+;
+TJIS:   DW    &amp;H234D,&amp;H2353,&amp;H2358,&amp;H2342
+        DW    &amp;H2341,&amp;H2353,&amp;H2349,&amp;H2343,0
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"></P>
+<A NAME="Par31"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>De routine <TT>KANJI</TT> doet het eigenlijke <TT>PUT</TT> <TT>KANJI</TT> gedeelte nadat de diverse instellingen zijn gedaan. Het <TT>SET PAGE</TT>-gedeelte kan bij afdruk-mode 0 weggelaten worden, alsmede het instellen van de interlace-mode. De source aanpassen voor gebruik van afdruk-mode 0 is niet zo moeilijk. De keuze om de source te plaatsen van de interlace-versie is omdat de versie van de niet-interlace heel simpel uit deze source te halen is.</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../worldexpo99/nl.html">[en] The MSX World Expo &#8216;99 report</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        nummer
+        91,
+        januari/februari&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../kolom1/nl.html">Wammes&#8217; kolom</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

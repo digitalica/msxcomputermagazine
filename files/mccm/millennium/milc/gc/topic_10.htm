@@ -1,0 +1,283 @@
+<html>
+
+<head>
+<title>MILC - Topic Kanji/JE/JIS (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_9.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_11.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Kanji/JE/JIS (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MSX2+ EN MSX TURBO R:
+
+    K A N J I   B A S I C ,   M S X - J E   E N   J I S
+   =====================================================
+
+In de  Japanse MSX2+  en MSX turbo R computers zit een macht 
+aan  ROM, van  een groot gedeelte daarvan weet de gemiddelde 
+Nederlandse MSX  gebruiker niet  wat hij er mee aan moet. Ik 
+ga  er in  dit artikel  van uit dat alle ROMs aanwezig zijn, 
+zoals bijvoorbeeld in de MSX turbo R. Dat zijn:
+
+JIS1            128 kB          Karakters 16x16 (1)
+JIS2            128 kB          Karakters 16x16 (2)
+MSX-JE          512 kB          Japanse vertaal-ROM
+KANJI BASIC      16 kB          Aansturen van JIS en
+                                nieuwe schermmodi
+
+Totaal  dus  maar liefst  784 kB  aan ingebakken  ROM! KANJI 
+BASIC  en  JIS1  behoren  tot  de  MSX2+ standaard,  maar de 
+overige  ROMs  zijn in  de duurdere  MSX2+ computers  ook al 
+aanwezig. Bij de turbo R is dit allemaal standaard. 
+
+Wat kunnen  we hier nu mee? Meer dan de meesten onder jullie 
+zullen denken! Laten we eerst de KANJI Basic maar eens onder 
+de loep nemen.
+
+
+                        KANJI BASIC
+
+KANJI  BASIC heeft  een aantal  leuke mogelijkheden, zoals 4 
+nieuwe  tekstschermen  en  karakters  op grafische  schermen 
+zonder   OPEN   en   PRINT#   instrukties.   In   de  nieuwe 
+tekstschermen zijn de letters uit meer puntjes opgebouwd dan 
+in  de  conventionele  schermen,  wat  veel  mooiere letters 
+geeft.  Ook  de  interlacing  mode van  de V9958  kan worden 
+gebruikt, de  verticale resolutie  wordt dan maar liefst 424 
+pixels!  Behalve dat  de karakters  groter zijn, zijn er ook 
+nog eens  v‚‚l meer  karakters. Had  een MSX2  'slechts' 256 
+karakters,  met JIS  en KANJI  BASIC zijn  er meer  dan 5000 
+karakters voorhanden!
+
+Ik zal  nu de  commando's van  de KANJI  BASIC ‚‚n  voor ‚‚n 
+behandelen.  Het zijn  allemaal CALL  commando's, je mag het 
+woord CALL natuurlijk ook vervangen door _ (underscore).
+
+
+                       CALL KANJI &lt;x&gt;
+
+Met  dit  commando  kan  men  de  verschillende KANJI  modes 
+inschakelen. De  mode waarin men terecht komt is afhankelijk 
+van  het  SCREEN  waarin  men  zich bevond  toen het  _KANJI 
+commando  gegeven  werd.  De verschillende  waarden van  &lt;x&gt; 
+hebben de volgende betekenis:
+
+&lt;x&gt;     lettergrootte   aantal regels   interlace
+0       16x16/8x16      12              nee
+1       12x16/6x16      12              nee
+2       16x16/8x16      24              ja
+3       12x16/6x16      24              ja
+
+De WIDTH  is afhankelijk  van het scherm waarin het commando 
+werd   gegeven.   Bij   SCREEN   0:   WIDTH  80   worden  de 
+schermbreedtes  respectievelijk 64, 80, 64 en 80, bij SCREEN 
+0:  WIDTH   40  of   SCREEN  1   worden  de   schermbreedtes 
+respectievelijk  32, 40,  32 en 40. In de grafische schermen 
+geven SCREEN 5, 8, 10, 11 en 12 breedte 32 of 40 en SCREEN 6 
+en  7  breedte  64  of 80.  In de  grafische schermen werken 
+alleen  de  KANJI  modes 0 en 1 goed, omdat de interlace het 
+dan niet doet.
+
+Vooral  als  je moeite  hebt met  het lezen  van de  letters 
+tijdens bijvoorbeeld het programmeren in BASIC zijn de KANJI 
+modes  erg  handig,  de  letters  zijn  zeer  duidelijk.  De 
+'normale' letters (die je met het toetsenbord kunt invoeren) 
+hebben het  kleine formaat (8 of 6 bij 16). De tekens uit de 
+JIS hebben het grote formaat (16 of 12 bij 16). Deze letters 
+zijn niet zomaar in te voeren, maar daarover later meer.
+
+Let  op:  SCREEN  0  en  1 zijn  nu grafisch  opgebouwd, dus 
+bijvoorbeeld een karakter(-vorm) VPOKEn is er niet meer bij. 
+Het  COPY commando werkt niet in de KANJI modes van SCREEN 0 
+en  1,  maar als  je de  VDP rechtstreeks  aanstuurt kun  je 
+gewoon copieren of zelfs bijvoorbeeld lijnen trekken!
+
+Dit  heeft als voordeel dat elke letter een andere kleur kan 
+hebben, dus  alle 16  (uit 512)  kleuren kunnen gelijktijdig 
+worden  gebruikt. De  rest van de commando's zijn bedoeld om 
+in   de  KANJI   modes  gebruikt  te  worden,  en  staan  op 
+alfabetische volgorde.
+
+
+                     CALL AKCNV (A$,B$)
+
+AKCNV  is  een afkoring  van Ank  Kanji CoNVersion.  Hiermee 
+kunnen  standaardkarakters   (met  een  ASCII  code)  worden 
+omgezet  naar KANJI karakters. In B$ staat de tekst die moet 
+worden omgezet  en in  A$ komt  het resultaat. Bijvoorbeeld: 
+_AKCNV  (A$,&quot;GENIC&quot;). A$  bevat nu  de tekst  GENIC in 16x16 
+karakters.
+
+
+                          CALL ANK
+
+Dit commando  schakelt de KANJI mode uit. Men keert terug in 
+de  oorspronkelijke  tekstmode.  Na dit  commando werken  de 
+meeste KANJI commando's dus niet meer goed.
+
+
+                          CALL CLS
+
+Een gewone  CLS werkt niet meer in een KANJI mode. Dit geeft 
+een  Illegal function  call. Het wissen van een KANJI scherm 
+moet gebeuren  door middel van een CALL CLS. In de grafische 
+schermen kan men overigens de gewone CLS blijven gebruiken.
+
+
+                      CALL JIS (A$,B$)
+
+Met  dit commando  kan je het JIS nummer van het karakter in 
+B$  opvragen.   Dit  nummer   wordt  in  A$  gezet,  in  een 
+hexadecimale  string  van  4 getallen.  Als B$  uit meerdere 
+karakters  bestaat, dan  wordt het  eerste karakter genomen. 
+Bijvoorbeeld _JIS(A$,&quot;S&quot;). Let op: de S moet van het formaat 
+16x16  zijn,  ik  zal  later uitleggen  hoe je  dat in  moet 
+voeren. A$  bevat na  dit commando &quot;2353&quot;. Het nummer van de 
+Kanji-S is dus &amp;H2353.
+
+
+                     CALL KACNV (A$,B$)
+
+Dit  commando doet precies het omgekeerde van _AKCNV. Dit is 
+Kanji Ank  CoNVersion. Hiermee kunnen KANJI karakters worden 
+omgezet  in ANK  karakters (met een ASCII code). In B$ staan 
+de karakters,  in A$ komt het resultaat. Bijvoorbeeld _KACNV 
+(A$,&quot;GENIC&quot;).  Let op:  de letters  van GENIC moeten van het 
+formaat 16x16  zijn, ik  zal later  uitleggen hoe  je dat in 
+moet  voeren. A$  bevat na  dit commando  &quot;GENIC&quot; in  gewone 
+karakters.
+
+
+                   CALL KEXT (A$,B$,&lt;z&gt;)
+
+KEXT staat voor Kanji EXTract. En dat is ook precies wat het 
+commando  doet, het  haalt bepaalde  KANJI karakters uit een 
+string. De  karakters staan  in B$, en het resultaat komt in 
+A$.  Met  &lt;z&gt;  kan worden  aangegeven welke  karakters eruit 
+worden  gehaald, die  uit de JIS1 ROM (&lt;z&gt;=0), of die uit de 
+JIS2 ROM (&lt;z&gt;=1). Bijvoorbeeld _KEXT(A$,B$,1).
+
+
+                  CALL KINSTR (&lt;x&gt;,A$,B$)
+
+Dit  commando  doet  hetzelfde  met KANJI  karakters als  de 
+instruktie INSTR  met gewone  karakters. Het zoekt de string 
+B$  in de  string A$, wordt het gevonden dan komt de positie 
+in &lt;x&gt;  te staan.  Voor X  moet dus  een numerieke variabele 
+worden  ingevuld.  Is  B$ niet  aanwezig in  A$, dan  is &lt;x&gt; 
+gelijk aan  0. Bijvoorbeeld  _KINSTR(P,&quot;GENIC&quot;,&quot;N&quot;). P bevat 
+dan de waarde 3.
+
+
+                   CALL KLEN (&lt;x&gt;,A$,&lt;y&gt;)
+
+Dit  commando  geeft  de  lengte  van  A$ en  zet die  in de 
+variabele &lt;x&gt;.  Als men de &lt;y&gt; parameter weglaat, of als die 
+0  is, dan wordt de totale lengte genomen. Is &lt;y&gt; gelijk aan 
+1,  dan  worden alleen  de tekens  uit JIS1  geteld, is  &lt;y&gt; 
+gelijk aan  2, dan  worden alleen de tekens uit JIS2 geteld. 
+Bijvoorbeeld _KLEN (L,&quot;GENIC&quot;). L bevat dan de waarde 5.
+
+
+                 CALL KMID (A$,B$,&lt;x&gt;,&lt;y&gt;)
+
+Dit  commando doet  hetzelfde als MID$, alleen dan met KANJI 
+karakters. Er worden &lt;y&gt; karakters genomen vanaf positie &lt;x&gt; 
+uit B$. Het resultaat komt in A$ terecht. Bijvoorbeeld _KMID 
+(A$,&quot;ClubGuide Special&quot;,5,3). A$ bevat dan &quot;Gui&quot;.
+
+
+                      CALL KNJ (A$,B$)
+
+Hiermee  kan een  karakter uit de JIS ROM worden opgevraagd. 
+In  B$   staat  het   nummer  van   het  karakter  (als  een 
+hexadecimale  string  van  4  cijfers),  en in  A$ komt  het 
+resultaat.  Bijvoorbeeld  _KNJ(A$,&quot;783A&quot;):PRINT A$. Er staat 
+nu een konijntje op het scherm.
+
+
+                  CALL KTYPE (&lt;x&gt;,A$,&lt;y&gt;)
+
+Met dit commando kan je kijken uit welke JIS ROM een bepaald 
+karakter komt.  In A$ staan de karakters, &lt;y&gt; wijst naar het 
+bedoelde karakter. In &lt;x&gt; komt het resultaat; 0 voor JIS1 of 
+1  voor JIS2. Bijvoorbeeld _KTYPE (T,&quot;GENIC&quot;,3). T geeft dan 
+aan of de N in JIS1 of in JIS2 staat.
+
+
+               CALL PALETTE (&lt;x&gt;,&lt;r&gt;,&lt;g&gt;,&lt;b&gt;)
+
+De  instruktie  COLOR=(&lt;x&gt;,&lt;r&gt;,&lt;g&gt;,&lt;b&gt;) werkt  niet meer  in 
+SCREEN 0  of SCREEN  1 als de KANJI mode is ingeschakeld. In 
+plaats  daarvan gebruik je nu _PALETTE. De COLOR= instruktie 
+geeft  een  Illegal  function  call, de  _PALETTE instruktie 
+werkt hetzelfde  als de  COLOR= instruktie.  _PALETTE zonder 
+parameters  is hetzelfde  als COLOR=NEW, de standaardkleuren 
+worden dan hersteld.
+
+
+                     CALL SJIS (A$,B$)
+
+Dit is  een Speciale  versie van  het CALL  JIS commando. In 
+plaats  van het  JIS nummer geeft deze instruktie twee ASCII 
+codes in  een hexadecimale string van 4 cijfers. Je moet die 
+dan  splitsen en er &amp;H voorzetten. Worden die twee codes dan 
+met twee  PRINT CHR$(...)  instrukties op  het scherm gezet, 
+dan komt het KANJI karakter tevoorschijn. Het karakter staat 
+in  B$, in  A$ komt  het resultaat.  Bestaat B$ uit meerdere 
+karakters, dan wordt het eerste karakter genomen. Voorbeeld:
+_SJIS  (A$,&quot;#&quot;)  Let op:  dit moet  weer een  16x16 karakter 
+zijn!  PRINT  A$  levert  8194  op.  Met  PRINT  CHR$(&amp;H81); 
+CHR$(&amp;H94) kunnen we dus een kanji-# op het scherm zetten.
+
+
+        PUT KANJI (&lt;x&gt;,&lt;y&gt;),kanji,kleur,log.op,kode
+
+Dit  is eigenlijk  helemaal geen  KANJI BASIC  commando! Dit 
+commando geeft  geen foutmelding  op een Europese MSX2. Toch 
+werkt  het daarop niet goed, omdat de JIS ROMs ontbreken. Je 
+krijgt dan  witte balkjes  op je  scherm (het Burai-effect). 
+Dit  commando zet  het KANJI karakter met nummer kanji op de 
+positie  &lt;x&gt;,&lt;y&gt;  van  een  grafisch scherm  in de  gewenste 
+kleur. Eventueel kan er ook nog een logische operatie worden 
+uitgevoerd. De  kode ten  slotte wordt gebruikt om karakters 
+van  de halve  hoogte op  het scherm te plaatsen. Met kode=0 
+wordt het  karakter helemaal afgebeeld, met kode=1 alleen de 
+even  lijnen en  met kode=2  alleen de oneven lijnen. De PUT 
+KANJI instruktie werkt alleen in SCREEN 5 en hoger.
+
+(Nvdr.  Deze tekst  was te lang voor de layout van ClubGuide 
+Special. Daarom  hebben we de tekst in twee‰n geplaatst. Dit 
+was het eerste deel, deel twee kunt u in het menu vinden.)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_9.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_11.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

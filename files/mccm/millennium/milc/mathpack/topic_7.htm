@@ -1,0 +1,198 @@
+<html>
+
+<head>
+<title>MILC - Topic Met mathpack routines rekenen in ML</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_6.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Met mathpack routines rekenen in ML</b><br>
+    <i>Jan vd Meer?</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+              MET MATHPACK ROUTINES REKENEN IN MACHINETAAL
+              --------------------------------------------
+
+Als we willen rekenen in een basicprogramma hebben we daarvoor de nodige
+funkties in basic. Het heeft dan weinig zin om dat in ML (machinetaal) te
+doen. Veel tijdwinst levert dat niet op, alleen maar extra rompslomp.
+
+.COM FILES
+----------
+Anders wordt het als het een programma betreft dat onder DOS loopt, een z.g.
+COM-file. Rekenwerk is altijd een onderdeel van een programma en het ligt voor
+de hand om dat met subroutines te doen. Er zijn een flink aantal rekenroutines
+beschikbaar in de basic- en biosroms van onze MSX, bekend onder de verzamelnaam
+&quot;MATHPACK&quot;, dus een flink aantal subroutines ?  Nee hoor, dat hoeft helemaal
+niet. met ‚‚n universele subroutine kunnen we al de meest gebruikte (niet alle)
+mathpack routines aanspreken. Voor ik daarmee verder ga eerst nog even iets
+anders.
+
+Voor de uitdrukking MATHPACK-routine zal ik vanaf nu de afkorting MR gebruiken.
+Dat schrijft wat makkelijker. om met MR's te werken is voldoende basiskennis
+daarover onontbeerlijk. Destijds heb ik in samenwerking met Jan v.d.Meer een
+overzicht betreffende MR's bewerkt en uitgebreid. Daarin staat nagenoeg alles,
+wat wetenswaardig is voor het werken met MR's. Dit overzicht kunt U vinden op
+de abonnementsdisk als tekstfile &quot;MATHPACK.DOC&quot;. Geen disk abonnement ?  Bestel
+dan die disk even. Goede en voldoende documentatie is immers onmisbaar voor
+programmeren in ML.
+
+Probeer NOOIT MR's aan te roepen VIA EEN OMGEBOGEN HOEK. Als een hoek wordt
+aangeroepen gebeurt dat meestal vanuit de biosrom. Als men dan via &quot;CALL #001C&quot;
+een MR in dezelfde rom aanroept gaat het slotschakelen kennelijk fout en loopt
+de computer vast. Ik heb het op diverse andere manieren geprobeerd doch het
+ging nooit goed. Wie weet hoe het wel kan mag het mij vertellen, graag zelfs.
+
+Bij MR's schuilt 1 addertje onder het gras. Het entry-adres, waar de MR begint
+ligt altijd op een adres in de biosrom in page 0, maar..... een klein aantal
+MR's gebruikt ook deelroutines in de basicrom in page 1. Daarvoor moet de
+basicrom dus aangeschakeld worden, voordat we zo'n MR aanroepen en daarna moet
+de z.g. systeemram weer worden teruggeschakeld in page 1. Hoe komen we te weten
+of een bepaalde MR de basicrom gebruikt ?  Heel eenvoudig. Roep de te gebruiken
+MR aan met een apart programma'tje, zonder de basicrom aan te schakelen. Run
+dat programma'tje en als de computer vastloopt....  bingo !  De basicrom had
+aangeschakeld moeten worden. Een voorbeeld voor zo'n programma'je staat op de
+abonnement disk met de filenaam &quot;MATH_TST.GEN&quot;.
+
+Als we een MR routine willen gebruiken, waarvoor de basicrom aangeschakeld
+moet zijn hebben we een probleem. Als ons programma n.l. groter is dan 16k, dan
+staat er ook machinecode in page 1. Het aanroepen van de MR met machinecode
+in page 1 kan niet. Aanschakelen van de basicrom schakelt ook het gedeelte van
+ons programma in page 1 weg. De enige oplossing is: Zet de subroutine die de
+basicrom aanschakelt + de MR aanroept + de systeemram weer aanschakelt in page
+3. Die wordt nooit weggeschakeld. Als vanuit page 1 daar naartoe wordt
+gesprongen, kan page 1 wel omgeschakeld worden. V&cent;&cent;r de return naar het
+programmadeel in page 1 is de systeemram n.l. weer aangeschakeld.
+
+We hebben dan wel een nieuw probleempje: &quot;Waar in page 3 moet de subroutine
+worden neergezet ?&quot;  Het uitpluizen van geheugen dat vrij is in page 3 is ‚‚n
+manier. Het kan echter veel eenvoudiger. Er is een buffer in adresgebied
+&amp;HF55E t/m &amp;HF65F (258 bytes), welke alleen gebruikt wordt onder BASIC. Daar
+kunnen we het e.e.a. in kwijt dat beslist in page 3 moet staan. Die truuk moet
+je onthouden, kan vaker van pas komen bij programmeren van COM-files. (Als
+b.v. de stack in page 3 moet staan.)
+
+
+WAAR MOETEN WE AAN DENKEN ?
+---------------------------
+Voor rekenen zijn getallen nodig, welke ingetypt moeten worden en als ascii-
+string ergens worden opgeslagen. Daarvoor is o.a. de DOS-funktie #0A genaamd
+&quot;buffered input&quot; bruikbaar. Zo'n ascii-string moet vertaald worden naar de
+notatie die MR's nodig hebben. Er is een MR, die deze rotklus kan uitvoeren,
+maar.... DE SYNTAX VAN DE GETYPTE GETALSWAARDE MOET FOUTLOOS ZIJN. Omdat MR's
+geprogrammeerd zijn om door basic gebruikt te worden, zal bij fouten een
+foutmelding op het scherm worden gezet. Dat stuurt ons eigen programma
+behoorlijk in de war. Dat kan alleen voorkomen worden door de systax te
+kontroleren van de ascii-string. Als een uitkomst moet worden gebruikt als
+'deler' bij een deling, MOET DIE ALTIJD GETEST WORDEN. Als een 'deler' NUL is
+zou dat ook een foutmelding opleveren. Voor het kontroleren van de syntax is
+een subroutine beschikbaar. Die is vrij groot en staat daarom op de abonnement
+disk evenals enige andere handige routines.
+
+
+UNIVERSELE SUBROUTINE  (listing 1)
+---------------------
+Listing 1 wordt in een programma gezet als onderdeel van de initialisering en
+subroutine &quot;MATHP_0&quot; wordt direkt gekopi‰erd naar de buffer met beginadres
+#F55E. De subroutine moet weten of de basicrom ja/nee aangeschakeld moet woden.
+Dat doen we door #FF in het 'A' register te zetten voor &quot;JA&quot; of #00 voor &quot;NEE&quot;.
+Als ons programma routines bevat die geheugen en/of slots schakelen is het wel
+zo handig als we daar ook niet op hoeven letten. De subroutine bewaart daarom
+de slot/subslot configuratie voordat de basicrom wordt aangeschakeld en zet die
+in de eerste 2 geheugenplaatsen direkt achter de subroutine (adressen #F59B en
+#F59C). Na aanroepen van de MR wordt de zaak weer teruggeschakeld zoals het
+was. Dat werkt dus tevens voor de systeemram.
+
+De allereerste MR die we nodig hebben is de routine &quot;FIN&quot;, welke een numerieke
+ascii-string vertaalt naar de binaire mathpack notatie. Vandaar dat achter
+&quot;LD IX,.... het entry-adres van deze routine al is ingevuld. Om de subroutine
+voor andere MR's te gebruiken hoeven we daar alleen maar het entry-adres van de
+benodigde MR in te vullen en het 'A' register te laden met #00 of #FF (zie
+boven).
+
+De ascii-string die vertaald moet worden kan maximaal 21 karakters lang zijn.
+(Bij een negatief getal met dubbele precisie.)  De MR verwacht een z.g.
+ascii-Z string, dus met eindnul. Als we de lengte van de string als 1e byte
+erv&cent;&cent;r zetten zijn 23 bytes nodig. We nemen een paar bytes extra voor ingetypte
+nullen achter een decimale punt of voor extra spaties, dus 32 plaatsen op
+#F59D t/m #F5BC. Hier wordt de in te typen string direkt opgeslagen. De 1e byte
+van de string staat op adres #F59E. Dat adres staat in de subroutine. Als we
+een ascii-string willen vertalen naar mathpack notatie moet die altijd een
+eindnul hebben en op voornoemd adres staan of naar dat adres gekopi‰erd worden.
+
+Voor het opslaan van een resultaat van een vertaling of berekening zijn 9 bytes
+nodig, 1 byte voor &quot;VALTYP&quot; en 8 voor de mathpack notatie. Voor 2 resultaten
+reserveren we ruimte op #F5BD t/m #F5C5 en #F5C6 t/m #F5CE. In de buffer zijn
+nu nog de plaatsen #F5CF t/m #F65F (145 bytes) vrij. Daar kunnen we nog meer
+mathpack notaties tijdelijk opslaan (of iets anders) zonder dat het ons ‚‚n
+byte in het normale geheugen kost. De adressen voor de string en 2 resultaten
+staan al in de &quot;EQU&quot; lijst van listing 1.
+
+
+SUBROUTINE GEBRUIKEN  (listing 2 = voorbeeld voor deling)
+--------------------
+Voor de uitvoering van 1 deling moeten we achtereenvolgend het volgende doen:
+
+  1. Deeltal intypen, de syntax van de ascii-string checken, vertalen naar
+     mathpack notatie. Checken of resultaat 'n integer is en zo ja converteren
+     naar dubbele precisie en die notatie opslaan.
+  2. Deler intypen, verder als bij punt 1. (Deeltal en deler moeten beiden de
+     notatie voor enkele of dubbele precisie hebben.)
+  3. Checken of deler NUL is, zo ja foutmelding en opnieuw intypen.
+  4. Resultaat van punt 2 (de deler) verplaatsen van DAC naar ARG.
+  5. Notatie van opgeslagen deeltal kopieren naar DAC.
+  6. De subroutine aanroepen om de deling uit te voeren.
+  7. Het resultaat opslaan om het voor een volgende rekenfunktie te gebruiken
+     of vertalen naar een afdrukbare string en die naar het scherm sturen.
+
+Hoe we dit moeten doen toont listing 2.
+
+Als listing 1 en 2 achter elkaar worden gezet en geassembleerd hebben we een
+kompleet programma om een deling uit te voeren. De universele subroutine maakt
+het omgaan met mathpack betrekkelijk eenvoudig. Op de abonnementdisk staan de
+listings van een aantal handige subroutines die in een tekstverwerker geladen
+kunnen worden. De filenamen beginnen met &quot;MATH_&quot;
+
+Met de mathpack documentatie en de subroutines op de abonnement disk hoeft je
+echt geen topprogrammeur te zijn om mathpack te gebruiken in je eigen
+programma's. Als de benodigde data als acsii-strings beschikbaar zijn, is een
+snelheid van enige honderden berekeningen per sekonde haalbaar. Niet meer
+terugschrikken voor mathpack dus, gewoon gaan doen !!  Zorg wel dat je een
+goede debugger hebt. Zelf werk ik met MON80 van het DEVPAC pakket. Ook ik ben
+veel meer tijd kwijt met debuggen dan met het schrijven van een programma, dus
+verlies nooit de moed als het niet direkt lukt. Dit artikel dekt echt niet
+alles voor het gebruiken van mathpackroutines. Het laat slechts zien dat het
+minder moeilijk is dan het lijkt. En als je ergens echt niet uit komt...  even
+bellen mag, mits tussen 15.00 en 18.30 uur (0316-331824). Veel MSX plezier met
+mathpack.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

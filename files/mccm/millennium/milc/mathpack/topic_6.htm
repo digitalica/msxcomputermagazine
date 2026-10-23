@@ -1,0 +1,108 @@
+<html>
+
+<head>
+<title>MILC - Topic Mathpack routines</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_7.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Mathpack routines</b><br>
+    <i>MCCM/WR/JvdM</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;Hulpprogramma on te testen of basicrom aangeschakeld moet worden
+;Zie label &quot;NEXT&quot;
+
+	LD   HL,MATHP_0 ;Beginadres te kopie‰ren ML-code (bronadres)
+	LD   DE,#F55E	;Input-buffer (doeladres)
+	LD   BC,#003F	;Aantal bytes
+	LDIR		;ML-code kopie‰ren naar inputbuffer #F55E
+	JP   NEXT	;(zie assemblerlisting 2)
+;--------------------------------------
+;NAAR INPUT-BUFFER TE KOPIEEREN ML-CODE
+;--------------------------------------
+;Input: #FF in 'A' indien basic-rom aan te schakelen, else #00
+
+MATHP_0 INC  A		;Basic-rom aanschakelen ?
+	PUSH AF 	;     Save vlaggen
+	JR   NZ,MATHP_1 ;Nee
+	IN   A,(#A8)	;Lees slotregister
+	LD   (#F59B),A	;Opslaan (in inputbuffer)
+	LD   A,(#FFFF)	;Lees komplement van subslotregister
+	CPL		;Werkelijk inhoud van subslotregister
+	LD   (#F59C),A	; opslaan (in input-buffer)
+	LD   A,(#FCC1)	;Slotadres basic-ROM
+	LD   H,#40	;ID page 1
+	CALL #0024	;Basic-rom aanschakelen
+	LD   HL,#F59E	;Pointer naar begin ascii-Z string
+	LD   A,(HL)	;Eerste karakter van string
+MATHP_1 PUSH IX
+	PUSH IY
+	LD   IX,#3299	;Entry-adres mathpack-routine &quot;FIN&quot;
+			;  NOOT: Invuladres voor ander entry-adres = #F580
+	LD   IY,(#FCC0) ;Slot ID
+	CALL #001C	;Mathpack-routine uitvoeren
+	POP  IY
+	POP  IX
+	POP  AF 	;Herstel vlaggen
+	RET  NZ 	;RET indien rom niet aangeschakeld werd
+	LD   A,(#F59B)	;Oude instelling slotregister
+	OUT  (#A8),A	; herstellen
+	LD   A,(#F59C)	;Oude instelling subslotregister
+	LD   (#FFFF),A	; herstellen
+	RET
+	DEFS 1		;Opslag slotregister	(adres = #F59B)
+	DEFS 1		;Opslag subslotregister (adres = #F59C)
+;---------------------------------------------------------------
+;Dit voorbeeld test de mathpack routine &quot;FIN&quot; welke een numerieke ascii-string
+;vertaalt naar een mathpack notatie in DAC en het type notatie in VALTYP zet.
+
+NEXT	LD   HL,NUM_$	;Adres te vertalen numerieke ascii-string
+	LD   DE,#F59E	;Doeladres
+        LD   BC,#0F     ;Aantal bytes incl. eindnul
+        LDIR            ;String kopi‰ren (Parameter voor routine &quot;FIN&quot;)
+        LD   HL,#3299   ;Entry adres voor mathpack routine &quot;FIN&quot;
+                        ;HIER HET ADRES VOORVANGEN VOOR EEN ANDERE TE TESTEN
+                        ;ROUTINE EN ERVOOR ZORGEN, DAT DE PARAMETERS ZIJN
+                        ;INGEVULD IN DAC EN ARG OF IN ANDERE REGISTERS.
+                        ;Zie tektfile &quot;MATHPACK.DOC&quot; voor details
+	LD   (#F580),HL ;Entry-adres invullen in subroutine in page 3
+        LD   A,#FF      ;Markering &quot;basicrom aanschakelen&quot;
+                        ;ALS HIER #00 WORDT INGEVULD LOOPT COMPUTER VAST
+                        ;OMDAT DE BASICROM DAN NIET AANGESCHAKELD WORDT
+        CALL #F55E      ;Mathpackroutine uitvoeren
+        RST  0          ;Einde
+;---------------
+NUM_$   DEFB &quot;123.45678901234&quot;,#00
+;---------------
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

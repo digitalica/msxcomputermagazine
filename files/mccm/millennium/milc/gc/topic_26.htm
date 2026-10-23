@@ -1,0 +1,275 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX Audio</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_25.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_27.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX Audio</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                MSX-AUDIO, DE MSX SYNTHESIZER
+               ===============================
+
+Op ClubGuide #5 heeft u kunnen lezen dat wij als een van  de
+weinigen in Europa de enige echte MSX-Audio (van  Panasonic)
+in ons bezit hebben. Op ClubGuide #5 werd er al het  een  en
+ander over de  MSX-Audio  verteld.  We  gaan  nu  verder  in
+op  de  werkelijke  mogelijkheden  van   de   MSX-Audio   en
+bespreken een paar commando's. Op enkele enquete formulieren
+kregen we commentaar op dat we iets bespreken wat toch  niet
+meer te krijgen is. Op zich ben  ik  het  met  die  stelling
+eens, maar vooral omdat MSX-Audio de basis vormt van de hele
+MSX muziek wereld en  omdat  de  MSX-turbo-R  waarschijnlijk
+dezelfde sample commando's aan  boord  heeft  heeft  als  de
+MSX-Audio leek het mij zeer leerzame kost. Vergeet niet  dat
+iedereen straks met een MSX-turbo-R zit  opgescheept  ZONDER
+bruikbare  handleiding.  Misschien  kan  onze   kennis   van
+MSX-Audio juist hulp bieden op het gebied van PCM aansturing
+in BASIC.
+
+                      WAT KAN MSX-AUDIO
+
+MSX-Audio is een unieke soundchip die het mogelijk maakt  FM
+geluid (9 kanaals of 6 kanaals+drum) aan te  sturen  al  dan
+niet in combinatie met samples. De MSX-Audio  soundchip  zit
+o.a. in de Yamaha SFG-05  Music  Module,  de  Philips  Music
+Module, het Toshiba Music System en in enkele  Yamaha  Music
+computers. Op de Yamaha  Music  computers  na  wordt  in  de
+zojuist opgesomde  modules  alleen  de  MSX-Audio  soundchip
+gebruikt. De aansturingsrom is daar achterwege gelaten,  wat
+tot  gevolg  heeft  dat  men   maar   beperkt   is   in   de
+mogelijkheden. Software ontwikkelaars als de  FAC  weten  er
+wel veel uit te halen, maar de consument zelf kan weinig met
+zo'n module.
+In Japan werd de MSX-Audio chip met  de  aansturingsroms  in
+een cartridge gestopt welke Panasonic op de markt bracht. De
+MSX-Audio cartridge heeft een  beperkt  aantal  aanslutingen
+voor  externe  microfoon  en  keyboard.  Helaas  geen   MIDI
+interface zoals bij de Philips  Music  Module.  Ondanks  dat
+zijn de mogelijkheden  van  de  Panasonic  FS-CA1  MSX-Audio
+cartridge bijzonder uitgebreid.
+De MSX-Audio kan in 2 modes  opstarten,  in  'programmable
+mode' en 'unprogrammable  mode'.  Om  te  bepalen  in  welke
+toestand de MSX-Audio moet opstarten  bevindt  zich  aan  de
+achterkant van de cartridge een schakelaar.
+
+                   DE UNPROGRAMMABLE MODE
+
+Starten we de MSX-Audio op in  de  UNPROGRAMMABLE  MODE  dan
+komen we in  een  muziekprogramma  dat  gericht  is  op  het
+bespelen van het keyboard. Zo'n keyboard  is  dus  eigenlijk
+wel een vereiste.
+De keyboard aansluiting is ontwikkeld  volgens  een  Japanse
+standaard. Zo kan het Toshiba keyboard van het Music System,
+of de  Yamaha  keyboards  behorende  bij  de  SFG-05  zonder
+problemen aangesloten worden. Wel  problematisch  wordt  het
+bij het Philips keyboard  van  de  Music  Module.  De  Music
+Module heeft dan wel dezelfde aansluting,  maar  deze  wordt
+anders aangestuurd. Dit heeft Philips gedaan om te voorkomen
+dat Music Module gebruikers in  staat  waren  een  goedkoper
+keyboard van een ander merk op de module aan te sluiten.
+Het muziekprogramma  dat  zich  in  de  UNPROGRAMMABLE  MODE
+bevindt is gemaakt voor MSX1 en zit ook in het Toshiba Music
+System.
+Hier kan men  met  de  cursor  bepaalde  ritmes,  accoorden,
+klanksoorten  e.d.  veranderen  voor  het  bespelen  van  de
+keyboard toetsen.  Een  leuk  en  goed  programma  maar  qua
+mogelijkheden zeer beperkt.
+
+                    DE PROGRAMMABLE MODE
+
+De  PROGRAMMABLE  MODE  bevindt  zich  in  BASIC  en   wordt
+geactiveerd met het commando CALL AUDIO. Wil men  vanuit  de
+PROGRAMMABLE MODE naar de UNPROGRAMMABLE MODE  dan  kan  dit
+met het commando CALL  SYNTHE.  Voor  het  intypen  van  dit
+commando mag echter geen CALL AUDIO gegeven zijn.
+In de PROGRAMMABLE MODE kan men met simpele BASIC commando's
+drie verschillende onderdelen  programmeren  of  combinaties
+hiervan. Dit zijn:
+
+- Muziek d.m.v. Music Macro Language (MML)
+- Samples (hier is een microfoon een vereiste)
+- Keyboard (en daar heeft men een keyboard voor nodig)
+
+Het geheel kan ge‹nstalleerd worden met  het  commando  CALL
+AUDIO. Bij de FM-PAC/MSX-Music is dit commando veranderd  in
+CALL MUSIC.
+CALL AUDIO werkt als volgt:
+
+         CALL AUDIO (A,B,K1,K2,K3,K4,K5,K6,K7,K8,K9)
+
+K1 t/m K9 zijn de kanalen die met KX=1  aangezet  worden  en
+met KX=0 uit. Bij de parameter A staat men voor de  keus  of
+men 9 kanalen zonder drums  of  6  kanalen  met  drums  wilt
+programeren. Als A=0 of A=2 dan kunnen er 9 kanalen bespeeld
+worden als A=1 of A=3  dan  kunnen  er  6  kanalen  bespeeld
+worden. Kiest men voor A een getal tussen 4 en 7 dan kan men
+een tweede MSX-Audio installeren. Het  is  dus  mogelijk  om
+twee MSX-Audio's  te  programmeren  en deze prachtige stereo
+muziek  te  laten  spelen.  Waarom  A  van  1  MSX-Audio   2
+keer hetzelfde  ge‹nstalleerd  kan  worden  (A=0=2)  is  mij
+onduidelijk. Misschien dat het op de een  of  andere  manier
+ook mogelijk is om 1 MSX-Audio stereo te programmeren. Zowel
+op het Toshiba Music System, de Philips Music Module  en  op
+de MSX-Audio cartridge zitten  twee  tulp-aanslutingen  voor
+audio-output. Sluit je ze echter aan  dan  geven  ze  beiden
+hetzelfde geluid weer. Wie helpt ons aan een oplossing?
+Met de partameter B kan met het aantal kanalen weergeven die
+gereserveerd moeten worden  voor  het  keyboard.  Kiest  men
+A=0/A=2,  K1  t/m  K9=0  en  B=9  dan  kan zijn er 9 kanalen
+vrij voor het  keyboard.  Dit  keyboard  kan  (mits  op  een
+dergelijke wijze ge‹nstalleerd) kan ten alle tijde  bespeeld
+worden. Heeft men het CALL AUDIO  commando  op  deze  manier
+gebruikt dan kan gewoon onder BASIC een leuk  riedeltje  ten
+gehore worden gebracht met de keyboardtoetsen. Deze  functie
+werkt onder de interrupt, waardoor BASIC helaas wel een stuk
+trager wordt.
+
+                        HET KEYBOARD
+
+Met de zojuist genoemde  mogelijkheid  om  het  keyboard  te
+bespelen zijn we er nog niet. De MSX-Audio BASIC heeft naast
+deze  mogelijkheid  nog  vele  andere  commando's  die   het
+bespelen  van  het  keyboard  be‹nvloeden.  Deze  commando's
+beginnen met CALL MK. MK staat  hier  voor  Music  Keyboard.
+Hieronder een opsomming van enkele MK commando's:
+
+CALL MK VOICE (@X)    - hiermee kan de stem ingesteld worden
+                        die de keyboard toetsen  ten  gehore
+                        moeten brengen.
+
+CALL MK VOL (X)       - hiermee  kan  het  volume   van   de
+                        keyboardmuziek ingesteld worden.
+
+CALL MK PCM (X)       - met dit commando kan men een  nummer
+                        van  een  sample  opgeven  die   als
+                        stem voor het keyboard fungeert.
+
+CALL INMK (A,B,C)     - hoe dit commando werkt  is  mij  nog
+                        niet helemaal duidelijk. Wel weet ik
+                        dat het met dit commando mogelijk is
+                        de keyboard toetsen uit te lezen.
+
+CALL MK VEL (X)       - ?
+
+Met bovenstaande commando's in samenwerking met simpele play
+of  sample  commando's  is  het  dus   mogelijk   een   heel
+achtergrond orkest te cre‰ren.  Het  is  zelfs  mogelijk  om
+naast het achtergrond FM orkest en een keyboard  kanaal  via
+de microfoon ook nog zang ten gehore te brengen!
+
+                         DE SAMPLER
+
+Ik  denk  niet  dat  de  MK  commando's  in  de  MSX-turbo-R
+opgenomen  zijn.  De  turbo-R  heeft  immers  geen  keyboard
+aansluting.
+Aangezien de MSX-turbo-R wel een PCM sampler aan boord heeft
+lijkt het me heel goed mogelijk dat de sample commando's van
+de MSX-Audio wel zijn opgenomen in de MML van de turbo-R.
+Hieronder een opsomming van de sample commando's die zich in
+de MSX-Audio cartridge bevinden.
+
+CALL SET PCM (A,B,C,D,E) - met dit commando kan  de  sampler
+                           ge‹nstalleerd worden. Waar  A,B,C
+                           en D voor dienen is niet helemaal
+                           duidelijk. Wat we  wel  weten  is
+                           dat men bij E de  lengte  van  de
+                           samples in  kan  stellen.  In  de
+                           voorbeelden in het Audio handboek
+                           worden A,B  en  C  meestal  op  0
+                           gezet  terwijl   D   overgeslagen
+                           wordt.
+
+CALL COPY PCM (#A,B)     - CALL COPY PCM is  een  heel  leuk
+                           commando.   In    de    MSX-Audio
+                           cartridge zit namelijk  een  128k
+                           demo-sample-ROM. Deze  ROM  bevat
+                           16    samples    varierend    van
+                           blaffende   honden   en    jungle
+                           geluiden tot lachende  Japanners.
+                           A geeft het sample nummer aan  (0
+                           t/m 15) en in B zeg je  in  welke
+                           sample de demo-sample moet worden
+                           geplaatst.
+
+CALL PLAY PCM (X)        - met dit commando  kan  de  sample
+                           ten  gehore  worden  gebracht.  X
+                           geeft het nummer  van  de  sample
+                           aan.   Eigenlijk   bestaat    dit
+                           commando    uit     veel     meer
+                           parameters, maar waar  deze  voor
+                           dienen is mij niet bekend.
+
+CALL PCM FREQ (X)        - met   dit   commando    kan    de
+                           frequentie    van    de    sample
+                           ingesteld worden.
+
+CALL PCM VOL(X)          - met dit commando kan  het  volume
+                           van de sample ingesteld worden.
+
+CALL REC PCM (X)         - met CALL  REC  PCM  (X)  kan  een
+                           sample opgenomen worden. Hiervoor
+                           is  wel  een  externe   microfoon
+                           vereist. De lengte is afhankelijk
+                           van de waarde die  bij  CALL  SET
+                           PCM is  ingesteld.  X  geeft  het
+                           sample nummer aan.
+
+CALL SAVE PCM (&quot;NM&quot;,X)   - saved het  sample  nummer  X  weg
+                           onder de naam &quot;NM&quot;
+
+CALL LOAD PCM (&quot;NM&quot;,X)   - laadt de  sample  onder  de  naam
+                           &quot;NM&quot; en plaatst  deze  in  sample
+                           nummer X.
+
+CALL CONVA (A,B)         - hoe  ik  deze   commando's   goed
+CALL CONVP (A,B)           werkend krijg weet ik  niet.  Wel
+                           is het duidelijk dat het gaat  om
+                           opslag   van    samples/converten
+                           in/naar het VRAM.
+
+Verder is het mogelijk om een sample te selecteren  en  deze
+in gecomponeerde muziek te verwerken. Het sample kanaal komt
+achter de laatste muziek-string voor de drum-string. Op deze
+manier  kunnen  effecten  ontwikkeld  worden  die   redelijk
+levensecht overkomen.
+De MML commando's die in de FM-PAC/MSX-Music gebakken zitten
+zijn afkomstig van  de  MSX-Audio.  Commando's  als  TEMPER,
+TRANSPOSE, VOICECOPY, VOICE, etc.  in  samenwerking  met  de
+hierboven staande commando's maken  de  MSX-Audio  cartridge
+tot een pracht van een synthesizer.
+
+                                             Bas Labruyere.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_25.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_27.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

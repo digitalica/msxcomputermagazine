@@ -1,0 +1,163 @@
+<html>
+
+<head>
+<title>MILC - Topic Variant records</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_22.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_24.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Variant records</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+EEN BEETJE PASCAL:
+
+               V A R I A N T   R E C O R D S
+              ===============================
+
+Ik  merk dat er nog vrij veel programmeurs zijn die niet met 
+variant-records om kunnen gaan. Sommigen hebben er zelfs nog 
+nooit van  gehoord! Vandaar dat ik in deze tekst in het kort 
+wil  uitleggen wat  zo'n variant-record  nou eigenlijk is en 
+hoe u hem kunt gebruiken...
+
+
+                     HET VARIANT-RECORD
+
+Het doel  van een  variantrecord is het sparen van geheugen- 
+ruimte  door toe te staan dat verschillende soorten gegevens 
+(bijvoorbeeld integers,  strings en  booleans) op  verschil- 
+lende  tijdstippen gebruik kunnen maken van de zelfde geheu- 
+genruimte (locaties).
+
+Als u  dit in  een array  toepast, dan  kunt u dus een array 
+maken  waarvan ieder element een totaal andere structuur kan 
+hebben.
+
+
+Stel u heeft de volgende definitie :
+
+type subtiep = 0..2
+     varirec = record
+                 case selectie : subtiep of
+                   0 : (x : real);
+                   1 : (y1 : byte;
+                        y2 : integer);
+                   2 : (z : string[10]);
+               end; { merk op dat het case-statement niet
+                      met een end wordt afgesloten }
+var a : array[1..100] of varirec;
+
+U  kunt  nu aan  de hand  van A[i].selectie  (deze variabele 
+wordt tag-field  genoemd) aangeven  welke van  de 3 genoemde 
+inhouden (dus x, y1/y2 of z) het arrayelement moet hebben.
+
+Het  tag-field moet  u (uiteraard)  voor het  vullen van het 
+record een bepaalde waarde geven.
+
+Als selectie=0  dan bestaat  A[i].x; De  variabelen A[i].y1, 
+A[i],y2  en  A[i].z  bestaan nu  NIET! Als  u het  tag-field 
+gelijk aan 2 maakt dan bestaat A[i].z, en de rest niet...
+
+U kunt  ten alle tijde het veld A[i].selectie uitlezen om er 
+achter  te  komen  hoe  u  de  inhoud  van  het  betreffende 
+arrayelement kunt interpreteren.
+
+Opm:  U kunt  ook een  combinatie maken  van varianten  vast 
+record. In dat geval moet het variant-deel achteraan staan.
+
+Bijvoorbeeld: 
+
+type voorbeeld = record
+                   B : boolean;
+                   A : array[1..10]  of  real;  
+                   case i : boolean of          
+                     false : (getal : byte);
+                     true  : (teken : char);
+                 end; { einde record }
+
+
+
+               VARIANTRECORD ZONDER TAGFIELD 
+
+Het is  ook mogelijk  om een  variantrecord te  maken zonder 
+tagfield!  Op zich  klinkt dat vreemd, omdat u dan eigenlijk 
+niet weet wat de inhoud van het record precies voorsteld.
+
+In zo'n tagfieldloos variantrecord gelden op elk moment alle 
+in het variant-deel vermelde variabelen.
+
+Het grote verschil met een 'normaal' variantrecord is dat in 
+de  versie   met  tagfield   op  verschillende   tijdstippen 
+verschillende   variabelen  uit   het  variant-deel  gelden, 
+terwijl in de tagfieldloze variant op het zelfde moment alle 
+variabelen binnen het variant-deel gelden.
+
+Soms kan  dit erg  nuttig zijn!  Denk bijvoorbeeld aan code- 
+omzettingen o.i.d.
+
+Met  het  volgende  programmaatje  worden de CHR- en de ORD- 
+funkties nagebootst via een tagfieldloos variandrecord:
+
+
+program tagfieldloos_voorbeeld;
+
+type omzetter = record
+                  case boolean of   { GEEN tagfield }
+                    true  : (b : byte);
+                    false : (c : char);
+                end;
+
+var q : omzetter;
+
+begin
+  q.b := 65;    { 65 is  de ASCII-waarde van de 'A' }
+  writeln(q.c); { de letter 'A' op het scherm gezet }
+  q.c := ' ';   { spatie. ASCII waarde 32           }
+  writeln(q.b)  { het getal 32 wordt nu afgedrukt   }
+end.
+
+
+Een ander  voorbeeld zou  bijvoorbeeld een tekst-encoder/de- 
+coder kunnen zijn.
+
+U zet dan strings om naar een serie integers of reals o.i.d. 
+waarop  u  vervolgens weer  een bepaalde  bewerking loslaat. 
+Helemaal mooi  wordt het  als u voor het gecodeerde deel een 
+combinatie van bijvoorbeeld integers en reals gebruikt...
+
+Met variant-records  kunt u  erg mooie  dingen maken, mits u 
+weet waar u mee bezig bent!
+
+
+                                                 Rudy Oppers
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_22.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_24.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

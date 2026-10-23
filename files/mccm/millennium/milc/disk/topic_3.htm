@@ -1,0 +1,118 @@
+<html>
+
+<head>
+<title>MILC - Topic Beschrijving van de Directory</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Beschrijving van de Directory</b><br>
+    <i>CYBERNETICS</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                                  De directory
+                                 ==============
+
+Na de FAT begint de directory. Ook de sectoren van de directory hebben een 
+vaste indeling. Iedere sector van de directory bevat 8 entries, die allemaal 
+dezelfde onderverdeling hebben. Hierna volgt een beschrijving van 1 directory 
+entry.
+
+Displ.: 	Betekenis:
+==============================================================================
+
+&amp;H00/07       - De filenaam. Maximaal 8 tekens. Indien de naam uit minder dan 
+		8 tekens bestaat, zullen de overblijvende plaatsen met spaties 
+		(&amp;H20) worden gevuld. Behalve een filenaam zijn er nog de 
+		volgende mogelijkheden:
+		Entry is nog nooit gebruikt geweest: 
+		      displacement &amp;H00 bevat de waarde &amp;H00
+		Entry bevat een (sub)directory:
+		      displacement &amp;H00 bevat de waarde &amp;H2E
+		Entry heeft een gewiste file bevat:
+		      displacement &amp;H00 bevat de waarde &amp;HE5
+
+&amp;H08/0A       - filenaam extensie. Maximaal 3 tekens. Indien de extensie uit 
+		minder dan 3 tekens bestaat zullen de overblijvende plaatsen 
+		met spaties (&amp;H20) opgevuld worden.
+
+&amp;H0B	      - Attribuut byte.
+		Dit byte kan de volgende waarden bevatten (op de MSX bevat dit 
+		byte default de waarde 0).
+		
+		&amp;H00 - Normale file
+		&amp;H01 - Read-Only file
+		&amp;H02 - Verborgen file (niet zichtbaar in de directory)
+		&amp;H04 - Systeem file (niet zichtbaar in de directory)
+		&amp;H08 - De eerste 11 bytes bevatten het Volume Label
+		&amp;H10 - Deze entry betreft een sub-directory
+		&amp;H20 - Archive bit
+		       (wordt ge-set wanneer er naar de file is geschreven)
+
+		GEEN van de attributen wordt in MSXDOS gebruikt (behalve &amp;H00) 
+		doch het is wel mogelijk om de attributen zelf te wijzigen.
+		Zou men bijvoorbeeld het attribuut voor een bepaalde file &amp;H02 
+		maken, dan zal die file niet meer in de directory voorkomen. 
+		Hij is dan werkelijk verborgen (Nvdr. hij is dan ook niet meer 
+		in te laden). 
+
+&amp;H0C/15       - Gereserveerd
+
+&amp;H16/17       - Creatie-tijd van de file.
+		De twee bytes hebben de volgende indeling:
+
+		&amp;H17:  H H H H H M M M
+		&amp;H16:  M M M S S S S S
+
+		Hierin is:
+		H = 0 - 23  binaire waarde voor uren
+		M = 0 - 59  binaire waarde voor minuten
+		S = 0 - 29  binaire waarde voor aantal perioden van 2 seconden
+	
+&amp;H18/19       - Creatie-datum van de file.
+		De twee bytes hebben de volgende indeling:
+
+		&amp;H17:  Y Y Y Y Y Y Y M
+		&amp;H16:  M M M D D D D D
+
+		Hierin is:
+		Y = 0 - 119 binaire waarde voor het jaar (0=1980, 119=2099)			      ( 0=1980, 119=2099 )
+		M = 1 - 12  binaire waarde voor de maand
+		D = 1 - 31  binaire waarde voor de dag
+
+&amp;H1A/1B       - Het nummer van de eerste custer in de file. Het clusternummer 
+		van de eerste file op iedere schijf is altijd nummer 2.
+
+&amp;H1C/1F       - File-grootte in bytes. &amp;H1C is het LSB van deze groep van 4 
+		bytes.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<html>
+
+<head>
+<title>MILC - Topic R800 [2/2]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">R800 [2/2]</b><br>
+    <i>Stefan Boer</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+             VERMENIGVULDIGEN
+
+Echt  super  zijn  de  vermenigvuldigingsinstructies van  de 
+R800. De instructie MULUB (MULtiply Bytes) vermenigvuldigt A 
+met B, C, D of E en zet het 16 bits antwoord in HL. Dit gaat 
+razendsnel, deze  instructie gebruikt  slechts 14 klokpulsen 
+(1.96 micro- seconde).
+
+De instructie  MULUW (MULtiply Words) vermenigvuldigt HL met 
+BC  of SP  (zal in  de praktijk meestal BC zijn), en zet het 
+antwoord in  DE en HL, waarbij de hoogste bits in DE terecht 
+komen.  Deze instructie  duurt slechts 5.03 microseconde (36 
+klokpulsen)!
+
+Deze twee instructies zijn ontzettend krachtig en maken zeer 
+snelle    &quot;realtime    calculated&quot;    animaties    mogelijk, 
+bijvoorbeeld vectorgraphics.  Ook voor  fractals is  dit erg 
+handig, die kunnen nu veel en veel sneller worden berekend.
+
+Een leuke  vergelijking met  de Z80  is dat  de MULUW  HL,BC 
+instructie  op  de  R800  net  zolang  duurt  als  een  CALL 
+instructie op de Z80!! Bij de Z80 moet voor vermenigvuldigen 
+een  aparte routine worden geschreven, en als je die met een 
+CALL aanroept  is de  R800 in  de tussentijd al klaar met de 
+complete  vermenigvuldiging. U  begrijpt wel dat de R800 als 
+het om vermenigvuldigen gaat veel meer dan acht maal sneller 
+is, ik  denk wel  honderd maal sneller. Bovendien spaart het 
+een  hoop programmeertijd, want berekeningen kunnen een stuk 
+makkelijker worden geprogrammeerd.
+
+Onderstaand  voorbeeld is  een routine die HL=A*B uitrekent. 
+Op de  R800 is een instructie daarvoor voldoende: MULUB A,B.
+Deze  instructie is  sneller dan  een CALL instructie bij de 
+Z80! Bij de Z80 zou je dan ongeveer zo'n routine krijgen:
+
+; MULUB A,B voor de Z80
+; Door Stefan Boer
+; Voor Sunrise Special #1
+; Werking:  HL=A*B
+; In:       A,B
+; Uit:      HL
+; Gebruikt: DE
+; Methode:  Herhaald optellen
+
+MULUB:  LD    HL,0
+        LD    E,A
+        LD    D,0             ; LD DE,A
+        XOR   A
+        CP    B
+        RET   Z               ; B=0, dan antwoord 0
+MULTI:  ADD   HL,DE
+        DJNZ  MULTI           ; tel B maal DE bij HL op
+        RET
+
+U  kunt zien  dat dit  heel wat meer bytes en tijd in beslag 
+neemt, de  CALL MULUB duurt op de Z80 al langer dan de MULUB 
+A,B instructie op de R800.
+
+
+               R  ASSEMBLER
+
+Nu  denkt u misschien dat u een nieuwe assembler nodig heeft 
+als u  software voor  de R800 wilt ontwikkelen. Dit is zeker 
+niet  het geval! Alle bestaande Z80 assemblers kunnen gewoon 
+worden gebruikt.  Dit is  ook de  reden waarom  er nog  geen 
+speciale R800 assembler op de markt is gebracht.
+
+Het  zou trouwens  ook verwarrend  zijn voor een programmeur 
+die de Z80 assemblertaal al beheerst, om de nieuwe mnemonics 
+voor de R800 te leren.
+
+&quot;En de  nieuwe instructies  dan?&quot; hoor  ik u denken. Nu, die 
+kunt  u  gewoon  met DEFB  instructies simuleren!  Alleen de 
+disassembler  zal hier  een beetje van in de war raken, maar 
+dat  is  toch niet  zo'n ramp?  Ik zal  nu voor  alle nieuwe 
+instructies uitleggen  hoe ze  met een  gewone Z80 assembler 
+(zoals WB-ASS2) kunnen worden gebruikt.
+
+
+                INDEXREGISTERS
+
+Bij  de indexregisters IX en IY is het ontzettend makkelijk. 
+Het  is  u  vast  al  wel  eens opgevallen,  dat de  opcodes 
+hetzelfde zijn  als die voor de instructies voor HL, behalve 
+dan  dat er een extra code voor staat. Die code is &amp;HDD voor 
+IX en &amp;HFD voor IY. Een voorbeeld:
+
+Mnemonic:       Opcode:
+
+LD HL,&amp;H1BBF    21 BF 1B
+LD IX,&amp;H1BBF    DD 21 BF 1B
+LD IY,&amp;H1BBF    FD 21 BF 1B
+
+U kunt  voor alle  instructies met  IXL, IXH,  IYL en IYH de 
+assembler  op een heel eenvoudige manier voor de gek houden. 
+Voor  IXL en  IYL zet u een L en voor IYH en IXH een H. Door 
+er een  DEFB &amp;HDD  voor te zetten wordt de L resp. H voor de 
+R800  IXL  resp.  IXH,  met  een  &amp;HFD  hetzelfde  voor  IY. 
+Voorbeelden:
+
+        DEFB    &amp;HDD
+        LD      A,L             ; LD A,IXL
+
+        DEFB    &amp;HFD
+        LD      L,H             ; LD IYL,IYH
+
+        DEFB    &amp;HDD
+        LD      H,B             ; LD IXH,B
+
+Zoals  u ziet  is de  instructie LD IXH,IYL niet mogelijk, u 
+kunt immers niet de code voor IX 
+n de code voor IY voor een 
+instructie plaatsen.  Maar verder  is alles mogelijk, zie de 
+instructietabellen in de Sunrise Times.
+
+
+                      IN F&quot;9c;
+
+Voor  deze instructie kunt u gewoon DEFB &amp;HED,&amp;H70 invullen. 
+U kunt dat het beste zo in de assemblerlisting zetten:
+
+        DEFB    &amp;HED,&amp;H70       ; IN F,(C)
+
+Zo  kunt  u  goed  zien dat  het geen  data bytes  zijn maar 
+eigenlijk  gewoon   een  opcode.  Door  een  foutje  in  die 
+assemblers   zullen   sommige   assemblers   dit   overigens 
+disassembleren  als IN  (HL),(C). Dit  is een niet bestaande 
+instructie, maar het komt omdat IN F,(C) voor de R800 gewoon 
+een speciaal  geval is  van IN r,(C). Bij andere instructies 
+(bijvoorbeeld   LD  A,(HL))   wordt  (HL)  weergegeven  door 
+dezelfde bits  als F  bij de IN F,(C) instructie, vandaar de 
+fout. 
+
+
+                MULUB EN MULUW
+
+Voor  deze instructies  kunt u  de instructietabellen van de 
+R800 die  in de  Sunrise Times  staan afgedrukt gebruiken. U 
+kunt  de opcodes  aan de  hand daarvan samenstellen (zie het 
+stukje   over   opcodes  samenstellen),   en  ze   met  DEFB 
+instructies in de code opnemen. Bijvoorbeeld:
+
+        DEFB    &amp;HED,&amp;B11000001 ; MULUB A,B
+
+Ook hier  is het  weer aan te raden om bij het commentaar de 
+R800  mnemonic in te vullen, zo houdt u uw assemblerlistings 
+leesbaar.
+
+                     SCHAKELEN
+
+Nu  zit ik  wel een  lang artikel over de R800 te schrijven, 
+maar  als  u  niet  weet  hoe  u  deze  wonderprocessor moet 
+selecteren heeft u daar nog niet veel aan.
+
+In het  MAIN ROM  van de MSX turbo R zitten vier nieuwe BIOS 
+routines,  waarvan er  twee voor het schakelen tussen de Z80 
+en de R800 zijn bedoeld. Dat zijn:
+
+CHGCPU  &amp;H0180  Selecteer CPU
+                Invoer: A register
+                MSB   7   6   5   4   3   2   1   0   LSB
+                     LED  0   0   0   0   0   X   X
+                LED=1: led wordt bestuurd
+                LED=0: led wordt niet bestuurd
+                XX=00: Z80
+                XX=01: R800 ROM
+                XX=10: R800 DRAM
+                Gebruikt: AF
+
+GETCPU  &amp;H0183  Bepaal huidige CPU
+                Invoer: -
+                Uitvoer: A register
+                0: Z80
+                1: R800 ROM
+                2: R800 DRAM
+
+Over   LED   is  wegens   foutieve  publikaties   in  andere 
+Nederlandse  MSX  bladen een  misverstand ontstaan.  Dit bit 
+bestuurt niet  het led  (1=aan, 0=uit),  maar bepaalt  of de 
+status  van het  led (aan  of uit)  door de gekozen CPU moet 
+worden beinvloed!
+
+Stel u  zit in  R800 mode en het lampje brandt. Doet u nu LD 
+A,0  en daarna CALL CHGCPU, dan zal de Z80 uitgaan, maar het 
+lampje blijft  branden. Bit 7 van register A (LED) is immers 
+0, en dus zal het led niet door de gekozen CPU (Z80, normaal 
+gesproken moet het lampje dus uit!) worden benvloed.
+
+Andersom  kan ook,  als u  in Z80 mode zit (lampje uit) en u 
+selecteert de R800 mode door een CALL &amp;H180 te geven terwijl 
+het A register de waarde 1 bevat (R800), dan zal de R800 wel 
+aangaan, maar het lampje niet!
+
+Bij  &quot;normaal&quot;  gebruik van  deze BIOS  routine, waarbij  de 
+stand  van  het  lampje  in overeenkomst  is met  de actieve 
+processor  (aan=R800,  uit=Z80),  dient  u  dus  een van  de
+volgende drie waardes te gebruiken:
+
+&amp;H80    Z80
+&amp;H81    R800 ROM
+&amp;H82    R800 DRAM
+
+U  kunt  met  GETCPU  opvragen  welke  processor  er  op dat 
+ogenblik actief  is. U  kunt op  de volgende  manier dus het 
+lampje in de goede stand zetten:
+
+        CALL    &amp;H183           ; welke CPU actief?
+        SET     7,A             ; LED besturen aan
+        CALL    &amp;H180           ; CPU zelfde, LED besturen
+
+
+                          DRAM
+
+Ik heb  het in  bovenstaande tekst vrolijk over DRAM, zonder 
+uit te leggen wat dat nou eigenlijk inhoudt. De DRAM mode is 
+een  slimme  truuk,  die ook  door andere  moderne computers 
+wordt  gebruikt. In  feite is  het niet  de R800 die voor de 
+DRAM mode zorgt, maar de S1990.
+
+Bij  de  Z80  maakt  het  niet uit  of er  RAM of  ROM wordt 
+gelezen,  dit gaat  beiden even snel. Omdat er in de turbo R 
+dezelfde ROMs  worden gebruikt  als in een MSX1/2/2+, moeten 
+die  op een langzame snelheid worden gelezen. Telkens als de 
+R800  ROM  moet  lezen,  schakelt  hij  even terug  naar een 
+langzamere snelheid.  Vandaar dat  op een R800 het lezen van 
+RAM  sneller is dan ROM, want in de turbo R wordt &quot;snel&quot; RAM 
+gebruikt, zodat terugschakelen niet nodig is.
+
+Vooral in  BASIC wordt  er continu  uit de  ROM gelezen.  De 
+BASIC  zelf staat  immers op ROM! De R800 ROM mode is daarom 
+in  BASIC  helemaal  niet  zo snel,  omdat er  telkens wordt 
+teruggeschakeld naar een lagere snelheid. De oplossing is de 
+DRAM mode.
+
+
+                    ROM IN RAM
+
+Bij  het  opstarten  van de  computer wordt  de 64  kB meest 
+gebruikte ROM naar de bovenste 64 kB van het RAM gekopieerd. 
+De  turbo R heeft dan dus 64 kB minder werkgeheugen over. De 
+ROM die gekopieerd wordt is:
+
+MAXPGE-3:       MAIN ROM 0000-3FFF
+MAXPGE-2:       MAIN ROM 4000-7FFF
+MAXPGE-1:       SUB ROM
+MAXPGE  :       KANJI ROM
+
+Voor  MAXPGE   moet  u   het  hoogste  memorymapper  segment 
+invullen.  De FS-A1ST heeft bijvoorbeeld 256 kB, dat zijn 16 
+memorymapper segmenten  van 16  kB. Daar  het nummeren bij 0 
+begint, is MAXPGE dus gelijk aan 15. De SUB ROM staat dus in 
+memorymapper segment 14.
+
+Als de  DRAM mode wordt geselecteerd komt de S1990 in actie. 
+Wordt  nu een van de hierboven genoemde ROMs gelezen door de
+R800, dan  zorgt de S1990 ervoor dat niet de ROM maar de RAM 
+(waarin  het ROM is gekopieerd) wordt gelezen. De R800 hoeft 
+dan niet  te wachten  op het langzame ROM, en werkt een stuk 
+sneller.  De S1990  zorgt ervoor  dat er niet in de DRAM kan 
+worden geschreven  (zo heet  de tot  ROM verklaarde RAM), en 
+zorgt  er tevens  voor dat  het RAM  dat voor  de DRAM wordt 
+gebruikt niet  meer te gebruiken is. Probeert u er toch iets 
+uit te lezen, dan zal dat altijd de waarde &amp;HFF opleveren.
+
+
+         ROM MODE EN DRAM MODE
+
+Er zijn dus twee verschillende R800 standen. Bij de R800 ROM 
+mode  gaat het  net als bij de Z80 mode, er wordt gewoon ROM 
+gelezen. Vandaar de naam ROM mode. Deze mode is vooral onder 
+BASIC langzaam,  omdat daar  veel ROM  wordt gelezen.  Onder 
+machinetaal springt de computer ook 60 keer per seconde naar 
+ROM,  voor  de  interrupt  routine  op  &amp;H38.  Ook  als  het 
+machinetaalprogramma  de BIOS  gebruikt zal  er naar het ROM 
+worden gesprongen.  Daarom heeft  het selecteren van de DRAM 
+mode  ook bij machinetaal zin, al is heeft het minder effect 
+dan  bij  BASIC. De  R800 ROM  mode heeft  als belangrijkste 
+voordeel  dat   het  volledige  RAM  geheugen  vrij  is  als 
+werkgeheugen.
+
+De  DRAM mode  is sneller,  maar kost  wel 64 kB geheugen. U 
+kunt dus  zelf per situatie beslissen of u de ROM mode of de 
+DRAM mode wilt gebruiken.
+
+
+                 IN ROM POKEN
+
+U  kunt bij  de turbo  R als  het ware in het ROM POKEn. Dit 
+gaat als volgt:
+
+- Selecteer de R800 ROM mode (of Z80 mode)
+
+In de  bovenste 64 kB van de memorymapper staat nu een kopie 
+van  de ROM,  waar u  net zoveel in kunt knoeien als u wilt. 
+Als u klaar bent
+
+- Selecteert u de R800 DRAM mode
+Nu wordt  het RAM  waar u  zojuist in hebt geknoeid gebruikt 
+voor de DRAM, en dus hebt u als het ware in de ROM gePOKEt!
+
+
+                       PAS OP
+
+Je  zou misschien  denken dat  het ROM elke keer dat de DRAM 
+wordt geselecteerd  in het RAM wordt gekopieerd. Dat is niet 
+zo,  anders zou bovenstaande truuk ook niet werken. De reden 
+hiervoor is  dat het  kopi	ren van  64 kB toch wel even tijd 
+kost,  en  op  die  manier  zou  de  CHGCPU routine  veel te 
+langzaam worden.
+
+Het ROM wordt alleen bij een reset in het RAM gekopieerd, en 
+hiermee dient  terdege rekening gehouden te worden! Als u de 
+DRAM  mode selecteert  terwijl het RAM dat voor de DRAM mode 
+wordt  gebruikt  verminkt is,  kan dit  onverwachte gevolgen 
+hebben!
+
+
+           DISKGEBRUIK EN R800
+
+Het aansturen  van de  diskdrive gaat  niet goed  onder R800 
+stand.  De  diskcontroller  kan  bij  zo'n hoge  snelheid de 
+processor  blijkbaar  niet  bijhouden.  Tenminste,  bij  het 
+saven. Het laden onder R800 stand gaat prima, maar bij saven 
+kan er  van alles  mis gaan. Het gaat niet altijd fout, maar 
+vaak  treedt er  een Disk  I/O error  op of  er wordt gewoon 
+niets gesaved.
+
+Bij  MSX-DOS2.31/MSX Disk  BASIC 2.01  is daar  rekening mee 
+gehouden. Bij elke diskactie wordt de R800 stiekem uitgezet. 
+Ik schrijf  &quot;stiekem&quot;, omdat het lampje niet wordt uitgezet. 
+Dat blijft branden, omdat de R800 wordt uitgezet door
+
+        LD      A,0     
+        CALL    &amp;H180           ; R800 uit, lampje niet
+
+En  u hebt  aan het begin van het artikel al geleerd dat het 
+lampje dan  niet uitgaat.  Hierdoor wordt  behalve het saven 
+ook het laden vertraagd, wat eigenlijk niet nodig is.
+
+De  ontwikkelaars  van  de  turbo  R hebben  dit in  de MSX- 
+DOS2.31/Disk  BASIC 2.01  ROMs ingebouwd,  omdat dat normaal 
+gesproken onder R800 stand wordt gedraaid.
+
+
+                     DOS MODE
+
+Onder DOS1  mode (MSX-DOS1.11/Disk BASIC 1.0) wordt dit niet 
+gedaan.  Die stand  is tenslotte  bedoeld voor het uitvoeren 
+van  MSX1/2/2+  programma's, en  die werken  toch onder  Z80 
+stand.
+
+Toch zullen programmeurs vaak MSX turbo R software voor DOS1 
+mode  ontwikkelen,  omdat  de  geheugenhuishouding van  DOS2 
+nogal irritant is. De R800 wordt dan dus aangezet onder DOS1 
+mode, terwijl de diskROM daar geen rekening mee houdt.
+
+In het  technical databook  van de turbo R staat dan ook dat 
+als  een programmeur  toch de combinatie DOS1/R800 gebruikt, 
+hij  bij   elke  diskactie  de  R800  uit  moet  zetten.  De 
+programmeur  van Seed  of Dragon  heeft zich daar netjes aan 
+gehouden; elke  keer als  het disklampje gaat branden zie je 
+bij dat spel het R800 lampje uitgaan.
+
+Hoewel dit niet in het technical databook staat, kan de R800 
+bij het  laden rustig  aan blijven  staan. Alleen  bij saven 
+zijn  er problemen.  Onder R800  stand gaat  het laden zelfs 
+aanmerkelijk  sneller!  MicroCabin wist  dit blijkbaar  ook, 
+want bij bijvoorbeeld Fray wordt de R800 alleen uitgezet als 
+er wordt gesaved.
+
+Conclusie:
+
+    ZET DE R800 ALTIJD UIT ALS
+
+    ER IN DOS] MODE NAAR DISK
+
+     WORDT GESCHREVEN
+
+
+Nogmaals: bij laden kunt u de R800 rustig aan laten staan.
+
+
+              PAGE MODE ACCESS
+
+Bij  het bekijken van een artikel over de R800 in een Japans 
+blad kwam  ik de  term &quot;DRAM  page access&quot;  tegen, en ik had 
+eerst  geen flauw  idee wat  dat was.  Later kwam  ik er wel 
+achter.
+
+Wanneer  van het  adres in  de externe  databus de high-byte 
+niet verandert,  zal de R800 de high-byte van het adres niet 
+opnieuw op de adresbus plaatsen (lijkt heel logisch, maar de 
+Z80 kent deze truuk niet!)
+
+Een  &quot;page&quot; is in de processorwereld een stukje geheugen van 
+256 bytes,  dat op  een 256-byte  grens begint, dus &amp;H??00 - 
+&amp;H??FF.  Verwar dit niet met de bij MSX bekende term &quot;page&quot;, 
+een stuk geheugen van 16 kB.
+
+Het hierboven  beschreven truukje  dat de R800 gebruikt heet 
+&quot;Page  mode access&quot;  en verhoogt  de snelheid  nog eens  met 
+ongeveer een factor twee.
+
+De programmeur kan met &quot;paged DRAM access&quot; maximaal van deze 
+truuk  gebruik maken.  Paged DRAM  access betekent  dat alle 
+geheugentoegang van een routine (dus ook de routine zelf) in 
+dezelfde page staat (bijvoorbeeld &amp;HD000-&amp;HD0FF). Dit is wel 
+zeer beperkt,  want met  alle geheugentoegang  bedoel ik dan 
+dus  echt ALLE  geheugentoegang, inclusief stack, variabelen 
+en constanten. Het uitzetten van de interrupts is in verband 
+met die  stack dan  ook ten  zeerste aan te raden. Maar deze 
+moeite wordt wel beloond met een ultra-snelle routine!
+
+We  begrijpen  nu  ook beter  hoe het  komt dat  een LD  A,B 
+instruktie  op de  R800 tien  keer zo snel is dan op de Z80, 
+terwijl een LD A,(HL) maar 5,3 keer zo snel is.
+
+Bij het  uitvoeren van een instructie hoort namelijk ook het 
+ophalen van de opcode uit het geheugen. Omdat bij een LD A,B 
+instructie  de externe  adresbus niet wordt gewijzigd, hoeft 
+bij het  ophalen van  de volgende opcode (meestal) alleen de 
+low-byte van de externe adresbus te worden veranderd. Bij de 
+LD  A,(HL) instructie  is de externe adresbus wel veranderd, 
+zodat zowel  de low-  als de  high-byte van  het PC register 
+(Program  Counter) naar  de externe  adresbus moeten  worden 
+verplaatst.
+
+
+                      TOT SLOT
+
+Tot  slot   wil  ik   Alex  Wulms  nog  bedanken  voor  zijn 
+medewerking,  een gedeelte  van de informatie in dit artikel 
+is  van  hem afkomstig.  De overige  informatie heb  ik zelf 
+uitgevonden of komt uit Japanse bladen.
+
+De R800  is (inclusief  toetsenbord, diskdrive,  kast en een 
+zooitje  chips onder  de naam  FS-A1GT) te koop bij MSX Club 
+Gouda voor  f1795,-.  Verplicht voor elke MSX'er die bij de
+tijd wil blijven (maar nu nog een antieke MSX2 heeft)!
+
+                                                Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

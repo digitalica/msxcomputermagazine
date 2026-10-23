@@ -1,0 +1,229 @@
+<html>
+
+<head>
+<title>MILC - Topic Muziekmodule: sampling</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_6.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_8.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Muziekmodule: sampling</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+   Digitale signaal-verwerking (sampling)
+   ---------------------------------------------------------------------------
+   Voor de volgende registers geldt dat het registernummer gelijk is aan het 
+   adres. Aansturen dmv.: OUT &amp;HC0,&lt;adres&gt;: OUT &amp;HC1,&lt;getal&gt;.
+
+   register 1: dit register is alleen voor fabricagetest bestemd. 
+               Niet gebruiken!
+
+   register 2: Timer-1 preset
+               In dit register wordt de beginwaarde N1 voor timer-1 gezet.
+
+   register 3: Timer-2 preset
+               In dit register wordt de beginwaarde N2 voor timer-2 gezet.
+
+   register 4: Timer en Flag control
+               bit 0: &quot;1&quot; start en &quot;0&quot; stopt timer-1
+               bit 1: &quot;1&quot; start en &quot;0&quot; stopt timer-2
+               bit 2: is niet in gebruik
+               bit 3: &quot;1&quot; maskeert de Buffer-Ready vlag
+               bit 4: &quot;1&quot; maskeert de End Of Sample vlag
+               bit 5: &quot;1&quot; maskeert de Timer-2 vlag
+               bit 6: &quot;1&quot; maskeert de Timer-1 vlag
+               bit 7: &quot;1&quot; reset alle vlaggen
+               Bij inschakelen worden de Buffer Ready en de End of Sample vlag 
+               al gemaskeerd.
+
+   register 5 en 6: Keyboard. (zie externe keyboard aansluiting)
+
+   register 7: ADPCM-besturing
+               bit 0: RESET; &quot;1&quot; reset de gekozen ADPCM-functies
+               bit 1,2 en 3 zijn niet in gebruik
+               bit 4: REPEAT; &quot;1&quot; herhaalt weergave van begin- tot eindadres
+               bit 5: MEMORY; &quot;1&quot; om gebruik te maken van het geheugen in de 
+                      module.
+               bit 6: RECORD; &quot;1&quot; voor opnemen, &quot;0&quot; voor weergeven
+               bit 7: START; &quot;1&quot; start het opnemen of weergeven
+               Een andere functie kan pas worden gekozen na een RESET
+
+                Toepassingen:
+                -----------------------------------------------
+                R(7)  functie:
+                -----------------------------------------------
+                &amp;H20  Samples van module naar computergeheugen
+                &amp;H60  Samples van computergeheugen naar module
+                &amp;H80  Weergave vanuit het computergeheugen
+                &amp;HA0  Weergave vanuit de module
+                &amp;HC0  Opname in het computergeheugen
+                &amp;HA0  Opname in module
+                -----------------------------------------------
+
+   register 8: diverse instellingen
+               bit 0: ROM; &quot;1&quot; voor ROM en &quot;0&quot; voor RAM geheugen in de module
+               bit 1: 64K; &quot;1&quot; voor 64kbit en &quot;0&quot; voor 256kbit RAM-chips
+               bit 2: DA/AD; &quot;1&quot; voor DA conversie, &quot;0&quot; voor AD conversie
+               bit 3: SAMPLE; &quot;1&quot; start en &quot;0&quot; stopt de AD/DA-conversie
+               bit 4-6: niet in gebruik
+               bit 7: CSM; &quot;1&quot; stelt de Composite Sinusoidal Mode in (?)
+               De muziekmodule bevat een chip van 256kbit RAM, dus bit 0 en 1 
+               moeten altijd op &quot;0&quot; worden gezet. Voor de ADPCM methode moet de 
+               rest ook &quot;0&quot; zijn.
+
+               Directe AD en DA-conversie, dus PCM kan als volgt ingesteld 
+               worden:
+
+               opname  :  OUT &amp;HC0,8: OUT &amp;HC1,8
+               weergave:  OUT &amp;HC0,8: OUT &amp;HC1,12
+
+               Deze methode kan alleen met opslag in het computergeheugen 
+               gebruikt worden. Registers 9 tot 12 hoeven daarom niet te worden 
+               ingesteld. Via registers 13 en 14 wordt de samplesnelheid 
+               ingesteld, zowel voor opname als weergave. Registers 16 en 17 
+               hoeven dan dus ook niet te worden ingesteld. Het bufferegister 
+               voor transport van de gegevens in nu register 26. Bij weergave 
+               kunnen de gegevens ook direct naar de DAC (register 21 tot 23) 
+               gestuurd worden. Voor dit alles is dus wel een machinetaal 
+               routine nodig die het transport tussen de module en de computer 
+               verzorgd.
+
+   register 9 en 10: startadres
+               Deze registers stellen het beginadres in waar de gegevens staan 
+               in het RAM-geheugen van de module. De 256kbit RAM wordt 
+               geadresseerd in blokjes van 32 bits. Daar zijn er dus 256k/32 is 
+               8K (&amp;H2000) van. De adressen lopen daarom van &amp;H0000 tot &amp;H1FFF.
+               In register 9 komt het lage byte (ADRES MOD 256) en in register 
+               10 het hoge byte (ADRES\256).
+
+   register 11 en 12: eindadres
+               Deze registers geven het hoogste adres aan dat voor de conversie 
+               gebruikt wordt, en wel op dezelfde manier als bij het 
+               startadres. Register 11 is voor het lage byte en register 12 
+               voor het hoge byte. Het eindadres moet altijd hoger zijn dan het 
+               beginadres. 
+
+   register 13 en 14: prescaler
+               In deze registers wordt een getal N opgeslagen, waarmee de 
+               samplefrequentie Fs wordt bepaald door de klokfrequentie van 
+               3580 kHz te delen door N. Dit geldt zowel voor AD- en 
+               DA-conversie als voor ADPCM-opname. (voor weergave zie verderop) 
+
+                 Fs = 3580/N kHz  en  N=3580/Fs
+
+               Voor het getal N zijn 11 bits beschikbaar. 8 bits voor N MOD 256 
+               in register 13, plus 3 bits voor N\256 in register 14. De 
+               maximum samplefrequentie is 16 kHz, het minimum is 1,8 kHz.
+
+                 Tabel 5.  Opname frequenties &amp; prescaler
+                +-------------+-------+--------+---------+
+                | Opnamefreq. |   N   |  R(13) |  R(14)  |
+                +-------------+-------+--------+---------+
+                |   1,8 kHz   | &amp;H7FF |  &amp;HFF  |    7    |
+                |     3 kHz   | &amp;H4A9 |  &amp;HA9  |    4    |
+                |     6 kHz   | &amp;H254 |  &amp;H54  |    2    |
+                |    10 kHz   | &amp;H166 |  &amp;H66  |    1    |
+                |    16 kHz   | &amp;H0E1 |  &amp;HE1  |    0    |
+                +-------------+-------+--------+---------+
+
+   Register 15: ADPCM-data
+               Dit register wordt als buffer gebruikt voor overdracht van 
+               ADPCM-data van en naar de computer. Het kan zowel gelezen als 
+               beschreven worden. elke byte bevat twee ADPCM-samples, die 
+               immers 4 bits bevatten. Als de vier hoge bits sample &quot;n&quot; 
+               bevatten, dan staat in de vier lage bits sample &quot;n+1&quot;.
+
+   register 16 en 17: ADPCM-weergave
+               De inhoud van de registers bepalen de snelheid van ADPCM 
+               weergave. Die is op een wat andere manier gecodeerd dan bij 
+               opname, wat te maken heeft met de hogere snelheden die bij 
+               weergave mogelijk zijn en met de interpolatie naar 50kHz die bij 
+               ADPCM-weergave wordt toegepast. De samplefrequentie volgt uit:
+
+                 Fs=M/1311 kHz  en  M=1311*Fs
+
+               Het getal M wordt als volgt in de register 16 en 17 opgeslagen:
+               M MOD 256 in register 16 en M\256 in register 17. Enige 
+               voorbeelden: 
+
+                 Tabel 6.  ADPCM-weergave
+                +----------+--------+-------+-------+
+                | Weergave |    M   | R(16) | R(17) |
+                +----------+--------+-------+-------+
+                | 1,8 kHz  | &amp;H08F4 | &amp;HF4  | &amp;H08  |
+                |   3 kHz  | &amp;H0F5D | &amp;H5D  | &amp;H0F  |
+                |   6 kHz  | &amp;H1EBA | &amp;HBA  | &amp;H1E  |
+                |  10 kHz  | &amp;H3336 | &amp;H36  | &amp;H33  |
+                |  16 kHz  | &amp;H51F0 | &amp;HF0  | &amp;H51  |
+                |  50 kHz  | &amp;HFFFF | &amp;HFF  | &amp;HFF  |
+                +----------+--------+-------+-------+
+
+   register 18: volume ADPCM-weergave
+               Dit register bevat de geluidssterkte van de ADPCM-weergave, die 
+               in 256 stappen geregeld kan worden. Maximum volume voor &amp;HFF, 
+               minimum voor 0. 
+
+   register 19 en 20: ADPCM
+               Deze twee registers bevatten tussenresultaten van de 
+               ADPCM-codering en -decodering. Verder zijn er geen gegevens over 
+               bekend. 
+
+   register 21,22 en 23: DAC-data
+               In deze registers moeten de gegevens gezet worden voor 13-bit 
+               DA-conversie. Van register 21 worden alle 8 bits gebruikt, van 
+               register 22 alleen de twee hoogste bits. Van register 23 worden 
+               de drie laagste bits gebruikt als exponent. De uitgangsspanning 
+               V wordt als volgt berekend:
+
+                 V=((R(21)+R(22)/256)/256)/2^R(23))
+
+               Register 21 moet als laatste gevuld worden. Start de 
+               DA-conversie (met bit 3 van register 8) pas na het vullen van 
+               deze registers! Om 8-bits data te converteren, hoeft alleen 
+               register 21 gevuld te worden. Maar dan kan natuurlijk ook de 
+               andere AD-converter gebruikt worden.  
+
+   register 24 en 25: Outpout control
+               Deze registers (&amp;H18 en &amp;H19) zijn al eerder ter sprake gekomen. 
+               Ze dienen voor het aan- en uitzetten van de uitgangssignalen. De 
+               uitgang van de DAC's is dezelfde als die voor de muziek, en wel 
+               IO-3, te kiezen door het getal 8(=2^3) in register 24 te zetten. 
+               Het in- en uitschakelen gaat via register 25. Bij opname moet 
+               de uitgang uitgeschakeld zijn anders gaat de versterker 
+               rondzingen. 
+           
+   register 26: PCM-data
+               Dit is een bufferregister voor het transporteren van gegevens 
+               voor DA- en AD-conversie, die hierin opgeslagen worden in 
+               twee-complement vorm. In dit register kan zowel gelezen als 
+               geschreven worden. 
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

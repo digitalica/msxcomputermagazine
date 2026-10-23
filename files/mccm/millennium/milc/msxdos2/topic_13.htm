@@ -1,0 +1,455 @@
+<html>
+
+<head>
+<title>MILC - Topic MSXDOS v2.33</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_12.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSXDOS v2.33</b><br>
+    <i>Desire In Envy</i>, 00-00-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+
+                                MSXDOS v2.33
+                                ============
+                    Modifications (C)1994 by Desire In Envy
+
+
+
+
+
+Een nieuwe versie van MSXDOS?
+=============================
+Waarom een nieuwe versie? Als men een PC bestudeert komt men al snel tot de
+ontdekking dat men bij deze computer, bij het opstarten, bepaalde dingen kunt
+instellen en tsr's kan inladen. Ik vond dit eigenlijk wel interessant en ik ben
+daarom begonnen aan een patch voor &quot;MSXDOS2.SYS&quot; (bij &quot;COMMAND2.COM&quot; zijn de
+verschillen met de oude versie minimaal).
+
+
+Wat is er toegevoegd?
+=====================
+-Als men bij het opstarten van &quot;MSXDOS2.SYS&quot; de TAB toets ingedrukt houdt,
+ springt men naar BASIC. Het doel is hiervan om, naar BASIC te gaan als bijv.
+ &quot;COMMAND2.COM&quot; beschadigt is, of om even snel naar BASIC te gaan.
+
+-Er is een controlle op AB-codes in de &quot;primary&quot; mapper ingebouwd, als
+ &quot;MSXDOS2.SYS&quot; een AB-code vindt wordt er gevraagd om door te gaan, of om te
+ stoppen, wat inhoudt dat er naar BASIC wordt gesprongen. Het idee achter deze
+ controle is: als er in WB wordt geprogrammeerd, de computer loopt vast, maar
+ we wilden eigenlijk verder met WB gaan; COMMAND2.COM wist de AB-code en de
+ source is verdwenen: tenzij er naar BASIC gesprongen kon worden!
+
+-Er wordt een configuratie bestand (&quot;CONFIG.SYS&quot;) ingeladen (als deze op de
+ disk staat) en verwerkt.
+
+
+Instaleren van MSXDOS v2.33
+===========================
+Het instaleren van MSXDOS v2.33 is heel simpel; copieer &quot;MSXDOS2.SYS&quot; en
+&quot;COMMAND2.COM&quot; van de MSXDOS v2.33 schijf naar uw harddisk of systeem-diskette.
+
+
+Configureren van MSXDOS v2.33
+=============================
+Configureren van MSXDOS v2.33 gaat via een ASCII file met de naam &quot;CONFIG.SYS&quot;.
+In dit bestand staan commando's die door &quot;MSXDOS2.SYS&quot; worden verwerkt. Een
+korte lijst met de commando's en hun default waardes staat hieronder.
+
+ Commando       Default waarde      Functie
+ --------       --------------      -------
+ KEY            OFF                 functie toetsen laten zien
+ REBOOT         OFF                 moet &quot;CONFIG.SYS&quot; elke keer verwerkt worden
+ RESET          OFF                 met CTRL/GRPH/CODE/RET reset-en
+ BUSRESET       OFF                 met ESC/STOP/BS de SCSI-bus reset-en
+ VDPSPEED       ON                  snellere karakter output in DOS
+ MESSAGES       OFF                 kanji boodschappen uit DOS2-rom naar Engels
+ BOOTCHECK      ON                  bootsector controleren op disk changes
+
+ BOOTFILE       AUTOEXEC.BAT        batch file die opgestart moet worden
+ BUFFERS        5                   interne dos 2 buffers
+ SCREENSAVE     0                   wachttijd screensaver
+ SYSVER         2.33                versie van &quot;MSXDOS2.SYS&quot; veranderen
+
+ KERNELVER      dos2 rom afhank.    versie van uw DOS 2 rom veranderen
+ COLOR          comp. afhankelijk   kleuren bij het opstarten
+ FREQUENCY      comp. afhankelijk   vdp frequency bij het opstarten
+ SCSIID         comp. afhankelijk   SCSI id nummer v/d computer
+
+ DEVICE         ---                 device's inladen
+ REM            ---                 commentaar
+
+  IF ID=        ---                 delen van &quot;CONFIG.SYS&quot; SCSI-ID (computer)
+  ENDIF         ---                        afhankelijk laten verwerken
+
+
+Functie omschrijving commando's
+===============================
+
+ KEY
+ ---
+ Met dit commando kunt u aangeven of u de functie toetsen in beeld wilt
+ brengen of juist niet. Geldige invoer is: &quot;ON&quot; en &quot;OFF&quot;.
+
+ KEY=ON         ; Laat de functie toetsen zien
+ KEY=OFF        ; Laat de functie toetsen niet zien
+
+
+ REBOOT
+ ------
+ Met dit commando kunt u instellen of &quot;CONFIG.SYS&quot; bij elke keer dat
+ &quot;MSXDOS2.SYS&quot; (dus bij &quot;_SYSTEM&quot;) wordt ingeladen verwerkt moet worden.
+ Geldige invoer is: &quot;ON&quot; en &quot;OFF&quot;.
+
+ REBOOT=ON      ; Bij elke &quot;_SYSTEM&quot; wordt &quot;CONFIG.SYS&quot; verwerkt
+ REBOOT=OFF     ; Alleen bij een reset wordt &quot;CONFIG.SYS&quot; verwerkt
+
+
+ RESET
+ -----
+ Met dit commando kunt u de snelle reset toetsen (CONTROL+GRAPH+CODE+RETURN)
+ aan zetten, zodat u met de genoemde toetsen ook kunt reset-en. Geldige invoer
+ is: &quot;ON&quot; en &quot;OFF&quot;.
+
+ RESET=ON       ; Als er op CTRL+GRPH+CODE+RET wordt gedrukt, wordt er gereset
+ RESET=OFF      ; Normale situatie, dus geen snelle reset-toetsen
+
+
+ BUSRESET
+ --------
+ Met dit commando kunt u instellen of u met de toetsen ESC+STOP+BS de SCSI-bus
+ wilt kunnen reset-en. Dit werkt alleen op een B.E.R.T. SCSI interface. Geldige
+ invoer is: &quot;ON&quot; en &quot;OFF&quot;.
+
+ BUSRESET=ON    ; Als er op ESC+STOP+BS wordt gedrukt wordt de SCSI-bus gereset
+ BUSRESET=OFF   ; Normale situatie, dus geen mogelijkheid om de SCSI-bus te
+                  reset-en
+
+
+ VDPSPEED
+ --------
+ Met dit commando kunt u de snellere karakter output onder DOS aan te zetten.
+ Met de toetsen ESC+SELECT+STOP kunt u ook schakelen tussen de normale en
+ snellere karakter output. Geldige invoer is: &quot;ON&quot; en &quot;OFF&quot;.
+
+ VDPSPEED=ON    ; Karakter output onder dos in sneller
+ VDPSPEED=OFF   ; Normale situatie, zoals u gewent was met vorige versies
+
+
+ MESSAGES
+ --------
+ Met dit commando kunt u instellen of u onder kanji de boodschappen die normaal
+ uit de DOS2 rom (onder kanji modes) in het Japans waren normaal in het engels
+ te laten afdrukken. Geldige invoer is: &quot;ON&quot; en &quot;OFF&quot;.
+
+ MESSAGES=ON    ; Japanse kanji teksten worden naar het Engels vertaald
+ MESSAGES=OFF   ; normale situatie, sommige teksten zijn in het Japans onder
+                  kanji
+
+
+ BOOTCHECK
+ ---------
+ Met dit commando kunt u de bootsector check van DOS 2 uitschakelen. Deze
+ bootsector check is bedoeld om disk wisselingen tegen te gaan, het is dus aan
+ te raden deze BOOTCHECK gewoon aan te laten staan. Geldige invoer is: &quot;ON&quot; en
+ &quot;OFF&quot;.
+
+ BOOTCHECK=ON   ; DOS 2 check bij elke disk opdracht of de disk verwisseld is
+ BOOTCHECK=OFF  ; DOS 2 controleerd niet of de disk verwisseld is
+
+
+ BOOTFILE
+ --------
+ Met dit commando kunt u andere batch files op laten starten dan &quot;AUTOEXEC.BAT&quot;
+ bij een reset. Achter het &quot;BOOTFILE&quot; moet een string staan met de naam van de
+ batch file die u inplaats van &quot;AUTOEXEC.BAT&quot; wilt laten opstarten. Dit
+ commando bewijst zijn nut in SCSI-netwerken (in combinatie met &quot;IF ID=&quot;,
+ &quot;ENDIF&quot;).
+
+ BOOTFILE=AUTOEXE2.BAT             ; Na een reset wordt AUTOEXE2.BAT opgestart
+
+
+ BUFFERS
+ -------
+ Met dit commando kunt u het aantal interne buffers aangeven die DOS 2
+ gebruikt. Zie ook uw DOS 2 handleiding. Geldige invoer is 0 t/m +/- 20.
+
+ BUFFERS=5      ; DOS 2 gebruikt 5 buffers tijdens diskopdrachten
+
+
+ SCREENSAVE
+ ----------
+ Met dit commando kunt u aangeven hoelang er gewacht moet worden, voordat de
+ screensaver het scherm zwart maakt, als er in de gegeven tijd geen toets is
+ gedrukt. Ingave van 0 staat gelijk aan uit. Geldige invoer is: 0 t/m 15. De
+ invoer wordt gerekent in minuten.
+
+ SCREENSAVE=10  ; Als er tien minuten niet op een toets wordt gedrukt, wordt
+                  het scherm zwart, tot er weer een toets wordt ingedrukt.
+
+
+ SYSVER
+ ------
+ Met dit commando kunt u software matig u versie nummer van &quot;MSXDOS2.SYS&quot;
+ veranderen. Geldige invoer is: x.yy met x tussen 0-9 en yy tussen 0-99.
+
+ SYSVER=2.11    ; U werkt nu met MSXDOS2 v2.11
+
+
+ KERNELVER
+ ---------
+ Met dit commando kunt u software matig het versie nummer van de DOS 2 rom
+ veranderen. De invoer is het zelfde als &quot;SYSVER&quot;.
+
+ KERNELVER=2.40 ; Uw DOS 2 rom heeft nu versie 2.40
+
+
+ COLOR
+ -----
+ Met dit commando kunt u de scherm kleuren onder DOS instellen. De invoer van
+ dit commando is gelijk aan BASIC.
+
+ COLOR=15,4,7   ; De voorgrondkleur is wit, en de achtergrond kleur is blauw.
+                  De border kleur is licht blauw, maar deze ziet u niet in DOS.
+
+
+ FREQUENCY
+ ---------
+ Met dit commando kunt u de vdp frequency instellen op 50 Hz (NTSC) of op 60 Hz
+ (PAL). Geldige invoer is dus: &quot;50&quot; en &quot;60&quot;.
+
+ FREQUENCY=50   ; Schakel 50 Hz (NTSC)
+ FREQUENCY=60   ; Schakel 60 Hz (PAL)
+
+
+ SCSIID
+ ------
+ Met dit commando kunt u het SCSI id nummer van de computer instellen. Dit
+ werkt alleen op een B.E.R.T. SCSI interface. Geldige invoer is: 0 t/m 7.
+
+ SCSIID=6       ; De computer heeft nu ID 6
+
+
+ DEVICE
+ ------
+ Met dit commando kunt u zgn. devices (zijn TSR's) inladen. Achter device komt
+ een filenaam, en eventueel daarachter opties voor de device (net zoals u
+ gewent bent in DOS).
+
+ DEVICE=A:\DOS\TEST.SYS /A /L   ; Laat de device TEST.SYS, die te vinden is in
+                                  A:\DOS, in met de opties /A en /L
+
+
+ REM
+ ---
+ Dit is eigenlijk geen commando, maar is bedoeld voor commentaar. Alles wat
+ achter &quot;REM&quot; komt wordt genegeerd (precies zoals in BASIC).
+
+ REM Desire In Envy     ; doet niets
+
+
+  IF ID=
+  ------
+  Met dit commando kunt u blokken SCSI-ID afhankelijk laten uitvoeren. Achter
+  &quot;IF ID=&quot; komt het computer ID nummer voor welk het volgende blok moet worden
+  uitgevoerd. Een blok wordt afgesloten met &quot;ENDIF&quot;. &quot;IF ID=&quot; en &quot;ENDIF&quot; werken
+  alleen op een B.E.R.T. SCSI interface.
+
+  ENDIF
+  -----
+  Met dit commando sluit u een computer ID afhankelijk blok commando's af.
+
+   Voorbeeld &quot;IF ID=&quot; en &quot;ENDIF&quot;
+ 
+        BOOTFILE=AUTOEXE1.BAT           ; &quot;AUTOEXE1.BAT&quot; wordt opgestart
+        COLOR=15,4,4                    ; tenzij de computer ID 6 heeft
+        IF ID=6                         ; dan wordt &quot;AUTOEXE2.BAT&quot; opgestart
+         BOOTFILE=AUTOEXE2.BAT          ; en de kleuren zijn dan 15,7,7
+         COLOR=15,7,7
+        ENDIF
+
+
+Voorbeelden configuratie.
+-------------------------
+In dit stukje worden enkele configuratie voorbeelden gegeven, om u op weg te
+helpen.
+
+ &quot;CONFIG.SYS&quot;                      Commentaar
+ ------------                      ----------
+ COLOR=15,1,1                      Kleuren wit op zwart
+ KEY=OFF                           Functietoetsen weg
+ FREQUENCY=50                      50 Hertz
+
+ IF ID=6                           Doe het nu volgende alleen voor ID 6
+  BOOTFILE=ID6BAT.BAT              start &quot;ID6BAT.BAT&quot; op ipv &quot;AUTOEXEC.BAT&quot;
+ ENDIF                             De volgende commando's zijn voor alle ID's
+
+ REBOOT=ON                         Bij elke _SYSTEM &quot;CONFIG.SYS&quot; verwerken
+ BUFFERS=4                         Vier buffers voor DOS
+ VDPSPEED=ON                       Snellere karakter output in DOS
+ RESET=ON                          Kunnen reset-en met toetsen (zie boven)
+
+Ik hoop dat u nu zo'n beetje een idee krijgt hoe een &quot;CONFIG.SYS&quot; bestand er
+uit zal gaan zien. U hoeft natuurlijk niet alle commando's te gebruiken, als
+een commando niet gebruikt wordt, dan staat deze in zijn (als het commando dat
+heeft) default waarde.
+
+
+De STOP toets
+-------------
+Als u bij een reset de STOP toets ingedrukt houdt, dan wordt er bij elk
+commando dat in &quot;CONFIG.SYS&quot; gevraagt of dit commando uitgevoerd moet worden of
+niet. Ook wordt er gevraagd of de bootfile doorgestart moet worden.
+
+
+Foutmeldingen
+=============
+Als er iets mis is gegaan bij het verwerken van de &quot;CONFIG.SYS&quot; wordt er een
+melding gedaan van wat er mis is. Achter de fout staat het regelnummer waar de
+fout is opgetreden. Hieronder staat een lijst met foutmeldingen en hun
+betekenis.
+
+ Foutmelding                            Omschrijving
+ -----------                            ------------
+ No B.E.R.T. SCSI interface found       Treedt op als er een SCSI commando
+                                        wordt gebruikt, maar er geen SCSI
+                                        interface aanwezig is.
+
+ Syntax error                           Treedt op als &quot;MSXDOS2.SYS&quot; een
+                                        commando in &quot;CONFIG.SYS&quot; niet kent.
+
+ Not enough TPA available for devices   Treedt op als er te weinig geheugen
+                                        vrij is voor de interne TSR's
+                                        (screensaver, reset-toetsen, etc.)
+
+ Not enough TPA to load: xxxxxxxx.xxx   Treedt op als er te weinig geheugen
+                                        vrij is om een bepaald device te laden.
+
+ Unknown type of device file            Treedt op als men het type device niet
+                                        kent.
+
+ Invalid filename                       Treedt op als er bij ingave van een
+                                        filenaam, een verkeerde filenaam wordt
+                                        gegeven.
+
+ Missing filename                       Treedt op als er geen filenaam wordt
+                                        gegeven waar dat wel was verwacht.
+
+ Parameter out of range                 Treedt op als er een te hoge waarde
+                                        wordt gegeven achter een commando.
+
+ Invalid parameter                      Treedt op als er een ongeldige invoer
+                                        achter het commando is gegeven.
+
+ Missing parameter                      Treedt op als er geen invoer achter het
+                                        commando is gegeven.
+
+
+
+
+Programmers info
+================
+
+Formaat van device's
+--------------------
+Device drivers zijn tsr's die met het opstarten worden ingeladen. Hieronder
+wordt het formaat ervan beschreven, zodat programmeurs tsr's voor MSX-DOS 2.33
+kunnen schrijven.
+
+De device driver begint met een header, zie hieronder.
+
+Offset  Data
+
+; begin header
+
++0000   #44 ('D')               ; 4 herkennings bytes
++0001   #44 ('D')
++0002   #AA
++0003   #55
+
++0004   versie nummer gebruikte &quot;protocol&quot; (=0), bedoelt voor eventuele
+        toekomstige versies.
+
++0005   LSB
++0006   MSB bytes die device wil hebben in TPA
+
++0007   reserved (=00)
++0008   reserved (=00)
+
+Na de header (dus nu op: +9), komt de opstart routine die op #8100 word inge-
+laden. Bij het opstarten van een device driver wordt in [HL] het start adress
+gegeven van het opgegeven gereseveerde geheugen. Als er niet genoeg TPA is, dan
+wordt de device driver dus ook niet opgestart. Een device driver wordt tot
+adress #BFFF ingeladen, page 3 wordt niet gebruikt! Dit euvel is op te lossen
+door overlay files te gebruiken. Om het gebruik van overlay files te ver-
+gemakkelijken is er in het systeem geheugen van de device driver (#8000-#80FF)
+de ASCIIZ string neergezet (inclusief filenaam) van de ingeladen file. Device
+drivers moeten zelf de hook's afbuigen, en alles initialiseren; het is dus een
+gewoon programma met het verschil dat hij een bepaalde hoeveelheid geheugen
+vrij tot zijn beschikking heeft.
+
+Als de device driver wordt opgestart is de situatie als volgt:
+-page 0: MSXDOS2.SYS, niet gebruiken behalve de bekende slot select (etc)
+         routines.
+-page 1: DISKROM
+-page 2: Device driver
+-page 3: RAM (natuurlijk)
+
+Page 2 is weer als volgt ingedeeld:
+
+ #8000-#80FF  Systeem variabelen/strings
+ #8100-#BFFF  Device driver instalatie routine
+
+
+  #8000   LSB
+  #8001   MSB adress waar het gewenste gereserveerde geheugen staat.
+
+  #8002   Drive waarvan MSXDOS2.SYS is ingeladen (1 voor A:, 2 voor B:, etc)
+
+  #8003
+   t/m
+  #803F   reserved
+
+  #8040   ASCIIZ string met path &amp; filenaam van de opgestarte device
+   t/m
+  #807F
+
+  #8080   Command line v/d device driver
+   t/m    +00 = lengte (exclusief lengte byte en terminating zero)
+  #80FF   +01 = command line (afgesloten met een terminating zero)
+
+  #8100   De opstart routine van de device driver, deze krijgt in [HL] het
+   t/m    adress waar de gevraagde gereserveerde ruimte staat.
+  #BFFF
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_12.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

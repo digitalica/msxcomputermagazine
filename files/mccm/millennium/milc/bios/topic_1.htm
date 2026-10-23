@@ -1,0 +1,628 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-2 BIOS-calls</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-2 BIOS-calls</b><br>
+    <i>Albert Beevendorp</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                                     MSX2BIOS calls
+                                 --------------
+
+Deze tekst bevat alle BIOS calls die zich in de MSX2 bevinden.In de lijst staan
+namen van calls die ook in de MSX1 BIOS lijst staan. In zo'n geval moet de MSX1
+call worden aangeroepen. Zodra het nodig is, zal de call vazelf naar de uitbrei
+ding toe springen voor verdere afhandeling.
+
+Er zijn calls voor MSX1 die ongewijzigd blijven. Daarvoor zijn er in de MAINROM
+routines opgenomen die wel goed met de MSX2 standaard  omgaan: NRDVRM,  NWRVRM,
+NSETRD, NSTWRT, BIGFIL en CHGMDP. De routine CHGMDP staat in de  SUB-ROM.  Deze
+schijnt een aanvulling te zijn die het scherm initialiseert en tevens het palet
+initialiseert.
+
+Alle andere dubbele calls met dezelfde naam kunnen het  beste  de  call  in  de
+MAIN-ROM aanroepen om het programma zowel op MSX1 als  MSX2  te  laten  werken.
+Programma's die specifiek op MSX2 gaan draaien, kunnen beter direkt de call  in
+de SUB-ROM aanroepen.
+
+De volgende routines zijn in de MAIN-ROM te vinden:
+
+Naam   : SUBROM
+Adres  : #015C
+Functie: Roept call in de SUB-ROM aan
+Input  : IX - Adres van de routine in de SUB-ROM die gebruikt moet worden.
+Output : Hangt van de routine af
+Wijzig.: Alternatieve registers, IY
+Opm.   : Gebruik van EXTROM of CALSLT is veel comfortabeler.
+         In IX kan een waarde worden meegegeven met deze routine door hem eerst
+         op de stack te PUSHen
+
+Naam   : EXTROM
+Adres  : #015F
+Functie: Roept call in de SUB-ROM aan. Meest gebruikelijke manier
+Input  : IX - Adres van de routine in de SUB-ROM die gebruikt moet worden.
+Output : Hangt van de routine af
+Wijzig.: Alternatieve registers, IY
+Opm.   : Gebruik: LD   IX,adres
+                  CALL EXTROM
+
+Naam   : CHKSLZ
+Adres  : #0162
+Functie: Zoekt slots af naar de SUB-ROM
+Wijzig.: Alles
+
+Naam   : CHKNEW
+Adres  : #0165
+Functie: Controleert scherm-modus
+Output : C-flag gezet indien scherm 5, 6, 7 of 8 ingeschakeld
+Wijzig.: AF
+
+Naam   : EOL
+Adres  : #0168
+Functie: Maakt rest van regel leeg. Cursor blijft staan.
+Input  : H  - kolom
+         L  - regel
+Wijzig.: Alles
+
+Naam   : BIGFIL
+Adres  : #0016B
+Functie: Als FILVRM, kan gehele VRAM bereiken.
+Input  : HL - adres
+         BC - lengte
+         A  - data
+Wijzig.: AF,BC
+
+Naam   : NSETRD
+Adres  : #016E
+Functie: Als SETRD. Nu met volle 16 bits VRAM-adres
+Input  : HL - Adres in VRAM
+Wijzig.: AF
+
+Naam   : NSTWRT
+Adres  : #0171
+Functie: Als SETWRT. Nu met volle 16 bits VRAM-adres
+Input  : HL - Adres in VRAM
+Wijzig.: AF
+
+Naam   : NRDVRM
+Adres  : #0174
+Functie: Leest VRAM als RDVRM met volle 16 bits.
+Input  : HL - VRAM-adres
+Output : A  - Gelezen waarde
+Wijzig.: F
+
+Naam   : NWRVRM
+Adres  : #0177
+Functie: Schrijft naar VRAM net als WRTVRM met volle 16 bits.
+Input  : HL - VRAM-adres
+         A  - Te schrijven waarde
+Wijzig.: AF
+
+-------------------------------------------------------------------------------
+                De volgende routines staan in de MSX2 SUB-ROM
+-------------------------------------------------------------------------------
+
+De routines die door Basic worden gebruikt, worden in deze lijst  overgeslagen.
+In grote lijnen zijn deze routines  ook  voor  machinetaal beschikbaar.  Tussen
+haakjes zal de BIOS-call naam en BIOS-call adres te vinden zijn.
+
+Naam   : DOGRPH (DOLINE)
+Adres  : #0085  (#007D)
+Functie: Tekent een lijn
+Input  : BC, HL voor start-coordinaten
+         GXPOS, GYPOS voor eind-coordinaten
+         ATRBYT voor attribute
+         LOGOPR voor logische operator
+Wijzig.: AF
+
+Naam   : GRPPRT
+Adres  : #0089
+Functie: Plaatst teken op grafisch scherm
+Input  : A  - te plaatsen teken
+         ATRBYT met attribute
+         LOGOPR met logische operator
+
+Naam   : SCALXY
+Adres  : #008D
+Functie: Limiteert coordinaten tot de rand van het scherm
+Input  : BC - X-as positie
+         DE - Y-as positie
+Output : BC - X-as positie begrensd
+         DE - Y-as positie begrensd
+Wijzig.: AF
+
+Naam   : MAPXYC
+Adres  : #0091
+Functie: Converteert een X,Y paar naar een adres en masker in CLOC en CMASK
+Input  : BC - X-as positie
+         DE - Y-as positie
+Output : HL - VRAM adres     In SCREEN 3    (ook in CLOC)
+         A  - Masker         In SCREEN 3    (ook in CMASK)
+         HL - X-as positie   In SCREEN 5-&gt;8 (ook in CLOC)
+         A  - Y-as positie   In SCREEN 5-&gt;8 (ook in CMASK)
+Wijzig.: F
+
+Naam   : READC
+Adres  : #0095
+Functie: Lees attribute van pixel
+Input  : X-as positie in CLOC
+         Y-as positie in CMASK
+Output : A  - Het attribute
+Wijzig.: AF
+
+Naam   : SETATR
+Adres  : #0099
+Functie: Zet attribute in ATRBYT
+Input  : A  - Te plaatsen attribute
+Output : C-flag gezet indien attribute verkeerd
+Wijzig.: F
+
+Naam   : SETC
+Adres  : #009D
+Functie: Zet attribute van pixel
+Input  : X-as positie in CLOC
+         Y-as positie in CMASK
+         Attribute-byte in ATRBYT
+Wijzig.: AF
+
+Naam   : TRIGHT
+Adres  : #00A1
+Functie: Verplaatst pixel naar rechts
+Input  : X-as positie in CLOC
+         Y-as positie in CMASK
+Output : Nieuwe X-as pos. in CLOC
+         Nieuwe Y-as pos. in CMASK
+         C-flag gezet indien de rand van het scherm is bereikt
+Wijzig.: AF
+Opm.   : Alleen voor SCREEN 3
+
+Naam   : RIGHTC
+Adres  : #00A5
+Functie: Verplaatst pixel naar rechts
+Input  : Zie TRIGHT
+Output : Zie TRIGHT op de C-flag opmerking na
+Wijzig.: AF
+Opm.   : Alleen voor SCREEN 3
+
+Naam   : TLEFTC
+Adres  : #00A9
+Functie: Verplaatst pixel naar links
+Input  : Zie TRIGHT
+Output : Zie TRIGHT
+Wijzig.: AF
+
+Naam   : LEFTC
+Adres  : #00AD
+Functie: Verplaatst pixel naar links
+Input  : Zie RIGHTC
+Output : Zie RIGHTC
+Wijzig.: AF
+Opm.   : Alleen voor SCREEN 3
+
+Naam   : TDOWNC
+Adres  : #00B1
+Functie: Verplaatst pixel naar beneden
+Input  : Zie TRIGHT
+Output : Zie TRIGHT
+Wijzig : AF
+
+Naam   : DOWNC
+Adres  : #00B5
+Functie: Verplaatst pixel naar beneden
+Input  : Zie RIGHTC
+Output : Zie RIGHTC
+Wijzig.: AF
+Opm.   : Alleen voor SCREEN 3
+
+Naam   : TUPC
+Adres  : #00B9
+Functie: Verplaatst pixel naar boven
+Input  : Zie TRIGHT
+Output : Zie TRIGHT
+Wijzig.: AF
+
+Naam   : UPC
+Adres  : #00BD
+Functie: Verplaatst pixel naar boven
+Input  : Zie RIGHTC
+Output : Zie RIGHTC
+Wijzig.: AF
+Opm.   : Alleen voor SCREEN 3
+
+Naam   : SCANR
+Adres  : #00C1
+Functie: Scant pixels naar rechts
+Input  : B  - 'Suspend'-flag
+         C  - Rand-telling
+Output : DE - Rand-telling
+         C  - 'Pixel-veranderd'-flag
+Wijzig.: Alles
+
+Naam   : SCANL
+Adres  : #00C5
+Functie: Scant pixels naar links
+Input  : DE - Rand-telling
+Output : DE - Rand-telling
+         C  - 'Pixel-veranderd'-flag
+Wijzig.: Alles
+
+Naam   : NVBXLN (BOXLIN)
+Adres  : #00C9  (#0081)
+Functie: Tekent een rechthoek
+Input  : BC - X-as start
+         DE - Y-as start
+         X-as eind in GXPOS
+         Y-as eind in GYPOS
+         Attribute in ATRBYT
+         Logische operator in LOGOPR
+Wijzig.: Alles
+
+Naam   : NVBXFL (DOBOXF)
+Adres  : #00CD  (#0079)
+Functie: Tekent een gevulde rechthoek
+Input  : Zie NVBXLN (BOXLIN)
+Wijzig.: Alles
+
+Naam   : CHGMOD
+Adres  : #00D1
+Functie: Schakelt opgegeven schermmodus
+Input  : A  - Schermmodus
+Wijzig.: Alles
+
+-------------------------------------------------------------------------------
+De volgende routines worden aangeroepen vanuit de gelijknamige calls in de MAIN
+ROM en de input en resultaten zullen daarom ook niet worden weergegeven. Ook de
+gewijzigde Z-80 registers zullen niet geplaatst worden. Zie daarvoor de gelijk-
+namige call in de MSX1-BIOS lijst die ook in de ingepakte file thuishoort.
+-------------------------------------------------------------------------------
+
+Naam   : INITXT
+Adres  : #00D5
+Functie: Schakelt SCREEN 0 in
+
+Naam   : INIT32
+Adres  : #00D9
+Functie: Schakelt SCREEN 1 in
+
+Naam   : INIGRP
+Adres  : #00DD
+Functie: Schakelt SCREEN 2 in
+
+Naam   : INIMLT
+Adres  : #00E1
+Functie: Schakelt SCREEN 3 in
+
+Naam   : SETTXT
+Adres  : #00E5
+Functie: Schakelt VDP in op SCREEN 0
+
+Naam   : SETT32
+Adres  : #00E9
+Functie: Schakelt VDP in op SCREEN 1
+
+Naam   : SETGRP
+Adres  : #00ED
+Functie: Schakelt VDP in op SCREEN 2
+
+Naam   : SETMLT
+Adres  : #00F1
+Functie: Schakelt VDP in op SCREEN 3
+
+Naam   : CLRSPR
+Adres  : #00F5
+Functie: Initialiseert sprite tabellen
+
+Naam   : CALPAT
+Adres  : #00F9
+Functie: Geeft adres van sprite patroon-tabel terug
+
+Naam   : CALATR
+Adres  : #00FD
+Functie: Geeft adres van sprite attribute-tabel terug
+
+Naam   : GSPSIZ
+Adres  : #0101
+Functie: Geeft huidige sprite-grootte
+
+-------------------------------------------------------------------------------
+Deze lijst is weer gewoon specifiek MSX2
+-------------------------------------------------------------------------------
+
+Naam   : GETPAT
+Adres  : #0105
+Functie: Geeft patroon van een karakter
+Input  : A  - ASCII code van karakter
+Output : Patroon in PATWRK vanaf adres #FC40
+Wijzig.: Alles
+Opm.   : Is gelijk aan de routine in de MSX1-BIOS maar bestaat daar niet als
+         BIOS-call
+
+Naam   : WRTVRM
+Adres  : #0109
+Functie: Schrijft naar VRAM over 16 bits adres
+Input  : HL - Adres
+         A  - Te schrijven waarde
+Wijzig.: AF
+
+Naam   : RDVRM
+Adres  : #010D
+Functie: Leest uit VRAM over 16 bits adres
+Input  : HL - Adres
+Output : A  - Gelezen waarde
+Wijzig.: AF
+
+Naam   : CHGCLR
+Adres  : #0111
+Functie: Verandert schermkleuren
+Input  : A  - Scherm-modus
+         Zie in MSX1BIOS lijst dezelfde naam voor verdere input
+Wijzig.: Alles
+
+Naam   : CLS
+Adres  : #0115
+Functie: Schoon scherm
+Wijzig.: Alles
+
+Naam   : CLRTXT
+Adres  : #0119
+Functie: Maak tekst-scherm schoon
+Wijzig.: Alles
+
+Naam   : DSPFNK
+Adres  : #011D
+Functie: Zet funktie-toets teksten aan
+Wijzig.: Alles
+
+Naam   : DELLNO
+Adres  : #0121
+Functie: Verwijder regel in het tekstscherm
+Input  : L  - Regelnummer
+Wijzig.: Alles
+
+Naam   : INSLNO
+Adres  : #0125
+Functie: Voegt regel tussen in het tekstscherm
+Input  : L  - Regelnummer
+Wijzig.: Alles
+
+Naam   : PUTVRM
+Adres  : #0129
+Functie: Plaatst teken op het tekst scherm
+Input  : H  - Y-as positie
+         L  - X-as positie
+Wijzig.: AF
+
+Naam   : WRTVDP
+Adres  : #012D
+Functie: Schrijft naar VDP-register
+Input  : B  - Te schrijven waarde
+         C  - Register nummer
+Wijzig.: AF, BC
+
+Naam   : VDPSTA
+Adres  : #0131
+Functie: Leest VDP-status
+Input  : A  - Status register
+Output : A  - Gelezen waarde
+Wijzig.: F
+
+Naam   : KYKLOK
+Adres  : #0135
+Functie: Bestuur KANA-toets en KANA-lamp (Japan)
+Wijzig.: AF
+
+Naam   : PUTCHR
+Adres  : #0139
+Functie: Haalt een toets-code van toetsenbord, conversie naar KANA en in buffer
+         (Japan)
+Input  : Z-flag gezet indien niet in conversie-modus
+Wijzig.: Alles
+
+Naam   : SETPAG
+Adres  : #013D
+Functie: Stelt VDp-register in op pagina-wissel
+Input  : ACPAGE - Actieve pagina
+         DPPAGE - Op het scherm zichtbare pagina
+Wijzig.: AF
+
+-------------------------------------------------------------------------------
+Palette-functies
+-------------------------------------------------------------------------------
+
+Naam   : INIPLT
+Adres  : #0141
+Functie: Initialiseert palette en VRAM voor opslag van palette
+Wijzig.: AF, BC, DE
+
+Naam   : RSTPLT  (COLOR=RESTORE)
+Adres  : #0145
+Functie: Stelt palette opnieuw in vanuit VRAM
+Wijzig.: AF, BC, DE
+
+Naam   : GETPLT
+Adres  : #0149
+Functie: Leest kleurcodes van een kleur
+Input  : A  - Kleurcode
+Output : B  - RRRRBBBB
+         C  - xxxxGGGG
+Wijzig.: AF, DE
+
+Naam   : SETPLT
+Adres  : #014D
+Functie: Zet kleurcodes van kleur in palette
+Input  : D  - Kleurcode
+         E  - xxxxGGGG
+         A  - RRRRBBBB
+Wijzig.: AF
+
+Naam   : BEEP
+Adres  : #017D
+Functie: Geeft pieptoon
+Wijzig.: Alles
+
+Naam   : PROMPT
+Adres  : #0181
+Functie: Laat prompmt zien (normaal &quot;Ok&quot;)
+Wijzig.: Alles
+
+Naam   : SDFSCR
+Adres  : #0185
+Functie: Herstelt scher-parameters vanuit de klok-chip. C-flag gezet is KEY ON
+Input  : C-flag gereset bij MSX-DOS aanroep
+Wijzig.: Alles
+
+Naam   : SETSCR
+Adres  : #0189
+Functie: Herstelt scherm-parameter en print openings-boodschap
+Wijzig.: Alles
+
+-------------------------------------------------------------------------------
+Vanaf deze routine komen de zogenaamde BIT-BLIT routines die voornamelijk door
+de VDP wordt uitgevoerd. Vanaf adres #F562 moeten de parameters klaar staan.
+Zie MSX2VARS.TXT voor meer uitleg. HL moet altijd #F562 bevatten voor de calls
+-------------------------------------------------------------------------------
+
+Naam   : BLTVV
+Adres  : #0191
+Functie: Copy VRAM to VRAM
+Input  : SX, SY, DX, DY, NX, NY, ARG, L_OP
+Wijzig.: Alles
+
+Naam   : BLTVM
+Adres  : #0195
+Functie: Copy Main-RAM to VRAM
+Input  : SX - Adres van schermdata in RAM
+         verder DX, DY, ARG, L_OP. NX en NY staan in de schermdata
+Output : C-flag gezetn indien datafout in RAM
+Wijzig.: Alles
+
+Naam   : BLTMV
+Adres  : #0199
+Functie: Copy VRAM to Main-RAM
+Input  : DX - adres van schermdata in RAM
+         verder SX, SY, ARG, L_OP. NX en NY staan in de schermdata
+Wijzig.: Alles
+
+Naam   : BLTVD
+Adres  : #019D
+Functie: Copy Diskfile to VRAM
+Input  : SX -  adres van de filenaam. Zie MSXVARS.TXT
+         verder SX, SY, ARG, L_OP. NX en NY staan in de diskfile
+Wijzig.: Alles
+
+Naam   : BLTDV
+Adres  : #01A1
+Functie: Copy VRAM to Diskfile
+Input  : DX - adres van de filenaam. Zie MSX2VARS.TXT
+         verder SX, SY, NX, NY,ARG
+Wijzig.: Alles
+
+Naam   : BLTMD
+Adres  : #01A5
+Functie: Copy Diskfile naar Main-RAM
+Input  : SX - adres van de filenaam. Zie MSX2VARS.TXT
+         DX - startadres
+         DY - eindadres in de Main-RAM
+Wijzig.: Alles
+
+Naam   : BLTDM
+Adres  : #01A9
+Functie: Copy Main-RAM naar Diskfile
+Input  : DX - adres van de filenaam. Zie MSX2VARS.TXT
+         SX - startadres
+         SY - eindadres in de Main-RAM
+Wijzig.: Alles
+
+Naam   : NEWPAD
+Adres  : #01AD
+Functie: Leest lichtpen, muis en trackball
+Input  : Toegang via GETPAD in MSX1BIOS, wordt doorgelinkt naar deze call
+         Procedure: lees apparaat, dan X en Y.
+         A  - 8 tot 19
+           [ 8]   Lees lichtpen (#FF indien aanwezig)
+           [ 9]   Lees X-positie
+           [10]   Lees Y-positie
+           [11]   Lees lichtpen-status (#FF indien ingedrukt)
+
+           [12]   Lees muis/trackball in port 1
+           [13]   Lees X-offset
+           [14]   Lees Y-offset
+           [15]   Geen functie (altijd #00)
+
+           [16]   Lees muis/trackball in port 2
+           [17]   Lees X-offset
+           [18]   Lees Y-offset
+           [19]   Geen functie (altijd #00)
+
+Output : A  - Gelezen waarde
+Wijzig.: Alles
+
+Naam   : CHGMDP
+Adres  : #01B5
+Functie: Stelt SCREEn-modus in
+Input  : A  - SCREEN-modus
+Wijzig.: Alles
+
+Naam   : RESVI
+Adres  : #01B9
+Functie: Wordt niet gebruikt.. Reserve entry
+
+Naam   : KNJPRT
+Adres  : #01BD
+Functie: Zet een Kanji-teken op het grafische scherm (5-8)
+Input  : BC - JIS Kanji-teken code
+         A  - Display-mode (0=vol, 1=even, 2=oneven)
+Wijzig.: AF
+
+Naam   : REDCLK
+Adres  : #01F5
+Functie: Lees klok-RAM
+Input  : C  - Klok-RAM adres
+              xxBBAAAA
+                ||++++-- Adres
+                ++------ Blok-nummer
+Output : A  - Gelezen waarde in de laagste vier bits
+Wijzig.: F
+
+Naam   : WRTCLK
+Adres  : #01F9
+Functie: Schrijf klok-RAM
+Input  : C  - Klok-RAM adres
+              xxBBAAAA
+                ||++++-- Adres
+                ++------ Blok-nummer
+         A  - Te schrijven waarde
+Wijzig.: F
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

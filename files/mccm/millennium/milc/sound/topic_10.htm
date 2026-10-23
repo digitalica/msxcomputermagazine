@@ -1,0 +1,452 @@
+<html>
+
+<head>
+<title>MILC - Topic Registers van de Muziekmodule</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_9.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_11.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Registers van de Muziekmodule</b><br>
+    <i>ADB</i>, 08-04-91</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Registers van de muziek-module. (NMS 1205)
+=============================================================================
+
+			[  FM-Muziek registers.  ]
+
+Register A: AM: Carrier  FM: Modulator
+Register B: AM+FM: Carrier
+
+ bit ( Reg. 1 )
+ 0-3  Multi ( Freq. = Multi * Stamfreq. (0=&gt;.5 11=&gt;10 13=&gt;12 14=&gt;15) )
+  4   Key scale rate ( ADSR-verkorting bij hogere freq. zie tabel )
+  5   EG-Type ( Gebruik sustain, 1 = Ja )
+  6   Vibrato ( Freq. afhankelijk, 1 = Ja )
+  7   Amplitude modulatie ( Freq. onafhankelijk, 1 = Ja )
+
+ bit ( Reg. 2 )
+ 6-7  Key scale level ( Verzwakking / octaaf )
+ 0-5  Verzwakking amplitudo van de golfvorm (Volume)
+
+ bit ( Reg. 3 )
+ 4-7  Attack ( Aanzweltijd van de golf )
+ 0-3  Decay  ( Afvaltijd van de golf )
+
+ bit ( Reg. 4 )
+ 4-7  Sustain ( Golf-vezwakking bij key-on en EGtype-on )
+ 0-3  Release ( Afvaltijd van de golf bij key-off )
+
+ bit ( Reg. 5 )
+ 0-7  Stamfrequentie nummer LSB
+
+ bit ( Reg. 6 )
+ 6-7  Niets
+  5   Key on(1)/off(0)
+ 2-4  Block nr. ( Octaaf )
+ 0-1  Stamfrequentie nummer MSB
+
+ bit ( Reg. 7 )
+ 4-7  Niets
+ 1-3  Feedback A ( 0-Sinus tot 5-Zaagtand en 6,7-Ruis )
+  0   Connect ( 0=FM-mode / 1=AM-mode )
+
+ bit ( Reg. 8 )
+  7   Diepte amplitudomodulatie (0=1dB / 1=4.8dB)
+  6   Diepte vibrato (0=7%*TA / 1=14%*TA (TA=ToonAfstand))
+  5   Begeleiding aan(1)/uit(0)
+  4   Basdrum
+  3   Snaredrum
+  2   Tom tom
+  1   Top cymbal
+  0   Hi hat
+
+De amplitudo-modulatie en vibrato stel je altijd in voor ALLE kanalen.
+De waarde voor reg. 8 uit de tabel is dus alleen voor het belangrijkste
+instrument.
+
+Indien in gebruik als drumkanaal. (Kanaal zelf op key-off)
+
+ Kanaal 7 A+B generatoren voor de bass drum.
+
+ Kanaal 8 A   generator voor de hi hat.
+ Kanaal 8 B   generator voor de snare drum.
+
+ Kanaal 9 A   generator voor de tom tom.
+ Kanaal 9 B   generator voor de top cymbal.
+
+
+Adressen van de registers in de module.
+
+OUT #C0,ADRES
+OUT #C1,WAARDE
+
+Reg.  1A 1B 2A 2B 3A 3B 4A 4B   5  6  7  8
+Kan.+-------------------------+------------
+ 1  | 20 23 40 43 60 63 80 83 | A0 B0 C0 BD
+ 2  | 21 24 41 44 61 64 81 84 | A1 B1 C1 BD
+ 3  | 22 25 42 45 62 65 82 85 | A2 B2 C2 BD
+ 4  | 28 2B 48 4B 68 6B 88 8B | A3 B3 C3 BD
+ 5  | 29 2C 49 4C 69 6C 89 8C | A4 B4 C4 BD
+ 6  | 2A 2D 4A 4D 6A 6D 8A 8D | A5 B5 C5 BD
+ 7  | 30 33 50 53 70 73 90 93 | A6 B6 C6 BD
+ 8  | 31 34 51 54 71 74 91 94 | A7 B7 C7 BD
+ 9  | 32 35 52 55 72 75 92 95 | A8 B8 C8 BD
+
+		Reg6	Reg6	Reg6	Reg6	Reg6	Reg6	Reg6	Reg6
+	Reg 5	OCT0	OCT1	OCT2	OCT3	OCT4	OCT5	OCT6	OCT7
+Noot
+C	#59	#01	#05	#09	#0D	#11	#15	#19	#1D
+C#	#6D	#01	#05	#09	#0D	#11	#15	#19	#1D
+D	#83	#01	#05	#09	#0D	#11	#15	#19	#1D
+D#	#9A	#01	#05	#09	#0D	#11	#15	#19	#1D
+E	#B2	#01	#05	#09	#0D	#11	#15	#19	#1D
+F	#CC	#01	#05	#09	#0D	#11	#15	#19	#1D
+F#	#E8	#01	#05	#09	#0D	#11	#15	#19	#1D
+G	#05	#02	#06	#0A	#0E	#12	#16	#1A	#1E
+G#	#23	#02	#06	#0A	#0E	#12	#16	#1A	#1E
+A	#44	#02	#06	#0A	#0E	#12	#16	#1A	#1E
+A#	#67	#02	#06	#0A	#0E	#12	#16	#1A	#1E
+B	#8B	#02	#06	#0A	#0E	#12	#16	#1A	#1E
+
+
+Flink wat instrumenten. ( Uit de creator/ FAC tracker.)
+
+Registers   1A   2A   3A   4A    7                  1A   2A   3A   4A    7
+	      1B   2B   3B   4B    8                  1B   2B   3B   4B    8
+	    ==-- ==-- ==-- ==-- ==--                ==-- ==-- ==-- ==-- ==--
+synth 1     6020 1183 F3F3 2435 0A40  | synth 2     6022 0D83 F3F3 2435 0A40  |
+synth 3     7274 0901 F1F1 72A2 0000  | synth 4     0200 0C0C E3E3 F3F3 0600  |
+synthsweep  6161 2040 2131 2202 0E00  | synth sf1   10C0 4183 F911 20D4 0C00  |
+synth sf2   10C0 4683 F911 20D4 0C00  | synth sf3   11C1 4D83 F911 20D4 0C00  |
+synth lead  F132 0A01 8081 3042 0840  | heavysynth  6021 0983 F3F3 2434 0A40  |
+base-synth  B122 87C0 A244 B666 0D40  | lead-synth  7020 8E83 A3B2 03C8 0C00  |
+synth str1  6161 2209 9454 1406 0E00  | synth str2  7131 0A05 AFC7 1424 0DC0  |
+smad synth  F1F2 1581 72F1 2474 0C00  | new synth   4042 0B00 94B0 33F6 0800  |
+wow synth   4040 8A00 74E1 F6F6 0A00  | synthpiano  6020 1A83 F3F3 2437 0A40  |
+piano 1     2122 5240 E1D3 F4F6 0A00  | piano 2     0101 1212 E3E3 F3F6 0600  |
+piano 3     3000 4106 F1F1 A0F7 0400  | elecpiano1  3331 D00A 9191 8285 0600  |
+elecpiano2  1610 7100 F6F1 25E5 0000  | elecpiano3  1311 1100 FAF2 21F4 0000  |
+elecpiano4  0000 120C E3E3 F3F6 0600  | acid piano  F031 0A01 8081 3045 0840  |
+spacepiano  3000 4100 F1F1 A0F7 0400  | dx7 piano1  3011 0E04 D9B2 11F4 0240  |
+dx7 piano2  3011 0E04 D9B2 11F4 0A40  | toy piano   272C 0504 FBF4 51F4 0640  |
+organ       A235 1040 CE96 2737 0F00  | elecorgan1  F0F1 1200 F8FF 3F0F 0800  |
+elecorgan2  F0F2 0703 F8F8 1818 0940  | elecorgan3  F0F2 1014 F8F8 1818 0B00  |
+porgan 1    73E0 5781 86C2 6696 0240  | porgan 2    73E2 4D81 86C2 6696 0240  |
+pipe organ  2124 1016 899A 1F0E 0B00  | funk organ  F132 0701 8081 3049 0840  |
+sf-organ    7061 0885 B9F9 2606 0DC0  | synthbass1  2001 0F07 F5F5 F5F5 0600  |
+synthbass2  0000 4602 E5F5 F4F7 0400  | slap bass1  7000 9500 98D4 6556 0880  |
+slap bass2  6030 1500 F3F3 BBEC 0C80  | slap bass3  4060 5400 F6F2 7459 0000  |
+elec bass   3030 1700 D3E1 BBEB 0C80  | elec bass2  0040 1200 94F2 F9E8 0880  |
+rasp bass   6030 9400 E4C1 1BEB 0E00  | bass 1      3020 1983 F2F2 1056 0C00  |
+bass 2      20E1 D101 8688 3717 0CC0  | short bass  3031 0F00 F2F4 2399 0A00  |
+cool-bass   2000 0A07 F5F5 F5FA 0600  | baseline    30A0 0E80 AFF4 061A 0840  |
+house-base  6021 0E83 F3F3 2436 0A40  | strings 1   6161 1B09 9454 1406 0E00  |
+strings 2   61B2 0F41 6D4C 3006 0E40  | heavy str   70F0 1603 733F 0206 0E00  |
+plucked 1   6161 1B09 C596 F5F6 0E00  | plucked 2   6161 1801 C596 F5F6 0E00  |
+plucked 3   6161 1F01 C596 F5F6 0E00  | electrons1  6161 0D0A F5F4 F5F5 0600  |
+electrons2  6161 0710 F6F5 F5F5 0600  | violin      7171 1802 F141 1416 0E40  |
+saxophone1  70B0 8708 6F52 0325 0840  | saxophone2  6161 0E02 8175 F505 0840  |
+saxophone3  6060 4002 8175 F505 0840  | clarinet    7231 9705 516F 7509 0A40  |
+flute 1     6171 2606 6150 75F6 0A40  | flute 2     2422 2400 A89F 1707 0200  |
+bleusflute  2260 1B81 62CC E515 0000  | synthflute  22E1 1580 A462 B394 0E40  |
+blockflute  7216 4256 5444 0787 0780  | piccolo     6272 2606 6150 75F6 0040  |
+oboe        7176 930A 404F F407 0A80  | bassoon     7073 9705 5051 868A 0E80  |
+harmonica   71F4 1B03 733F 0206 0E00  | bagpipes 1  3124 0707 A680 0F1E 0800  |
+bagpipes 2  3024 0707 A680 0F1C 0800  | glockspl 1  3E32 5700 F5F4 74F3 0040  |
+glockspl 2  3EE1 41C0 CD9E 1303 0C40  | spaceglock  6B63 1A0A C596 F5F4 0E00  |
+mg bells    7221 CF01 D2F0 F3C4 0C00  | bell 1      3230 940C F1F1 2131 0A00  |
+bell 2      64EC C8C4 8BC5 1626 01C0  | bell 3      B5B1 1581 96D8 6322 0E00  |
+hand bell   272C 0600 FBF4 51F4 0E40  | spacebell1  A5C1 0400 6761 B8A5 0440  |
+spacebell2  0B04 0900 F0F5 0127 0000  | bluesguitr  B3B1 1600 F3F2 A8E9 0840  |
+spaniguitr  B3B1 5200 F3F2 A8E9 0840  | esp guitar  F3F1 A002 B3D2 A6E6 0E00  |
+fuzz guitr  3112 1000 F0F1 6795 0CC0  | am-fuzz 2   60E0 100F 71F4 B6FA 0D00  |
+marimba 1   1310 1800 F7F3 5685 0C40  | marimba 2   4000 0000 FAD9 3704 0000  |
+marimba 3   1211 1800 F7F3 568C 0C40  | marimba 4   1411 2300 F7F3 568C 0C40  |
+marimba 5   7271 8F81 B6B2 43B7 0C00  | xylophone1  3832 0803 F9F4 F6F5 07C0  |
+xylophone2  1752 1800 88D9 6624 0000  | vibraphn 1  F9F1 DB00 F5F3 74F2 00C0  |
+vibraphn 2  F3F1 DB00 F5F3 74F7 00C0  | steel drum  B3B2 2800 F3F2 92B4 0E00  |
+brass       7131 1C07 5171 2426 0E00  | wah brass   7171 1903 3244 352A 0E80  |
+bell brass  5172 9408 4162 2402 0E00  | heavybrass  7031 1207 5171 2426 0E00  |
+trumpet 1   7272 1900 638F 150E 0E80  | trumpet 2   7171 1500 638F 150E 0E80  |
+wave-synth  2060 9447 E3D2 D5C5 0F80  | new-wave 1  3030 09C4 826B 3202 0DC0  |
+new-wave 2  3630 0AC4 826B 3202 0DC0  | trombone    7070 2000 416F 150E 0E00  |
+horn        7030 4D05 426F 2506 0600  | tuba 1      7070 1400 424F 6307 0800  |
+tuba 2      3171 1600 5152 2624 0000  | koto        73B1 4D05 E4F4 8494 0000  |
+banjo       3136 0D00 F2F4 2399 0A00  | harp        32B1 2900 F4D2 34F3 0E00  |
+mouth harp  F0F3 1580 72F1 2474 0C00  | plink str   2104 0900 41A6 B4C6 0B40  |
+sitar       7175 0607 F1F1 72A2 0000  | meaty job   F031 8200 F1E1 5554 0A40  |
+way out     C048 0D00 F930 10F2 0AC0  | nice sound  0068 0205 E5D4 B594 0B80  |
+alien 1     6076 0904 1221 7221 0000  | alien 2     6072 0D04 1221 7221 0000  |
+alien 3     FF70 1900 501F 0501 0000  | alien 4     6C7F 0904 1221 7221 0000  |
+strange 1   A271 8141 9967 3535 0E80  | strange 2   A375 8741 9967 3535 0E80  |
+strange 3   A371 8241 9967 3533 0E80  | se-star     5142 1000 0310 4201 0400  |
+terminator  B1E2 43C1 C5D8 5626 0840  | cosmic      A061 4BC1 A478 B014 0CC0  |
+xenon       0001 0700 CBE3 3625 0000  | invasion    6178 0D00 85F2 1403 0000  |
+msx-psg     32A1 1601 C0C0 2017 0E40  | bass drum   2020 0900 FAF6 FFFF 0000  |
+snare drum  2000 0004 F1F7 00B8 0E00  | open hihat  2F2F 0004 F1A9 0048 0E00  |
+cls hihat   2F0F 0004 F199 00B8 0E00  | bell perc   5241 2C06 4599 FAFA 0000  |
+sichor      1953 0C00 C7F5 1103 0000  | harpsichor  3311 0C00 F1F3 58C9 0600  |
+celesta     2D22 1900 C6C6 F6F5 01C0  | accordion   7174 1004 FF5F 0207 0A00  |
+lo ho 1     0263 0602 E5D4 B797 0B80  | lo ho 2     0061 0602 E5D4 B797 0B80  |
+flipflap    73E4 0843 4F96 1535 0580  | pluto       6161 1200 B456 1417 0000  |
+
+Drum sets uit de Muziek Module ROM
+
+Register 1A 2A 3A 4A		1B 2B 3B 4B	  5  6  7
+---------------------------------------------------------
+Bass A : 01 05 F5 77 | Bass 2 : 0F 0D F6 48  -   00 01 00
+Hi Hat : 90 00 F8 C5 | Snare  : 01 09 F6 F6  -   64 04 0C
+TomTom : C0 06 F7 5A | Cymbal : 86 15 F5 F4  -   F4 11 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 01 05 F5 77 | Bass 2 : 0F 0D F8 49  -   38 01 02
+Hi Hat : 90 00 F8 C5 | Snare  : 01 09 F6 F6  -   64 04 0C
+TomTom : C2 03 F6 C9 | Cymbal : 86 15 F8 F5  -   EA 11 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 01 03 F6 27 | Bass 2 : 0F 12 F6 68  -   00 01 06
+Hi Hat : 30 00 F6 65 | Snare  : 01 03 F6 26  -   64 04 0C
+TomTom : C0 06 F7 5A | Cymbal : 87 15 F5 F5  -   90 11 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 01 05 F5 77 | Bass 2 : 0F 0D F6 48  -   00 01 00
+Hi Hat : 90 00 F8 C5 | Snare  : 01 09 F6 F6  -   64 04 0C
+TomTom : C0 06 F7 5A | Cymbal : 86 15 F5 F4  -   F4 11 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 21 05 F5 77 | Bass 2 : 0F 0D F6 48  -   00 01 00
+Hi Hat : A0 00 F6 C6 | Snare  : 21 0D F6 F6  -   64 04 0C
+TomTom : C0 06 F7 5A | Cymbal : A8 15 F7 F6  -   5E 11 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 01 03 F6 27 | Bass 2 : 0F 12 F6 68  -   00 01 06
+Hi Hat : 30 0A F6 65 | Snare  : 01 03 F6 26  -   64 04 0C
+TomTom : C5 06 F7 5A | Cymbal : 87 15 F5 F5  -   90 11 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 01 0D F8 A6 | Bass 2 : 3F CD F7 F8  -   F0 04 00
+Hi Hat : 32 C0 F7 F7 | Snare  : 15 C0 F6 A6  -   B4 00 0F
+TomTom : 10 00 E6 F9 | Cymbal : 07 15 F5 F5  -   7F 06 0E
+-	-	-	-	-	-	-	-
+Bass 1 : 03 14 F7 F7 | Bass 2 : 3F CA F8 F8  -   80 0C 00
+Hi Hat : 38 02 F7 F6 | Snare  : 17 00 F6 F5  -   80 01 0F
+TomTom : 3C 03 F5 98 | Cymbal : 81 15 F5 F4  -   80 08 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 01 14 F7 F7 | Bass 2 : 02 10 F7 F7  -   00 05 00
+Hi Hat : 02 02 F7 F7 | Snare  : 03 00 F6 F6  -   00 01 0F
+TomTom : 00 00 F8 F8 | Cymbal : 06 15 F5 F5  -   FF 06 0F
+-	-	-	-	-	-	-	-
+Bass 1 : 01 03 F6 27 | Bass 2 : 0F 12 F6 68  -   00 01 06
+Hi Hat : 68 00 F6 F4 | Snare  : 01 03 F6 26  -   64 04 0C
+TomTom : C0 06 F7 5A | Cymbal : B0 08 F6 F3  -   96 00 00
+
+
+Waarde  ATTACK		DECAY/RELEASE		SUSTAIN
+ 0     	    geen verandering			-  0 dB
+ 1	2826 mSec	39280 mSec		-  3 dB
+ 2	1413 mSec	19640 mSec		-  6 dB
+ 3	 707 mSec	 9820 mSec		-  9 dB
+ 4	 353 mSec	 4910 mSec		- 12 dB
+ 5	 177 mSec	 2455 mSec		- 15 dB
+ 6	  88 mSec	 1227 mSec		- 18 dB
+ 7	  44 mSec	  614 mSec		- 21 dB
+ 8	  22 mSec	  307 mSec		- 24 dB
+ 9	  11 mSec	  153 mSec		- 27 dB
+10	 5.5 mSec	   77 mSec		- 30 dB
+11	 2.8 mSec	   38 mSec		- 33 dB
+12	 1.4 mSec	   19 mSec		- 36 dB
+13	 0.7 mSec	   10 mSec		- 39 dB
+14	 0.4 mSec	    5 mSec		- 42 dB
+15	   0 mSec	    2 mSec		- 93 dB
+
+KSL    Verzwakking	    KSR Oct =0    =1
+ 0	0   dB/octaaf		 0: 100%  100%
+ 1     1.5  dB/octaaf		 1:  91%   71%
+ 2	3   dB/octaaf		 2:  82%   50%
+ 3	6   dB/octaaf		 3:  74%   35%
+				 4:  67%   25%
+				 5:  61%   18%
+				 6:  55%   12%
+				 7:  50%    9%
+
+
+=============================================================================
+
+			[   Sample-registers   ]
+
+	De muziek module heeft 1 AD omzetter en 2 DA omzetters.
+	Een 13-bit DA converter, ook gebruikt door Module-RAM-samples.
+	En een extra 8-bit DA converter.
+
+	Je kunt samplen op 2 manieren.
+
+	ADPCM:	Sample kan in de computer of de module RAM.
+		Kost relatief weinig ruimte.
+		Opnemen/afspelen kan vol-automatisch.
+	AD:	Moet in computer RAM.
+		Kost meer ruimte. (2x zoveel)
+		Opnemen/afspelen alleen via een ML-routine.
+
+
+ bit  Reg. #2	( Interrupt na (256-regwaarde)*.08 mSec. )
+ 0-7  Timer 1 preset
+
+ bit  Reg. #3	( Interrupt na (256-regwaarde)*.32 mSec. )
+ 0-7  Timer 2 preset
+
+ bit  Reg. #4	( De waarde #80 geeft geen aantasting van de andere bits. )
+  7   Reset alle vlaggen
+  6   Maskeer Timer 1 vlag
+  5   Maskeer Timer 2 vlag
+  4   Maskeer End Of Sample vlag
+  3   Maskeer Buffer Ready vlag
+  2   Niet gebruikt
+  1   Timer 2 ( 0=Stop / 1=Start )
+  0   Timer 1 ( 0=Stop / 1=Start )
+
+ bit  Reg. #7
+  7   Start ( 1=Start )
+  6   Opname ( 0=Weergave / 1=Opname )
+  5   Gebruik Module-RAM ( 0=Niet / 1=Wel )
+  4   Herhaal ( 0=Niet / 1=Wel )
+ 3-1  Niet gebruikt
+  0   1= Reset ADPCM
+
+ bit  Reg. #8
+  7   Composite Sinusoidal Mode (1205 = 0)
+ 6-4  Niet gebruikt
+  3   AD/DA Conversie Geen ADPCM !! ( 0=Stop / 1=Start )
+  2   AD/DA Keuze ( 0=AD / 1=DA )
+  1   Ram keuze ( 0=256 Kbit / 1=64 Kbit ) (1205 = 0)
+  0   RAM/ROM keuze ( 0=RAM / 1=ROM ) (1205 = 0)
+
+ bit  Reg. #9/#A
+15-0  Start adres (#0000-#1FFF met standaard RAM)
+
+ bit  Reg. #B/#C
+15-0  Eind adres  (#0000-#1FFF met standaard RAM)
+
+ bit  Reg. #D/#E
+15-0  REC-snelheid bij ADPCM.	( 3580 / freq. in KHz )
+      REC/PLAY-snelheid bij AD/DA.
+
+ bit  Reg. #F  Lezen (#C1)
+ 7-0  Lees/schrijf register module (ADPCM: Low-nibble na High-nibble)
+
+ bit  Reg. #10/#11
+15-0  PLAY-snelheid bij ADPCM. ( 1311 * freq. in KHz )
+
+ bit  Reg. #12
+ 7-0  Volume ( 0 &lt; 255 )
+
+ bit  Reg. #13/#14
+ 7-0  Tussenresultaat ADPCM (de)codering
+
+ bit  Reg. #15/#16/#17
+ 7-0  #15  Data voor 13-bit DA-converter. (bit 7-0)
+ 7-6  #16  Bit 9 en 8 bij 13-bit DA-converter.
+ 2-0  #17  Bit 12-10 bij 13-bit DA-converter.
+
+ bit  Reg. #18
+ 7-4
+  3   ADPCM en FM-CHIP op uitgang
+ 2-1
+  0   8-bit DA converter op uitgang
+
+ bit  Reg. #19
+ 7-0  Aan / uitzetten kanalen van #18
+
+ bit  Reg. #1A
+ 7-0  Buffer register AD/DA conversie (2-complement)
+      Lees register bij normale AD omzetting. Geen ADPCM.
+
+OUT #C0,Reg nr.
+OUT #C1,Reg waarde
+
+
+ bit  Reg. #C0 Status-register LEZEN
+  7   Interrupt door 1 van de vlaggen
+  6   Timer 1 interrupt
+  5   Timer 2 interrupt
+  4   End Of Sample interrupt
+  3   Buffer Ready interrupt
+ 2-1  =1
+  0   ADPCM bezig met opname/weergave
+
+IN (#C0)
+
+=============================================================================
+
+				[ MIDI ]
+
+ bit  Reg. #0
+  7   Teken-ontvangen-interrupt veroorzaken
+  6   RTS Niet aangesloten
+  5   Verzendings-eind-interrupt veroorzaken
+  4   Aantal bits ( 0=7 bits / 1=8 bits )
+ 3-2  Instel ( Pariteit (Of geen) / Aantal stopbits)
+      7 bits &gt; 00=Even &amp; 2  01=Oneven &amp; 2  10=Even &amp; 1  11=Oneven &amp; 1
+      8 bits &gt; 00=Geen &amp; 2  01=Geen &amp; 1    10=Even &amp; 1  11=Oneven &amp; 1
+ 1-0  Snelheid ACIA 00=500Kbit / 01=31.25Kbit / 10=7.8125Kbit / 11=Reset
+
+ bit  Reg. #1
+ 7-0  De te verzenden DATA
+
+ bit  Reg. #4 (status/lees register)
+  7   Interrupt door ACIA ? ( 1 = Ja )
+  6   Teken ontvangen met foute pariteit.
+  5   Teken ontvangen voordat oude was uitgelezen.
+  4   Teken ontvangen met verkeerd aantal stopbits.
+  3   CTS =0
+  2   DCD =0
+  1   Zendbuffer is klaar voor nieuw teken.
+  0   Teken is GOED ontvangen, lezen van reg #5, reset dit bit.
+
+ bit  Reg. #5
+ 7-0  Het ontvangen teken.
+
+OUT Reg nr, Waarde
+
+=============================================================================
+
+			[ KEYBOARD &amp; 8 bit DA-Converter ]
+
+ bit  Reg. #6
+ 7-0  Aansturing keyboard-matrix. (Kolom)
+
+ bit  Reg. #5 (lezen)
+ 7-0  Ingedrukte toets in de aangestuurde octaaf. (Rij)
+
+OUT #C0,#6    OUT #C1,Kolom
+OUT #C0,#5    Rij:=IN(#C1)
+
+ bit  Reg. #A	( 8-bit DA-converter )
+ 7-0  Spanning naar de uitgang. ( Waarde * 2mVolt )
+
+OUT #A,Waarde
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_9.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_11.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

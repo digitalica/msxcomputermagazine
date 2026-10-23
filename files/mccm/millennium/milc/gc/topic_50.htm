@@ -1,0 +1,263 @@
+<html>
+
+<head>
+<title>MILC - Topic Grafisch werken met de OUT poorten</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_49.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_51.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Grafisch werken met de OUT poorten</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+           GRAFISCH WERKEN MET DE OUT POORTEN
+
+
+Normaal  wordt  deze  cursus  'Rechtstreeks   met   de   VDP
+communiceren' geschreven door iemand anders, maar  een  week
+voor de deadline werd mij gevraagd om dit klusje even op  te
+knappen, omdat de auteur die dit  zou  schrijven  verhinderd
+was. Na hard doorwerken is het gelukkig toch nog  gelukt  om
+een artikel op papier - of moeten we zeggen: op disk?  -  te
+krijgen.
+
+Zoals gezegd gaan we het in deze aflevering hebben over  het
+direct aansturen van de  VDP  registers.  Enige  kennis  van
+machinetaal is echter wel vereist om een en ander te  kunnen
+begrijpen.
+
+
+                  HET AANSTUREN VAN DE VDP
+
+Er zijn twee manieren om de VDP aan te spreken:
+
+-  Via de BIOS CALLS (voorgeprogrammeerde routines).
+-  Via de OUT instructies
+
+De  BIOS   routines   hebben   hetzelfde   effect   als   de
+OUT-instructies. Het enige verschil is dat een  BIOS-routine
+veel gemakkelijker te bereiken valt. Door een  simpele  CALL
+kan de  routine  worden  opgestart,  alle  andere  problemen
+regelt de MSX2 verder zelf. Zo zal er worden gekeken  of  de
+VDP nog bezig  is  met  een  vorige  instructie,  en  indien
+noodzakelijk zal een slot-selectie worden  toegepast  om  in
+het  SUBROM  direct  toegang  te   verkrijgen.   Het   grote
+voordeel van  de  BIOS-CALLS  is  dat  de  routine  op  elke
+MSX-computer werkt, dus bijvoorbeeld ook op een MSX3 Turbo+.
+
+Nu zult u zich afvragen: Waarom worden dan  niet  altijd  de
+BIOS-CALLS  gebruikt,  in  plaats  van  de   meer   complexe
+OUT-intstructies? Buiten het feit dat sommige effecten  niet
+met de BIOS-routines  te  bereiken  zijn  is  er  een  groot
+voordeel: het gaat sneller. Tijdwinst wordt geboekt  doordat
+er geen INTER-SLOT CALL behoeft te worden uitgevoerd,  zoals
+bij de BIOS-routine. Bovendien doet de BIOS-routine dezelfde
+OUT'S,  doch  leest   eerst   de   parameters   (coordinaten
+bijvoorbeeld) uit het het geheugen, nadat ze  daar  door  de
+zogenaamde DS-instrukties zijn neergezet.
+
+Lezen en schrijfen (lezen alleen uit  STATUS-registers)  van
+de VDP gaat via POORTEN, aan  te  spreken  met  OUT  en  IN.
+Hieronder  een  overzicht  van  de   verschillende   soorten
+registers van de VDP, met daarachter het adres in de waar de
+IN/OUT waardes verborgen zitten en daarachter het getal  dat
+in praktisch elke MSX-2 computer hetzelfde is.(let op!  niet
+alle computers!) Dit adres is gewoon uit te lezen met:
+
+ LD C,(0006) -eventueel daarna INC C voor POORT-1 =(0006)+1
+
+waarna het IN of OUT-adres in C staat.  Schrijven  gaat  dan
+met OUT (C),A, lezen met IN A,(C). In  geval  van  schrijven
+moet de DATA dan natuurlijk wel in A staan.
+
+----------------------------------------------------------
+ Omschrijving poort     Te vinden op    -&gt;  bevat meestal:
+
+VRAM READ                   (0006)    POORT 0  98h
+VRAM WRITE                  (0007)    POORT 0  98h
+STATUS READ                 (0006)+1  POORT 1  99h
+COMMAND WRITE               (0007)+1  POORT 1  99h
+PALETTE WRITE               (0007)+2  POORT 2  9Ah
+INDIRECT REGISTER ACCES     (0007)+3  POORT 3  9Bh
+----------------------------------------------------------
+
+Om u even gerust te stellen, voor diegenen onder u die  niet
+weten wat ze met deze tabel aanmoeten: dit zal later  worden
+duidelijk gemaakt. De poorten zijn nu eenmaal erg belangrijk
+aangezien alle communicatie met  de  VDP  via  deze  poorten
+loopt.
+
+LET OP: het gaat  hier  over  het  lezen  en  schrijven  van
+        REGISTERS niet van Video-RAM!
+
+
+                        EEN VOORBEELD
+
+Deze eerste routine beschrijft naar een intern register  van
+de VDP. De assembler listing ziet er als volgt uit:
+
+NAAM:   vdprd
+Doel:   Schrijf naar VDP register
+Invoer: B=data C=register
+Uitvoer:
+
+LD A,C
+EX AF,AF'
+LD A,(0007) ;          Lees data schrijfpoort.
+INC A
+LD C,A ;               C bevat commando poort.
+LD A,B
+DI ;                   Zet interrupts uit.
+OUT (C),A ;            Schrijf DATA
+EX AF,AF'
+OR 80h ;               Zet MSB (hoogste bit)
+OUT (C),A ;            Schrijf REGISTER.
+EI
+RET
+
+
+Zoals u ziet wordt het schrijfpoortadres  uit  locatie  0007
+gehaald, C kan ehcter ook meteen gevuld worden met &amp;H99 want
+de meeste MSX-2 machines bevatten deze waarde. Om  er  zeker
+van te zijn dan de routine op iedere MSX-2  werkt  wordt  in
+alle listings  de  waarde  uit  0007  (of  bij  lezen  0006)
+gehaald. De interrupts moeten worden  uitgezet  tijdens  het
+lezen en schrijven.  Met  deze  routine  kunt  u  de  eerder
+vermelde registers beschrijven.
+
+Zoals gezegd is het onmogelijk  de  registers  zelf  uit  te
+lezen, bij de status-registers kan dit echter  wel.  Dit  is
+erg handig, aangezien deze registers de toestand  waarin  de
+VDP verkeerd aangeven.
+
+Om een status-register te lezen moet de computer eerst weten
+welk register er moet worden uitgelezen. Dit  register  moet
+in register 15 worden  geplaatst.  In  de  praktijk  is  een
+status-register als volgt uit te lezen:
+
+Naam:         vdprd
+Doel:         leest VDP status register
+Invoer:       te lezen status register in A
+Uitvoer:      data in A
+
+LD HL,(0006)
+INC H ;       H Commando schrijf poort (0007)+1
+INC L ;       L commando lees poort (0006)
+LD C,H
+DI
+OUT (C),A ;   Schrijf te lezen STATUS register
+LD A,&amp;h8f ;   register naar 15 en zet MSB
+OUT (C),A
+LD C,L
+IN A,(C) ;    Lees STATUS register
+PUSH AF
+XOR A
+LD C,H
+OUT (C),A ;   Zet register 0 terug.
+LD A,&amp;h8f
+OUT (C),A
+EI
+POP AF
+RET
+
+Aan het einde van de listing ziet u dat de waarde  NUL  weer
+naar register 15 wordt gezet, omdat dit  de  default  waarde
+is, die ten alle tijde gehandhaafd moet blijven.
+
+Nu moet u zelf in staat zijn om de VDP-poorten te  lezen  en
+te  beschrijven,  een  heel  belangrijk  onderdeel  van   de
+VDP-programmering. Volgende keer gaan we wat  dieper  in  op
+diverse instrukties zoals de VDP-voorwaarden en instellingen
+om lijnen te trekken, punten zetten en om te copie‰ren.
+
+Als toegift hier nog enkele registers  die  de  MSX-2  Video
+Chip gebruikt:
+
+1. VDP() reg.  7    6     5     4     3     2     1     0
+   -------------------------------------------------------
+     0    0    O   DG    IEO   IE1   M5    M4    M3     D
+     1    1    O   BLK   IE2   M1    M2     O    SZ    MAG
+     9    8   MSE  LCS   TP    CBD  VRS1  VRS0   SBD   B/W
+    10    9   LN    O    SYM1  SYM0  IL    E/O   NTSC  DCD
+
+Betekenis:
+ DG   -Digitize
+ IE0  -Vertical Retrace Interrupt Enable (voor o.a. screen-
+ IE1  -Horizontal Retrace inerrupt Enable            split)
+ IE2  -Light pen/mouse Interrupt Enable
+
+ M5/1 -M5 M4 M3 M2 M1
+       0  0  0  0  0  SCREEN-1
+       0  0  0  0  1  SCREEN-0 (40 tekens)
+       0  0  0  1  0  SCREEN-3
+       0  0  1  0  0  SCREEN-2
+       0  1  0  0  0  SCREEN-4
+       0  1  0  0  1  SCREEN-0 (80 tekens)
+       0  1  1  0  0  SCREEN-5
+       1  0  0  0  0  SCREEN-6
+       1  0  1  0  0  SCREEN-7
+       1  1  1  0  0  SCREEN-8
+
+ D    -External VDP-input
+ BLK  -Enable/Disable Display
+ SZ   -Sprite size
+ MAG  -Magnify Sprites
+ MSE  -Light pen/mouse (1=muis)
+ LC5  -Light pen/coincidence select (1=light pen)
+ TP   -Transparant mode (1= color 0 niet transparant)
+ CBD  -Color bus Direction
+
+VRS1/0-Video RAM select
+       VRS1  VRS0
+         0     0  -1*16 Kb
+         0     1  -4*16 Kb
+         1     0  -1*64 Kb
+         1     1  -64 Kb High Speed
+
+ SPD  -Sprite disable
+SYM0/1-Synchronisatie Mode
+       SYM1  SYM0
+         0     0  -Intern
+         0     1  -Mix
+         1     0  -Extern (Digitize)
+         1     1  -none
+
+ IL   -Interlaced Mode
+ E/O  -Even/odd Display
+ NTSC -TV/Monitor Select
+ DCD  -Dot Clock Direction
+
+Natuurlijk zijn er nog VEEL MEER registers maar daarover  de
+volgende keer meer.
+
+R. v.d. Meulen
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_49.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_51.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

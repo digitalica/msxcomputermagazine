@@ -1,0 +1,72 @@
+<html>
+
+<head>
+<title>MILC - Topic Screen5-12 converter (2)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_33.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_35.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Screen5-12 converter (2)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+VERVOLG:
+
+       S C R E E N   5 / 1 2   S U P E R I M P O S E
+      ===============================================
+
+(Nvdr. Deze  tekst was  te lang voor de layout van ClubGuide 
+Special.  Daarom hebben  we de tekst in twee stukken gehakt. 
+Dit is  het tweede  deel, het eerste deel kunt u in het menu 
+vinden.  We  pakken  de  draad  weer  op  bij het  punt waar 
+het andere deel stopte.)
+
+; Maak de regel af
+
+        INC   HL              ; volgende sc5 pixels
+        INC   DE              ; volgende sc12 pixel
+        DJNZ  CNV_1           ; maak de regel af
+
+Hier  worden  de  IX  en  IY  registers op  de juiste  wijze 
+verhoogd, zodat  ze nu  naar het begin van de volgende regel 
+wijzen.
+
+; Volgende regel
+
+        LD    DE,256          ; een sc12 regel telt
+                              ; 256 bytes
+        ADD   IY,DE           ; adres sc12 een regel verder
+        LD    DE,128          ; een sc5 regel telt 128 bytes
+        ADD   IX,DE           ; adres sc5 een regel verder
+
+ 
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_33.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_35.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

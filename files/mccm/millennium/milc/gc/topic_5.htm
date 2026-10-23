@@ -1,0 +1,198 @@
+<html>
+
+<head>
+<title>MILC - Topic Screen5-10/11 converter</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_6.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Screen5-10/11 converter</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+                 SCREEN 5 -&gt; SCREEN 10/11 CONVERTER
+            ====================================
+
+Bij SCREEN 10 en 11 van de MSX2+ kun je ook het oude 16  uit
+512 kleuren palet nog gebruiken.  Het  is  dus  mogelijk  om
+SCREEN 5 plaatjes naar die schermen over te zetten.  Zo  kun
+je bijvoorbeeld op de ene helft van het scherm  2+  graphics
+gebruiken en op de andere helft SCREEN 5 graphics.
+
+
+                 Informatie over beeldopbouw
+
+Voor ieder pixel op SCREEN 5 staat in het VRAM  een  groepje
+van 4 bits. De volgorde van de  pixels  wordt  gerekend  van
+linksboven, beeldlijn voor beeldlijn naar  rechtsonder.  Elk
+groepje  van  4  bits  bevat   het   kleurnummer   van   het
+overeenkomstige pixel. De kleurnummers gaan van 0 t/m 15. Op
+een beeldlijn staan 256 pixels, dus er zijn  128  bytes  per
+lijn nodig. Er zijn 212 lijnen, dus  in  totaal  beslaat  de
+beeldopslag 212 * 128 = 27136 bytes.
+
+Voor iedere 4 pixels in SCREEN 10/11 staat in het  VRAM  een
+groepje  van  4  bytes.  Ook  hier  gaat  de  volgorde   van
+linksonder naar rechtsboven. Die vier bytes zijn  als  volgt
+opgebouwd: (binair)
+
+     C7 C6 C5 C4 C3 C2 C1 C0
+
+1    Y  Y  Y  Y  A  K  K  K
+2    Y  Y  Y  Y  A  K  K  K
+3    Y  Y  Y  Y  A  J  J  J
+4    Y  Y  Y  Y  A  J  J  J
+
+Er zijn twee mogelijkheden:
+
+- Als A=0 dan gaat het via het  YJK  principe. (Net  als  in
+screen 12, alleen dan met Y van 0-15 in plaats van 0-31.)
+
+- Als A=1 dan is Y het kleurnummer zoals je dat in screen  5
+gewend bent (0-15 uit een palet van 512). J en K worden  dan
+genegeerd.
+
+
+                        Het programma
+
+Op de disk staan twee kant-en-klare programma's: SC5CONV.M2P
+en SC5CONV2.M2P. De eerste in basic, met KUN  gaat  het  wel
+snel; de tweede in machinetaal.
+
+We moeten eerst de  palettabel  verplaatsen.  Die  staat bij
+SCREEN 5 namelijk vanaf &amp;H7680 en  bij  SCREEN  10/11  vanaf
+&amp;HFA80. De palettabel is 32 bytes lang, dus  hij  wordt  als
+volgt verplaatst:
+
+FOR I=0 TO 31 : VPOKE &amp;HFA80+I,VPEEK(&amp;H7680+I) : NEXT I
+COLOR=RESTORE
+
+COLOR=RESTORE is nodig  om  de  verplaatste  palettabel  ook
+werkelijk te zien.
+
+Bij het omzetten moeten we er rekening mee  houden  dat  elk
+pixel in SCREEN 5 een halve byte inneemt, en in SCREEN 10/11
+een  hele  byte.  Daarom  beginnen  we  rechtsonderaan   met
+omzetten. Dus:
+
+FOR I=27135 TO 0 STEP -1
+
+We lezen een byte en scheiden  de  twee  pixels.  De  linker
+noemen we P2 en de rechter P1:
+
+P1 = VPEEK(I) AND 15      (15  = &amp;B00001111)
+P2 = VPEEK(I) AND 240     (240 = &amp;B11110000)
+
+Pixel P1 komt op adres I*2+1 en pixel P2 komt op adres  I*2.
+Om het A-bit op 1 te zetten moeten we er nog 8 bij  optellen
+(het A bit is het 3e bit, en 2^3 = 8). Pixel  P1  moeten  we
+nog 4 bits naar rechts schuiven, dus vermenigvuldigen met 16
+(2^4 = 16).
+
+VPOKE I*2,P2+8
+VPOKE I*2+1,P1*16+8
+NEXT I
+
+Nu is het programma klaar. Maar het gaat super langzaam. Met
+KUN erbij is de snelheid goed  (ongeveer  net  zo  snel  als
+machinetaal). Probeer SC5CONV.M2P maar eens!
+
+
+                      Nu in machinetaal
+
+Als je geen KUN  hebt  zul  je  het  in  machinetaal  moeten
+vertalen. De volgende basic regels moeten vertaald worden:
+
+1 FORI=27135TO0STEP-1
+2 P1=VPEEK(I)AND15
+3 P2=VPEEK(I)AND240
+4 VPOKEI*2,P2+8
+5 VPOKEI*2+1,P1*16+8
+6 NEXTI
+
+(Je hebt hiervoor uiteraard een assembler nodig!)
+De getallen geven aan bij welke basic-regel het hoort.
+
+        ORG  D000H           ; beginadres
+VPEEK:  EQU  174H            ; deze routine heb je nodig
+VPOKE:  EQU  177H            ; idem
+        LD   HL,27135    1,6 ; begin rechtsonder
+LUS:    CALL VPEEK       2,3 ; A = VPEEK(HL)
+        LD   B,A           3 ; bewaar A in B
+        AND  0FH           2 ; onderste vier bits worden
+        LD   C,A           2 ; opgeslagen in C
+        LD   A,B           3 ; oude A weer terug
+        AND  F0H           3 ; bovenste vier bits
+        PUSH HL              ; bewaar adres
+        ADD  HL,HL       4,5 ; adres = 2*HL
+        ADD  A,8           4 ; zet bit 3 (A-bit)
+        CALL VPOKE         4 ; VPOKE HL,A
+        INC  HL            5 ; adres = 2*HL+1
+        LD   A,C           5 ; haal onderste vier bits terug
+        ADD  A,A           5 ; dit is hetzelfde als A=A*16
+        ADD  A,A           5 ; hierdoor worden de vier
+        ADD  A,A           5 ; onderste bits de vier
+        ADD  A,A           5 ; bovenste
+        ADD  A,8           5 ; zet bit 3 (A-bit)
+        CALL VPOKE         5 ; VPOKE HL,A
+        POP  HL              ; haal oude adres weer terug
+        DEC  HL          1,6 ; HL = HL-1
+        LD   A,H         1,6 ; kijken of HL gelijk is
+        OR   L           1,6 ; aan 0. als dat niet zo is,
+        JP   NZ,LUS      1,6 ; dan spring naar LUS
+        RET                  ; terug naar basic
+
+Kijk maar eens hoe snel het nu gaat! (zie SC5CONV2.MSX) Niet
+veel sneller dan met KUN,  maar  wel  veel  sneller  dan  in
+basic.
+
+Nu hebben we de SCREEN 5 graphics dus  omgezet  naar  SCREEN
+11. Maar de MSX2+ graphics zijn bijna altijd in  SCREEN  12.
+Gelukkig is het omzetten van SCREEN 12 naar  SCREEN  11  erg
+eenvoudig. Bij SCREEN 12 worden 5 bits voor Y gebruikt.  Het
+meest rechtse bit daarvan is in SCREEN 11 het A-bit, dat  in
+de YJK mode op 0 moet staan. We hoeven dus alleen maar  alle
+A-bits gelijk te maken aan 0. Dat doen we met AND &amp;B11110111
+(=247).
+
+In Basic ziet dat er als volgt uit:
+
+10 SCREEN 11
+20 BLOAD&quot;NAAM.S12&quot;,S
+30 LINE(0,0)-(255,211),247,BF,AND
+40 IFINKEY$=&quot;&quot;THEN40
+50 END
+
+Je kunt in regel 40 eventueel een save  commando  zetten  om
+het plaatje te saven. Veel succes met het programma.
+
+Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

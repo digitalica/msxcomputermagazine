@@ -1,0 +1,164 @@
+<html>
+
+<head>
+<title>MILC - Topic Muziek Module programmeren 1</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_18.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_20.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Muziek Module programmeren 1</b><br>
+    <i>Toine Litjens</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+=============================================================================
+
+                [ De Muziek Module programmeren 1 - Vs 0.2]
+
+============================================================================
+
+De muziek module ( vanaf nu afgekort met MMOD ) is een byzonder uitgebreid
+stukje hardware.
+
+Het programmeren is (als je de registers hebt) niet echt moeilijk, maar vergt
+nogal wat kennis van geluid. Ik ga ervan uit dat de meeste dingen wel bekend
+zijn. Als je iets nog nader uitgelegd wilt hebben, kun je dat altijd nog
+wel navragen.
+
+We hebben te maken in de MMOD met 9 muziek-kanalen.
+Deze 9 kunnen onafhankelijk van elkaar een toon voortbrengen. En moeten
+daarom ook ieder apart worden ingesteld op klankkleur,freq. en volume.
+
+Om een toon te krijgen moeten we voor elk kanaal 2 generatoren instellen,
+die beide uitgaan van 1 stam-oscillator per kanaal.
+
+De frequentie wordt bepaald door:
+1. de stam-oscillator, het f-number en de block (octaaf). Samen voor A en B.
+2. een vermenigvuldigings factor van 1., de MULTI. Deze apart voor A en B.
+
+Ook apart voor A en B; het volume, er wordt niet gewerkt met de versterking
+van een kanaal, maar met de verzwakking.  0 is dus een maximaal geluid.
+
+Omdat een toon niet oneindig is, moet je de aanzwel-en afvaltijd bepalen.
+Daarbij spelen de ATTACK,DECAY,SUSTAIN en RELEASE een grote rol.
+-De ATTACK bepaalt de aanzwelsnelheid. Hoe snel de toon zijn maximum bereikt.
+-De DECAY bepaalt de snelheid van het afvallen, van de toon nadat hij
+ zijn max. heeft bereikt.
+-De SUSTAIN (indien ingeschakeld) geeft het geluidsniveau aan waarop de
+ de toon blijft hangen, zolang het kanaal aanstaat.
+-De RELEASE geeft de afvaltijd van het uitgeschakelde kanaal.
+
+Dit gebeurt dus apart voor A en B.
+
+Bij deze kanalen kunnen nog allerlei extra's worden ingesteld zoals:
+-Vibratie; snelle amplitude veranderingen, freq. afhankelijk.
+-Amplitude-modulatie; voor langzame veranderingen, freq. onafhankelijk.
+-Keyscale rate; aanpassing ADSR bij hogere frequentie's.
+-Keyscale level; aanpassing volume bij hogere frequentie's.
+-EG-type; schakelt de SUSTAIN aan of uit.
+
+Kanaal A kan ook nog veranderd worden door de FEEDBACK, die aangeeft hoeveel
+de carrier lijkt op een zaagtand. ( 0=sinus 5=zaagtand 6,7=ruis )
+
+En dan nog een heel belangrijke instelling, die van CONNECT.
+Deze geeft aan hoe het totale geluid onstaat uit de 2 carriers.
+-Is dit bit 1 dan telt de module de 2 carriers gewoon bij elkaar.
+ Dit is amplitude-modulatie en geeft heel zuivere tonen.
+-Is dit bit echter 0 dan werkt de module met frequentie modulatie.
+ Generator A is dan de modulator, en generator B de carrier.
+ De golfsnelheid van B wordt nu ook geregeld door A. Is A op een hoog punt
+ in zijn golf, dan zal de frequentie van B ook hoog zijn, is A laag dan zal
+ de frequentie van B laag zijn.
+
+Met FM-mode (bit=0) krijg je heel aparte geluiden.
+Met AM-mode (bit=1) kun je de meeste instrumenten mee benaderen.
+
+Dan nu een klein vb. Maar eerst nog iets belangrijks.
+
+Om muziek te kunnen krijgen, zetten we de uitgang in de MMOD goed met:
+OUT #C0,24 : OUT #C1,8
+OUT #C0,25 : OUT #C1,8
+
+Nu zetten we deze waarden in de betreffende registers in de MMOD.
+
+Vb. We maken een toon die langzaam uitsterft nadat je de toets loslaat.
+    En die tijdens het indrukken iets zachter wordt.
+    Hij staat op z'n hardst en wordt d.m.v. AM-mode gemaakt.
+    De noot is een C in octaaf 3. Voor de rest geen speciale effecten.
+    Te realiseren op kanaal 0.
+
+
+Reg. 1A en Reg. 1B zijn %00010001 =33
+Geen bepaalde effecten.
+MULTI=1 / KEYSCALE=0 / EG-TYPE=1 (sustain wordt gebruikt) / Vibrato=0
+AMP. MOD.=0
+
+Reg. 2A en Reg. 2B zijn 0
+Maximaal volume,  KSL=0 ( Geen verzwakking hogere tonen.)
+
+Reg. 3A en Reg. 3B zijn %11110001 =241
+Snelle aanzweltijd, langzaam zachter.
+
+Reg. 4A en Reg. 4B zijn %01000001 =65
+Toon iets zachter en lange uitsterftijd.
+
+Reg. 5 uit tabel #59 =89
+De C.
+
+Reg. 6 uit tabel #0D =13
+De C en octaaf 6
+
+Reg. 7 %0001 =1
+Geen terugslag (feedback=0 )en AM-mode
+
+De adressen van deze registers halen we uit de andere tabel.
+
+Maar ik hoor nog niks, zou je zo zeggen, ja dat klopt. Je moet eerst het
+kanaal nog aanzetten.
+Dit doe je door bit 5 van reg. 6 op 1 te zetten. En vergeet niet de oude
+waarde. In dit geval dus:
+OUT &amp;HC0,&amp;HB0 : OUT &amp;HC1,&amp;H2D
+En nadat je de toets los laat weer:
+OUT &amp;HC0,&amp;HB0 : OUT &amp;HC1,&amp;H0D
+
+Zo dit was, heel in het kort, wat over de muziek-mogelijkheden in de MMOD.
+
+Deel 2 zal gaan over de begeleidings instrumenten. (De drums)
+
+Deze tekst is gemaakt door Toine Litjens aan de hand van de artikelen van
+Peter van Overbeek over de Muziek Module.
+
+Voor vragen en de volgende delen kun je terecht bij:
+
+MSX-BBS   ACE                                           ADB '90
+Iedere dag van 20:00-06:00
+Op tel.nr.:  04781-1390                                 TL /TXT's
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_18.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_20.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

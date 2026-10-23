@@ -1,0 +1,559 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>23 steps to high resolution on MSX1</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Antti Silvast">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 91, January/February">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#80C0FF"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#404077" VLINK="#404077" ALINK="#80C0FF">
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../kolom1/en.html">[nl] Wammes&#8217; kolom</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        issue
+        91,
+        January/February&nbsp;2000<BR>
+</FONT><A HREF="../contents/en.html#msx1demos1">Back to contents</A></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../postface1/en.html">[nl] Nawoord</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>part 1/23</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>23 steps to high resolution on MSX1</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>
+   Someone once told me watching 8-bit-demos is like watching a magicians show: you know he&#8217;s just 
+ fooling the eye all along, but you never know how. But the similarities between magicians and
+ coders go beyond that, just like magicians coders seem to think if they reveal how their effects
+ were coded it&#8217;s not magic anymore. A real coder will lie, cheat and deceive you all in the name of
+ fame for the impossible stunts he&#8217;s pulled out. A coder who falls beyond this just couldn&#8217;t be
+ a real coder at all, left alone code for a real demogroup. 
+   But I&#8217;ve really never felt like that anyway.
+</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#808099" HEIGHT="20"><B><I><A HREF="mailto:asilvast@cc.hut.fi"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Antti Silvast</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par3">MSX-idiosyncrasies</A>
+<BR>
+<A HREF="#Par8">Moving on from block city to hires-euphoria</A>
+<BR>
+<A HREF="#Par14">More &amp; Faster</A>
+<BR>
+<A HREF="#Par19">Let&#8217;s talk physical</A>
+<BR>
+<A HREF="#Par20">Kultajyva</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="CENTER" BGCOLOR="#C0C0DF"><B><FONT COLOR="#000000">
+                                    References
+                                  </FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT"><FONT COLOR="#FFFFFF">1.</FONT>&nbsp;<A HREF="http://www.komkon.org/fms/MSX/Docs/Portar.txt"><FONT COLOR="#FFFFFF">http://www.komkon.org/fms...</FONT></A>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#808099" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#808099"><FONT COLOR="#FFFFFF"><B>Small dictionary</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+
+<TABLE>
+<TR>
+<TH ALIGN="LEFT" VALIGN="top">word</TH><TH ALIGN="LEFT" VALIGN="top">explanation</TH>
+</TR>
+<TR>
+<TD VALIGN="top">retrace</TD> <TD VALIGN="top">The period where the electron beam is refreshing
+the screen.<BR>Occurs at the rate of 50&nbsp;Hz/60&nbsp; Hz</TD>
+</TR>
+<TR>
+<TD VALIGN="top">vblank</TD> <TD VALIGN="top">The period where the electron beam drawing the screen
+                	is moving from the bottom of the screen back to the
+                	top of the screen. Generates an interrupt. Occurs at the
+                	rate of 50&nbsp;Hz / 60&nbsp;Hz</TD>
+</TR>
+<TR>
+<TD VALIGN="top">ram</TD> <TD VALIGN="top">Normal ram you can access with normal Z80-memory accessing commands</TD>
+</TR>
+<TR>
+<TD VALIGN="top">vram</TD> <TD VALIGN="top">ram-memory specifically dedicated to the video processor</TD>
+</TR>
+<TR>
+<TD VALIGN="top">vdp</TD> <TD VALIGN="top">video display processor</TD>
+</TR>
+<TR>
+<TD VALIGN="top">sprite </TD> <TD VALIGN="top">A hardware generated image that gets drawn in top of your pattern-based graphics with one transparent colour.</TD>
+</TR>
+<TR>
+<TD VALIGN="top">bob</TD> <TD VALIGN="top">A software sprite</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>NOP</TT></TD> <TD VALIGN="top">No OPeration: a Z80-directive that does absolutely nothing except takes time</TD>
+</TR>
+<TR>
+<TD VALIGN="top">raster split</TD> <TD VALIGN="top">When the screen is outputted in several frames you get a raster split: the other half of the screen is in different phase than the other</TD>
+</TR>
+<TR>
+<TD VALIGN="top">double buffering</TD> <TD VALIGN="top">A method where you show one screen-buffer and draw to an other hidden virtual-buffer and then swap these with each other</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+    The first thing you must realize about coding 8-bit demos is that
+  the math involved isn&#8217;t really that complicated. Still checking out those
+  1240 texturemapped polygons on screen and wondering how on earth did
+  those 8-bit-wizards manage to optimize it all to run 50&nbsp;Hz on
+  a 1&nbsp;MHz machine realtime? Well, I&#8217;m sorry if I&#8217;m the first one to tell
+  you this, but they did not. Nothing at all on 8-bit demos is neither very
+  realtime nor optimized. Or maybe it&#8217;s realtime enough to have a realtime
+  screen dumper, but that&#8217;s pushing it. If any optimization at all was
+  performed, it was the precalc that was optimized in size and speed, not
+  the actual code.
+    That&#8217;s why I won&#8217;t go into any depths of mathematics on these articles.
+  I&#8217;m not going to tell you how to write your own 3D-engine on the MSX because
+  I&#8217;ve never written one myself. You must realize it doesn&#8217;t really matter
+  how fast the precalc-algorithms are, since all they really do is
+<I>pre</I>calc.
+  Of course the faster the routine, the less time you&#8217;ll spend waiting.
+</P>
+<A NAME="Par2"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    So what&#8217;s the catch? Why don&#8217;t anyone start coding their own
+  animation-showers for the 8-bits pretending the stuff is very realtime
+  and making people believe they&#8217;re actually very skilled coders?
+    Well, first of all, nobody&#8217;s still converted Java(tm) to MSX and most
+  of the wannabe industrial programmers are just too lazy to learn any
+  language not attached with the stamp &#8220;commercially profitable&#8221;.
+  Now who on earth would hire an expert in hacking an over 15-year old
+  computer with an 8-bit-processor already long out of production?
+    Second, it&#8217;s not all that easy. You see, the real problem is not
+  coming up with the actual precalced effect, but outputting the data
+  to the screen. For a 32-bit-programmer this will seem simply ridiculous.
+  Picture the scene where you could perfectly render a realistic Doom
+  on your 64&times;128 offscreen buffer at the rate of 20&nbsp;Hz, but simply couldn&#8217;t draw the
+  darn thing to screen fast enough. We&#8217;ll, that&#8217;s almost excactly the case
+  with 8-bits. So when the closing 3D-scene from C64-version of 2nd Reality
+  starts rolling, both the superhuman pc-coder and I will be gasping,
+  but for different reasons: He&#8217;ll be going &#8216;how do they draw all those
+  1024 polygons realtime?&#8217; whilst I&#8217;m thinking &#8216;To hell with the polygons,
+  that has got to be an animation. But how on earth do they output it that
+  fast?&#8217;.
+</P>
+<A NAME="Par3"></A>
+<P CLASS="bodynoindent">
+<B>MSX-idiosyncrasies</B>
+<BR>
+
+    I must say I&#8217;m not at all familiar with other 8-bit-systems than MSX.
+  I&#8217;ve never coded on C64 or Spectrum or anything even during my
+  Basic-days. So when ever I&#8217;m talking about 8-bits that strictly based
+  on my limited knowledge on other 8-bit-systems and somewhat less limited
+  knowledge on the MSX.
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    Still I&#8217;d be willing to say, that MSX is an extremely awkward machine
+  to code in hires. For starters, you don&#8217;t have real vram. Oh yeah,
+  there&#8217;s a whole lot 16&nbsp;kB of it, but it&#8217;s not mapped to your regular
+  ram at all. Instead the vram is accessed through ports, one byte at
+  a time; a feature that for reasons beyond my understanding also seems
+  to be implemented on Sega&#8217;s Master Sytem, Game Gear and Megadrive-series.
+  The profit of having real vram mapped to your real ram is obvious:
+  speed. On the darker side you do lose some memory, but really, even
+  48&nbsp;kB ought to be enough for everybody. Or maybe organise the memory in
+  several 64&nbsp;kB banks one being the video memory.
+</P>
+<A NAME="Par5"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    Anyhow, we&#8217;re stuck with this feature and that&#8217;s it. The real problem
+  is really not just writing or reading, ram-access isn&#8217;t that fast either,
+  but you always read or write the data in the same order. The vram-pointer
+  increases every time you <TT>IN</TT> or <TT>OUT</TT> the port; so it&#8217;s easy to write
+  512 sequential bytes to vram, but just as slow writing 256 bytes
+  using every other memory place and filling the gaps with blanks.
+  Or picture having several bobs rotating around the screen. With real vram
+  it would be easy to make the effect fullscreen just outputting the
+  bobs to the desired areas on screen buffer. It&#8217;s of course possible
+  to use the same method with MSX, but you&#8217;ll have to set the vram-pointer
+  again every time you start to output a new bob. Setting the vram-pointers
+  requires two <TT>OUT</TT>-operations, so you can easily see, that whilst the
+  number of bobs increases, MSX is left further and further behind of
+  it&#8217;s 8-bit-cousin with real vram.
+</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    Second, you can only write during the vblank. If you try to output too
+  fast during the vretrace, the data will become distorted. Of course you
+  could stuff you&#8217;re code with <TT>NOP</TT>&#8217;s, slowing it down intentionally, but
+  hey, the MSX is no monster with it&#8217;s 3.5&nbsp;MHz and slowing down even more
+  from there would be just plain laughable. So we&#8217;ll have to make our
+  output during the vblank and that&#8217;s it. In practise I&#8217;ve found out that
+  2048 writes is just about the maximum value you can output, if your
+  inner loop is optimized enough. On <TT>SCREEN</TT>&nbsp;<TT>2</TT> the used amount of vram
+  is 12&nbsp;kB, so it would take six vblanks just to refresh the entire screen.
+  That wouldn&#8217;t be so bad if you could doublebuffer, but for the entire
+  screen you can&#8217;t thus creating six raster splits. So summa sumarum:
+  fullscreen hires effects can&#8217;t be created on the MSX. But it also applies
+  that you should never say never, since in a future article I will show
+  you how to make fullscreen hires-effects by using character
+  based-graphics.
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    Let&#8217;s consider the 2048 bytes once more. <TT>SCREEN</TT>&nbsp;<TT>3</TT> uses just 1536 bytes
+  for the onscreen data and if you want to take the easy way, you could
+  stick with your legosized blocks for the rest of your life. And there&#8217;s
+  nothing wrong with that, the pc-sceners will be very impressed even if
+  your effect is running with 4&times;4-pixels in fullscreen. I just tend to
+  think that they&#8217;ll be even more impressed when the same effects is
+  running with 1&times;1-pixels and fullscreen. But maybe that&#8217;s just me.
+</P>
+<A NAME="Par8"></A>
+<P CLASS="bodynoindent">
+<B>Moving on from block city to hires-euphoria</B>
+<BR>
+
+     256&times;192&times;16 colours. A luxury and a big screenmode for such a
+  small machine. Let&#8217;s for starters pressume we could change the
+  colour of each pixel. 16 colours means 4 bits per pixel, so
+  the entire screen would take up memory 256*192 div 2=24576 bytes.
+  Wouldn&#8217;t that be sweet, but our MSX only comes equipped with 16&nbsp;kB.
+  We&#8217;ll have to cut it somewhere and someone decided to reduce the
+  amount of colours per character. Let&#8217;s say we had 2 colours per
+  8 pixels in width and calculate again: 12288 bytes and that&#8217;s
+  excactly how it is implemented on the MSX.
+</P>
+<A NAME="Par9"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+     Using the graphics like this takes some extraordinary efforts and
+  that&#8217;s why graphics modes in the MSX are nothing more than text modes.
+  That is, you have a &#8216;font&#8217;: a set of 8&times;8-characters with non-fixed
+  patterns and colours. On these articles I will refer to the character
+  forms as patterns and the table of all the character patterns as
+  <I>pattern table</I>. One pattern row is 8 pixels stored in 8 bits which
+  equals to one byte. One character takes up 8 bytes in the <I>pattern table</I>.
+  The other attribute defining the character is its colour,
+  stored in the <I>colour table</I>. If we&#8217;re in <TT>SCREEN</TT>&nbsp;<TT>1</TT>, the colour only
+  takes up one byte, so the entire character is the same colour. In
+  <TT>SCREEN</TT>&nbsp;<TT>2</TT>, each character row has it&#8217;s own colour, so one character
+  takes up 8 bytes in the <I>colour table</I>. The colour is always calculated
+  as &#8216;16 * background_colour + foreground_colour&#8217;, where background-colour
+  is used for the pixels on character pattern stored as 0b and
+  foreground-colour for the ones stored as 1b.
+     Now we have our &#8216;font&#8217;, but we still need to know how to place it
+  on screen. Enter our &#8216;text&#8217;, the <I>name table</I>. The <I>name table</I> is a
+  32&times;24-sized table with one byte denoted to each &#8216;letter&#8217; on screen,
+  the &#8216;letter&#8217; being 8&times;8 pixels.
+</P>
+<A NAME="Par10"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+     One <I>character set</I> contains 256 characters, that is, a <I>pattern table</I>
+  of 256*8=2048 bytes and a <I>colour table</I> of the same size in <TT>SCREEN</TT>&nbsp;<TT>2</TT> or
+  256 bytes in <TT>SCREEN</TT>&nbsp;<TT>1</TT>. <TT>SCREEN</TT>&nbsp;<TT>1</TT> has only one <I>character set</I>, so you
+  really could not utilize fullscreen even if you wanted to. <TT>SCREEN</TT>&nbsp;<TT>1</TT> is
+  ok for some special pattern based effects, but the one colour per row
+  feature of <TT>SCREEN</TT>&nbsp;<TT>2</TT> is really such a luxury that from now on you can
+  always pressume I&#8217;m talking about <TT>SCREEN</TT>&nbsp;<TT>2</TT> unless I state otherwise.
+</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    So <TT>SCREEN</TT>&nbsp;<TT>2</TT> is really fullscreen with every single pixel on the
+  screen changable as desired. You can&#8217;t change every colour because of
+  the &#8216;2 colours per 8 pixels&#8217;-restriction, but you can still change
+  every pattern. Now our entire screen is 256&times;192-pixels which equals
+  32&times;24 characters. A bit of calculating reveals that our 256 characters
+  a <I>character set</I> only fills one third of the screen. And as I stated
+  earlier,  this is exactly the case with <TT>SCREEN</TT>&nbsp;<TT>1</TT>. But for <TT>SCREEN</TT>&nbsp;<TT>2</TT>
+  to fill the entire screen you actually have <I>three</I> character sets
+  independent of each other. Let&#8217;s call these character sets <I>charset 1</I>,
+  <I>charset 2</I> and <I>charset 3</I>. <I>charset 1</I> always takes up rows 0..63 on
+  screen. <I>charset 2</I> is rows 64..127. <I>charset 3</I> is rows 128..191.
+  As for the <I>name table</I> (32 characters x 24 characters), <I>charset 1</I>
+  is the first 8 rows, <I>charset 2</I> is rows 8..15 and <I>charset 3</I> rows
+  16..23.
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    A method like this is needed because our <I>name table</I> is only
+  one byte accurate and there are 768 characters needed for the entire
+  screen. So a write in the <I>name table</I> in rows 0..7 always
+  picks a character from <I>charset 1</I>. If you write something in the rows
+  8..15 it picks a character from <I>charset 2</I> and the same way for rows
+  16..23 and <I>charset 3</I>. For instance character &#8216;<TT>A</TT>&#8217; on <I>name table</I>
+  position (16,22) will always be the 66th character of <I>charset 3</I>.
+  The character &#8216;<TT>A</TT>&#8217; on the position (16,4) on the other hand will always
+  be 66th character of <I>charset 1</I>. <I>Charset</I>s are divided into patterns
+  and colours just as earlier, so that <I>charset 1</I> is <I>pattern table</I> and
+  <I>colour table</I> from 0..2047, <I>charset 2</I> 2048..4095 and <I>charset 3</I> 4096..6144.
+</P>
+<A NAME="Par13"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    You must realize, that as a default, these <I>charsets</I> have nothing to
+  do with each other. So the characters &#8216;<TT>A</TT>&#8217; on the above example need not
+  to be the same characters. By twitching with a few vdp-registers you
+  can actually alter the number of <I>charsets</I> to three, two or one, a
+  feature no-one ever bothered to document, but which is sometimes
+  very useful. So for instance, you could have the <I>charset</I> 1 copied over
+  <I>charset</I> 3, so that the &#8216;<TT>A</TT>&#8217;s in above example would be the same
+  characters. The most bizarre part about this vdp-feature is that the
+  number of <I>pattern table</I>s actually needn&#8217;t be the same as the number of
+  <I>colour table</I>s. So you could for example have three totally independent
+  <I>colour table</I>s but just one <I>pattern table</I> for the entire screen. This
+  can be used for some very fruitful and seemingly impossible demo-effects,
+  but I&#8217;ll cover these more in depth in the future, when I write an
+  article on the &#8216;<I>charset</I> duplication and deproduction&#8217;-vdp feature.
+</P>
+<A NAME="Par14"></A>
+<P CLASS="bodynoindent">
+<B>More &amp; Faster</B>
+<BR>
+
+    A bit on the numbers and speed once more. 2048 bytes per frame, that is
+  if you want to output the stuff to screen 50&nbsp;Hz. Now I&#8217;m not a puritan who
+  requires all his effects to run that fast &mdash;&nbsp;yet&nbsp;&mdash; but since you can&#8217;t
+  doublebuffer in the common case, it&#8217;s raster split time. The restraint
+  on doublebuffering is mostly due to the fact, you can only set the
+  <I>colour table</I> and <I>pattern table</I> base addresses on a 13-bit accuracy in
+  <TT>SCREEN</TT>&nbsp;<TT>2</TT>; see &#8216;<I>charset</I> duplication and deproduction&#8217; for more on this
+  subject in the future. As for fullscreen you wouldn&#8217;t have enough
+  memory for doublebuffer anyhow, but the restraint effectively prevents
+  you doing it for smaller windows too; way to go. However, I have
+  discovered that doublebuffering actually is possible on the restrained
+  case of using a constant <I>pattern table</I> and drawing the effects to
+  the <I>colour table</I> and only using rows 64..191. Watch this space.
+</P>
+<A NAME="Par15"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    Now someone could point out that we should go for <TT>SCREEN</TT>&nbsp;<TT>1</TT>, which has
+  enough memory for 3 <I>pattern tables</I> and 24 <I>colour
+tables</I>, and best of all,
+  <I>colour table</I> and <I>pattern table</I> base-registers that actually act
+  the way they&#8217;re supposed to. Well, that&#8217;s a good idea, but remember we
+  only have 256 characters in <TT>SCREEN</TT>&nbsp;<TT>1</TT>. Those 256 characters make 2048 outputs
+  and you could output that much in a frame anyway. 
+</P>
+<A NAME="Par16"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    So as for now, we&#8217;re sticking it with the 2048 outputs. That&#8217;s not
+  very much really. You could refresh one <I>pattern table</I> or <I>colour table</I> of
+  one <I>charset</I>, or half of a <I>pattern table</I> and half of a <I>colour table</I> of a
+  <I>charset</I>. Since one <I>charset</I> is only
+256&times;64-pixels &mdash;&nbsp;one third of the whole screen&nbsp;&mdash;, we will have to get
+realistic and only refresh either the <I>colour table</I> or the <I>pattern table</I>. Hence the terms chunky based effects and
+  pattern based effects. Chunky based effects have a constant <I>pattern table</I> and pattern based effects a constant <I>colour table</I> for the whole
+  of the screen. In the next issue I&#8217;ll be going more in depth on how
+  to actually code chunky and pattern based effects in practice, complete
+  with some source code too.
+</P>
+<A NAME="Par17"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    But yet, 256&times;64 is nobodys idea of full screen and that&#8217;s the most we
+  can update, so what is these <TT>SCREEN</TT>&nbsp;<TT>2</TT>-demos are using, magick? Oh no,
+  8-bits have one God-given gift on their side and that&#8217;s character based
+  graphics. Duplicate, reduplicate, copy, replicate and unduplicate as
+  much as you ever please, because that&#8217;s what fools the eye. Remember,
+  character &#8216;<TT>A</TT>&#8217; is always the 66th character &mdash;&nbsp;with appropriate colour and
+  pattern&nbsp;&mdash; within the same <I>charset</I>. It&#8217;s basically the very same case
+  as when you&#8217;re reading this text right now. You can write for
+  instance &#8216;<TT>JGT</TT>&#8217; in any part of the screen and it will still look the
+  same. Maybe have the effect running in a 80&times;192-window and replicate it
+  three times vertically. With just one register twitch you can reduce the
+  number of <I>charsets</I> to one and have horizontally replicating
+effects too,
+  sort of like a super <TT>SCREEN</TT>&nbsp;<TT>1</TT>. If you check the <TT>SCREEN</TT>&nbsp;<TT>2</TT>-effects
+  coded this far closely, you&#8217;ll notice almost every single one uses some
+  sort of replication; either that, or they&#8217;re really small. Or they&#8217;re
+  impossible, using clever vdp-features, there are a few in the MSX1.
+  Remember, 256&times;64 or areas of any size multiplying to 2048 updates is 
+  the biggest updateble unit on pattern based and chunky based effects. 
+  Look at the <TT>SCREEN</TT>&nbsp;<TT>2</TT>-effects again and you&#8217;ll notice none of them 
+  actually updates an area larger than this ; apart from the impossible ones 
+  of course. 
+</P>
+<A NAME="Par18"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+    Actually the super <TT>SCREEN</TT>&nbsp;<TT>1</TT> I mentioned earlier is a well known
+  feature amongst the MSX-scene, implemented by first setting <TT>SCREEN</TT>&nbsp;<TT>1</TT> is
+  via bios and then setting the <TT>SCREEN</TT>&nbsp;<TT>2</TT>-modebit on vdp-registers. This,
+  however, is nothing more than one single implementation of
+  &#8216;..deproduction&#8217;-feature. The register-values just happen to be right by
+  accident for one <I>charset</I> in <TT>SCREEN</TT>&nbsp;<TT>2</TT>; there&#8217;s a lot more than that in
+  &#8216;..deproduction&#8217;.
+</P>
+<A NAME="Par19"></A>
+<P CLASS="bodynoindent">
+<B>Let&#8217;s talk physical</B>
+<BR>
+
+    I won&#8217;t be giving out any effects or code yet, since we&#8217;re still moving
+  in a pretty basic introductionary level for now. For now you should
+  familiarise yourself with the very basic I/O-stuff, like setting up
+  the vdp-address, writing to screen, changing the screenmode and stuff
+  like that. <TT>PORTAR.TXT</TT> (see reference [<A HREF="http://www.komkon.org/fms/MSX/Docs/Portar.txt">1</A>]) is one good reference for that kind of stuff. If you already know
+  these things, stay tuned for the next issue where I&#8217;ll be giving away
+  two effects: the interference rings and the twisting bars both
+  representing a pattern based effect.
+</P>
+<A NAME="Par20"></A>
+<P CLASS="bodynoindent">
+<B>Kultajyva</B>
+<BR>
+
+    Aside from pattern based and chunky based effects there&#8217;s also a
+  third branch of hires-effects, the character based effects. Think
+  about it, the <I>name table</I> is only 768 long for the whole of screen.
+  Now why not draw the effect in the <I>name table</I> and use fixed
+  characters with fixed patterns and colours? Now what kind of effects
+  would that make possible? Just don&#8217;t make any noise about it, it&#8217;s
+  a secret, although by checking a certain classic gamecartridge by Konami you&#8217;ll notice it&#8217;s 
+  already been invented 15 years ago.
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#808099" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#C0C0DF" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../kolom1/en.html">[nl] Wammes&#8217; kolom</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        issue
+        91,
+        January/February&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../postface1/en.html">[nl] Nawoord</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

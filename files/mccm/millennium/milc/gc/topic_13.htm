@@ -1,0 +1,117 @@
+<html>
+
+<head>
+<title>MILC - Topic DP op Turbo-R</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_12.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_14.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">DP op Turbo-R</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MSX TURBO R TIP:
+
+   D Y N A M I C   P U B L I S H E R   O P   T U R B O   R
+  =========================================================
+
+Toen de turbo R nog maar net in Nederland was, waren er  een
+paar domme figuren  die  zonodig  moesten  rondbazuinen  dat
+Dynamic Publisher niet zou werken op de MSX turbo R. Dit  is
+absoluut niet waar! DP werkt wel degelijk  op  de  Panasonic
+FS-A1ST, en hoe!
+
+Dynamic Publisher loopt niet alleen goed op de turbo R,  als
+je de R800 aanzet gaat  alles  ook  nog  eens  sneller.  Het
+opvullen, het plaatsen van  tekst  op  het  werkscherm,  het
+inladen van stempels en tekeningen, noem maar op. Een bekend
+nadeel van DP was dat de besturing zonder muis veel te traag
+gaat. Ook dit probleem is nu verholpen,  in  de  R800  stand
+schiet het kruis gewooonweg over het scherm, ook met  cursor
+of joystick besturing!
+
+
+                    FOUTJE VAN RADARSOFT
+
+Waarom werkt DP  standaard  niet  op  een  turbo  R?  Op  de
+Europese MSX2 computers is slot 0 niet uitgebreid. In slot 0
+bevindt zich het BIOS en de MSX1 BASIC. Radarsoft is er  bij
+het maken van Dynamic Publisher ten onrechte  vanuit  gegaan
+dat slot 0 nooit uitgebreid kan zijn.
+
+Bij computers met ingebouwde MSX-MUSIC wordt  de  MML  BASIC
+echter vaak in subslot 0-2 geplaatst, waardoor slot 0 wel is
+uitgebreid. Dynamic Publisher werkte ook niet op een Japanse
+MSX2+, en dat kwam niet omdat die MSX2+ te  weinig  geheugen
+had.
+
+De oplossing is  erg  simpel:  je  houdt  Dynamic  Publisher
+gewoon voor de gek! Adres &amp;HFCC1 geeft namelijk aan of  slot
+0 uitgebreid is. De waarde 128 staat voor wel uitgebreid, de
+waarde 0 voor niet. Bij een turbo R staat de waarde  128  op
+dit adres, want slot 0 is uitgebreid (t.b.v. MSX-MUSIC).  We
+hoeven dus alleen maar een 0 op adres &amp;HFCC1  te  zetten  en
+Dynamic Publisher werkt! Deze POKE werd ook al  gebruikt  om
+DP op een Japanse MSX2+ te laten draaien.
+
+Het interessante is nu om de R800 van turbo R ook  nog  eens
+aan te zetten. Voor machinetaal-programmeurs  onder  ons  is
+dit als volgt:
+
+LD A,&amp;H81     3E 81     'ZET R800 EN LAMPJE AAN
+CALL &amp;H180    CD 80 01  'VOERT DE FUNKTIE UIT (CHGCPU)
+RET           C9        'TERUG NAAR BASIC
+
+
+                HOE VERANDER JE DIT NU IN DP?
+
+Doe dit als volgt:
+
+Laad de AUTOEXEC.BAS van  de  schijf  en  voeg  de  volgende
+regels eraan toe:
+
+1 DATA 3E,81,CD,80,01,C9
+2 AD=&amp;HD000:FORI=0TO5:READA$:POKEAD+I,VAL(&quot;&amp;H&quot;+A$):NEXT
+3 DEFUSR=AD:A=USR(0)
+4 POKE &amp;HFCC1,0
+
+Save de AUTOEXEC.BAS op de schijf en run het  programmaatje.
+U zult versteld staan  van  de  snelheid  waarmee  alles  nu
+gebeurt!
+
+N.B. MSX2+ gebruikers mogen alleen de POKE gebruiken  anders
+zou het programma  onheroepelijk  vastlopen, want  een  R800
+opvragen terwijl er geen is heeft natuurlijk weinig zin.
+
+                                             Dimitri Gunsing
+                                                 Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_12.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_14.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

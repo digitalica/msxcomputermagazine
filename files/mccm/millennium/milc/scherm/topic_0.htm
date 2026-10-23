@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<title>MILC - Topic ESCape codes</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">ESCape codes</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+                                    ESC code's.
+			      ------------
+
+Het is mogelijk om de ESC code's te gebruiken in de CHAT-MODE, maar ook in
+de TED Teksteditor zijn er hele leuke dingen mee te doen.
+
+De beeldschermbesturing van de MSX is tot op zekere hoogte compatibel met de
+standaard VT52 terminal. De door MSX ondersteunde VT52 Escape sequences zijn:
+
+
+ESC - A  = CHR$(27);&quot;A&quot; : Cursor regel naar boven.
+ESC - B  = CHR$(27);&quot;B&quot; : Cursor regel naar beneden.
+ESC - C  = CHR$(27);&quot;C&quot; : Cursor positie naar rechts.
+ESC - D  = CHR$(27);&quot;D&quot; : Cursor positie naar links.
+ESC - E  = CHR$(27);&quot;E&quot; : Clear Screen.
+ESC - H  = CHR$(27);&quot;H&quot; : Plaatst de cursor links bovenin het scherm.
+ESC - J  = CHR$(27);&quot;J&quot; : Maak scherm schoon van af de cursor tot het
+			  einde van het scherm.
+ESC - K  = CHR$(27);&quot;K&quot; : Maakt de regel schoon vanaf de cursor tot het
+			  einde van het scherm.
+ESC - L  = CHR$(27);&quot;L&quot; : Voeg een regel tussen.
+ESC - M  = CHR$(27);&quot;M&quot; : Delete een regel.
+ESC - l  = CHR$(27);&quot;l&quot; : Wis de hele regel.
+
+ESC Y(v+32)(h+32)	: Cursor naar positie v.h.
+			  v = verticaal, h = horizontaal.
+Voorbeeld om de cursor naar positie 28 van regel 7 te verplaatsen:
+
+    ESC Y(7+32)(28+32) = ESC Y(39)(60) = CHR$(27);&quot;Y'&lt;&quot;
+
+ESC - x4 = CHR$(27);&quot;x4&quot; : Cursor is blokje.
+ESC - y4 = CHR$(27);&quot;y4&quot; : Cursor is lijntje.
+ESC - x5 = CHR$(27);&quot;x5&quot; : Zet de cursor uit.
+ESC - y5 = CHR$(27);&quot;y5&quot; : Zet de cursor weer aan.
+
+PS: Let goed op de hoofdletters en kleine letters.
+    Bij verkeerd letter gebruik werken de code's niet !
+    Toets eerst de ESC toets in en dan uw letter keuze.
+
+Om de ESC code's in basic te gebruiken gaat u als volgt te werk:
+
+PRINT CHR$(27)+&quot;E&quot;
+
+en onder Turbo pascal moet het zo:
+
+writeln(#27,'E');
+
+of,
+
+write(#27,'E');
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<html>
+
+<head>
+<title>MILC - Topic Muziekmodule: ext. keyboard</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_7.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Muziekmodule: ext. keyboard</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+   Externe keyboard aansluiting
+   ---------------------------------------------------------------------------
+   Aan de zijkant van de muziekmodule zit een 20-polige connector. Op de 
+   connector zitten 8 ingangen en 8 uitgangen onder besturing van de 
+   soundprocessor. Daarmee zijn maximaal 64 toetsen aan te sluiten: elke toets 
+   bedient een schakelaar op een van de 64 kruispunten van figuur 1. Iedere 
+   schakelaar verbindt ‚‚n van de 8 uitgangen met ‚‚n van de 8 ingangen.
+
+
+         +------------------------------------------------------
+         |                                                     O
+         |                  1  2  3  4  5  6  7  8             O - figuur 1.
+         |     UIT0 (16) ---+--+--+--+--+--+--+--+-   1-8      O Het muziek-
+         |     UIT1 (15) ---+--+--+--+--+--+--+--+-   9-16     O toetsenbord
+         |     UIT2 (14) ---+--+--+--+--+--+--+--+-  17-24     O
+         |     UIT3 (13) ---+--+--+--+--+--+--+--+-  25-32     O
+         |     UIT4 (12) ---+--+--+--+--+--+--+--+-  33-40     O
+         |     UIT5 (11) ---+--+--+--+--+--+--+--+-  41-48     O
+         |     UIT6 (10) ---+--+--+--+--+--+--+--+-  49-56     O
+         |     UIT7 (9)  ---+--+--+--+--+--+--+--+-  57-64     O
+         |                  |  |  |  |  |  |  |  |             O
+         |     IN 0 (4)  ---+  |  |  |  |  |  |  |    ^ ^      O
+         |     IN 1 (7)  ------+  |  |  |  |  |  |   toets     O
+         |     IN 2 (5)  ---------+  |  |  |  |  |    nrs      O
+         |     IN 3 (8)  ------------+  |  |  |  |             O
+         |     IN 4 (6)  ---------------+  |  |  |             O
+         |     IN 5 (2)  ------------------+  |  |             O
+         |     IN 6 (1)  ---------------------+  |             O
+         |     IN 7 (3)  ------------------------+             O
+         |                                                     O
+         +-----------------------------------------------------O
+
+   De uitgangen worden bestuurd via register 6 van de soundprocessor:
+
+   OUT &amp;HC0,6: OUT &amp;HC1,2^U
+
+   Waarbij U de uitgang (0-7) is die op 0 volt gezet wordt. De rest van de 
+   uitgangen staat op +5 volt. Door de ingangen uit te lezen kan men zien welke 
+   toets is ingedrukt. De ingangen worden uitgelezen met:
+
+   OUT &amp;HC0,5: IN=INP(&amp;HC1)
+
+   IN bevat nu van alle ingangen de status. Het bit van de ingang staat op 0 
+   als de toets is ingedrukt. Per definitie is toets 1 een C aan de baskant.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX midi I/O poorten</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_6.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX midi I/O poorten</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+2.2 msx midi I/O POORTEN
+
+0E8H (READ)     B7   B6   B5   B4   B3   B2   B1   B0
+     (data)    RXD7 RXD6 RXD5 RXD4 RXD3 RXD2 RXD1 RXD0
+
+    (WRITE)    TXD7 TXD6 TXD5 TXD4 TXD3 TXD2 TXD1 TXD0
+     (data)
+      RXD7-RXD0  =  8251 ONTVANGEN DATA
+      TXD7-TXD0  =  8251 TE VERZENDEN DATA
+
+
+0E9H (READ)     B7   B6   B5   B4   B3   B2   B1   B0
+     (status)  DSR  BRK   FE   OE   PE  EMPT RDDY TRDY
+
+	 DSR	  8253  DATA SET READY
+	 BRK	  8251  SYNC DETECTION
+	 FE	  8251  FRAMING ERROR
+	 OE	  8251  OVERRUN ERROR
+         PE       8251  PARITY ERROR
+         EMPT     8251  TRANSMITTER EMPTY
+         RRDY     8251  RECEIVER READY
+         TRDY     8251  TRANSMITTER READY
+
+       (WRITE)
+
+ DE EERSTE DATA NA EEN RESET DIE IN HET COMMAND REGISTER GESCHREVEN MOET WORDEN IS  DE MODE INSTRUCTION
+ DE MODE INSTRUCTION ZIET ER ALS VOLGT UIT:
+
+		 B7   B6   B5   B4   B3   B2   B1	 B0
+		 S2   S1   EP   PEN  L2   L1   B2	 B1
+
+      B2,B1  BIT 1,0 00=SYNCHRONE MODE
+		       01=BAUDRATE FACTOR IS 1
+		       10=BAUDRATE FACTOR IS 16
+		       11=BAUDRATE FACTOR IS 64
+
+      L2,L1  BIT 3,2 00=5 DATA BITS
+		       01=6 DATA BITS
+		       10=7 DATA BITS
+		       11=8 DATA BITS
+
+	PEN	BIT 4  0=GEEN PARITEITSBIT
+		       1=PARITEITSBIT AANWEZIG
+
+	EP	BIT5   0= ONEVEN PARITEIT
+		       1= EVEN PARITEIT
+		       -&gt; NIET NODIG ALS PEN=0
+
+	S2,S1 BIT7,6 00=NIET TOEGESTAAN
+		       01=1 STOPBIT
+		       10=1.5 STOPBIT
+		       11=2 STOPBITS
+                        -&gt;GELDT ALLEEN VOOR DE ZENDER, DE ONTVANGER HEEFT
+                          ALTIJD VOLDOENDE AAN 1 STOPBIT
+
+         INDIEN BIT1,0 =00 DAN IS HET DE SYNCHRONE MODE,
+                           DAN HEBBEN DE BITS7,6 DE VOLGENDE BETEKENIS
+	 BIT 6 ESD 0=INTERNE SYNCHRONISATIE
+                   1=EXTERNE SYNCHRONISATIE
+
+	 BIT 7 SCS 0= 1 SYNC KARAKTER
+                   1= 2 SYNHC KARAKTERS
+
+          DE SYNC KARAKTERS MOETEN DIRECT NA DE MODE INSTRUCTION NAAR
+          HET COMMANDO REGISTER GESCHREVEN WORDEN
+
+
+NA DE MODE INSTRUCTION KAN DE COMMAND INSTRUCTION GESCHREVEN WORDEN OP
+IEDER GEWENST MOMENT.
+
+DE MODE INSTRUCTION ZIET ER ALS VOLGT UIT:
+
+	   B7   B6   B5   B4   B3   B2   B1   B0
+	   EH   IR   RIE  ER  SBRK  RE   TIE  TEN
+
+	 EH :0=GEEN EFFECT ;1=HUNT MODE
+	 IR :0=GEEN EFFECT ;1=INTERNAL RESET
+	 RIE: RTS?
+	 ER :0=GEEN EFFECT ;1=RESET ERROR FLAGS PE,OE,FE
+	 SBRK:0=GEEN EFFECT;1=ZEND BREAK KARAKTER
+	 PE  :0=DISABLE ONTVANGER;1=ENABLE ONTVANGER
+	 TIE :CTS?
+	 TEN :0=DISABLE ZENDER:1=ENABLE ZENDER
+
+VOOR EEN INITIALISATIE VOOR DE IN EN UITGANG VAN DE MIDIPOORTEN MOET DUS
+NAAR 0E9H DE VOLGENDE BYTES GESTUURDE WORDEN:
+ 00H,00H,00H,40H
+
+ZIE VOOR VOORBEELDEN HET PROGRAMMA [THRU.MAC] OP DE BIJGELEVERDE SCHIJF.
+
+8253 OUT2 INTERRUPT (0EAH,0EBH)
+
+0EAH (WRITE)	   B7   B6   B5	B4   B3   B2   B1   B0
+		    -    -    -	 -    -    -    -    -
+
+       GEEFT INTERRUPT AF . WEL RESETTEN
+
+8253 COUNTERS (0ECH-0EFH)
+
+   0EFH (READ)   B7   B6   B5	B4   B3   B2   B1   B0
+		    -    -    -	 -    -    -    -    -
+	(WRITE)  SC1  SC0  RW1	RW0  M2   M1   M0    BCD
+
+	   SC1,SC0 : 00=SELECT COUNTER 0
+		       01=SELECT COUNTER 1
+		       10=SELECT COUNTER 2
+		       11=NIET TOEGESTAAN
+
+	   RW1,RW0 : 00=LATCH COUNTER
+                       01=LEES/LAAD ALLEEN MSB
+                       10=LEES/LAAD ALLEEN LSB
+                       11=LEES/LAAD LSB EN MSB
+
+	   M2,M1,M0:  000=MODE0 (INTERRUPT ON TERMINAL COUNT BV TIME OUT VAN EEN MODEM)
+                       001=MODE1 (PROGRAMMEERBARE ONE SHOT)
+                       X10=MODE2 (RATE GENERATO BV REAL TIME CLOCK)
+                       X11=MODE3 (BLOCKGOLF GENERATOR BV BAUDRATE GENERATOR)
+                       100=MODE4 (SOFTWARE TRIGGERED STROBE)
+                       101=MODE5 (HARDWARE TRIGGERED STROBE BV PULSBREEDTE METING)
+	    BCD : 0= BINAIR TELLEN
+                  1= BCD TELLEN
+
+
+         0ECH (R/W)     B7   B6   B5   B4   B3   B2   B1   B0
+		       CT7  CT6  CT5  CT4  CT3	CT2  CT1  CT0
+
+         0EDH (R/W)     B7   B6   B5   B4   B3   B2   B1   B0
+                       CT17 CT16 CT15 CT14 CT13 CT12 CT11 CT10
+
+         0EEH (R/W)     B7   B6   B5   B4   B3   B2   B1   B0
+                       C727 CT26 CT25 CT24 CT23 CT22 CT21 CT20
+
+	   CT7-CT0   = DATA COUNTER 0
+	   CT17-CT10 = DATA COUNTER 1
+	   CT27-CT20 = DATA COUNTER 2
+
+
+
+0E2H	(WRITE)    B7   B6   B5   B4   B3   B2	B1   B0
+                   EN   --   --   --   --   --  --   E8
+
+		EN = MIDI INTERFACE AAN/UIT  (AAN=0,UIT=1)
+		E8 = MIDI INTERFACE OP E8H/E9H OF E0H/E1H  (0=E8/E9,1=E0/E1)
+
+0E0H (READ)     B7   B6   B5   B4   B3   B2   B1   B0
+     (data)    RXD7 RXD6 RXD5 RXD4 RXD3 RXD2 RXD1 RXD0
+
+    (WRITE)    TXD7 TXD6 TXD5 TXD4 TXD3 TXD2 TXD1 TXD0
+     (data)
+      RXD7-RXD0  =  8251 ONTVANGEN DATA
+      TXD7-TXD0  =  8251 TE VERZENDEN DATA
+
+0E1H (READ)     B7   B6   B5   B4   B3   B2   B1   B0
+      (status)  DSR  BRK  FE   OE   PE  EMPT RDDY TRDY
+
+	 DSR	  8253  DATA SET READY
+	 BRK	  8251  SYNC DETECTION
+	 FE	  8251  FRAMING ERROR
+	 OE	  8251  OVERRUN ERROR
+	 PE	  8251   PARITY ERROR
+         EMPT     8251  TRANSMITTER EMPTY
+         RRDY     8251  RECEIVER READY
+         TRDY     8251  TRANSMITTER READY
+
+       (WRITE)
+
+ DE EERSTE DATA NA EEN RESET DIE IN HET COMMAND REGISTER GESCHREVEN MOET
+ WORDEN IS  DE MODE INSTRUCTION.
+
+ DE MODE INSTRUCTION ZIET ER ALS VOLGT UIT:
+
+		 B7   B6   B5   B4   B3   B2   B1	 B0
+		 S2   S1   EP   PEN  L2   L1   B2	 B1
+
+      B2,B1  BIT 1,0 00=SYNCHRONE MODE
+		       01=BAUDRATE FACTOR IS 1
+		       10=BAUDRATE FACTOR IS 16
+		       11=BAUDRATE FACTOR IS 64
+
+      L2,L1  BIT 3,2 00=5 DATA BITS
+		       01=6 DATA BITS
+		       10=7 DATA BITS
+		       11=8 DATA BITS
+
+	PEN	BIT 4  0=GEEN PARITEITSBIT
+		       1=PARITEITSBIT AANWEZIG
+
+	EP	BIT5   0= ONEVEN PARITEIT
+		       1= EVEN PARITEIT
+		       -&gt; NIET NODIG ALS PEN=0
+
+	S2,S1 BIT7,6 00=NIET TOEGESTAAN
+		       01=1 STOPBIT
+		       10=1.5 STOPBIT
+		       11=2 STOPBITS
+                        -&gt;GELDT ALLEEN VOOR DE ZENDER, DE ONTVANGER HEEFT
+                          ALTIJD VOLDOENDE AAN 1 STOPBIT
+
+         INDIEN BIT1,0 =00 DAN IS HET DE SYNCHRONE MODE, DAN HEBBEN DE
+                           BITS7,6 DE VOLGENDE BETEKENIS
+	 BIT 6 ESD 0=INTERNE SYNCHRONISATIE
+                   1=EXTERNE SYNCHRONISATIE
+
+	 BIT 7 SCS 0= 1 SYNC KARAKTER
+                   1= 2 SYNHC KARAKTERS
+
+          DE SYNC KARAKTERS MOETEN DIRECT NA DE MODE INSTRUCTION NAAR
+          HET COMMANDO REGISTER GESCHREVEN WORDEN
+
+
+NA DE MODE INSTRUCTION KAN DE COMMAND INSTRUCTION GESCHREVEN WORDEN OP IEDER GEWENST MOMENT
+DE MODE INSTRUCTION ZIET ER ALS VOLGT UIT:
+
+	   B7   B6   B5   B4   B3   B2   B1   B0
+	   EH   IR   RIE  ER  SBRK  RE   TIE  TEN
+
+         EH  :0=GEEN EFFECT ;1=HUNT MODE
+         IR  :0=GEEN EFFECT ;1=INTERNAL RESET
+         RIE : ?
+         ER  :0=GEEN EFFECT ;1=RESET ERROR FLAGS PE,OE,FE
+	 SBRK:0=GEEN EFFECT;1=ZEND BREAK KARAKTER
+	 PE  :0=DISABLE ONTVANGER;1=ENABLE ONTVANGER
+	 TIE :?
+	 TEN :0=DISABLE ZENDER:1=ENABLE ZENDER
+
+
+
+
+CHECK MIDI
+
+MSX TURBO DAN STAAT BIJ DESTATUS VAN POORT 002DH DE WAARDE 03H
+
+INTERNE MSX MIDI OF U-PACK (GEEN FMBASIC)
+
+ADRES	     INTERNE        EXTERNE
+__________________________________________________________
+4018H	     41H(A)          ??H(?)
+4019H	     50H(P)          ??H(?)
+401AH	     52H(R)          ??H(?)
+401BH	     4CH(L)          ??H(?)
+401CH	     4FH(O)          4DH(M)
+401DH	     50H(P)          49H(I)
+401EH	     4CH(L)          44H(D)
+401FH	     4CH(L)          49H(I)
+__________________________________________________________
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

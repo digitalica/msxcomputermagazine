@@ -1,0 +1,249 @@
+<html>
+
+<head>
+<title>MILC - Topic New modem basic (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_39.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_41.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">New modem basic (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+   - Met toestemming overgenomen van Future Magazine #8 -
+
+
+               N E W   M O D E M   B A S I C
+              ===============================
+
+                         INLEIDING
+
+In   MSX-land  wordt   het  gebruik   van  de  modem  steeds 
+interessanter voor  de gebruikers. Begonnen we eerst nog met 
+een  zeer onderontwikkeld communicatieprogramma van Philips, 
+nu is het al mogelijk om met behulp van 'New Modem Basic' uw 
+eigen communicatieprogramma te schrijven in basic!
+
+'New Modem  Basic', de  naam zegt  het eigenlijk  al, is een 
+schitterende  uitbreiding op de bestaande MSX-Basic. Er zijn 
+een  flink  aantal  extra  instructies die  d.m.v. een  call 
+opdracht kunnen  worden gegeven.  Er is  al een  interessant 
+voorbeeld programma geschreven met die nieuwe instructies en 
+dat  werkt buitengewoon goed en is bovenal compatible met al 
+uw uitbreidingen!
+
+Hieronder  vindt  u  een  beknopt  overzicht  van  de  extra 
+commando's die  mogelijk zijn  in combinatie  met 'New Modem 
+Basic'.
+
+Commando + Syntax:
+
+_ANSWER(I)         Wordt    alleen    gebruikt    in   een 
+                   BBS-programma. Kijkt  op welke snelheid 
+                   de beller zit.
+                   De ANSWER routine kent 3 snelheden:
+                   I=1 er wordt gebeld op 300R/300T
+                   I=2 &quot;    &quot;&quot;    &quot;&quot;   &quot;&quot; 1200R/75T
+                   I=3 &quot;&quot;   &quot;&quot;    &quot;&quot;   &quot;&quot; 75R/1200T
+                   Heeft I  een andere  waarde, dan is het 
+                   geen modemgebruiker of  deze zit op een 
+                   onbekende snelheid.
+                   Note:
+                   Het  NMS-Modem kent meerdere snelheden, 
+                   maar mij  is in  de praktijk  gebleken, 
+                   dat  dit  door  de ANSWER-routine  niet 
+                   herkend   wordt.  Belt  iemand  bv  met 
+                   Equalizer  aan  dan wordt  dit door  de 
+                   ANSWER-routine gedetecteerd als zou dit 
+                   een gewone snelheid zijn.
+
+_BREAK             Stelt  de   breaktoets  in.  Nu  kunnen 
+                   bepaalde routines eventueel onderbroken 
+                   worden.  (MRING en  DIAL) De  standaard 
+                   ingestelde     break-toets     is    de 
+                   CODE-toets.   Dit   commando  mag   ook 
+                   achterwege    gelaten     worden.    De 
+                   break-toets   staat  dan  ingesteld  op 
+                   CTRL-STOP   (Niet   aan   te   bevelen, 
+                   aangezien  een  basic-programma  zonder 
+                   ONSTOPGOSUB dan afbreekt)
+
+_CARRIER(:GOSUB .) Wordt  alleen   gebruikt  in   een  BBS 
+                   programma. Achter GOSUB het regelnummer 
+                   invullen   waar  naartoe   gegaan  moet 
+                   worden  als   de  carrier  weg  is.  De 
+                   carrier   kan  door  onbekende  oorzaak 
+                   wegvallen  of  de  beller  heeft zomaar 
+                   opgehangen.
+
+_CHKMDM(I)         Controleer of  modem aanwezig is. I = 0 
+                   :  modem  aanwezig,  anders geen  modem 
+                   aanwezig.
+
+_CONNECT(I)        Wordt    alleen    gebruikt    in   een 
+                   Terminal-programma. Maakt verbinding op 
+                   de met INIMDM ingestelde snelheid.
+                   I = 0 : error
+                   I = 2 : carrier detected. Verbinding!
+                   I = 3 : routine afgebr. via CODE-toets
+                   I = 4 : nummer is in gesprek
+
+_DTRON             DTR  signaal aan.  DTR =  Data Terminal 
+                   Ready
+
+_DTROFF            DTR signaal uit.
+
+_ECHOON            Verstuurde   tekens    gaan   naar   de 
+                   telefoon-lijn EN naar het  scherm.  Dit 
+                   commando   wordt   gebruikt   als   het 
+                   programmma fungeert als een BBS.
+
+_ECHOOFF           Verstuurde  tekens gaan  ALLEEN naar de 
+                   telefoon-lijn. Alleen     binnenkomende 
+                   tekens worden op het scherm gezet. Dit 
+                   commando  moet dus  gebruikt worden als 
+                   het programma fungeert     als      een 
+                   Terminal.(Bel-programma)
+
+I=0:_FILEOUT(A$),I Verstuurt een tekstfile. A$       heeft 
+                   (drive)+filenaam.
+                   I bepaalt of meer j/n aan is of uit.
+                   I = 0  meer j/n staat aan.
+                   I = 1  meer j/n staat uit.
+                   Na afloop bevat I een controle-code.
+                   0 = tekstfile goed verzonden
+                   3 = afgebroken via CTRL-C of C
+                   7 = file niet gevonden.
+
+_FILEOUT           kan   in  een   terminal-programma  ook 
+                   gebruikt    worden    om    een    zgn. 
+                   ASCII-upload te  doen. De Meer j/n moet 
+                   dan  uiteraard UIT  staan. Afbreken via 
+                   CTRL-C of C
+
+
+_GET(I)            Haalt een  teken van  toetsenbord en/of 
+                   telefoon-lijn.  Bij LINEOFF  alleen van 
+                   toetsenbord.  De  ASCII-waarde van  het 
+                   teken  komt  in  I.  Eventueel vertalen 
+                   naar een  letter via bv IN$=CHR$(I). De 
+                   routine  wacht  op  een  toets  en komt 
+                   terug in Basic als dit gebeurt.
+
+
+I=3:_INIMDM(I)     Stelt   het  modem   op  een   bepaalde 
+                   snelheid in.  I mag  de waarden 0 t/m 7 
+                   hebben. Zie modemsnelheden.
+
+_INITMD            Stelt het communicatie-protocol in.
+                   Staat standaard op X8N1.
+                   X = Xon/Xoff protocol aan
+                   8 = 8 data-bits
+                   N = non parity
+                   1 = 1 stopbit
+
+_LINEON            Telefoon-lijn aan.
+
+_LINEOFF           Telefoon-lijn uit.
+                   Tijdens   een  verbinding  kan  dus  de 
+                   telefoonlijn aan  en uit  gezet worden. 
+                   Dit heeft geen invloed op de verbinding 
+                   die   blijft  gewoon  bestaan.  In  een 
+                   BBS-programma   kan   _LINEOFF   worden 
+                   gebruikt om  als sysop lokaal even iets 
+                   te  doen,zonder dat  de beller kan zien 
+                   wat er  gebeurt.Hij staat  dan even  op 
+                   non-actief  Er  wordt  niets  naar  hem 
+                   toegestuurd  en hij  kan zelf ook niets 
+                   sturen.Een  _LINEON   maakt  dit   weer 
+                   ongedaan.
+
+_LO(A$)            Stuurt de tekst in A$ naar scherm en/of 
+                   telefoon-lijn.      Afhankelijk     van 
+                   ECHOON/ECHOOFF    en    LINEON/LINEOFF. 
+                   Eventueel  binnenkomende  tekens worden 
+                   genegeerd,  behalve   de  toetsen  voor 
+                   pauzeren,  afbreken en weer verder. Dit 
+                   houdt  tevens  in,dat  de  buffers,waar 
+                   toetsen  in  komen,  leeg  blijven.  Er 
+                   worden  geen  toetsen &quot;onthouden&quot;.  Dit 
+                   voorkomt als  men bv  in een  BBS op de 
+                   commandoregel  staat en  men drukt  per 
+                   ongeluk de  Return toets een poosje in, 
+                   dat  dan  de  regel vele  malen opnieuw 
+                   wordt    afgedrukt.    _LO    is    het 
+                   gebruikelijke  commando om regels tekst 
+                   menu's e.d. te versturen.
+
+_LB(A$)            Zelfde  als   _LO(A$),nu  is  de  tekst 
+                   alleen  te  pauzeren  via CTRL-S,echter 
+                   niet af te breken. Binnenkomende tekens 
+                   tijdens   het   versturen   worden   nu 
+                   &quot;onthouden&quot;.
+                   (Toetsenbord-buffer   en   modem-buffer 
+                   blijven  intact) Gebruik  _LB ALTIJD in 
+                   een  input-routine   om  de   ingetypte 
+                   tekens  weer terug  te sturen  en/of op 
+                   het scherm te zetten.
+
+
+_LS(A$)            Zelfde als _LO(A$),met dit verschil dat 
+                   eventuele   eindspaties   niet   worden 
+                   afgedrukt.
+                   A$ is bv &quot;BBS-programma.&quot;
+                   Via   _LO(A$)  wordt   de  hele  string 
+                   verstuurd,ook    de    eind-spaties.Met 
+                   _LS(A$) wordt  dan als laatste teken de 
+                   &quot;.&quot; verstuurd.
+
+
+De  commando's  _LO(A$)  en _LS(A$)  kunnen op  4 manieren 
+gebruikt
+worden:
+
+1. _LO(A$)      Stuurt een Return + Linefeed mee.
+   _LS(A$)
+
+2. _LO(A$);     Nu geen Return + Linefeed.
+   _LS(A$);
+
+3. _LO(A$),I    Zelfde als bij 1,controle-code komt in I.
+   _LS(A$),I    I = 0 : string is geheel verzonden.
+                I = 3 : afgebroken met CTRL-C of C.
+
+4. _LO(A$);,I  Zelfde als bij 3,nu geen Return + Linefeed.
+   _LS(A$);,I
+
+Op   commando  _LB(A$)   zijn  alleen  punt  1  en  2  van 
+toepassing.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_39.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_41.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+; Twisting bars by
+; An-ti Silvast 2000
+
+; Run through GEN80 and type 
+; "> TW TWISTED.DAT" to run.
+; MSX1/64k/16k/VDP1 required and
+; recommended.
+
+; Sorry for little comments.
+
+; write to asilvast@cc.hut.fi.
+;
+
+ org #0100
+ jp start
+ include file.inc
+krupps dw 0
+
+start:
+
+ call refile
+ ld a,2
+ call scrmode
+
+ ei
+ call col_t
+ call setup_nt
+
+;black bg
+ ld a,#00
+ out (#99),a
+ ld a,#87
+ out (#99),a
+
+; use 1 colour table
+; and 1 pattern table
+
+ ld a,#FF-#40-#20
+ out (#99),a
+ ld a,#83
+ out (#99),a
+ 
+ ld a,#0
+ out (#99),a
+ ld a,#84
+ out (#99),a
+
+kontikue:
+  
+ ld hl,(krupps)
+ ld de,80
+ add hl,de
+ ld a,h
+ cp #14
+ jp nz,not_yet
+ ld hl,0
+not_yet: 
+ ld (krupps),hl
+
+ ld de,image
+ add hl,de
+ ld d,h
+ ld e,l
+ 
+ halt  ; vretrace
+ call screendump
+
+ call ispressed
+ jp nz,kontikue
+ 
+ sub a
+ call scrmode
+ ret
+  
+spede dw 0
+screendump:
+; de - source
+ sub a
+ out (#99),a
+ ld a,#40
+ out (#99),a
+
+ ld (spede),sp
+ di
+
+ ld c,10
+_out:
+ ld sp,file2
+ ld b,192
+_in:
+ pop hl
+ add hl,de
+ ld a,(hl)
+ out (#98),a
+ djnz _in
+
+ inc de
+ dec c
+ jp nz,_out
+
+ ld sp,(spede)
+ ei 
+ ret
+
+
+
+setup_nt:
+; setup nametable
+; pseudolinear
+ sub a
+ out (#99),a
+ ld a,#40+#18
+ out (#99),a
+ 
+ ld d,0
+ ld c,24
+outer:
+ halt
+ ld a,d
+ ld b,10
+inner:
+ out (#98),a
+ add a,24
+ djnz inner
+ ld a,d
+ ld b,10
+inner2:
+ out (#98),a
+ add a,24
+ djnz inner2
+ ld a,d
+ ld b,10
+inner3:
+ out (#98),a
+ add a,24
+ djnz inner3
+
+ out (#98),a
+ out (#98),a
+
+ inc d
+ dec c
+ jp nz,outer
+
+ ret
+
+col_t:
+; setup colour table. We'll set it 
+; full of black and white, but it
+; could be anything, also any colours
+; for any row since we're in SCREEN 2.
+
+ sub a
+ out (#99),a
+ ld a,#40+#20
+ out (#99),a
+
+ ld d,24
+cinner:
+ halt
+ ld b,0
+couter:
+ ld a,#F0
+ out (#98),a
+ djnz couter
+ dec d
+ jp nz,cinner
+ ret
+
+
+; MSX-Pascal writes
+; some 4 bytes of header data in 
+; the beginning of the data file.
+; I don't know if other machines 
+; Pascals do, so if you plan on running
+; the precalculator on your daddies big
+; PC, you might have to alter this
+; source. Serves you right though.
+
+file equ $
+file2 equ $+4 
+image equ file2+192*2ננננננננננננננננננננננננננננננננננננננננננננננננננננננננננננננננ

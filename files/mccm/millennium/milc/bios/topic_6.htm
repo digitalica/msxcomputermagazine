@@ -1,0 +1,457 @@
+<html>
+
+<head>
+<title>MILC - Topic Math-pack info v2.00 [2/2]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_7.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Math-pack info v2.00 [2/2]</b><br>
+    <i>Jan vd Meer</i>, 00-00-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+==============================================================================
+===============    MATH-PACK ROUTINES EN HUN ENTRY-ADRESSEN    ===============
+==============================================================================
+
+
+   PRIMAIRE REKENFUNKTIES:
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Funktie                                               |
+  |--------|--------|-------------------------------------------------------|
+  | DECSUB | &amp;H268C | DAC &lt;--- DAC - ARG                                    |
+  | DECADD | &amp;H269A | DAC &lt;--- DAC + ARG                                    |
+  | DECNRM | &amp;H26FA | normaliseert DAC: eventuele voorloopnullen worden     |
+  |        |        |  uit de mantisse verwijderd. Exponent wordt aangepast |
+  |        |        |  op dec. punt voor 1e cijfer. Bijvoorbeeld: 0.001234  |
+  |        |        |  wordt: .12340000000000E-2 (i.n.) ---&gt; 1.234E-3 (w.n.)|
+  | DECROU | &amp;H273C | rondt DAC af tot mantisse van 14 relevante cijfers.   |
+  | DECMUL | &amp;H27E6 | DAC &lt;--- DAC * ARG                                    |
+  | DECDIV | &amp;H289F | DAC &lt;--- DAC / ARG                                    |
+  ---------------------------------------------------------------------------
+Noot: Deze routines behandelen de getallen in DAC en ARG als dubbele
+      precisie. De registers worden niet bewaard !!!
+
+
+
+   GONIOMETRISCHE FUNCTIES, WORTELTREKKEN, KWADRATEREN &amp; AFRONDEN:
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Funktie                       | Wijzigt registers     |
+  |--------|--------|-------------------------------|-----------------------|
+  | COS    | &amp;H2993 | DAC &lt;--- COS(DAC)             |  A,B,C,D,E,H en L     |
+  | SIN    | &amp;H29AC | DAC &lt;--- SIN(DAC)             |  A,B,C,D,E,H en L     |
+  | TAN    | &amp;H29FB | DAC &lt;--- TAN(DAC)             |  A,B,C,D,E,H en L     |
+  | ATN    | &amp;H2A14 | DAC &lt;--- ATN(DAC)             |  A,B,C,D,E,H en L     |
+  | LOG    | &amp;H2A72 | DAC &lt;--- LOG(DAC)             |  A,B,C,D,E,H en L     |
+  | SQR    | &amp;H2AFF | DAC &lt;--- SQR(DAC)             |  A,B,C,D,E,H en L     |
+  | EXP    | &amp;H2B4A | DAC &lt;--- EXP(DAC)             |  A,B,C,D,E,H en L     |
+  | RND    | &amp;H2BDF | DAC &lt;--- RND(DAC)             |  A,B,C,D,E,H en L     |
+  ---------------------------------------------------------------------------
+  Noot: Deze functies hebben dezelfde naam en functie als in BASIC.
+
+
+
+ TEKEN-MANIPULATIES:
+-----------------------------------------------------------------------------
+| Label  | Adres  | Funktie                           | Wijzigt register(s) |
+|--------|--------|-----------------------------------|---------------------|
+| SIGN   | &amp;H2E71 | AF &lt;--- teken van DAC             |     A               |
+|        |        |   NC, Z    (A = &amp;H00) &lt;--- DAC = 0|                     |
+|        |        |   NC, NZ   (A = &amp;H01) &lt;--- DAC &gt; 0|                     |
+|        |        |   C,S-vlag (A = &amp;HFF) &lt;--- DAC &lt; 0|                     |
+| ABSFN  | &amp;H2E82 | DAC &lt;--- ABS(DAC)                 |     A,B,C,D,E,H,L   |
+|        |        |   Resultaat: Mantisse positief    |                     |
+| NEG    | &amp;H2E8D | DAC &lt;--- NEG(DAC)                 |     A,H,L           |
+|        |        |   Teken mantisse + &lt;----  -       |                     |
+|        |        |               of - &lt;----  +       |                     |
+| SGN    | &amp;H2E97 | DAC &lt;--- SGN(DAC)                 |     A,H,L           |
+|        |        |   Resultaat is 2 bytes integer    |                     |
+|        |        |   DAC+2 = &amp;H00 &lt;----- DAC = 0     |                     |
+|        |        |   DAC+3 = &amp;H00 &lt;-----             |                     |
+|        |        |                                   |                     |
+|        |        |   DAC+2 = &amp;H01 &lt;----- DAC &gt; 0     |                     |
+|        |        |   DAC+3 = &amp;H00 &lt;-----             |                     |
+|        |        |                                   |                     |
+|        |        |   DAC+2 = &amp;HFF &lt;----- DAC &lt; 0     |                     |
+|        |        |   DAC+3 = &amp;HFF &lt;-----             |                     |
+|        |        |       (&amp;HF663) &lt;----- &amp;H02        |                     |
+-----------------------------------------------------------------------------
+   Noot: De funktie SGN is identiek aan de BASIC-funktie SNG( &lt; N &gt; )
+         De funktie ABSFN is identiek aan de BASIC-funktie ABS( &lt; N &gt; )
+         (Overige funkties hebben geen equivalent in BASIC.)
+         De funktie SIGN is soortgelijk als SGN. SIGN geeft echter het
+         resultaat in het 'A' register en de vlaggen in het 'F' register zijn
+         reeds gezet (voor gebruik in machinetaal). DAC en VALTYP (&amp;HF663)
+         blijven ongewijzigd bij SIGN !!
+
+
+
+
+   DATA VERPLAATSINGEN:
+
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Funktie          | Type variabele | wijzigt registers |
+  |--------|--------|------------------|----------------|-------------------|
+  | MAF    | &amp;H2C4D | ARG &lt;--- DAC     | dubb. precisie | A,B,D,E,H,L       |
+  | MAM    | &amp;H2C50 | ARG &lt;--- (HL)    | dubb. precisie | A,B,D,E,H,L       |
+  | MOV8DH | &amp;H2C53 | (DE) &lt;--- (HL)   | dubb. precisie | A,B,D,E,H,L       |
+  | MFA    | &amp;H2C59 | DAC &lt;--- ARG     | dubb. precisie | A,B,D,E,H,L       |
+  | MFM    | &amp;H2C5C | DAC &lt;--- (HL)    | dubb. precisie | A,B,D,E,H,L       |
+  | MMF    | &amp;H2C67 | (HL) &lt;--- DAC    | dubb. precisie | A,B,D,E,H,L       |
+  | MOV8HD | &amp;H2C6A | (HL) &lt;--- (DE)   | dubb. precisie | A,B,D,E,H,L       |
+  | XTF    | &amp;H2C6F | (SP) &lt;--&gt; DAC    | dubb. precisie | A,B,D,E,H,L       |
+  | PHA    | &amp;H2CC7 | ARG &lt;--- (SP)    | dubb. precisie | A,B,D,E,H,L       |
+  | PHF    | &amp;H2CCC | DAC &lt;--- (SP)    | dubb. precisie | A,B,D,E,H,L       |
+  | PPA    | &amp;H2CDC | (SP) &lt;--- ARG    | dubb. precisie | A,B,D,E,H,L       |
+  | PPF    | &amp;H2CE1 | (SP) &lt;--- DAC    | dubb. precisie | A,B,D,E,H,L       |
+  | PUSHF  | &amp;H2EB1 | DAC &lt;--- (SP)    | enk.  precisie |     D,E           |
+  | MOVFM  | &amp;H2EBE | DAC &lt;--- (HL)    | enk.  precisie | B,C,D,E,H,L       |
+  | MOVFR  | &amp;H2EC1 | DAC &lt;--- (CBED)  | enk.  precisie |     D,E           |
+  | MOVRF  | &amp;H2ECC | (CBED) &lt;--- DAC  | enk.  precisie | B,C,D,E,H,L       |
+  | MOVRMI | &amp;H2ED6 | (CBED) &lt;--- (HL) | enk.  precisie | B,C,D,E,H,L       |
+  | MOVRM  | &amp;H2EDF | (BCDE) &lt;--- (HL) | enk.  precisie | B,C,D,E,H,L       |
+  | MOVMF  | &amp;H2EE8 | (HL) &lt;--- DAC    | enk.  precisie | A,B,D,E,H,L       |
+  | MOVE   | &amp;H2EEB | (HL) &lt;--- (DE)   | enk.  precisie | B,C,D,E,H,L       |
+  | VMOVAM | &amp;H2EEF | ARG &lt;--- (HL)    | VALTYP         | B,C,D,E,H,L       |
+  | MOVVFM | &amp;H2EF2 | (DE) &lt;--- (HL)   | VALTYP         | B,C,D,E,H,L       |
+  | VMOVE  | &amp;H2EF3 | (HL) &lt;--- (DE)   | VALTYP         | B,C,D,E,H,L       |
+  | VMOVFA | &amp;H2F05 | DAC &lt;--- ARG     | VALTYP         | B,C,D,E,H,L       |
+  | VMOVFM | &amp;H2F08 | DAC &lt;--- (HL)    | VALTYP         | B,C,D,E,H,L       |
+  | VMOVAF | &amp;H2F0D | ARG &lt;--- DAC     | VALTYP         | B,C,D,E,H,L       |
+  | VMOVMF | &amp;H2F10 | (HL) &lt;--- DAC    | VALTYP         | B,C,D,E,H,L       |
+  ---------------------------------------------------------------------------
+
+Noot: Een registernaam tussen haakjes (DE), (HL), (SP) betekent, dat het
+      betreffende register de pointer bevat naar het geheugenadres waar de
+      1e byte van de te verplaatsen 2, 4 of 8 databytes is (of moet worden-)
+      opgeslagen.
+
+      4 Registernamen tussen haakjes zoals (CBED) bevatten een getal in enkele
+      precisie: Van links naar rechts bevatten de 4 registers het exponentbyte
+      (in C), mantissa 1e &amp; 2e cijfer (in B), idem 3e &amp; 4e cijfer (in E) en
+      idem 5e &amp; 6e cijfer (in D).
+
+      &quot;VALTYP&quot; betekent dat het aantal te verplaatsen bytes (2, 4 of 8)
+      en de juiste plaatsing in DAC of ARG bepaald wordt door de code voor het
+      type variabele in geheugenplaats 'VALTYP' (&amp;HF663).
+
+
+
+   VERGELIJKINGEN:
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Type variabele  | Links  | Rechts | Wijzigt registers |
+  |--------|--------|-----------------|--------|--------|-------------------|
+  | FCOMP  | &amp;H2F21 | enk.  precisie  | CBED *)| DAC    |    H,L            |
+  | ICOMP  | &amp;H2F4D | 2-byte integer  | DE     | HL     |    H,L            |
+  | XDCOMP | &amp;H2F5C | dubb. precisie  | ARG    | DAC    |  A,B,C,D,E,H,en L |
+  ---------------------------------------------------------------------------
+   *) In C: Teken &amp; exponentcodering        in B: 1e &amp; 2e cijfer mantissa
+      in E: 3e &amp; 4e cijfer mantissa,        in D: 5e &amp; 6e cijfer mantissa
+
+   Noot: Het resultaat komt in het A-register, de betekenis is:
+             A=1   ----------&gt;  links &lt; rechts
+             A=0   ----------&gt;  links = rechts
+             A=-1 (&amp;HFF) ----&gt;  links &gt; rechts
+
+
+
+  INVOER ascii string, UITVOER (naar DAC) integer of getal met drijvende punt
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Funktie                                               |
+  |--------|--------|-------------------------------------------------------|
+  | FIN    | &amp;H3299 | AsciiZ-string, welke een pos./neg. getal (met/zonder  |
+  |        |        | dec. punt) voorstelt wordt geconverteerd naar of een  |
+  |        |        | integer of een getal met drijvende punt (volgens in-  |
+  |        |        | terne notatie) en opgeslagen in DAC.  &amp;  VALTYP       |
+  |-------------------------------------------------------------------------|
+  | Invoer:     HL &lt;---- Pointer naar in geheugen opgeslagen ascii string.  |
+  |              A &lt;---- Eerste teken van de opgeslagen string.         *)  |
+  | Uitvoer:   DAC &lt;---- Integer of getal van enkele- of dubbele-precisie.  |
+  |              C &lt;---- &amp;HFF: Ascii string bevatte geen decimale punt. **) |
+  |                   of &amp;H00: Ascii string bevatte wel decimale punt.      |
+  |              B &lt;---- aantal bytes mantissa                         ***) |
+  |              D &lt;---- Aantal numerieke karakters in de ascii string      |
+  |       (&amp;HF663) &lt;---- VALTYP (&amp;H02, &amp;H04 of &amp;H08)                  ****) |
+  | Alle registers worden gewijzigd !!                                      |
+  ---------------------------------------------------------------------------
+  Noot: De basic-rom moet reeds in page 1 aangeschakeld zijn.
+
+*)     Data-invoer in het 'A' register is niet nodig bij Turbo-R. (genegeerd)
+**)    Bij een integere waarde betekent &quot;&amp;HFF&quot; dat het getal negatief is.
+***)   Alleen geldig bij getal in dubbele precisie.
+****)  De variabele codering die in VALTYP wordt gezet hangt af van de
+       getalswaarde, welke de ascii-string blijkt voor te stellen.
+
+   Als niet zeker is, dat de string een getal met dubbele precisie
+   voorstelt, dan dienen v&cent;&cent;r het gebruik van deze routine de 8 geheugen-
+   plaatsen DAC+0 t/m DAC+7 gewist te worden door ze te vullen met &amp;H00.
+
+   Een ascii-string, welke een getal voorstelt met decimale punt erin, wordt
+   altijd geconverteerd naar een getal met drijvende decimale punt. (enkele
+   of dubbele precisie)
+
+   Voor een integere waarde mag de ascii-string bestaan uit:
+            Alleen cijfers met teken erv&cent;&cent;r. (+ teken niet verplicht)
+        of: &amp;H....   1 - 4 hex  karakters
+        of: &amp;O....   1 - 6 octal karakters (binnen range &amp;O0 - &amp;O177777)
+        of: &amp;B....   1 - 16 binaire karakters &quot;0&quot; of &quot;1&quot;
+
+   Voor een waarde in enkele- of dubbele precisie mag de string bestaan uit:
+            Alleen cijfers met teken erv&cent;&cent;r (+teken niet verplicht) met- of
+            zonder decimale punt.
+        of: Een wetenschappelijke notatie.
+            Notatie als macht (...^..) is niet toegestaan.
+
+
+   CONVERSIE WAARDE IN DAC naar afdrukbare ascii-string
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Funktie                                               |
+  |--------|--------|-------------------------------------------------------|
+  | FOUT   | &amp;H3425 | Conversie van (DAC) naar dubbele precisie en daarna   |
+  |        |        | conversie naar ascii-string.   (&amp;HF663) &lt;---- &amp;H08    |
+  |-------------------------------------------------------------------------|
+  | Waarde in DAC positief: 1e karakter van de string is een spatie.        |
+  | Waarde in DAC negatief: 1e karakter is minteken. DAC neg. ----&gt; DAC pos.|
+  |                                                                         |
+  | Indien de waarde van de exponent (i.n.) buiten het bereik -1 t/m +14    |
+  | ligt, dan wordt de wetenschappelijke notatie gebruikt. (Decimale punt   |
+  | na 1e cijfer van de mantissa)                                           |
+  | uitvoer: HL &lt;---- pointer naar startadres van de string.                |
+  ---------------------------------------------------------------------------
+  Noot: De basic-rom moet reeds in page 1 aangeschakeld zijn.
+
+
+   CONVERSIE WAARDE IN DAC naar afdrukbare geformatteerde ascii-string
+   (Vergelijkbaar met basicfunktie &quot;PRINT USING&quot;)
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Funktie                                               |
+  |--------|--------|-------------------------------------------------------|
+  | PUFOUT | &amp;H3426 | Als funktie FOUT (zie boven) doch geformateerd        |
+  |-------------------------------------------------------------------------|
+  | invoer:   A &lt;---- formaat codering                                      |
+  |                bit 7:  0 = ongeformateerd      1 = geformateerd         |
+  |                bit 6:  0 = zonder komma's      1 = met komma's om de    |
+  |                                                    drie cijfers.        |
+  |                bit 5:  0 = geen betekenis      1 = voorafgaande spaties |
+  |                                                    worden opgevuld met  |
+  |                                                    punten.              |
+  |                bit 4:  0 = geen betekenis      1 = een &quot;$&quot; wordt voor de|
+  |                                                    waarde geplakt.      |
+  |                bit 3:  0 = geen betekenis      1 = een &quot;+&quot; wordt voor   |
+  |                                                    een positieve waarde |
+  |                                                    gezet.               |
+  |                bit 2:  0 = geen betekenis      1 = het +/-teken komt na |
+  |                                                    de waarde.           |
+  |                bit 1:  niet gebruikt                                    |
+  |                bit 0:  0 = fixed point         1 = floating point       |
+  |           B &lt;---- aantal cijfers voor (excl.) de decimale punt.         |
+  |           C &lt;---- aantal cijfers na   (incl.) de decimale punt.         |
+  |                                                                         |
+  | uitvoer: HL &lt;---- pointer naar startadres van de string.                |
+  ---------------------------------------------------------------------------
+  Noot: Indien het A register = &amp;H00 dan wordt de inhoud van de overige
+        registers genegeerd en de funktie FOUT (Label &amp;H3425) uitgevoerd.
+        De basic-rom moet reeds in page 1 aangeschakeld zijn !!!
+
+
+  CONVERSIE INTEGER (in DAC) naar binaire/octal/hexadecimale ascii-string.
+  ---------------------------------------------------------------------------
+  | Label  | Adres  | Funktie                                               |
+  |--------|--------|-------------------------------------------------------|
+  | FOUTB  | &amp;H371A | Maakt van de 2-byte integer in DAC+2, +3 een binair   |
+  |        |        | uitgedrukte ascii-string.                             |
+  | FOUTO  | &amp;H371E | Maakt van de 2-byte integer in DAC+2, +3 een octaal   |
+  |        |        | uitgedrukte ascii-string.                             |
+  | FOUTH  | &amp;H3722 | Maakt van de 2-byte integer in DAC+2, +3 een hexade-  |
+  |        |        | cimaal uitgedrukte ascii-string.                      |
+  |-------------------------------------------------------------------------|
+  | invoer: DAC+2 (lowbyte), DAC+3 (highbyte) &lt;----- 2-byte integer         |
+  |         VALTYP &lt;--- 2                                                   |
+  | uitvoer:    HL &lt;--- Pointer naar beginadres van de string.              |
+  ---------------------------------------------------------------------------
+
+Noot: Er zijn geen strings gereserveerd. Het startadres van de string van 
+      de uitvoerroutine is normaal FBUFFR (vanaf &amp;HF7C5). In sommige gevallen
+      kan het enigzins verschillen. Dit geldt ook voor de routines &quot;FOUT&quot; en
+      &quot;PUFOUT&quot; voor conversie naar een string.
+
+
+
+   TYPE CONVERSIE:
+  --------------------------------------------------------------------------
+  | label  | adres  | functie                                              |
+  |------------------------------------------------------------------------|
+  | FRCINT | &amp;H2F8A | Converteert (DAC) naar een 2-byte integer (DAC+2, 3).|
+  | FRCSNG | &amp;H2FB2 | Converteert (DAC) naar een enkele precisie waarde.   |
+  | FRCDBL | &amp;H303A | Converteert (DAC) naar een dubbele precisie waarde.  |
+  | FIXER  | &amp;H30BE | (DAC) &lt;--- SGN(DAC) * INT(ABS(DAC))                  |
+  |             Alle registers kunnen gewijzigd worden                     |
+  --------------------------------------------------------------------------
+
+Noot: Na het aanroepen van een van deze routines, bevat VALTYP (&amp;HF663) de
+      code (2, 4 of 8) van het gewijzigde getalstype in DAC.
+      De basic-rom moet reeds in page 1 aangeschakeld zijn !!
+      Alle registers worden veranderd.
+
+
+
+   REKENFUNKTIES MET 2 INTEGERE GETALLEN:
+   (Positief +1 t/m +32767 of negatief -1 t/m -32768)
+  --------------------------------------------------------------------------
+  | Label  | Adres  | Funktie           | Wijzigt registers                |
+  |--------|--------|-------------------|----------------------------------|
+  | UMULT  | &amp;H314A | DE &lt;--- BC * DE   | A,B,C,D,E                        |
+  | ISUB   | &amp;H3167 | HL &lt;--- DE - HL   | Alle                             |
+  | IADD   | &amp;H3172 | HL &lt;--- DE + HL   | Alle                             |
+  | IMULT  | &amp;H3193 | HL &lt;--- DE * HL   | Alle                             |
+  | IDIV   | &amp;H31E6 | HL &lt;--- DE \ HL   | Alle                             |
+  | IMOD   | &amp;H323A | HL &lt;--- DE mod HL | Alle                             |
+  |        |        | DE &lt;--- (2 * resultaat indien getallen positief)     |
+  --------------------------------------------------------------------------
+Noot: De routine IDIV geeft, indien DE en HL beiden met een POSITIEF integer
+      getal geladen waren, de rest * 2 terug in register DE. De rest verkrijgt
+      men door (DE)/2. De routine IMOD heeft men dan niet nodig.
+
+      Bij de routines IDIV en IMOD moeten BEIDE getallen positief of negatief
+      zijn om een geldige uitkomst te verkrijgen.
+
+      Negatieve getallen als twee complement! en #02 in VALTYP zetten.
+
+
+
+
+   MACHTSVERHEFFEN:
+ -----------------------------------------------------------------------------
+ | Label  | Adres  | Funktie                  | Grondtal | Macht | Resultaat |
+ |--------|--------|--------------------------|----------|-------|-----------|
+ | SGNEXP | &amp;H37C8 | macht van enk. precisie  |    DAC   |  ARG  |    DAC    |
+ | DBLEXP | &amp;H37D7 | macht van dubb. precisie |    DAC   |  ARG  |    DAC    |
+ | INTEXP | &amp;H383F | macht van 2-byte integer |    DE    |  HL   |    DAC    |
+ -----------------------------------------------------------------------------
+
+ Noot: Alle registers worden gewijzigd.
+
+
+
+
+
+  @@@  EXTRA: @@@
+
+  --------------------------------------------------------------------------
+  | Label  | Adres  | Funktie                                              |
+  |--------|--------|------------------------------------------------------|
+  | PRTHL  | &amp;H3412 | Zet HL decimaal op het scherm.                       |
+  --------------------------------------------------------------------------
+
+Noot: Deze, wellicht meest gebruikte, MP-routine is niet officieel! Page 1 
+      hoeft hierbij niet op de ROM te staan.
+
+Op en aanmerkingen over deze file graag sturen naar:
+
+Jan van der Meer
+Rensumaheerd 16
+9736 AA Groningen
+^/*\^ 050-417266
+
+;------------------------------------------------------------------
+;ML-PROGRAMMA VOOR UITVOERING VAN EEN MATHPACK ROUTINE WELKE OOK DE
+;BASIC-ROM (in page 1) GEBRUIKT. B.v. mathpack-routine &quot;FIN&quot;
+;Onderstaand programma werkt op elke MSX computer (in COM-files, geen basic)
+;-------------------------------------------------------------------
+;Opmerking: De inputbuffer (#F55E t/m #F65F = 258 bytes) wordt alleen gebruikt
+;           voor input via het toetsenbord en is dus vrij voor gebruik als
+;           geheugen in pagina 3. Omdat pagina 3 nooit weggeschakeld wordt kan
+;           dit geheugengebied gebruikt worden voor 'lastige' klussen, welke
+;           anders in conflict komen met benodigde slotomschakelingen.
+;           Gebruik van dit geheugengebied heeft als bijkomend voordeel, dat
+;           er geen geheugen behoeft te worden gereserveerd elders in pag. 3
+
+
+        LD   HL,COPY_ML ;Beginadres te kopie‰ren ML-code
+        LD   DE,#F55E   ;Input-buffer, te gebruiken als tijdelijke
+                        ; opslagplaats voor ML-routine
+        LD   BC,#004D   ;Aantal bytes van ML-routine
+        LDIR            ;Kopi‰er ML-code naar input-buffer
+        LD   HL,GETAL   ;Ascii-Z string (getalswaarde in ascii)
+        LD   DE,#F600   ;Opslagadres (in input-buffer)
+        LD   BC,#0016   ;Maximum mogelijke aantal bytes (21 + eindnul = 22)
+        LDIR            ;Ascii-Z string kopi‰ren naar input-buffer
+        CALL #F55E      ;ML-routine (in buffer) uitvoeren
+        JR   VERVOLG
+;=======================
+
+;--&gt; Instellingen betreffende RAM in pag.1 opvragen en opslaan
+
+COPY_ML IN   A,(#A8)    ;Lees slotregister
+        LD   (#F65E),A  ;Opslaan in input-buffer
+        LD   A,(#FFFF)  ;Lees komplement van subslotregister
+        CPL             ;Converteer naar werkelijke inhoud van subslotregister
+        LD   (#F65F),A  ;Opslaan in input-buffer
+
+;--&gt; Basic-ROM aanschakelen
+
+        LD   A,(#FCC1)  ;Slotadres basic-ROM
+        LD   HL,#4000   ;Pagina identificatie
+        CALL #0024      ;Schakel basic-ROM in pagina 1
+
+;--&gt; Mathpack routine uitvoeren
+
+        LD   HL,#F600   ;Input benodigd voor MATHPACK routine &quot;FIN&quot;
+        LD   A,(HL)     ;Idem
+        PUSH IX         ;Save
+        PUSH IY         ;Save
+ENTRY_M LD   IX,#3299   ;Entry adres MATHPACK routine &quot;FIN&quot;
+                        ;Conversie ascii-Z naar notatie in 'DAC' &amp; 'VALTYP'
+                        ;Het adres komt na kopi‰ren in #F57D te staan. Als
+                        ;er een andere routine nodig is kan het adres van die
+                        ;routine in #F5D7 worden ingevuld voordat de routine
+                        ;met &quot;CALL #F55E&quot; wirdt aangeroepen.
+        LD   IY,(#FCC0) ;Slot ID basic-ROM
+        CALL #001C      ;Call mathpack-routine
+
+;--&gt; RAM terugschakelen in pagina 1
+
+        LD   A,(#F65E)  ;Haal oude instelling slotregister
+        OUT  (#A8),A    ;Herstel instelling slotregister
+        LD   A,(#F65F)  ;Haal oude instelling subslotregister
+        LD   (#FFFF),A  ;Herstel instelling subslotregister
+        POP  IY         ;Herstel IY
+        POP  IX         ;Herstel IX
+        RET             ;Terug naar normale ML-routine
+;---------------
+GETAL   DEFB &quot;12345.6789&quot; ;(11 BYTES) voorbeeld van mogelijke ascii-Z string
+        DEFS 11           ;+ 11 NUL-bytes = totaal 22 bytes
+;========================
+
+VERVOLG NOP             ;Hier komt het vervolg van het ML-programma
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

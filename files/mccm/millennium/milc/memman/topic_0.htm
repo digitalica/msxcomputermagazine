@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<title>MILC - Topic How to obtain (undocumented) MemMan info</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">How to obtain (undocumented) MemMan info</b><br>
+    <i>Maarten Verheijdt & Vincent van Dam</i>, 24-10-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+			      *** MemMan v2.4 ***
+
+		 Warning! These addresses can be incompatible
+
+Maarten &quot;The Arithmetic Master&quot; Verheijdt &amp; Vincent &quot;Hacker&quot; van Dam, 94/10/24
+
+How to obtain (undocumented) MemMan info ?
+==========================================
+
+1st - find out where MemMan is (which DOS-segment)
+2nd - search for the string #FE #FD
+3rd - position of byte containing #FE is presented by 'x'
+	x+.. \ default command string
+	x+ 2 / when MemMan is installed
+	x+ 1 = #FD
+	x+ 0 = #FE
+	x- 1 \ Maximum heap
+	x- 2 / length
+	x- 3 Maximum hook entries
+	x- 4 Maximum TSR entries
+	x- 5 Recursion depth
+
+Note: This information is at least legal with v2.4 and since MST is never to
+      be seen again (I think - seen some latest software ?? no ? neither
+      have I) , you can use this information if you think you need them.
+      Changing the settings is not a smart thing to do , because MemMan
+      may crash.
++----
+| WANTED: more illegal information about MSX-stuff.
++ -------------------------------------------------
+| I have some illegal info
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

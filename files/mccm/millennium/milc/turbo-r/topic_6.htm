@@ -1,0 +1,938 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX View functions</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX View functions</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+&lt;685                                                                    &gt;
+-------------------------------------------------------------------------
+                                C
+                Summary of MSX VIEW Functions
+------------------------------------------------------------------------
+
+C.1 Function name summary
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+243             _absread()      read the used logic sector      496
+107             _actioncntl()   displaying of controled actions 574
+183             _arc()          arc painting (??)               431
+80              _backwin()      transfers window to backside    394
+365             _basename()     analysis of the anem of the 
+                                bus (possession of the filename)511
+367             _bdos()         performance of MSX-DOS2
+                                system call                     513
+130             _blcpixel()     entered point from to a block?? 415
+129             _blcpoint()     possession of colorcode of the
+                                upper block                     415
+131             _blcread()      reading from block to memory    416
+132             _blcwrite()     writing from memory to block    416
+178             _box()          painting of a box, in the
+                                middle empty                    429
+198             _changecolor()  changing of the designated
+                                color of the inside area        438
+357             _chdir()        change of current directory     504
+229             _chfile()       designation of current file     489
+60              _chfont()       change of current font
+371             _chkversion     check versionnumber of MSX View 515
+245             _choice()       possession of diskformat
+                                message                         496
+312             _chpd()         change of printerdriver         624
+50              _chpen()        change of current pen           402
+140             _chrwidth()     possession of character width   454
+269             _chtext()       change of current text          470
+84              _chwin()        change of current window        396
+36              _chwinker()     change of current winker        549
+------------------------------------------------------------------------
+&lt;686                            Appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+68              _clearrootbd()  area of the rootboot            399
+76              _clearwin()     area of the window              392
+108             _closecntl()    close of the control            575
+259             _closedlg()     close of the dialogbox          595
+294             _closeda()      close of DA menu                603
+154             _closemenu()    close of the menu               588
+390             _closevb()      close of the VRAM buffer        616
+74              _closewin()     close of the window             391
+411             _cmkfpath()     possession of the name of the
+                                filepass of the used file       524
+187             _colicon()      drawing of the icon dependent
+                                of the designated color         433
+192             _copy()         copy of the area                435
+58              _createfont()   create font                     401
+48              _createpen()    create pen                      400
+265             _createtext()   create text                     467
+72              _createwin()    create window                   390
+34              _createwinker() create winker                   548
+247             _currentfile()  possession of the current file  497
+61              _currentfont()  possession of the current font  403
+51              _currentpen()   possession of the current pen   402
+268             _currenttext()  possession of the current text  469
+85              _currentwin()   possession of the current
+                                window                          396
+39              _currentwinker()possession of the current
+                                winker                          550
+197             _curtain()      paint of an area (OR)           437
+59              _deletefont()   delete font                     401
+49              _deletepen()    delete pen                      401
+267             _deletetext()   delete text                     469
+75              _deletewin()    delete window                   392
+35              _deletewinker() delete winker                   548
+137             _dfont()        display 1 character             453
+186             _dicon()        painting of icon                432
+168             _direct()       designate of drawing area       425
+364             _dirname()      analysis of pass-name
+                                (possession of direct repass
+                                 name)???                       510
+105             _dispallcntl()  display of control of inside
+                                arrangement                     573
+104             _discntl()      display of control              573
+266             _disptext()     display of in the boot
+                                converted text                 468
+138             _dkanji()       display 1 em kanji (??)         453
+260             _dlgselect()    possession of the action of the
+                                upper part of the dialog        596
+410             _dosexec()      use of DOS command              606
+139             _dpattern()     displaying of pattern           453
+-------------------------------------------------------------------
+&lt;C.1 FUNCTION NAME SUMMARY                                              687&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+112             _drivecntl()    direct call of controldriver    577
+295             _drivesystem()  procedure of DA                 603
+141             _dstr()         displaying of letter row        454
+171             _endtest()      end of testmode                 427
+301             _endview()      end of MSX VIEW                 604
+93              _endzoom()      end of zoom                     398
+196             _erase()        paint out of an area with the
+                                designated color (??)           437
+195             _erasearea()    paint out of area dependent on
+                                the current pen                 437
+373             _errmessage()   display a second message dialog
+                                box                             598
+251             _execute()      use of overlay module           499
+393             _execute2()     use of overlay module (optional
+                                file)                           523
+253             _exitmodule()   compulsionary end of
+                                overlaymodule or childprogram   500
+241             _falloc()       possession of filebuffer        495
+225             _fclose()       close of file                   487
+226             _fcreate()      making of a new file            488
+366             _fcreate2()     makinf of a new file(this is 
+                                the designated attribute)       512
+227             _fdelete()      deletion of a file              488
+238             _ferror()       possession of the errorcode     493
+362             _ffirst()       reference of the first entry    508
+387             _fflush()       fulsh of the diskbuffer         522
+242             _ffree()        release of the filebuffer       495
+376             _fgetattr()     possession of the attribute
+                                of the file                     516
+378             _fegtftime()    possesion of time and date      517
+380             _fhdelete()     deletion of filehandler         518
+383             _fhgetattr()    possession of the attribute of
+                                the filehandler                 520
+385             _fhgetftime()   possession of time and date of
+                                the filehandler                 521
+382             _fhmove()       transfer of filehandler         519
+381             _fhrename()     change of the name of the
+                                filehandler                     519
+384             _fhsetattr()    creation of attribute of
+                                filehandler                     520
+386             _fhsettime()    creation of time and date of
+                                filehandler                     521
+182             _filloval       drawing of the middle of the
+                                oval                            430
+185             _fillpai()      drawing of the middle of the
+                                fanshape (??)                   432
+190             _fillpolygon()  drawing of the middle of the
+                                polygon                         434
+180             _fillround()    drawing of the middle of the
+                                roundcornered square            430
+111             _findcntl()     reference of the designated
+                                coordinates control (??)        576
+103             _findpart()     possession of partnumber        572
+--------------------------------------------------------------------
+&lt;688                            Appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+83              _findwin()      posseesion of the windowhandler 395
+17              _flushevents()  clear of eventqueue             543
+284             _flushjsystem() cancel of kanjiconversion       475
+300             _fmenu()        selection of a file             503
+375             _fmove()        transfer of a file              515
+370             _fnew()         reference of the latest entry   514
+223             _fnext()        reference of the next file      486
+363             _fnext2()       reference of next entry         509
+64              _fontadrs()     possession of the font address  405
+224             _fopen()        opening of a file               487
+246             _format()       format of the disk              497
+415             _fpathnext()    reference of file from the
+                                plural bus (??)                 526
+414             _fpathset()     creation of the reference of
+                                the file from the plural bus(??)525
+236             _fpoint()       possession of the filepointer   492
+177             _frame()        drawing of a square             429
+194             _framearea()    drawing of the round cornered
+                                square to the wanted area       436
+233             _fread()        reading of the current file     491
+305             _free()         release of the memory block     615
+122             _freeblc()      release of a block              413
+120             _freelot()      release of the lot              413
+228             _frename()      change of filename, directory
+                                name                            489
+79              _frontwin()     transfer of the frontwindow     393
+235             _fseek()        creation of the filepointer     492
+222             _fset()         reference of the file           485
+377             _fsetattr()     creation of the attribute of
+                                a file                          516
+379             _fsettime()     creation of time and date of
+                                the file                        518
+237             _fsize()        possession of the filesize      493
+232             _fwrite()       writing of the current file     491
+288             _getalphkey()   possession of function keys     610
+30              _getareanumber()possession of the area where
+                                cursor is                       546
+124             _getblc()       displaying from a block to the
+                                screen                          417
+16              _getcoord()     possession of the cursor
+                                coordinates                     542
+358             _getcwd()       possession of the current
+                                winkerdirectory                 504
+308             _getdate()      possession of the date
+66              _getdeffont()   possession of default font      406
+56              _getdefpen()    possession of the default pen   406
+22              _getdevice()    possession of the pointing
+                                deveice                         544
+-------------------------------------------------------------------
+&lt;C.1 FUNCTION NAME SUMMARY                                              689&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+221             _getdiskinfo()  possession of the diskinfo      484
+291             _getdrive()     possession of the defaultdrive  483
+12              _getevent()     possession of the event info    541
+220             _getfileinfo()  possession of file info         483
+135             _getfontpat()   possession of font pattern      452
+289             _getjekeyfunc() possession of function codes    610
+146             _getjispat()    reading of the fontpattern
+                                dependent of the JIS code       455
+286             _getkeyfunc()   possession of the function code 607
+19              _getkeyinfo()   possession ofthe state of the
+                                keyboard                        543
+292             _getkeymap()    possesion of the keymap         611
+360             _getlogin()     possession of the log-in
+                                circumstances of the drive      505
+5               _getpalette()   possession of the palette       440
+27              _gtepatnumber() possession of the current cursor545
+173             _getrub()       possession of the rubberband
+                                color                           427
+388             _getscreenmode()possession of the screenmode    407
+310             _gettime()      possession of the time          605
+77              _getwininfo()   possession of the window info   392
+88              _gtol()         change from global coordinaes
+                                to local coordinates            397
+44              _hide()         hide of the ??                  551
+157             _hilite()       highlite of menu item           589
+188             _index()        drawing of only the upper part
+                                of the round cornered square    433
+118             _initblc()      initialization of the bitblock
+                                manager                         412
+98              _initcntl()     initialization of the control
+                                manager                         571
+21              _initcursor()   initialization of the cursor    544
+257             _initdlg()      initialization of the dialogbox 595
+10              _initevent()    initialization of the event
+                                manager                         541
+240             _initfalloc()   initialization of the
+                                fileallocation                  494
+147             _initffile()    initialization of the font file
+                                access                          455
+133             _initfont()     initialization of the fontpack  451
+57              _initfinthandle() initialization of the
+                                fonthandler                     400
+166             _initgraf()     initialization of the graphpack 425
+285             _initkeymap()   initialization of the keymap
+                                manager                         607
+303             _initmemory()   initialization of the memory
+                                manager                         614
+150             _initmenu()     initialization of the menu
+                                manager                         587
+248             _initoverlay()  initialization of the overlay
+                                manager                         498
+47              _initpenhd()    initialization of the pen 
+                                handler                         399
+311             _initprint()    initialization of the printer
+                                manager                         624
+-------------------------------------------------------------------
+&lt;690                            appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+217             _initres()      initialization of the resource
+                                manager                         482
+264             _inittexthd()   initialization of the text
+                                handler                         467
+71              _initwin()      initialization of the window
+                                manager                         389
+33              _initwinker     initialization of winker        547
+279             _inserttext()   insertion of a letter-row       474
+158             _ismenu()       test of the event of a
+                                internal menu (??)              590
+32              _jobcursor()    creation of a jobcursor         547
+252             _jump()         starting of a MSXView
+                                application                     500
+156             _keymenu()      procedure for shortcutkey(??)   589
+160             _keypopup()     shortcutkey of popup menu       591
+29              _killareacursor() deletion of area where the
+                                cursor is (??)                  546
+26              _killpatcursor()deletion of the cursorpointer   545
+136             _knjwidth()     possession of the width of
+                                em (??) letters                 452
+176             _line()         drawing of a line               428
+275             _locatetext()   transfer of the textcursor      473
+89              _ltog()         change from local coordinates
+                                to global coordinates           397
+306             _malloc()       possession of a memoryblock     615
+287             _mapcntlkey()   mapping of the functioncode     608
+263             _message()      displaying of the message
+                                dialog box                      597
+359             _mkdir()        making of a directory           505
+361             _mkfpath()      possession of the name of the
+                                fullest bus (??)                506
+261             _modaldlg()     possession of the action of a
+                                modal dialog                    596
+256             _modulevalue()  possession of the return value
+                                from a overlay module or
+                                childprogram                    502
+193             _move()         transfer of an area             435
+297             _moveframe()    transfer of an area             436
+174             _movepen()      transfer of the pen             428
+90              _movepopup()    creation of the location of the
+                                popup window                    399
+81              _movewin()      transfer of the position of
+                                the window                      394
+239             _msxdos()       use of a msxdos2 system call    494
+121             _newblc()       possession of a new block       413
+119             _newlot()       assigning of a new lot          412
+109             _openallcntl()  opening of all inside arranged
+                                controls                        575
+102             _opencntl()     open a control                  572
+258             _opendlg()      display of a dialogbox          595
+293             _openda()       opening of the DA menu          603
+153             _openmenu()     opening of a menu               587
+-------------------------------------------------------------------
+&lt;C.1 FUNCTION NAME SUMMARY                                              691&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+389             _openvb()       open VRAM buffer                615
+73              _openwin()      open a window                   391
+181             _oval()         draw a oval                     430
+184             _pai()          draw a fan shape (??)           431
+368             _pcmplay()      play PCM                        612
+369             _pcmrec()       record PCM                      612
+314             _pd()           starting of the printerdriver   625
+54              _penadrs()      possession of the pen info      404
+201             _pixel()        possession of the colorcode     439
+189             _polygon()      drawing of a polygon            433
+231             _popfile()      return of the current file      490
+63              _pofont()       return of the font              404
+53              _poppen()       return of the current pen       403
+271             _poptext()      return of the text              471
+262             _popupdlg()     possession of the action of
+                                displaying of the popup dialog  597
+87              _popwin()       return of the current window    397
+38              _popwinker()    return of the current winker    549
+313             _printinfo()    possession of the printer info  624
+175             _pset()         drawing of point                428
+230             _pushfile()     storage of the current file,
+                                followed by the changing of it  490
+62              _pushfont()     storage of the current font,
+                                followed by the changing of it  404
+52              _pushpen()      storage of the current pen,
+                                folowed by the changing of it   403
+270             _pushtext()     storage of the current text,
+                                followed by the changing of it  470
+86              _pushwin()      storage of the current window
+                                followed by the changing of it  396
+37              _pushwinker()   storage of the current winker
+                                followed by the changing of it  549
+123             _putblc()       storage to a block              417
+13              _putevent()     addition of eventinfo to the
+                                eventqueue                      541
+6               _rd_sysdata()   reading of the systemdata       602
+202             _readbit()      reading the colorcode of an
+                                internal area                   439
+148             _readgaiji()    reading from a 'gaiji'-file     455
+392             _readvb()       reading from the VRAM buffer    617
+278             _redisptext()   display text again              468
+65              _renewfont()    renewal of the font             405
+55              _renewpen()     renewal of the pen              405
+126             _resizeblc()    change of the blocksize         418
+82              _resizewin()    change the size of the window   395
+128             _restoreblc()   taking of a picture from a block414
+-------------------------------------------------------------------
+
+&lt;692                            appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+199             _reverse()      painting of an area (XOR)       438
+179             _round()        drawing of a round cornered
+                                square                          429
+200             _roundarea()    the drawing of the round
+                                cornered square to the wanted
+                                area                            439
+304             _sbrk()         possession of the memory block  614
+2               _screen()       creation of the screen mode     406
+374             _screensize()   possession of the screen size   407
+191             _scroll()       scolling of the interior area   434
+277             _scrolltext()   scrollprocedure                 474
+155             _selectmenu()   procedure for menu item
+                                selection                       588
+159             _selectpopup()  procedure of popup menu         590
+28              _setareacursor()change of the vaild cursor
+                                positions                       546
+101             _setcntl()      assignment of custom control    571
+276             _setcursor()    transfer of the tekstcursor in
+                                the buffer                      473
+307             _setdate()      creation of the date            604
+20              _setdeveice()   creation of a pointing deveice  544
+218             _setdrive()     creation of default drive       482
+134             _setfont()      change of fontstyle             451
+18              _setkeyinfo()   creation of the state of the
+                                keyboard                        543
+291             _setkeymap()    creation of the keymap          610
+4               _setpalette()   creation of the palette         440
+25              _setpatcursor() change of the cursor pattern    545
+167             _setpen()       creation of the pen             425
+172             _setrub()       end of commencement of
+                                rubberband mode                 427
+280             _settextcursor()creation of the text location   475
+309             _settime()      creation of the time            605
+78              _setwininfo()   change of the window            393
+43              _show()         display the cursor              550
+372             _showtitle()    display of the title            605
+416             _signal()       creation of routine for a
+                                physical error(??)              526
+14              _snsevent()     check for an event occurence    542
+127             _storeblc()     storage of a picture from a
+                                block                           414
+142             _strwidth()     possesion of the width of a
+                                letter row                      454
+125             _swapblc()      exchange of the picture between
+                                the inside block and the screen 418
+45              _sync()         wait for the next sync (???)    551
+254             _system()       starting of a childprogram      501
+31              _systemcursor() creation of the systemcursor    547
+170             _testarea()     ??                              426
+-------------------------------------------------------------------
+&lt;C.1 FUNCTION NAME SUMMARY                                              693&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+110             _testcntl()     the reference of theoptional
+                                location involved in the
+                                control (??)                    576
+169             _testpos()      ??                              426
+272             _textadrs()     possession of the text location 471
+274             _texteditfunc() use of the editingfunction      472
+106             _trackcntl()    use of the control              574
+15              _ungetevent()   return of the event info to the
+                                eventqueu                       542
+40              _winkeradrs()   possesion of the winker info    550
+1               _wr_sysdata     writing of the systemdata       602
+203             _writebit()     writing the colorcode to the
+                                area                            440
+273             _writetext()    editing of the text             472
+391             _writevb()      writing to the VRAM buffer      616
+91              _zoom()         zoom of an area                 398
+92              _zoomwin()      zoom of a window                398
+-----------------------------------------------------------------------
+&lt;694                            appendix C summary of MSX VIEW functions&gt;
+C.2 Function number summary
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+------------------------------------------------------------------------
+1               _wr_sysdata     writing of the systemdata       602
+2               _screen()       creation of the screen mode     406
+4               _setpalette()   creation of the palette         440
+5               _getpalette()   possession of the palette       440
+6               _rd_sysdata()   reading of the systemdata       602
+10              _initevent()    initialization of the event
+                                manager                         541
+12              _getevent()     possession of the event info    541
+13              _putevent()     addition of eventinfo to the
+                                eventqueue                      541
+14              _snsevent()     check for an event occurence    542
+15              _ungetevent()   return of the event info to the
+                                eventqueu                       542
+16              _getcoord()     possession of the cursor
+                                coordinates                     542
+17              _flushevents()  clear of eventqueue             543
+18              _setkeyinfo()   creation of the state of the
+                                keyboard                        543
+19              _getkeyinfo()   possession ofthe state of the
+                                keyboard                        543
+20              _setdeveice()   creation of a pointing deveice  544
+21              _initcursor()   initialization of the cursor    544
+22              _getdevice()    possession of the pointing
+                                deveice                         544
+25              _setpatcursor() change of the cursor pattern    545
+26              _killpatcursor()deletion of the cursorpointer   545
+27              _gtepatnumber() possession of the current cursor545
+28              _setareacursor()change of the vaild cursor
+                                positions                       546
+29              _killareacursor() deletion of area where the
+                                cursor is (??)                  546
+30              _getareanumber()possession of the area where
+                                cursor is                       546
+31              _systemcursor() creation of the systemcursor    547
+32              _jobcursor()    creation of a jobcursor         547
+33              _initwinker     initialization of winker        547
+34              _createwinker() create winker                   548
+35              _deletewinker() delete winker                   548
+36              _chwinker()     change of current winker        549
+37              _pushwinker()   storage of the current winker
+                                followed by the changing of it  549
+38              _popwinker()    return of the current winker    549
+39              _currentwinker()possession of the current
+                                winker                          550
+40              _winkeradrs()   possesion of the winker info    550
+43              _show()         display the cursor              550
+44              _hide()         hide of the ??                  551
+45              _sync()         wait for the next sync (???)    551
+------------------------------------------------------------------------
+&lt;C.2 FUNCTION NUMBER SUMMARY                                            695&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+47              _initpenhd()    initialization of the pen
+                                handler                         399
+48              _createpen()    create pen                      400
+49              _deletepen()    delete pen                      401
+50              _chpen()        change of current pen           402
+51              _currentpen()   possession of the current pen   402
+52              _pushpen()      storage of the current pen,
+                                folowed by the changing of it   403
+53              _poppen()       return of the current pen       403
+54              _penadrs()      possession of the pen info      404
+55              _renewpen()     renewal of the pen              405
+56              _getdefpen()    possession of the default pen   406
+57              _initfinthandle() initialization of the
+                                fonthandler                     400
+58              _createfont()   create font                     401
+59              _deletefont()   delete font                     401
+60              _chfont()       change of current font          402
+61              _currentfont()  possession of the current font  403
+62              _pushfont()     storage of the current font,
+                                followed by the changing of it  404
+63              _pofont()       return of the font              404
+64              _fontadrs()     possession of the font address  405
+65              _renewfont()    renewal of the font             405
+66              _getdeffont()   possession of default font      406
+68              _clearrootbd()  area of the rootboot            399
+71              _initwin()      initialization of the window
+                                manager                         389
+72              _createwin()    create window                   390
+73              _openwin()      open a window                   391
+74              _closewin()     close of the window             391
+75              _deletewin()    delete window                   392
+76              _clearwin()     area of the window              392
+77              _getwininfo()   possession of the window info   392
+78              _setwininfo()   change of the window            393
+79              _frontwin()     transfer of the frontwindow     393
+80              _backwin()      transfers window to backside    394
+81              _movewin()      transfer of the position of
+                                the window                      394
+82              _resizewin()    change the size of the window   395
+83              _findwin()      posseesion of the windowhandler 395
+84              _chwin()        change of current window        396
+85              _currentwin()   possession of the current
+                                window                          396
+86              _pushwin()      storage of the current window
+                                followed by the changing of it  396
+87              _popwin()       return of the current window    397
+------------------------------------------------------------------------
+&lt;696                            appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+88              _gtol()         change from global coordinaes
+                                to local coordinates            397
+89              _ltog()         change from local coordinates
+                                to global coordinates           397
+90              _movepopup()    creation of the location of the
+                                popup window                    399
+91              _zoom()         zoom of an area                 398
+92              _zoomwin()      zoom of a window                398
+93              _endzoom()      end of zoom                     398
+98              _initcntl()     initialization of the control
+                                manager                         571
+101             _setcntl()      assignment of custom control    571
+102             _opencntl()     open a control                  572
+103             _findpart()     possession of partnumber        572
+104             _discntl()      display of control              573
+105             _dispallcntl()  display of control of inside
+                                arrangement                     573
+106             _trackcntl()    use of the control              574
+107             _actioncntl()   displaying of controled actions 574
+108             _closecntl()    close of the control            575
+109             _openallcntl()  opening of all inside arranged
+                                controls                        575
+110             _testcntl()     the reference of theoptional
+                                location involved in the
+                                control (??)                    576
+111             _findcntl()     reference of the designated
+                                coordinates control (??)        576
+112             _drivecntl()    direct call of controldriver    577
+118             _initblc()      initialization of the bitblock
+                                manager                         412
+119             _newlot()       assigning of a new lot          412
+120             _freelot()      release of the lot              413
+121             _newblc()       possession of a new block       413
+122             _freeblc()      release of a block              413
+123             _putblc()       storage to a block              417
+124             _getblc()       displaying from a block to the
+                                screen                          417
+125             _swapblc()      exchange of the picture between
+                                the inside block and the screen 418
+126             _resizeblc()    change of the blocksize         418
+127             _storeblc()     storage of a picture from a
+                                block                           414
+128             _restoreblc()   taking of a picture from a block414
+129             _blcpoint()     possession of colorcode of the
+                                upper block                     415
+130             _blcpixel()     entered point from to a block?? 415
+131             _blcread()      reading from block to memory    416
+132             _blcwrite()     writing from memory to block    416
+133             _initfont()     initialization of the fontpack  451
+134             _setfont()      change of fontstyle             451
+135             _getfontpat()   possession of font pattern      452
+------------------------------------------------------------------------
+&lt;C.2 FUNCTION NUMBER SUMMARY                                            697&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+136             _knjwidth()     possession of the width of
+                                em (??) letters                 452
+137             _dfont()        display 1 character             453
+138             _dkanji()       display 1 em kanji (??)         453
+139             _dpattern()     displaying of pattern           453
+140             _chrwidth()     possession of character width   454
+141             _dstr()         displaying of letter row        454
+142             _strwidth()     possesion of the width of a
+                                letter row                      454
+146             _getjispat()    reading of the fontpattern
+                                dependent of the JIS code       455
+147             _initffile()    initialization of the font file
+                                access                          455
+148             _readgaiji()    reading from a 'gaiji'-file     455
+150             _initmenu()     initialization of the menu
+                                manager                         587
+153             _openmenu()     opening of a menu               587
+154             _closemenu()    close of the menu               588
+155             _selectmenu()   procedure for menu item
+                                selection                       588
+156             _keymenu()      procedure for shortcutkey(??)   589
+157             _hilite()       highlite of menu item           589
+158             _ismenu()       test of the event of a
+                                internal menu (??)              590
+159             _selectpopup()  procedure of popup menu         590
+160             _keypopup()     shortcutkey of popup menu       591
+166             _initgraf()     initialization of the graphpack 425
+167             _setpen()       creation of the pen             425
+168             _direct()       designate of drawing area       425
+169             _testpos()      ??                              426
+170             _testarea()     ??                              426
+171             _endtest()      end of testmode                 427
+172             _setrub()       end of commencement of
+                                rubberband mode                 427
+173             _getrub()       possession of the rubberband
+                                color                           427
+174             _movepen()      transfer of the pen             428
+175             _pset()         drawing of point                428
+176             _line()         drawing of a line               428
+177             _frame()        drawing of a square             429
+178             _box()          painting of a box, in the
+                                middle empty                    429
+179             _round()        drawing of a round cornered
+                                square                          429
+180             _fillround()    drawing of the middle of the
+                                roundcornered square            430
+181             _oval()         draw a oval                     430
+182             _filloval       drawing of the middle of the
+                                oval                            430
+------------------------------------------------------------------------
+&lt;698                            appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+183             _arc()          arc painting (??)               431
+184             _pai()          draw a fan shape (??)           431
+185             _fillpai()      drawing of the middle of the
+                                fanshape (??)                   432
+186             _dicon()        painting of icon                432
+187             _colicon()      drawing of the icon dependent
+                                of the designated color         433
+188             _index()        drawing of only the upper part
+                                of the round cornered square    433
+189             _polygon()      drawing of a polygon            433
+190             _fillpolygon()  drawing of the middle of the
+                                polygon                         434
+191             _scroll()       scolling of the interior area   434
+192             _copy()         copy of the area                435
+193             _move()         transfer of an area             435
+194             _framearea()    drawing of the round cornered
+                                square to the wanted area       436
+195             _erasearea()    paint out of area dependent on
+                                the current pen                 437
+196             _erase()        paint out of an area with the
+                                designated color (??)           437
+197             _curtain()      paint of an area (OR)           437
+198             _changecolor()  changing of the designated
+                                color of the inside area        438
+199             _reverse()      painting of an area (XOR)       438
+200             _roundarea()    the drawing of the round
+                                cornered square to the wanted
+                                area                            439
+201             _pixel()        possession of the colorcode     439
+202             _readbit()      reading the colorcode of an
+                                internal area                   439
+203             _writebit()     writing the colorcode to the
+                                area                            440
+217             _initres()      initialization of the resource
+                                manager                         482
+218             _setdrive()     creation of default drive       482
+220             _getfileinfo()  possession of file info         483
+221             _getdiskinfo()  possession of the diskinfo      484
+222             _fset()         reference of the file           485
+223             _fnext()        reference of the next file      486
+224             _fopen()        opening of a file               487
+225             _fclose()       close of file                   487
+226             _fcreate()      making of a new file            488
+227             _fdelete()      deletion of a file              488
+228             _frename()      change of filename, directory
+                                name                            489
+229             _chfile()       designation of current file     489
+230             _pushfile()     storage of the current file,
+                                followed by the changing of it  490
+231             _popfile()      return of the current file      490
+232             _fwrite()       writing of the current file     491
+233             _fread()        reading of the current file     491
+------------------------------------------------------------------------
+&lt;C.2 FUNCTION NUMBER SUMMARY                                            699&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+235             _fseek()        creation of the filepointer     492
+236             _fpoint()       possession of the filepointer   492
+237             _fsize()        possession of the filesize      493
+238             _ferror()       possession of the errorcode     493
+239             _msxdos()       use of a msxdos2 system call    494
+240             _initfalloc()   initialization of the
+                                fileallocation                  494
+241             _falloc()       possession of filebuffer        495
+242             _ffree()        release of the filebuffer       495
+243             _absread()      read the used logic sector      496
+245             _choice()       possession of diskformat
+                                message                         496
+246             _format()       format of the disk              497
+247             _currentfile()  possession of the current file  497
+248             _initoverlay()  initialization of the overlay
+                                manager                         498
+251             _execute()      use of overlay module           499
+252             _jump()         starting of a MSXView
+                                application                     500
+253             _exitmodule()   compulsionary end of
+                                overlaymodule or childprogram   500
+254             _system()       starting of a childprogram      501
+256             _modulevalue()  possession of the return value
+                                from a overlay module or
+                                childprogram                    502
+257             _initdlg()      initialization of the dialogbox 595
+258             _opendlg()      display of a dialogbox          595
+259             _closedlg()     close of the dialogbox          595
+260             _dlgselect()    possession of the action of the
+                                upper part of the dialog        596
+261             _modaldlg()     possession of the action of a
+                                modal dialog                    596
+262             _popupdlg()     possession of the action of
+                                displaying of the popup dialog  597
+263             _message()      displaying of the message
+                                dialog box                      597
+264             _inittexthd()   initialization of the text
+                                handler                         467
+265             _createtext()   create text                     467
+266             _disptext()     display of in the boot
+                                converted text                  468
+267             _deletetext()   delete text                     469
+268             _currenttext()  possession of the current text  469
+269             _chtext()       change of current text          470
+270             _pushtext()     storage of the current text,
+                                followed by the changing of it  470
+271             _poptext()      return of the text              471
+272             _textadrs()     possession of the text location 471
+273             _writetext()    editing of the text             472
+------------------------------------------------------------------------
+&lt;700                            appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+274             _texteditfunc() use of the editingfunction      472
+275             _locatetext()   transfer of the textcursor      473
+276             _setcursor()    transfer of the tekstcursor in
+                                the buffer                      473
+277             _scrolltext()   scrollprocedure                 474
+278             _redisptext()   display text again              468
+279             _inserttext()   insertion of a letter-row       474
+280             _settextcursor()creation of the text location   475
+284             _flushjsystem() cancel of kanjiconversion       475
+285             _initkeymap()   initialization of the keymap
+                                manager                         607
+286             _getkeyfunc()   possession of the function code 607
+287             _mapcntlkey()   mapping of the functioncode     608
+288             _getalphkey()   possession of function keys     610
+289             _getjekeyfunc() possession of function codes    610
+291             _getdrive()     possession of the defaultdrive  483
+291             _setkeymap()    creation of the keymap          610
+292             _getkeymap()    possesion of the keymap         611
+293             _openda()       opening of the DA menu          603
+294             _closeda()      close of DA menu                603
+295             _drivesystem()  procedure of DA                 603
+297             _moveframe()    transfer of an area             436
+300             _fmenu()        selection of a file             503
+301             _endview()      end of MSX VIEW                 604
+303             _initmemory()   initialization of the memory
+                                manager                         614
+304             _sbrk()         possession of the memory block  614
+305             _free()         release of the memory block     615
+306             _malloc()       possession of a memoryblock     615
+307             _setdate()      creation of the date            604
+308             _getdate()      possession of the date          604
+309             _settime()      creation of the time            605
+310             _gettime()      possession of the time          605
+311             _initprint()    initialization of the printer
+                                manager                         624
+312             _chpd()         change of printerdriver         624
+313             _printinfo()    possession of the printer info  624
+314             _pd()           starting of the printerdriver   625
+357             _chdir()        change of current directory     504
+358             _getcwd()       possession of the current
+                                winkerdirectory                 504
+359             _mkdir()        making of a directory           505
+360             _getlogin()     possession of the log-in
+                                circumstances of the drive      505
+------------------------------------------------------------------------
+&lt;C.2 FUNCTION NUMBER SUMMARY                                            701&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+361             _mkfpath()      possession of the name of the
+                                fullest bus (??)                506
+362             _ffirst()       reference of the first entry    508
+363             _fnext2()       reference of next entry         509
+364             _dirname()      analysis of pass-name
+                                (possession of direct repass
+                                 name)???                       510
+365             _basename()     analysis of the anem of the
+                                 bus (possession of the filename)511
+366             _fcreate2()     makinf of a new file(this is
+                                the designated attribute)       512
+367             _bdos()         performance of MSX-DOS2
+                                system call                     513
+368             _pcmplay()      play PCM                        612
+369             _pcmrec()       record PCM                      612
+370             _fnew()         reference of the latest entry   514
+371             _chkversion     check versionnumber of MSX View 515
+372             _showtitle()    display of the title            605
+373             _errmessage()   display a second message dialog
+                                box                             598
+374             _screensize()   possession of the screen size   407
+375             _fmove()        transfer of a file              515
+376             _fgetattr()     possession of the attribute
+                                of the file                     516
+377             _fsetattr()     creation of the attribute of
+                                a file                          516
+378             _fegtftime()    possesion of time and date      517
+379             _fsettime()     creation of time and date of
+                                the file                        518
+380             _fhdelete()     deletion of filehandler         518
+381             _fhrename()     change of the name of the
+                                filehandler                     519
+382             _fhmove()       transfer of filehandler         519
+383             _fhgetattr()    possession of the attribute of
+                                the filehandler                 520
+384             _fhsetattr()    creation of attribute of
+                                filehandler                     520
+385             _fhgetftime()   possession of time and date of
+                                the filehandler                 521
+386             _fhsettime()    creation of time and date of
+                                filehandler                     521
+387             _fflush()       fulsh of the diskbuffer         522
+388             _getscreenmode()possession of the screenmode    407
+389             _openvb()       open VRAM buffer                615
+390             _closevb()      close of the VRAM buffer        616
+391             _writevb()      writing to the VRAM buffer      616
+392             _readvb()       reading from the VRAM buffer    617
+393             _execute2()     use of overlay module (optional
+                                file)                           523
+410             _dosexec()      use of DOS command              606
+411             _cmkfpath()     possession of the name of the
+                                filepass of the used file       524
+------------------------------------------------------------------------
+&lt;702                            appendix C summary of MSX VIEW functions&gt;
+------------------------------------------------------------------------
+function nr     name            meaning                         page nr
+-----------------------------------------------------------------------
+414             _fpathset()     creation of the reference of
+                                the file from the plural bus(??)525
+415             _fpathnext()    reference of file from the
+                                plural bus (??)                 526
+416             _signal()       creation of routine for a
+                                physical error(??)              526
+------------------------------------------------------------------------
+&Aring;---------&atilde;
+&iexcl;attention&iexcl; : The functionumbers that are empty are system reservated 
+---------   functions. It can't be assured that in case of calling those 
+              system reservated functions will have any effect.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

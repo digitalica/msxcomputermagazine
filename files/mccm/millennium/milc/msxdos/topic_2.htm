@@ -1,0 +1,156 @@
+<html>
+
+<head>
+<title>MILC - Topic Disk I/O fouten afvanging onder MSX-DOS 1</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Disk I/O fouten afvanging onder MSX-DOS 1</b><br>
+    <i>R.vd Winkel</i>, 22-02-92</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+     Disk I/O fouten afvanging onder MSX-DOS 1
+
+     door Ramon van der Winkel, 22/02/1992
+     op verzoek van Matthijs Corpeleijn
+
+
+     Als er tijdens de I/O naar een floppy disk een fout optreed, 
+     bijvoorbeeld omdat er geen disco in de drive aanwezig is, dan is het 
+     natuurlijk niet netjes als er een foutmelding van DOS dwars door de 
+     uitvoer van het programma heen komt. Helemaal niet als het programma 
+     nederlandstalig is en de foutmelding natuurlijk in het engels komt.
+
+     De foutmelding kunnen worden afgevangen en naar een eigen routine in 
+     het programma geleid worden. In deze routine kan dan `netjes' aan de 
+     gebruiker worden gevraagd wat er gedaan moet worden met de fout. Of dit 
+     nu met een een-regelige melding of met een grafisch window gedaan 
+     wordt, dat maakt niet uit.
+
+     Onder MSX-DOS 1 moet het programma alles zelf nog doen. Er moeten een 
+     tweetal adressen zelf afgebogen worden en eventuele stack problemen 
+     moeten ook door het programma zelf in de gaten worden gehouden. Onder 
+     MSX-DOS 2 is het gelukkig allemaal veel beter geregeld; een aantal kant 
+     en klare routines doen het werk.
+
+
+     DOS 1
+
+     Er zijn een tweetal adressen die van belang zijn voor de 
+     foutafhandeling onder MSX-DOS 1. Ten eerste is er het adres die naar de 
+     foutafvangings routine wijst, daarnaast is er nog een adres dat 
+     aangeroepen wordt als de optie &quot;Abort&quot; gekozen wordt.
+
+     Voor de foutafhandelings routine is er het adres F323 in het systeem 
+     geheugen. Deze wijst naar het adres waar het op zijn beurt weer het 
+     adres van de routine staat. Bijvoorbeeld zo:
+
+     F323 -&gt; D000
+     D000 -&gt; D002
+     D002 Begin routine     
+
+     Als er in de routine voor Abort gekozen wordt, dan springt MSX-DOS naar 
+     een routine welke eindigd in een sprong instructie om terug naar de 
+     prompt te springen. Hier maken wij een sprong naar ons programma van en 
+     vullen daarvoor het adres van onze routine in op adres F1E6.
+
+     F1E6 -&gt; Abort handler
+
+     De Abort handler is er om stack fouten te kunnen ondervangen. Bij 
+     Ignore en Retry wordt er bij een geslaagde poging teruggekeerd naar de 
+     aanroep van de bdos functie, in het geval van een foutmelding weer naar 
+     de foutafvangings routine.
+
+     Nu moet dus alleen nog de stack bewaard worden. Dit kan op de volgende 
+     manier waarbij er een universele routine in het programma komt om bdos 
+     aan te roepen:
+
+     bdos:   ld (errStack),sp
+             call 5
+             ret
+
+     De foutafvangings routines zijn op dat moment al geinstalleerd en bij 
+     een abort wordt naar de volgende routine gesprongen:
+
+     bdosAbort: ld sp,(errStack)
+                ret
+
+     Waarmee er terug wordt gesprongen naar de aanroepende routine. Er moet 
+     nu alleen nog een mechanisme worden geschreven waardoor er 
+     gecontroleerd kan worden op een fout. Dit kan door middel van een 
+     variabele die gezet wordt of op welke manier dan ook, het bovenstaande 
+     is slechts een voorbeeld.
+
+     Het is belangrijk dat de applicatie die deze twee adressen afbuigt de 
+     originele waarden bewaard en bij het verlaten weer hersteld.
+
+     Nu rest alleen nog het beschrijven van de foutcodes die door MSX-DOS 1 
+     aan de foutafvangingsroutine wordt gestuurd. Ten eerste komt in 
+     register A het drivenummer binnen. Tijdens een actie met deze drive 
+     ontstond de fout. Verder komt in register C een aanduiding van de fout 
+     binnen, de volgende tabel geeft een overzicht:
+
+     b7=1 : Bad FAT
+     b0=0 : Read aktie
+     b0=1 : Write aktie
+     b3 b2 b1
+     0  0  0: Write Protected
+     0  0  1: Not Read (disk offline)
+     0  1  0: CRC error
+     0  1  1: Seek error
+     1  0  0: Record not found (sector not found)
+     1  0  1: Write error
+     1  1  0: Other
+
+     Bij het verlaten van de foutafvangings routine moet in register C de te 
+     ondernemen actie worden gespecificeerd:
+
+     0 = Ignore
+     1 = Retry
+     2 = Abort
+
+     Bij de optie 2 (abort) wordt dus naar de abort routine gesprongen die 
+     we zelf afgebogen kunnen hebben.
+
+     Meer valt er niet over te zeggen. Een ding misschien nog: Wees 
+     voorzichting met de plaats waar de foutafhandelings routine komt te 
+     staan. Het aanroepen van deze routine gebeurt vanuit de diskrom en dan 
+     is het niet te verzekeren dat een routine die in pagina 1 staat 
+     (4000..7FFF) ook goed bereikt kan worden. Voor de abort routine is het 
+     wel zeker, want dan is het volledige TPA geheugen al weer ingeschakeld.
+
+
+     Voor de foutafvanging onder MSX-DOS 2 verwijs ik naar de handleiding 
+     van MSX-DOS 2.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-DOS2 programming index</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_11.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_13.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-DOS2 programming index</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                      M S X -- D O S   v e r s i o n  2
+                  =================================
+
+                  The advanced disk operating system
+                         for MSX 2 computers
+
+     CONTENTS                                   Page
+
+
+1.   Introduction ...............................  3
+2.   Transient Program Environment ..............  4
+    2.1   Entry from MSX-DOS ....................  4
+    2.2   Return to MSX-DOS .....................  4
+    2.3   Page Zero Usage .......................  5
+    2.4   BIOS Jump Table .......................  8
+    2.5   RAM Paging ............................  9
+3.   MSX-DOS calls .............................. 11
+    3.1   Calling Conventions ................... 11
+    3.2   Devices and Character I/O ............. 12
+    3.3   File Handles .......................... 13
+    3.4   File Info Blocks ...................... 15
+    3.5   Environment Strings ................... 18
+    3.6   File Control Blocks ................... 20
+4.   Screen Control Codes ....................... 22
+5.   Mapper Support Routines .................... 24
+    5.1   Mapper Initialization ................. 24
+    5.2   Mapper Variables and Routines ......... 24
+    5.3   Using Mapper Routines ................. 26
+    5.4   Allocating and Freeing Segments ....... 27
+    5.5   Inter-Segment Read and Write .......... 28
+    5.6   Inter-Segment Calls ................... 29
+    5.7   Direct paging routines ................ 30
+6.   Errors ..................................... 32
+    6.1   Disk Errors ........................... 33
+    6.2   MSX-DOS Function Errors ............... 35
+    6.3   Program Termination Errors ............ 40
+    6.4   Command Errors ........................ 41
+
+     This document describes the interface to transient programs provided by
+     MSX-DOS version 2.20.
+
+1.   INTRODUCTION
+=================
+
+     This  manual  describes  the environment  which MSX-DOS  2 provides  for 
+transient  programs on MSX 2 computers. It is intended as a guide for writing 
+new programs to run under MSX-DOS 2 and also to assist in converting existing 
+CP/M and MSX-DOS 1 programs to take advantage of the advanced features.
+
+     MSX-DOS 2  provides many enhancements to the standard CP/M and MSX-DOS 1 
+environment,  but  is  largely compatible  with existing  programs. The  main 
+features include:
+
+          MS-DOS style tree structured directories
+          File handles
+          Environment Strings
+          Proper error handling
+
+     Many extra DOS calls are implemented, and these are accessed via the DOS 
+entry  jump at  address 5  (the 'BDOS' jump in CP/M). The descriptions of the 
+individual functions can be found in the MSX-DOS 2 Function Specification.
+
+     Throughout this  manual, the  term MSX-DOS is used generally to refer to 
+MSX-DOS 2 unless otherwise stated.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_11.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_13.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

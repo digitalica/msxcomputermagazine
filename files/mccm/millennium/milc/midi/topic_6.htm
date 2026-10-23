@@ -1,0 +1,591 @@
+<html>
+
+<head>
+<title>MILC - Topic Info over diverse MIDI chips</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Info over diverse MIDI chips</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+-Informatie over de 8251 en 8253 , de midi chips van de turbo R GT 
+-Informatie over de m6850 ACIA , de muziekmodule midi chip
+-Informatie over de Z80 PIO, gebruikt in de midisaurus
+
+
+Informatie uit : MICROCOMPUTER SYSTEEMACHITECTUUR Deel 3
+		 KEMPER, J.P.
+		 3e DRUK 1984
+		 ISBN 90-6523-005-X
+
+		 Bevat informatie over : 8255 PPI
+					 Z80-PIO    (midi saurus)
+					 6820/21 PIA
+					 8251 USART (midi turbo R GT)
+					 Z80-SIO
+					 Z80-CTC
+					 M6850 ACIA (midi muziekmodule)
+					 M6852 SSDA
+					 8253	    (midi turbo R)
+				      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8251A USART
+
+E0 = buffer register voor de te zenden data of de ontvangen data 
+E1 = status register of mode instruction/command register
+
+******************* STATUS REGISTER ******************************************
+
+Als het stauts register wordt uitgelezen, dan hebben de bits de volgende 
+betekenis:
+
+Bit 0	TxRDY	Transmitter Ready
+
+De betekenis van dit bit is enigzins verschillend van de TxRDY pin. Het bit 
+TxRDY is hoog als het data buffer van de zender leeg is. Voor het hoog zijn 
+echter van de pin TxRDY is niet alleen het leeg zijn van het databuffer 
+voldoende, maar ook moet de inputpin CTS (CLear To Send) laag zijn en moet de 
+zender geenabled zijn (zie command instruction).
+
+Bit 1	RxRDY	Receiver Ready
+
+Dezelfde betekenis als de pin RxRDY
+
+Bit 2	TxEMPTY Transmitter Empty
+
+Dezelfde betekenis als de pin TxEMPTY
+
+Bit 3	PE	Parity Error
+
+De PE flag wordt geset als een pariteits fout door de ontvanger wordt 
+gedetecteerd, Dit bit wordt gereset door het ER bit uit de command 
+instruction.
+
+Bit 4	OE	Overrun Error
+
+De OE flag wordt geset als de processor een karakter in het ontvangbuffer niet 
+gelezen heft als daar reeds een volgend ontvangen karakter wordt ingezet. Dit 
+bit wordt gereset door het ER bit in de Command instruction.
+
+Bit 5	FE	Framing Error
+
+De FE flag wordt geset als aan het einde van een datawoord geen geldig stopbit 
+wordt ontvangen. Dit bit kan worden gereset met het ER bit in de command 
+instruction
+
+Bit 6	SYNDET	Sync Detection
+
+Dit bit heeft dezelfde betekenis als de pin SYNDET
+
+Bit 7	DSR	Data Set Ready
+
+Dit bit is 1 als de pin DSR laag is (actief) en 0 als de pin DSR hoog is (niet 
+actief).
+
+
+******************* MODE INSTRUCTION *****************************************
+
+Moet als eerste opgegeven worden na een reset van de 8251
+Hij moet gezet worden in het command register
+
+Bit 1,0  B2,1	 00=synchrone mode
+		 01=baud rate factor is 1
+		 10=baud rate factor is 16
+		 11=baud rate factor is 64
+
+Bit 3,2  L2,1	 00=5 data bits
+		 01=6 data bits
+		 10=7 data bits
+		 11=8 data bits
+
+Als minder dan 8 bits karakters zijn gedefinieerd, dan moet bij schrijven naar 
+de 8251 de actuele data op de minst significante plaatsen in het datawoord 
+staan.De andere bits zijn don't cares.Bij het lezen van ontvangen data zijn 
+deze bits 0.
+
+Bit 4	 PEN	 0=geen pariteitsbit
+		 1=pariteitsbit aanwezig
+
+Als een paritietsbit aanwezig is dan maakt dit geen deel uit van de databits 
+die door de processor worden gelezen of geschreven. Bij zenden wordt dit bit 
+door de 8251A toegevoegd , bi ontvangen wordt het gecontroleerd.
+
+Bit 5	 EP	 0=oneven pariteit
+		 1=even pariteit
+
+Dit bit is een don't care als voor het bit PEN een 0 is gedefinieerd.
+
+Bit 7,6  S2,1	 00= niet toegestaan
+		 01=1 stopbit
+		 10=1.5 stopbit
+		 11=2 stopbits	    
+
+Deze bits hebben slechts betrekking op de zender. De ontvanger heeft altijd 
+voldoende aan 1 stopbit.
+
+Indien voor de bits B2,1 is gedefinieerd 00, dan heben we te maken met de 
+synchrone mode. De betekenis van de bits S2,1 is dan als volgt:
+
+Bit 6	 ESD	0=interne synchronisatie : pin SYNDET is output
+		1=externe synchronisatie : pin SYNDET is input
+
+Bit 7	 SCS	0=1 sync karakter
+		1=2 sync karakters
+
+Welke karakters als Sync karakter(s) dienen moet direct na de mode instruction 
+in het commando register geschreven worden.
+
+			____________________
+		     E1 | mode instruction |
+			--------------------
+		     E1 | sync karakter 1  |------|
+			--------------------	  |sync mode only
+		     E1 | sync karakter 2  | -----|			   
+			--------------------
+		     E1 | command instr.   |
+			--------------------
+		     E0 |		   |
+			|   DATA	   |
+			/		   /
+			/		   /
+			|		   |
+			--------------------
+		     E1 | command instr.   |
+			--------------------
+		     E0 |		   |
+			|   DATA	   |
+			/		   /
+			/		   /
+			|		   |
+			--------------------
+		     E1 | command instr.   |
+			--------------------
+
+
+Asynchrone mode (zenden)
+
+Als een karakter naar het data register van de 8251 is geschreven, dan wordt 
+automatisch een startbit toegevoegd, gevolgd door de databits (minst 
+significante bit eerst), eventueel een pariteitsbit als dat was aangegeven in 
+de mode instruction en uiteindelijk het aantal gevraagde stopbits. Daarna 
+wordt het aldus gevormde woord als een serieele bitreeks met een tempo gelijk 
+aan 1x, 1/16x of 1/64x de frequentie van TxC, zoals aangegeven in de mode 
+instruction.
+Als geen data woorden naar de 8251 worden geschreven worden, dan blijft de TxD 
+lijn in de mark state
+
+Asynchrone mode (ontvangen)
+
+De RxD lijn is normaal hoog (mark). een neergaande flank op deze lijn geeft 
+het begin aan van een startbit. De geldigheid van dit startbit wordt een halve 
+nittijd later opnieuw gecontroleerd (alleen in de 16x en de 64 x mode) als dan 
+opnieuw een laag wordt gedetecteerd dan is een geldig startbit gezienen wordt 
+de bit teller gestart. Op het nominale midden van de bits wordt een sample 
+genomen en in het schuifregister geschoven (op de opgaande flank van RxC). Als 
+een pariteitsfout optreed dan wordt de parity error flag geset. Als geen 
+stopbit wordt gezien wordt de framing error flag geset. Let op dat de 
+ontvanger slechts een enkel stopbit checkt, ook al zijn in de mode instruction 
+meerder stopbits opgegeven.
+Het ontvangen datawoord wordt vervolgens in het databuffer geklokt en de RxRDY 
+pin wordt hoog. Als in het buffer nog een woord stond dat nog niet door de 
+processor was gelezen, dan wordt de overrun error flag geset. Het optreden van 
+een va de genoemde fouten heeft geen enkele invloed op de werking op de 
+werking van de 8251A.
+
+Synchrone mode (zenden)
+
+Het verschil met de asynchrone mode is dat altijd data wordt uitgezonden in 
+het tempo van TxC. Als er geen karakters worden geschreven naar het zend 
+buffer, dan worden automatichs synckarakters door de 8251A uitgezonden, 1 of 2 
+zoals in de mode instruction is aangegeven. Let op dat de pen TxEMPTY hoog 
+blijft zolang synckarakters worden uitgezonden. TxEMPTY wordt weer laag als 
+een data woord naar de 8251 wordt geschreven.
+
+Synchrone mode (ontavngen)
+
+In deze mode kan geprogrammeerd worden dat intern of extern gesynchroniseerd 
+moet worden op de woordgrens. Als is geprogrameerd dat dit intern moet 
+gebeuren, dan kan de 8251A in de zigenaamde hunt'-mode gezet worden (zie 
+command reg.)
+Data op de RxD pin wordt dan gesampled op de opgaande flank van RxC en na elk 
+ingeschoven bit wordt de inhoud van het schuifregister vergeleken met het 
+eerste synckarakter. Als er twee synckarakters zijn geprogrameerd dan wordt 
+ook het daarop volgende datawoord met dit tweede synckarakter vergeleken. Als 
+beide synckarakters zijn ontvangen dan ver laat de 8251 de hunt mode en is in 
+karaktersynchronisatie.
+Dit is te zien aan het feit dat het SYNDET bit en de SYNDET pen  1 zijn.
+De eerst volgende keer dat de status wordt uitgelezen wordt SYNDET weer laag. 
+Als een pariteitsbit  is geprogrameerd, dan wordt SYNDET pas hoog als ook het 
+pariteits bit ontvangen is.
+
+In de externe synchronisatie mode, wordt synchronisatie bereikt als de SYNDET 
+pin van buiten af hoog wordt gemaakt. Hiermee wordt bereikt dat de 8251 de 
+'hunt mode gedwongen verlaat. Na een cyclus van RxC mag SYNDET weer laag 
+worden. Parity error en overrun error worden op dezelfde manier geset als in 
+de asynchrone mode.
+
+
+******************** COMMAND INSTRUCTION *************************************
+
+Na het geven van de mode instruction kan op elk gewenst moment een command 
+instruction gegeven worden.Een command instruction heeft alleen betrekking op 
+de actuele uitvoering van het in de instruction gegeven formaat.
+De betekenis van de commmand instruction woord is:
+
+Bit 0	TxEN	0=disable zender
+		1=enable zender
+
+Bit 1	DTR	0=DTR pin is hoog (inactief)
+		1=DTR pin is laag (actief)
+
+Bit 2	RxEN	0=disable ontvanger
+		1=enable ontvanger
+
+Bit 3	SBRK	0=geen effect
+		1=zend BREAK karakter (TxD laag)
+
+Bit 4	ER	0=geen effect
+		1=reset error flags PE,OE en FE
+
+Bit 5	RTS	0=RTS pin is hoog (inactief)
+		1=RTS pin is laag (actief)
+
+Bit 6	IR	0=geen effect
+		1=internal reset
+
+Na een interne reset moet (evenals een externe reset) opnieuw een mode 
+instructie naar de 8251 worden gestuurd.
+
+Bit 7	EH	0=geen effect
+		1=hunt mode (sync mode)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8253 programmeerbare timer/counter
+
+De 8253 bevat 3 identieke 16 bits pre-settable downcounters.Elke counter heeft 
+een klok ingang. Een opgaande flank op deze ingang verlaagt de 16 bits counter 
+met 1.
+
+		     ________
+		     |count-|&lt;---- clk 0/1/2
+		     |	er  |
+		     |0/1/2 |&lt;---- gate 0/1/2
+		     |	    |----&gt; out 0/1/2
+		     ________
+
+Elke counter heeft verder een gate input waarmee in het algemeen het tellen 
+van de counter kan worden geenable of gedisabled.Elke counter heeft tenslotte 
+een multifunctionele uitgang , die aangeeft dat de timer/counter zijn taak 
+heeft uitgevoerd. Deze uitgang kan aangesloten worden op een andere applicatie 
+of hij kan als interrupt gebruikt worden.
+Bij iedere tellet zijn 2 16 bits register aanwezig. Het ene register bevat de 
+initiele tellerwaarde.
+Vanuit dit register wordt een counter steeds geladen. In de autoload mode 
+gebeurt dit laden automatische wanneer de counter naar 0 wordt verlaagd. Het 
+tweede 16 bits register wordt gebruikt om eeb counter die nog loopt uit te 
+lezen.
+
+Het programmeren: De volgende byte moet naar het mode woord geschreven worden
+
+Bit 7,6 SC1,0	00=select conter0
+		01=select conter1
+		10=select conter2
+		11=niet toegestaan
+
+Bit 5,4 RL1,0	00=latch counter
+		01=lees/laad alleen MSB
+		10=lees/laad alleen LSB
+		11=lees/laad LSB en MSB
+ 
+  00 In deze bits maakt het mogelijk, zonder dat het telen van de counter 
+  wordt verstoord, een counter uit te lezen. Er ordt eenvoudig een latch 
+  commando gegeven en een copie van de counter wordt in een 16 bits register 
+  vastgelegd. Dit register kan dan met een normale lees-of input operatie 
+  worden uitgelezen.
+ 
+  01 Geeft aan dat bij een lees of schrijf operatie slechts het meest 
+  significantie byte van de 16 bits counter bij de operatie wordt  betrokken.
+ 
+  10 Echter definieert juist dat de minst significante 8 bits worden gelzen.
+
+  11 programeert de 8253 zo ,dat steeds twee lees en schrijfoperaties moeten 
+  worden uitgevoerd. Altijd heeft de eerste operatie betrekking op het minst 
+  significante byte en de tweede operatie op ht meest significante byte.
+
+Bit 3,2,1 M2,1,0  000=mode 0
+		  001=mode 1
+		  x10=mode 2
+		  x11=mode 3
+		  100=mode 4
+		  101=mode 5
+
+Bit 0	BCD	  0=binair tellen
+		  1=BCD tellen
+
+MODE 0 (interrupt on terminal count)
+
+De ouput lijn is na de mode programmering laag. Nadat de counter is geladen 
+blijft de output laag en de counter telt. als de teller 0 wordt dan zal de 
+output hoog worden en hoog blijven totdat de betreffende counter opnieuw 
+geladen wordt of opnieuw geprogrameerd wordt.
+ Bijvoorbeeld:timeout van een modem.
+
+MODE 1 (programmeerbare one-shot
+
+De uitgang van de counter wordt laag op de telslag volgend op de opgaande 
+flank van de gate input. De uitgang wordt hoog als de counter tot nul is 
+afgelaagd. Als tijdens het laagzijn van de output een nieuwe waard in de 
+counter wordt geladen heeft dat geen invloed op de duur van de oneshot puls. 
+De one-shot is hertriggerbaar, dat wil zeggen dat de output laag blijft 
+gedurende de volledige telcyclus na een opgaande flank van de gate lijn.
+
+MODE 2 (Rate generator)
+
+In deze mode is de 8253 een deler. De output is laag gedurende een enkele 
+periode van ed clock ingang. De periode van de ene puls tot de volgende puls 
+tot de volgende is gelijk aan de telwaarde.
+Als de counter met een nieuwe waarde wordt geladen dan heeft dat pas effect op 
+de volgende telcyclus. Aan het begin daarvan wordt immers de counter opnieuw 
+gladen. De gate ingang kan gebruikt worden om de teller te synchroniseren.
+ Bijvoorbeeld: real time clock
+
+MODE 3 (block golf generator)
+
+Deze mode is hetzelfde als mode 2, echter met dit verschil dat nu de output 
+een halve periode hoog is en een halve periode laag. Wordt de counter met een 
+oneven waarde geladen, dan is de uitgang hoog gedurende (N+1)/2 clk pulsen  en 
+laag gedurende (n-1)/2 clk pulsen.
+  Bijvoorbeeld: baudrate generator !!!!!!!
+ Deze mode is zeer geschikt om een klok te realiseren voor een 8251A. Stel dat 
+we te maken hebben met en asynchrone teerminel die op 300 Baud werkt. De USART 
+is zo geprogrammeerd dat de aangeboden ontvanger en zenderklok door 16 wordt 
+gedeeld. We moeten dan TxC en RxC gelik maken aan 300x16 = 4800 Hz. Dat 
+betekent dat de periodeduur van de blokgolf 208.33 microseconden moet zijn. 
+Als de cLK ingang van de gebruikte counter een periode duur van 500 
+nanoseconden,dan moeten we de counter dus laden met 471 (1a1H)
+
+MODE 4 (software triggered strobe)
+
+In deze mode zal de uitgang na het zetten van de mode hoog worden. Als het 
+countregister is geladen begint de counter te tellen. Als deze 0 is dan wordt 
+de uitgang gedurende een enkele clk periode laag en wordt daarna weer hoog. De 
+uitgang blijft hoog totdat de counter opnieuw wordt geladen.
+
+MODE 5 (hardware triggered strobe)
+
+In dit geval zal de counter gaan tellen na een opgaande flank van de gate 
+lijn. Deze mode is hertriggerbaar. De counter zal een gehele geprogrammeerde 
+tellerwaarde aftellen na een opgaande flank van de gat ingang.
+ Bijvoorbeeld:pulsbreedte meting
+
+
+**************** registers M6850 ACIA **************************************
+
+command woord:
+
+Bit 7	0=Disable receiver interrupts
+	1=enable receiver interrupts
+
+Bit 6,5 00=RTS laag, disable transmitterinterrupts
+	01=RTS laag, enable transmitter interrupts
+	10=RTS hoog, disable transmitter interrupts
+	11=RTS laag, disable transmitter interrupts ;zend Break karakter
+
+Bit 4,3,2 000= 7bits,  even pariteit, 2stopbits
+	  001= 7bits,oneven pariteit, 2stopbits
+	  010= 7bits,  even pariteit, 1stopbit		
+	  011= 7bits,oneven pariteit, 1stopbit
+	  100= 8bits,  geen pariteit, 2stopbits
+	  101= 8bits,  geen pariteit, 1stopbit
+	  110= 8bits,  even pariteit, 1stopbit
+	  111= 8bits,oneven pariteit, 1stopbit
+	    
+Bit 1,0  00=1xclockrate
+	 01=1/16xclockrate
+	 10=1/64xclockrate
+	 11=internal reset
+
+Na het opstarten zal de M6850 ACIA eerst gereset moeten worden met Bit 1,0 
+(11)
+
+Status register:
+
+Bit 7	IRQ	
+
+Dit bit is hoog als er een interruptrequest loopt.
+
+Bit 6	PE	Parity Error
+
+Bit 5	OVRN	Overrun Error
+
+Een overrun error error veroorzaakt een interrupt.
+
+Bit 4	FE	Framing Error
+
+Bit 5	CTS	Clear To Send
+
+Als de CTS pin hoog (inactief) is dan wordt de statusbit 1 (Transmit data 
+register empty) 0 gemaakt.Ok de hierbij behorende interrupt wordt niet op de 
+IRQ pin geplatst. De software zal dientengevolge geen data naar het 
+transmitbuffer zenden en aldus de zender disabelen.
+
+Bit 2	DCD	Data Carrier Detect
+
+Als DCD een laag -hoog overgang maakt dan wordt een interrupt gegenereerd en 
+het DCD bit wordt 1. Bit 2 blijft 1 totdat het statusregister is gelezen door 
+de processor, ook al was de DCD pin intussen weer laag.
+
+Bit 1	TDRE	Transmit Data Register Empty
+
+Dit bit wordt 1 als de inhoud van het zendbuffer in het schuifregister wordt 
+geklokt. Het blijft 1 zolang geen nieuw karakter in het zendbuffer wordt 
+geschreven. Dit bit veroorzaakt een interrupt als transmitter interrupts zijn 
+geenabled.
+
+Bit 0	RDRF	Receive Data Register Full
+
+Dit bit wordt 1 als een volledig datawoord door de zender is ontvangen en in 
+het ontvangbuffer is geplaatst. Als Receiver interrupts zijn 
+geenabled,veroorzaakt een 1 in dit bit en interrupt. Als het bit DCD 1 is dan 
+wordt het RDRF bit0 gehouden, zodat geen niet bestaande data door de processor 
+wordt gelezen.
+
+************************ Z80 PIO  en de MIDISAURUS ****************************
+
+De midisaurus bestaat uit een z80 pio ,een groot flatpack,een eprom,een stukje 
+s-ram en nog wat ondersteunende electronica 
+
+De Midi saurus heeft 4 poortadressen:
+&amp;H70 buffer poort A voor de te lezen data of te schrijven data
+&amp;H71 register bij schrijven of 
+&amp;H72 buffer poort B voor de te lezen data of te schrijven data 
+&amp;H73 register voor uitgang B van de PIO
+
+Het register (A&amp;B) is als volgt opgebouwd:
+ 
+		b7 b6 b5 b4 b3 b2 b1 b0
+		|  |   |  |  |	|  |  |
+		|  |   |  |  -------------- indentificatie als register data
+		|  |   ----------  don't  care  
+		------- mode:
+			       b7 b6
+			       0  0    = output (mode0)
+			       0  1    = input	(mode1)
+			       1  0    = bidirectioneel (mode3)
+			       1  1    = bit control 
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

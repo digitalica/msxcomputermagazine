@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<title>MILC - Topic Beschrijving van de FAT</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_7.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Beschrijving van de FAT</b><br>
+    <i>CYBERNETICS</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                         De File Allocation Tabel (FAT)
+                        ================================
+
+De FAT start op sector 1. De lengte (aantal sectoren) is afhankelijk van het 
+mediumtype. De FAT is opgedeeld in groepjes van 1,5 bytes, ofwel groepjes van 
+12 bits. De groepjes kunnen de volgende inhoud hebben:
+
+Inh.:	Betekenis:
+==============================================================================
+000   - Het cluster is vrij (wordt niet gebruikt).
+
+FF7   - Het cluster bevat een &quot;bad&quot; sector. Het betreffende cluster zal door 
+	MSXDOS niet worden toegekend aan een file.
+
+FF8   - FF8 of hoger geeft het laatste aan een file toegekende cluster aan.
+
+xxx   - Elke andere waarde dan een hiervoor genoemde waarde geeft het nummer 
+	van het volgende cluster in de file aan.
+
+
+FAT:    bitnr:  _7__6__5__4__3__2__1__0_
+        byte 0 |___________             |  &lt;--- FAT element 0
+        byte 1 |           |____________|
+        byte 2 |________________________|  &lt;--- FAT element 1
+        byte 3 |___________             |  &lt;--- FAT element 2
+        byte 4 |           |____________|
+        byte 5 |________________________|  &lt;--- FAT element 3
+
+
+Om de FAT te kunnen lezen dient u de volgende procedure aan te houden:
+
+- Vermenigvuldig het laatst gebruikte clusternummer met 1,5. Het gehele deel 
+  van het resultaat van de vermenigvuldiging is een pointer.
+- Gebruik de pointer om de FAT-entry van het in gebruik zijnde cluster te 
+  lezen. In deze entry vindt u het clusternummer van het volgende cluster dat  
+  door de file wordt gebruikt (zie hierna).
+- Lees de 3 bytes vanaf het byte dat met de pointer wordt aangewezen.
+- Indien het laatst gelezen clustereen even nummer had, dan bevatten de 12 
+  least significant bits van de 3 bytes het nummer van het volgende cluster in 
+  de file. Had de laatst gelezen cluster een oneven nummer, dan bevatten de 12 
+  most significant bits van de 3 bytes het nummer van de volgende cluster in 
+  de file.
+- Trek 2 af van het gevonden clusternummer (het volgende clusternummer in de 
+  file).
+- Vermenigvuldig het resultaat van de aftrekking met het aantal sectoren per 
+  cluster.
+- Tel de gevonden waarde op bij het sectornumer van de eerste data sector en u 
+  hebt het sectornummer, waarop het betreffende cluster (het volgende cluster 
+  in de file) begint, gevonden. (Nvdr. is dat alles?)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

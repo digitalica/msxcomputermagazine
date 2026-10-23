@@ -1,0 +1,98 @@
+<html>
+
+<head>
+<title>MILC - Topic Listing 1 van 'Met mathpack routines rekenen in ML'</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Listing 1 van 'Met mathpack routines rekenen in ML'</b><br>
+    <i>Jan vd Meer?</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;ASSEMBLERLISTING 1
+;------------------
+DAC     EQU  #F7F6    ;Buffer 1e rekenfactor of uitkomst berekening
+ARG     EQU  #F847    ;Buffer 2e rekenfactor
+VALTYP	EQU  #F663    ;Type code van variabele (= aantal relevante bytes)
+FIN     EQU  #3299    ;Conversie ascii-Z string naar mathpack notatie
+FOUT    EQU  #3425    ;Conversie mathpak notatie naar afdrukbare string
+FRCDBL  EQU  #303A    ;Conversie integer DAC+2/+3 naar dubb.preciesie (DAC)
+DECDIV  EQU  #289F    ;DAC / ARG ----&gt; DAC (delen)
+MAF     EQU  #2C4D    ;DAC  ----&gt; ARG
+ENTRY_A EQU  #F580    ;Invuladres voor entry-adres van mathpack routine
+STRING1 EQU  #F59D    ;Opslag te typen numerieke string (1e byte = lengte)
+RESULT1 EQU  #F5BD    ;Opslag resultaat (valtyp + mathpack notatie)
+RESULT2 EQU  #F5C6    ;Idem
+;-----------------
+        LD   HL,MATHP_0 ;Beginadres te kopie‰ren ML-code (bronadres)
+        LD   DE,#F55E   ;Input-buffer (doeladres)
+        LD   BC,#003F   ;Aantal bytes
+        LDIR            ;ML-code kopie‰ren naar inputbuffer #F55E
+        JP   NEXT       ;(zie assemblerlisting 2)
+;--------------------------------------
+;NAAR INPUT-BUFFER TE KOPIEEREN ML-CODE
+;--------------------------------------
+;Input: #FF in 'A' indien basic-rom aan te schakelen, else #00
+
+MATHP_0 INC  A          ;Basic-rom aanschakelen ?
+        PUSH AF         ;     Save vlaggen
+        JR   NZ,MATHP_1 ;Nee
+	IN   A,(#A8)	;Inhoud slotregister
+	LD   (#F59B),A	; opslaan
+        LD   A,(#FFFF)  ;Lees komplement van subslotregister
+        CPL             ;Werkelijk inhoud van subslotregister
+	LD   (#F59C),A	; opslaan
+        LD   A,(#FCC1)  ;Slotadres basic-ROM
+        LD   H,#40      ;ID page 1
+        CALL #0024      ;Basic-rom aanschakelen
+        LD   HL,#F59E   ;Pointer naar begin ascii-Z string
+        LD   A,(HL)     ;Eerste karakter van string
+MATHP_1 PUSH IX
+        PUSH IY
+        LD   IX,#3299   ;Entry-adres mathpack-routine &quot;FIN&quot;
+                        ;  NOOT: Invuladres voor ander entry-adres = #F580
+	LD   IY,(#FCC0) ;Slot ID biosrom
+        CALL #001C      ;Mathpack-routine uitvoeren
+        POP  IY
+        POP  IX
+        POP  AF         ;Herstel vlaggen
+        RET  NZ         ;RET indien rom niet aangeschakeld werd
+        LD   A,(#F59B)  ;Oude instelling slotregister
+        OUT  (#A8),A    ; herstellen
+        LD   A,(#F59C)  ;Oude instelling subslotregister
+        LD   (#FFFF),A  ; herstellen
+        RET
+        DEFS 1          ;Opslag slotregister    (adres = #F59B)
+        DEFS 1          ;Opslag subslotregister (adres = #F59C)
+;---------------------------------------------------------------
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

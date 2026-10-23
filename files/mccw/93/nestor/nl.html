@@ -1,0 +1,1702 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>NestorTIPS for NestorBASIC</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Nestor Soriano Vilchez">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 93, June-December">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#800000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#800000">
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../tunez2/nl.html">[en] Tunez 2 - Asterix edition</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        nummer
+        93,
+        juni-december&nbsp;2000<BR>
+</FONT><A HREF="../contents/nl.html#nestor">Terug naar inhoud</A></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../megaguide1/nl.html">[en] MEGA Guide</A></TD>
+</TR>
+<TR BGCOLOR="#886878">
+<TD ALIGN="center" colspan="3"><FONT COLOR="#FFFFFF">
+            Dit artikel is helaas alleen beschikbaar in het Engels.
+        </FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>for those who are still scared of NestorBASIC</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>NestorTIPS for NestorBASIC</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>
+This article is about the extension to MSX-basic created by the author: NestorBASIC. It makes a lot of new functionality available to basic programmers. Read ahead for some useful tips.
+</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#886878" HEIGHT="20"><B><I><A HREF="mailto:konamiman@konamiman.com"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Nestor Soriano Vilchez</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par3">NestorPreTer</A>
+<BR>
+<A HREF="#Par10">NestorTIP 0: general considerations</A>
+<BR>
+<A HREF="#Par17">NestorTIP 1: sharing variables</A>
+<BR>
+<A HREF="#Par23">NestorTIP 2: when coordinates are bothering</A>
+<BR>
+<A HREF="#Par29">NestorTIP 3: restore things to the state in which you found them</A>
+<BR>
+<A HREF="#Par33">NestorTIP 4: press any space key</A>
+<BR>
+<A HREF="#Par41">NestorTIP 5: BIOS can also help you</A>
+<BR>
+<A HREF="#Par46">NestorEND: summarising...</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>About the author</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+
+I am Nestor Soriano, also known in the MSX world as Konami 
+Man. Maybe you never heard about me, but surely you have seen some of my 
+utility programs for MSX, which can be easily recognised because almost all 
+of them start with the word &#8216;Nestor&#8217;. I am a member of the Spanish Club Mesxes and one 
+of the makers of the magazine SD Mesxes; I am also an AAM member and therefore 
+one of the organisers of the MSX meetings in Barcelona. Like most of you, I entered in the computer world with 
+an MSX1 in 1986, but at first I did nothing but playing Konamis; I must admit 
+I am a Nemesis-addict). In 1991 I acquired an MSX2+ and a couple of years after 
+I started to learn assembler. When I changed to MSX&nbsp;turbo&nbsp;R in 1997, I had 
+already developed most of my utilities.
+<BR>
+<BR>
+The software mentioned in this article can be downloaded from my homepage: <A HREF="http://www.konamiman.com/"><TT>http://www.konamiman.com/</TT></A>.
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+This article is dedicated to the basic extension named NestorBASIC. Many times I hear people complaining 
+about its excessive complexity, but the few people who use it regularly tell 
+me that it is really useful and not so difficult once one is used to
+it. So with this text I would like to make you lose this fear for the alleged 
+difficulty of programming using NestorBASIC, or at least to show you how 
+useful can it be.
+</P>
+<A NAME="Par2"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Specifically, I will show you some examples of how NestorBASIC can be used to 
+save basic memory, mainly with the use of one of its most powerful 
+capabilities: the execution of machine code routines stored in mapped 
+memory. This includes various machine code routines and basic sample listings.
+</P>
+<A NAME="Par3"></A>
+<P CLASS="bodynoindent">
+<B>NestorPreTer</B>
+<BR>
+But first, I need to introduce you to NestorPreTer, because all basic listings are in NestorPreTer format. 
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Tired of having to remove remarks from my long basic programs when the &#8216;Out 
+of memory&#8217; messages started to appear, confused every time I found a <TT>GOSUB 10000</TT> and 
+did not remember what this subroutine did, and thinking about all 
+people who had to call NestorBASIC functions 
+via <TT>usr(x)</TT>, I recently developed NestorPreTer: the MSX-basic 
+pre-interpreter.
+</P>
+<A NAME="Par5"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Putting it shortly, we can say that while NestorBASIC (NB from now on) 
+is a run-time help tool, NestorPreTer (NPR) is a design-time help 
+tool. In more detail: NPR parses an input text file containing a special 
+formatted basic program, and generates a normal MSX-basic executable &mdash;&nbsp;or maybe we should say &#8216;interpretable&#8217;&nbsp;&mdash; file. This is why we call it a 
+pre-interpreter. And what is this &#8216;special&#8217; format? It is the same as the usual 
+MSX-basic format, except that you can:
+</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><UL STYLE="text-align: justify">
+<LI> Forget line numbers &mdash;&nbsp;NPR will generate them automatically&nbsp;&mdash; and use line 
+labels when necessary. NPR will convert labels to the appropriate line number 
+when a branch instruction is found. For example: <TT>GOSUB ~ASK_USER</TT> or <TT>RESTORE ~MAIN_DATA</TT>.</LI>
+<LI> Use as much comment &mdash;&nbsp;with the <TT>REM</TT> statement&nbsp;&mdash; as you want; 
+NPR will not include it in the destination 
+file.</LI>
+<LI> Use macros to name constants, variables and code. For example <TT>LOCATE @ROW, @COLUMN</TT> will be converted to <TT>LOCATE X,Y</TT>; or <TT>POKE @INT_HOOK,@RET</TT> will be 
+converted to <TT>POKE &amp;HF349,&amp;HC9</TT>. </LI>
+<LI> Use indentation to make the entire program more readable.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+...so using NestorPreTer, you make very clear, easy-to-read basic code. Isn&#8217;t that nice? 
+Listing 1 is a NPR format code example which shows how to load NB and do some 
+system initialisation. You can see that we create an array, named <TT>D</TT>, in which we
+define all the variables we will use in the program; I will explain later why 
+we do this.
+</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+As usual with all NestorWare, NPR is free and you can download it from my 
+home page, see the box on the left. You better get it and read the 
+complete manual &mdash;&nbsp;do not worry, it is not as long as the one of NB!&nbsp;&mdash; because 
+all the listings in this article are in NPR format. Of course, also NB is 
+available on my page.
+</P>
+<A NAME="Par9"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST1.ASC"><FONT COLOR="#FFFFFF">LIST1.ASC</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 1: NestorBASIC load / sample of NestorPreTer format code
+'/// Summarising: NPR converts this listing into a normal MSX-basic file.
+'///
+
+'*********************************
+'*                               *
+'*  First we define some macros  *
+'*                               *
+'*********************************
+
+'---  Constants  ---
+
+@define TRUE  -1
+@define FALSE  0
+@define ON @TRUE
+@define OFF @FALSE
+
+'@REQ_SEGS defines the minimum number of ram segments we will need,
+'including the five first ones, which are used by NB itself:
+'When NB is loaded, the availability of at least REQ_SEGS segments
+'is checked; if not available, an error message is prompted and
+'NB is uninstalled.
+
+@define REQ_SEGS 6
+
+'---  Variables  ---
+
+'We will centralise all variables in an array named D,
+'which will be created after loading NB (see tip 2 for more details).
+'Exception is made for loop counters, which must be simple variables.
+'Also, we define simple variable @ERROR for NB functions error recovering.
+
+@define NUM_VARS 3	'Total number of variables we will use
+			'(except @ERROR and loop counters)
+@define ERROR e
+@define NUM_SEGS d(0)	'Total number of available segments
+@define FILE_HANDLE d(1)	'Identifier for any open file
+@define ANY_DATA d(2)
+'...
+'define here all variables you will use
+'and do not forget to set NUM_VARS appropriately
+'...
+
+'We define also all the loop counters we will use
+'It is better to use b, b1, b2... so we can easily initialise all
+'with just a DEFINT b
+
+@define LOOP b
+@define LOOP2 b2
+
+'---  NestorBASIC functions ---
+
+'Using macros to name NB functions you do not need to remember
+'the numbers for all functions (and vice versa, when you find
+'a function call in your listing, you do not need to remember which is
+'the function for that number)
+
+@macro	NB_UNINST e=usr(0)	'Uninstalls NestorBASIC
+@macro	NB_INFO e=usr(1)	'Gets info about NestorBASIC
+@macro	R_SEG	e=usr(2)	'Reads a byte from a segment
+
+'...
+'define here all functions you will use, or define all
+'in an external macros file (this is better).
+'In my HP you can find a file with all NB functions defined as macros.
+'...
+
+'---   Samples of useful macros  ---
+
+'Clear keyboard buffer:
+
+@macro	CLEAR_KEY_BUFFER defusr1=&amp;h156: @ERROR=usr1(0)
+
+'Check if ENTER is being pressed (if @PRESS_ENTER then...)
+
+@macro	PRESS_ENTER (peek(&amp;HFBEC) and 128) = 0
+
+'Uninstalls NB freeing basic memory, and ends.
+'BEWARE: Do not uninstall NB from inside a turbo block!
+
+@macro	FINISH	p(0)=@YES: @NB_UNINST: end
+
+'--- To identify the listing ---
+
+@remon
+
+'list1.bas
+
+@remoff
+
+
+'**********************
+'*                    *
+'*  NestorBASIC load  *
+'*                    *
+'**********************
+
+~	maxfiles=0:			'This saves about 250 bytes
+	keyoff: screen 0: width 80:
+	color: color 15,0,0:
+	?"--- Loading NestorBASIC... ---": ?:
+	bload"nbasic.bin",r:
+	defint @ERROR:		'NB error variable
+	@ERROR= 0:
+	if p(0) &gt;4 then
+	      goto ~LOADOK	'No error if P(0) is at least 5
+	else
+		?"ERROR: ";
+
+'*** Error? Then show message and finish.
+
+~	if p(0)=0 then
+		?"No mapped memory or only 64K found!":
+		end
+
+~	if p(0)=1 then
+		?"Disk error when loading NestorBASIC!":
+		end
+
+~	if p(0)=2 then
+		?"No free segments!":
+		end
+
+~	if p(0)=3 then
+		?"NestorBASIC was already installed.":
+		@NB_INFO:
+		goto ~ALR_LOAD
+
+~	if p(0)=4 then
+		?"Unknown error.":
+		end
+
+'*** Jumps here if NestorBASIC loaded successfully.
+
+~LOADOK:	?"NestorBASIC loaded successfully!":
+		?"Available segments:"; p(0): ?
+
+'*** Jumps here if NestorBASIC was already loaded.
+
+~ALR_LOAD
+
+'*** Checks if we have at least REQ_SEGS segments, else ends.
+
+~	defint d: dim d(@NUM_VARS):	'Creates variables array
+	if p(0)&lt; @REQ_SEGS then
+		?"ERROR: Not enough free segments!":
+		?"I have"; p(0) ;" segments and I need at least";
+		@REQ_SEGS; "segments.":
+		@FINISH
+	else
+		@NUM_SEGS= p(0)
+'...
+'Put your program from here. Suggestion for the beginning:
+
+_turbo on (p(), d(), e)
+dim f$(1): defint @LOOP: @LOOP=0: @LOOP2=0
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par10"></A>
+<P CLASS="bodynoindent">
+<B>NestorTIP 0: general considerations</B>
+<BR>
+Imagine that you are an assembler programmer &mdash;&nbsp;I suppose you actually are&nbsp;&mdash; and 
+you need to make an editor for a game you are developing, with maps, sprites, etc. For such a purpose the most practical way is to use basic, 
+because you do not have a real need for speed and coding it in machine code 
+directly could take you as much time as the game itself.
+</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+But soon you bump into the eternal problem of basic programs: the lack of 
+memory. We have a 128, 256, even 1024 or 4096&nbsp;kB machine, but we can use only 
+23&nbsp;kB, and if we use Turbo-basic it is even worse: just 10&nbsp;kB!
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+NB solves this problem partially: we cannot make bigger programs, but we can 
+use mapped memory to store data. So from now on do not forget this: <I>do not store in your basic program whatever you can store in mapped memory!</I>
+So from now on it is &#8216;forbidden&#8217; &mdash;&nbsp;you choose the prohibition level&nbsp;&mdash; to put in 
+your programs:
+</P><UL STYLE="text-align: justify">
+<LI> Strings. It is very easy to spend, without realizing it, 3 or 4&nbsp;kB with just
+<TT>PRINT "Welcome to my amazing program which is the best one in the world"</TT>, 
+<TT>PRINT "Please enter the name of the desired filename"</TT> and so on.</LI>
+<LI> Data for coordinates, key combinations, etc... For example &#8220;<TT>IF X&gt;34 AND X&lt;100 THEN 1000 ELSE IF X&lt;34 THEN</TT>...&#8221;</LI>
+<LI> <TT>DATA</TT>s. Making a loop for reading data from mapped memory is almost as easy as making a <TT>READ</TT> loop.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par13"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+We can also save basic memory &mdash;&nbsp;and gain speed as a side effect&nbsp;&mdash; if we 
+perform some tasks in assembler. For example, read the mouse and cursor keys and then 
+check if the pointer does not move beyond the screen limits. Of course these assembler 
+routines will also be placed in mapped memory so no basic memory is spent.
+</P>
+<A NAME="Par14"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+And maybe you think &#8216;I also save memory if I do not use comments&#8217;. If you use 
+NestorPreTer you do not need to worry about this, otherwise you must of course 
+minimise the number of comments and their length in order to save memory.
+</P>
+<A NAME="Par15"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Last but not least: now that you will use mapped memory, take paper and 
+pencil and draw a map of all the segments, i.e., what you will put in 
+them and on what address. This will make the further coding process much 
+easier. Years of experience have taught me this.
+</P>
+<A NAME="Par16"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+And after these introductory words, let us start with some more detailed tips.
+</P>
+<A NAME="Par17"></A>
+<P CLASS="bodynoindent">
+<B>NestorTIP 1: sharing variables</B>
+<BR>
+This is not exactly a tip for saving memory, but it is also very useful.
+</P>
+<A NAME="Par18"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+You already know, I hope, that NB has functions for storing basic programs 
+in ram segments, and to execute them without losing current variables. But 
+maybe for any reason you cannot &mdash;&nbsp;due to a lack of segments, for example&nbsp;&mdash; or 
+do not want to use these functions. Well then, we are not lost 
+yet: there is a way to load another basic program in the usual way 
+&mdash;&nbsp;<TT>RUN"PROGRAM"</TT>&nbsp;&mdash; without losing variables. How? This is what I will explain now.
+</P>
+<A NAME="Par19"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The tip is just to save all variables in mapped memory, then load the new 
+program, and then recover the variables. It sounds easy... and actually it is, if 
+we have all variables in one single array; that is why we define array <TT>D</TT> in 
+listing 1, as I explained in the introduction text.
+</P>
+<A NAME="Par20"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+More detailed explanation: if we put all variables in one array, then all of 
+them are stored consecutively in memory and therefore we can copy all of them
+easily to any ram segment, using the NB function for memory block 
+transfers, which is function number 10. But how do we know where the array is stored in 
+basic memory? That is what the basic instruction <TT>VARPTR</TT> is for! Add the fact 
+that basic memory has segment number 255 assigned when using NB functions
+and we have listing 2a.
+</P>
+<A NAME="Par21"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Once we have saved all variables, we load the new program with a 
+common <TT>LOAD</TT>, we create again array <TT>D</TT>, we recover variables with the same NB 
+function, swapping source and destination parameters and we can continue 
+our task. See listing 2b.
+</P>
+<A NAME="Par22"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST2A.ASC"><FONT COLOR="#FFFFFF">LIST2A</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 2a: storing all variables (array D) in a mapped memory segment.
+'/// Execute it before loading another basic program.
+'/// We suppose that all variables are of integer type.
+'///
+
+@macro LDIRSS e=usr(10)        'Memory block transfer function
+
+'Segment and address where variables will be saved:
+'define it as you want, I just use example values.
+
+@define DATA_SEG 6
+@define DATA_DIR &amp;H100
+
+'Now we save variables. We suppose that NUM_VARS is appropriately defined,
+'for example with listing 1.
+
+~	p(0)= 255:	'basic memory segment number
+	p(1)= varptr(d(0)):	'Address in basic memory of the array
+	p(2)= @DATA_SEG: 'Destination for transfer
+	p(3)= @DATA_DIR:
+	p(4)= @NUM_VARS * 2:	'Block size: each integer var = 2 bytes
+	p(5)= @NO:	'Or @YES, you set it as you want
+	p(6)= @NO:	'Idem
+	@LDIRSS:
+
+	run "nextprog.bas"        'Now we can execute another basic program
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST2B.ASC"><FONT COLOR="#FFFFFF">LIST2B</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 2b: Recovering the variables previously saved with listing 2a.
+'/// Execute it at the beginning of the program which must recover
+'/// the variables from the "parent" program.
+'///
+
+@remon
+'nextprog.bas
+@remoff
+
+@macro LDIRSS e=usr(10)        'Memory block transfer function
+
+'Segment an address where variables are saved.
+'Again you can define it as you want, but of course you must use
+'the same values used in listing 2a!
+'And again, we suppose @NUM_VARS already defined
+
+@define DATA_SEG 6
+@define DATA_DIR &amp;H100
+
+'First we define array P again so we can use NB functions.
+
+~	defint p: dim p(15): define @ERROR: @ERROR=0:
+
+'Now we create again data array D. Again, we suppose
+'@NUM_VARS already defined.
+'Suggestion: define DATA_SEG, DATA_DIR and NUM_VARS in an external macros
+'file, and use this file when processing with NPR both parent and child basic
+'programs.
+
+	defint d: dim d(@NUM_VARS):
+
+'Now we have D again, we recover variables:
+
+	p(0)= @DATA_SEG:
+	p(1)= @DATA_DIR:
+	p(2)= 255:
+	p(3)= varptr(d(0)):
+	p(4)= @NUM_VARS * 2:
+	p(5)= @NO:
+	p(6)= @NO:
+	@LDIRSS
+
+'...and from here, life goes on:
+
+_turbo on (p(), d(), e)
+dim f$(1): defint @BUCLE: @BUCLE=0: @BUCLE2=0
+
+'etc...
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par23"></A>
+<P CLASS="bodynoindent">
+<B>NestorTIP 2: when coordinates are bothering</B>
+<BR>
+Let us continue with the example of the editor for the game. Surely it will 
+have a graphical environment including icons and mouse control. Then, when a 
+mouse button click is detected, you must find out which icon the pointer is 
+pointing at. How do you do this?
+</P>
+<A NAME="Par24"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The normal way &mdash;&nbsp;actually I cannot think of another&nbsp;&mdash; is to have a table with 
+start and end coordinates for each icon and with a given current pointer 
+coordinates, we scan the table checking if these current coordinates are or are  not inside the coordinates range for each icon. That is, if an icon is located  from 
+(X0,Y0) to (X1,Y1), we must check if X0&lt;X&lt;X1 and Y0&lt;Y&lt;Y1. Simple and easy.
+</P>
+<A NAME="Par25"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Of course you can do this in plain basic, storing the table of 
+coordinates in a <TT>DATA</TT> line. But if we use NestorBASIC we can use assembler, 
+which is faster, easier and consumes less memory.
+</P>
+<A NAME="Par26"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Let us see how. In a ram segment we will save an assembler routine, together 
+with the coordinates table for all the icons we have on the screen. When 
+calling this routine with function 59, we just pass current mouse coordinates 
+as parameters, then the table will be scanned, and we get the icon number as 
+a result. It saves an incredible amount of memory and we also gain speed.
+</P>
+<A NAME="Par27"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+So here you have three more listings. Listing 3 is a universal routine for loading 
+a file into a segment; we will use it to load the ML routine and the icons 
+table. I will also use it in the other tips. Listing 4a is the table scanner in assembler 
+and listing 4b is some basic sample code which calls the assembler routine 
+previously loaded.
+</P>
+<A NAME="Par28"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST3.ASC"><FONT COLOR="#FFFFFF">LIST3</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 3: Loading a entire file in a segment
+'/// (file must have a maximum length of 16K, of course)
+'/// NOTE: @ERROR and @FILE_HANDLE are defined in listing 1
+'///
+
+@macro	F_OPEN	e=usr(31)	'Open a file
+@macro	F_CLOSE e=usr(32)	'Close a file
+@macro	F_READ	e=usr(33)	'Read from a file
+
+'Segment and address where we will load file, define it as you want.
+'FILE_SIZE is the amount of bytes we will try to read from the file.
+
+@define FILE_SEG 6
+@define FILE_DIR 0
+@define FILE_SIZE 16384-@FILE_DIR
+
+'Name and path for file to be loaded
+
+@define FILENAME "c:\routines\anything.bin"
+
+'We open file, if error, we jump to a routine ~ERROR,
+'which we suppose defined anywhere.
+
+~List_3:
+	F$(0)= @FILENAME:
+	@F_OPEN:
+	if @ERROR&lt;&gt;0 then ~ERROR else
+	@FILE_HANDLE= p(0)
+
+'Now we try to read 16K from file. If we obtain error 1 or 199 (for DOS 1 and 
+'DOS 2 respectively) we ignore it, because this error means just "End of 
+'file", that is, file is smaller than 16K
+
+~	p(0)= @FILE_HANDLE:
+	p(2)= @FILE_SEG:
+	p(3)= @FILE_DIR:
+	p(4)= @FILE_SIZE:
+	p(6)= @NO:
+	@F_READ:
+	if (@ERROR&lt;&gt;0 and @ERROR&lt;&gt;1 and @ERROR&lt;&gt;199) then ~ERROR
+
+'All done, now we just close the file.
+
+~	p(0)= @FILE_HANDLE:
+	@F_CLOSE:
+	return
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">	
+
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="LIST4A.ASC"><FONT COLOR="#FFFFFF">LIST4A</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+;--- Listing 4a: Icon scanner in assembler
+;    With a given pair of coordinates, it scans a coordinates table
+;    corresponding to icons positions, and it returns the icon number
+;    which contains the given coordinates.
+;    Input:   P(3) = BC = X coordinate
+;	      P(4) = DE = Y coordinate
+;    Output:  P(5) = HL = Found icon identifier (-1:none)
+
+	org	#8000
+
+	push	bc,de	;So P(3) and P(4) are not modified
+	call	CHKICON
+	pop	de,bc
+	ret
+
+CHKICON:	ld	ix,TABLE_ICON
+
+LOOPICON:	 ld	 a,(ix)
+	cp	#FF
+	jr	z,ENDICON
+
+	ld	l,(ix+1)
+	ld	h,(ix+3)
+	ld	a,c
+	call	RANGE
+	jr	nz,NOICON
+
+	ld	l,(ix+2)
+	ld	h,(ix+4)
+	ld	a,e
+	call	RANGE
+	jr	nz,NOICON
+
+YESICON: ld	 l,(ix)
+	ld	h,0
+	ret
+
+NOICON:	inc	ix
+	inc	ix
+	inc	ix
+	inc	ix
+	inc	ix
+	jr	LOOPICON
+
+ENDICON:	ld	hl,-1
+	ret
+
+;--- Subroutine: RANGE
+;      Checks a byte for being or not inside a given range
+;    INPUT:	 H = Upper value of range (inclusive)
+;		 L = Lower value of range (inclusive)
+;                A = Byte
+;    OUTPUT:	 Z = 1 if inside range (Cy = ?)
+;		 Cy= 1 if above range (Z = 0)
+;		 Cy= 0 if below range (Z = 0)
+;    MODIFY:	 AF
+
+RANGE:	cp	l	;Smaller?
+	ccf
+	ret	nc
+
+	cp	h	;Bigger?
+	jr	z,R_H
+	ccf
+	ret	c
+
+R_H:	push	bc	;=H?
+	ld	b,a
+	xor	a
+	ld	a,b
+	pop	bc
+	ret
+
+
+;--- Icons coordinates table
+;    Format: identifier + start x + start y + end x + end y
+;    (1 byte each one)
+
+;    NOTE: identifier #FF is reserved for the end of table mark (mandatory)
+
+;    Assuming that all icons are placed in a rectangular array starting with
+;    base position (BX, BY), and icons have a size TX x TY, we can use
+;    the macro "icon":
+
+BX:	equ	0	;Sample values
+BY:	equ	200
+TX:	equ	11
+TY:	equ	11
+
+icon:	macro	@num,@xi,@yi
+	db	@num,BX+@xi*TX,BY+@yi*TY,BX+@xi*TX+TX-1,BY+@yi*TY+TY-1
+	endm
+
+;Sample: 5 x 2 icons table:
+;01234
+;56789
+
+TABLE_ICON:
+_0:	icon	0,0,0
+_1:	icon	1,1,0
+_2:	icon	2,2,0
+_3:	icon	3,3,0
+_4:	icon	4,4,0
+_5:	icon	5,0,1
+_6:	icon	6,1,1
+_7:	icon	7,2,1
+_8:	icon	8,3,1
+_9:	icon	9,4,1
+END:	db	#FF
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST4B.ASC"><FONT COLOR="#FFFFFF">LIST4B</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 4b: Sample of the use of the icons scanner from NestorBASIC,
+'/// in a short, useful, fast and elegant way. (-v-)v
+'///
+
+@macro	ASSEMB_EXE  e=usr(59)
+
+'First we load the file containing the routine in any segment.
+'NOTE: Load address (@FILE_DIR) must be the same where the routine has been 
+'assembled (ORG directive on listing 4a):
+
+@define ORG_DIR &amp;H8000
+
+@define FILE_SEG 6
+@define FILE_DIR @ORG_DIR
+@define FILE_SIZE 16384-(@ORG_DIR-&amp;H8000)
+
+~	gosub ~List_3
+
+'...
+'... Any code in which, for example, we detect a mouse click
+'... in coordinates (X,Y)
+'...
+
+'Now we get the clicked icon number depending of the coordinates:
+
+~	p(3)= x:
+	p(4)= y:
+	gosub ~CALL_ASSEMMB:
+	if p(5)= -1 then ~NO_ICON
+	else on p(5) gosub... 'Or: goto ~PROCESS_ICON
+
+'Subroutine for calling the assembler routine
+
+~CALL_ASSEMB:
+	p(0)= @FILE_SEG:
+	p(1)= @FILE_DIR:
+	@ASSEMB_EXE:
+	return
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par29"></A>
+<P CLASS="bodynoindent">
+<B>NestorTIP 3: restore things to the state in which you found them</B>
+<BR>
+This is not a very impressing tip and it does not use assembler routines at 
+all, but it can be useful.
+</P>
+<A NAME="Par30"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Let us suppose your program is using text mode. It sets <TT>SCREEN 0</TT>, <TT>WIDTH 80</TT> 
+and black and white colours. It also performs a <TT>KEY OFF</TT> and switches off 
+the key click sound. You do all of this at the beginning of the program and 
+it works, but... what happens when your program finishes? The screen state 
+remains as you have set it, that is, the initial state is not restored.
+</P>
+<A NAME="Par31"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Solution: save the screen&#8217;s initial state, which we will get by looking at 
+some system variables, before setting the desired screen mode (listing 5a). 
+Then, when our program finishes, we can retrieve these initial settings (listing 
+5b). And of course, we will save this state in mapped memory, so no
+single byte of basic memory is lost.
+</P>
+<A NAME="Par32"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST5A.ASC"><FONT COLOR="#FFFFFF">LIST5A</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 5a: saving screen state in a ram segment
+'///
+
+@macro	R_SEGI	e=usr(3)	'Reading from a segment with auto increment
+@macro	WSEGI	e=usr(7)	'Idem for writing
+
+'Segment and address where we will save state
+'As usual, you must define it as you want
+
+@define STA_SEG 6
+@define STA_DIR 0
+
+@define VARIABLE v	'For a loop
+
+'System variables we will save
+
+@define LINLEN &amp;HF3B0	'Current WIDTH
+@define CRTCNT &amp;HF3B1	'Number of lines on screen
+@define CLIKSW &amp;HF3DB	'Key click sound, (0=no, other=yes)
+@define CNSDFG &amp;HF3DE	'KEY ON (0) / OFF (other)
+@define FORCLR &amp;HF3E9	'Text color
+@define BAKCLR &amp;HF3EA	'Back color
+@define BDRCLR &amp;HF3EB	'Border color
+@define SCRMOD &amp;HFCAF	'Current SCREEN
+
+'We save state with a simple loop
+'(OK, I said before that it is better to not use DATAs in order to save 
+'memory... but this is just a sample! Besides you surely will put this code 
+'in a short initialisation program rather than in the main program)
+
+~	p(0)= STA_SEG:
+	p(1)= STA_DIR:
+	restore ~VARIABLES
+
+~	read @VARIABLE:
+	if @VARIABLE&lt;&gt;0 then
+	p(2)= peek (@VARIABLE):
+	@W_SEGI:
+	goto ~~
+
+~DONE: 'Here life goes on...
+
+..
+
+'Here you have the used system variables, be careful to not modify
+'the variables order in the DATA line, else listing 5b will not work!
+
+~VARIABLES:
+	data	@SCRMOD, @LINLEN, @CRTCNT, @CLIKSW, @CNSDFG,
+		@FORCLR, @BAKCLR, @BORCLR, 0
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST5B.ASC"><FONT COLOR="#FFFFFF">LIST5B.ASC</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 5b: Restoring initial state, saved with listing 5a
+'/// NOTE: execute this code out of turbo blocks in order to avoid
+'/// problems with some incompatible instructions
+'///
+
+~	p(0)= STA_SEG:
+	p(1)= STA_DIR:
+
+	@R_SEGI:	'SCREEN
+	screen p(2):
+
+	@R_SEGI:	'WIDTH
+	width p(2):
+
+	@R_SEGI:	'Lines in screen
+	poke @CRTCNT, p(2):
+
+	@R_SEGI:	'Key sound
+	if p(2)=0 then screen ,,0
+	else screen ,,1
+
+~	@R_SEGI:	'KEY ON/OFF
+	if p(2)=0 then keyon
+	else keyoff
+
+~	@R_SEGI:	'Colours
+	color p(2):
+	@R_SEGI:
+	color ,p(2):
+	@R_SEGI:
+	color ,,p(2)
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par33"></A>
+<P CLASS="bodynoindent">
+<B>NestorTIP 4: press any space key</B>
+<BR>
+This tip is similar to tip 2. If we use assembler to detect icons, 
+why we cannot we do same to detect key pressing? The idea is simple: instead of 
+using <TT>INKEY$</TT>, <TT>INPUT$</TT> and similar basic instructions, we save in any segment a 
+table with the keys we are interested in plus an assembler routine which 
+will detect what key or key combination is being pressed, returning 
+its associated identifier.
+</P>
+<A NAME="Par34"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Advantages: as in the case of the icons scanner, we save basic memory &mdash;&nbsp;one 
+single <TT>USR</TT> is enough to scan all the keys in the table and detect the 
+key/combination being pressed&nbsp;&mdash; get more speed and make it easy to detect &#8216;difficult&#8217; keys such as <TT CLASS="key">SHIFT</TT>, <TT CLASS="key">CTRL</TT>, <TT CLASS="key">SELECT</TT>, <TT CLASS="key">ESC</TT>...
+</P>
+<A NAME="Par35"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Maybe you are asking yourself how a key table can be stored. Well, as you 
+may already know, when working in assembler, the keyboard is seen as an 11&times;8 
+array, in which every key has a row number and a column number assigned: see
+Figure 1.
+</P>
+<A NAME="Par36"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+<CAPTION STYLE="color: #FFFFFF; background-color: #886878; text-align: center">
+<B>Figure 1: Row and column number for each key</B>
+</CAPTION>
+
+<TR>
+<TH VALIGN="top">&nbsp;</TH><TH ALIGN="LEFT" VALIGN="top">7:</TH><TH ALIGN="LEFT" VALIGN="top">	    6:</TH><TH ALIGN="LEFT" VALIGN="top">	   5:</TH><TH ALIGN="LEFT" VALIGN="top">	  4:</TH><TH ALIGN="LEFT" VALIGN="top">	 3:</TH><TH ALIGN="LEFT" VALIGN="top">	2:</TH><TH ALIGN="LEFT" VALIGN="top">     1:</TH><TH ALIGN="LEFT" VALIGN="top">     0:</TH>
+</TR>
+
+<TR>
+<TD VALIGN="top">0:</TD><TD VALIGN="top">  7</TD><TD VALIGN="top">	    6</TD><TD VALIGN="top">	   5</TD><TD VALIGN="top">	  4</TD><TD VALIGN="top">	 3</TD><TD VALIGN="top">	2 </TD><TD VALIGN="top">     1</TD><TD VALIGN="top">      0</TD>
+</TR>
+<TR>
+<TD VALIGN="top">1:</TD><TD VALIGN="top">  ;</TD><TD VALIGN="top">	    ]</TD><TD VALIGN="top">	   [</TD><TD VALIGN="top">	  \</TD><TD VALIGN="top">	 =</TD><TD VALIGN="top">	-</TD><TD VALIGN="top">      9</TD><TD VALIGN="top">      8</TD>
+</TR>
+<TR>
+<TD VALIGN="top">2:</TD><TD VALIGN="top">  B</TD><TD VALIGN="top">	    A</TD><TD VALIGN="top">	   ACCENT</TD><TD VALIGN="top"> /</TD><TD VALIGN="top">	 .</TD><TD VALIGN="top">	,</TD><TD VALIGN="top">      &#8216;</TD><TD VALIGN="top">      &#8216;</TD>
+</TR>
+<TR>
+<TD VALIGN="top">3:</TD><TD VALIGN="top">  J</TD><TD VALIGN="top">	    I</TD><TD VALIGN="top">	   H</TD><TD VALIGN="top">	  G</TD><TD VALIGN="top">	 F</TD><TD VALIGN="top">	E</TD><TD VALIGN="top">      D</TD><TD VALIGN="top">      C</TD>
+</TR>
+<TR>
+<TD VALIGN="top">4: </TD><TD VALIGN="top"> R</TD><TD VALIGN="top">	    Q</TD><TD VALIGN="top">	   P</TD><TD VALIGN="top">	  O</TD><TD VALIGN="top">	 N</TD><TD VALIGN="top">	M</TD><TD VALIGN="top">      L</TD><TD VALIGN="top">      K</TD>
+</TR>
+<TR>
+<TD VALIGN="top">5:</TD><TD VALIGN="top">  Z</TD><TD VALIGN="top">	    Y</TD><TD VALIGN="top">	   X</TD><TD VALIGN="top">	  W</TD><TD VALIGN="top">	 V</TD><TD VALIGN="top">	U</TD><TD VALIGN="top">      T</TD><TD VALIGN="top">      S</TD>
+</TR>
+<TR>
+<TD VALIGN="top">6:</TD><TD VALIGN="top">  F3</TD><TD VALIGN="top">	    F2</TD><TD VALIGN="top">	   F1</TD><TD VALIGN="top">	  CODE</TD><TD VALIGN="top">	 CAPS</TD><TD VALIGN="top">	GRPH</TD><TD VALIGN="top">   CTRL</TD><TD VALIGN="top">   SHIFT</TD>
+</TR>
+<TR>
+<TD VALIGN="top">7:</TD><TD VALIGN="top">  RET</TD><TD VALIGN="top">     SEL</TD><TD VALIGN="top">    BS</TD><TD VALIGN="top">	  STOP	</TD><TD VALIGN="top"> TAB</TD><TD VALIGN="top">	ESC</TD><TD VALIGN="top">    F5</TD><TD VALIGN="top">     F4</TD>
+</TR>
+<TR>
+<TD VALIGN="top">8: </TD><TD VALIGN="top"> RIGHT </TD><TD VALIGN="top">  DOWN  </TD><TD VALIGN="top"> UP	</TD><TD VALIGN="top">  LEFT	 </TD><TD VALIGN="top">DEL	</TD><TD VALIGN="top">INS </TD><TD VALIGN="top">   HOME</TD><TD VALIGN="top">   SPACE</TD>
+</TR>
+
+<TR>
+<TD VALIGN="top">9: </TD><TD VALIGN="top"> 4	</TD><TD VALIGN="top">    3	</TD><TD VALIGN="top">   2</TD><TD VALIGN="top">	  1</TD><TD VALIGN="top">	 0</TD><TD VALIGN="top">	/</TD><TD VALIGN="top">      +</TD><TD VALIGN="top">      *</TD>
+</TR>
+<TR>
+<TD VALIGN="top">10: </TD><TD VALIGN="top">.</TD><TD VALIGN="top">	    ,</TD><TD VALIGN="top">	   -</TD><TD VALIGN="top">	  9</TD><TD VALIGN="top">	 8</TD><TD VALIGN="top">	7</TD><TD VALIGN="top">      6</TD><TD VALIGN="top">      5</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par37"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The assembler routine we will use (list 6a) in order to simplify things, 
+detects just the pressed keys, or keys pressed together with <TT CLASS="key">SHIFT</TT> and/or 
+<TT CLASS="key">CTRL</TT>. Therefore, for each key we have the following in the table: an identifier, <TT CLASS="key">SHIFT</TT>/<TT CLASS="key">CTRL</TT>
+required combination, row and column. Apart from this, the operating system 
+itself scans the keyboard at each clock interrupt (50 or 60&nbsp;Hz) and stores information about the status for every key in the system&#8217;s work area. So, we just need to 
+read this system area zone in order to know if a given key is being pressed 
+or not.
+</P>
+<A NAME="Par38"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Last but not least: in addition to the key or key combination currently being 
+pressed, this routine also returns the key or key combination that was being pressed in the 
+previous call. This is very useful to detect a key press only once, even if 
+the key is still pressed: we consider the key pressed only if it is 
+pressed currently <I>and</I> it was not pressed in the previous call. Alternatively, 
+we can also detect a key release: a key is not being pressed but it was pressed in 
+the previous call.
+</P>
+<A NAME="Par39"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Listing 6b is a basic sample of the use of the routines of listing 6a.
+</P>
+<A NAME="Par40"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="LIST6A.ASC"><FONT COLOR="#FFFFFF">LIST6A</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+;--- Listing 6a: Checks if any key of the keys table is pressed
+;    Input:   -
+;    Output:  BC = P(3) = Key/combination currently pressed (-1 = none)
+;	      DE = P(4) = K/C pressed in the previous call
+
+	org	#8000
+
+;NEWKEY is the system work area where keyboard status is saved by OS.
+;It is 11 bytes long, each byte is a row, and for each byte, each bit
+;is the state for the corresponding column (1=not pressed, 0=pressed)
+
+NEWKEY: equ	#FBE5
+
+CHKEY:	ld	ix,TABKEY
+
+LOPKEY: ld	a,(ix)
+	cp	#FF
+	jr	z,NOKEY
+
+	ld	e,(ix+2)
+	ld	d,0
+	ld	hl,NEWKEY
+	add	hl,de
+	ld	a,(hl)	;A = Row state
+	cpl
+
+	ld	b,(ix+3)
+	inc	b
+LOPFIL: srl	a
+	djnz	LOPFIL
+	jr	nc,NEXTKEY	;Cy = Key state (1=Pressed)
+
+	ld	a,(NEWKEY+6)
+	cpl
+	and	3
+	cp	(ix+1)
+	jr	nz,NEXTKEY	;Checks for SHIFT and CTRL
+
+OKKEY:	ld	c,(ix)	;Combination pressed?
+	ld	b,0
+	ld	de,(OLDKEY)
+	ld	(OLDKEY),bc
+	ret
+
+NEXTKEY:	inc	ix	;Next combination
+	inc	ix
+	inc	ix
+	inc	ix
+	jr	LOPKEY
+
+NOKEY:	ld	bc,-1	;No key or combination pressed
+	ld	de,(OLDKEY)
+	ld	(OLDKEY),bc
+	ret
+
+OLDKEY: dw	-1	;For storing previous combination
+
+;--- Keys table
+;    Format: identifier + SHICT + row + column
+;    (1 byte each one)
+;    SHICT = &amp;B000000CS
+;    C=1 if CTRL pressed is required
+;    S=1 if SHIFT pressed is required
+;    In other words:
+;    SHICT=0 for key alone
+;    SHICT=1 for key + SHIFT
+;    SHICT=2 for key + CTRL
+;    SHICT=3 for key + SHIFT + CTRL
+;    See figure 1 for the corresponding row and column for each key
+
+;NOTE: identifier #FF is reserved for end of table mark (mandatory)
+
+TABKEY: ;Example table
+	db	0,0,7,2	;ESC
+	db	1,2,7,2	;CTRL+ESC
+	db	2,3,7,2	;CTRL+SHIFT+ESC
+	db	3,1,7,2	;SHIFT+ESC
+	db	4,0,6,5	;F1
+	db	5,3,6,3	;CTRL+SHIFT+CAPS
+	db	#FF
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST6B.ASC"><FONT COLOR="#FFFFFF">LIST6B</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 6b: Detects if any of the keys on the example table in listing 6a
+'/// is being pressed (pressing and releasing is detected)
+'///
+
+@macro	ASSEMB_EXE  e=usr(59)
+
+'First we load the file with the routine and the table.
+'See note about ORG_DIR in listing 4a
+
+@define ORG_DIR &amp;H8000
+
+@define FILE_SEG 6
+@define FILE_DIR @ORG_DIR
+@define FILE_SIZE 16384-(@ORG_DIR-&amp;H8000)
+
+~	gosub ~List_3
+
+'Some initialisation
+
+~	screen 0,,0:
+	width 40:
+	color 15,0,0:
+	keyoff
+
+'We create a strings array to show information about the key being pressed.
+'OK, OK, I said you "do not store strings in the basic program", but...
+'THIS IS JUST A SAMPLE!!
+
+@define STRINGS c$
+
+~	dim @STRINGS(6):
+	@STRINGS(0)= "ESC":
+	@STRINGS(1)= "CTRL+ESC":
+	@STRINGS(2)= "CTRL+SHIFT+ESC":
+	@STRINGS(3)= "SHIFT+ESC":
+	@STRINGS(4)= "F1":
+	@STRINGS(5)= "CTRL+SHIFT+CAPS"
+
+'Infinite loop for detect keys and show which one is pressed
+
+@macro	BEEPEA	beep:beep:beep
+
+~INFINITE:
+	gosub ~CALL_ASSEMB:
+
+	if p(3)=-1 and p(4)&lt;&gt;-1 then	'A key is released?
+	?"Release ";@STRINGS( p(4) );" !!": @BEEPEA else
+
+	if p(3)&lt;&gt;-1 and p(4)=-1 then	'A key is pressed?
+	? @STRINGS( p(3) ): @BEEPEA
+
+~	cls:
+	goto ~INFINITE
+
+'Subroutine for calling the assembler routine
+
+~CALL_ASSEMB:
+	p(0)= @FILE_SEG:
+	p(1)= @FILE_DIR:
+	@ASSEMB_EXE:
+	return
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par41"></A>
+<P CLASS="bodynoindent">
+<B>NestorTIP 5: BIOS can also help you</B>
+<BR>
+We have spoken a lot about the use of our own assembler routines, but we 
+forgot that we have also a good set of ready-to-use routines in the ROM of 
+our machines: the BIOS. Of course you can use the BIOS via the <TT>(DEF)USR</TT> 
+instruction; you do not need NestorBASIC at all. However, if you use <TT>USR</TT> you 
+cannot set the input registers, nor look at the output registers, while if you use NestorBASIC 
+function 58 you can.
+</P>
+<A NAME="Par42"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Most of the BIOS routines are not more than assembler versions of basic 
+instructions, but there are some that will be very useful for us. For example 
+<TT>CHGCPU</TT> (&amp;H0180) and <TT>GETCPU</TT> (&amp;H1083), which respectively change and get the 
+current processor on the Turbo-R. See listing 7.
+</P>
+<A NAME="Par43"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST7.ASC"><FONT COLOR="#FFFFFF">LIST7</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 7: Getting and setting the processor on the Turbo-R using BIOS
+'///
+
+@macro	BIOS	e=usr(58)	'Function to execute BIOS routines
+
+@define GETCPU	&amp;H180
+@define SETCPU	&amp;H183
+@define Z80	0	'CPU modes
+@define R800ROM 1
+@define R800DRAM	2
+
+'MSXVER= MSX version: 0=MSX1, 1=MSX2, 2=MSX2+, 3=MSX Turbo-R
+
+@macro	MSXVER	peek (&amp;H2D)
+
+'Getting current CPU: after calling GETCPU, we have AF in p(2); current
+mode is stored in A, therefore:
+
+~	if @MSXVER&lt;3 then ~NO_TURBOR else
+	p(0)= 0:
+	p(1)= @GETCPU:
+	@BIOS:
+
+	p(2)= (p(2)\256) and 255: 'Note: integer division (inv. bar or yen)
+	if p(2)= @Z80 then...
+	else if p(2)= @R800ROM then...
+	else...
+
+'Setting CPU: to set 0, 1 or 2 in A, we put &amp;H8000, &amp;H8100 or &amp;H8200 in AF, 
+'that is, in p(2). The 8 is to update the processor led appropriately; if we 
+'change it into a 0, led will not change.
+
+~	if @MSXVER&amp;lt;3 then ~NO_TURBOR else
+	p(2)= @R800ROM: 'or any other
+	p(2)= p(2)*256:
+	p(2)= p(2) or &amp;H8000:	'If we want led update
+
+	p(0)= 0:
+	p(1)= @SETCPU:
+	@BIOS
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par44"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+More examples: <TT>CHGCAP</TT> (&amp;H0132) allows you to change the CAPS led state (see listing 
+8). Or <TT>GETPLT</TT> (&amp;H0149) in the subrom, which allows you to get the 
+palette data for a given color number (list 9). As you can see there are a lot 
+of possibilities: it is up to you to scan the BIOS routines listing in order to 
+find the routine you were searching for.
+</P>
+<A NAME="Par45"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST8.ASC"><FONT COLOR="#FFFFFF">LIST8</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 8: Changing CAPS led state with CHGCAP
+'/// Use: set value 0 (led ON) or any other (led OFF) before calling CHGCAP
+'///
+
+@define OFF	1
+@define ON	0
+
+@define BIOS	e=usr(58)
+@define CHGCAP	&amp;H132
+
+~	p(2)= @ON*256:	     'or @OFF
+	p(0)= 0:
+	p(1)= @CHGCAP:
+	@BIOS
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>Basic-listing:
+                            <TT><A HREF="LIST9.ASC"><FONT COLOR="#FFFFFF">LIST9</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+'///
+'/// Listing 9: Getting palette data information with GETPLT
+'///
+
+@define COLOR c
+@define RED r
+@define GREEN g
+@define BLUE b
+
+@define BIOS	e=usr(58)
+@define GETPLT	&amp;H149
+
+'GETPLT works in the following way:
+'Input:  A = Color to get information for (p(2)=AF)
+'Output: BC = p(4) = GREEN + 256*BLUE + 4096*RED
+
+~	@COLOR= 7	'Sample color
+	p(0)= 1:	'Now we call SUB-BIOS
+	p(1)= @GETPLT:
+	p(2)= @COLOR*256:
+	@BIOS:
+
+	@RED= (p(3)\4096) and 15:
+	@GREEN= p(3) and 15:
+	@BLUE= (p(3)\256) and 15:
+	print @COLOR; "="; @RED, @GREEN, @BLUE
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par46"></A>
+<P CLASS="bodynoindent">
+<B>NestorEND: summarising...</B>
+<BR>
+Basic programs are easy to make, but slow and very limited; assembler programs 
+are a lot more powerful, but even the simplest task becomes a very time consuming and 
+complicated thing. NestorBASIC wants to be an intermediate solution, as well as a 
+good alternative to the standard hybrid programming: placing your assembler 
+routines in mapped memory enables you to save a lot of the always scarce 
+basic memory and also you can easily set and read all the registers.
+</P>
+<A NAME="Par47"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Although probably I will not continue the development of NestorBASIC, I 
+continue developing assembler extensions and I have noticed  
+other people are doing the same. Remember to visit my home page from time to time and 
+if you have any doubt or suggestion, do not hesitate to mail me.
+</P>
+<A NAME="Par48"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+I hope you find these tips useful. Thanks for your time and... enjoy 
+programming!
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../tunez2/nl.html">[en] Tunez 2 - Asterix edition</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        nummer
+        93,
+        juni-december&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../megaguide1/nl.html">[en] MEGA Guide</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

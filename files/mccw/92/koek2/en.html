@@ -1,0 +1,842 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>De Maiskoek/Bits and Pieces</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="">
+<META NAME="description" LANG="mix" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 92, March/April/May">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#008000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#008000">
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../Multiplication/en.html">Multiplication on a Z80</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        issue
+        92,
+        March/April/May&nbsp;2000<BR>
+</FONT><A HREF="../contents/en.html#koek2">Back to contents</A></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../Keyboard/en.html">The LP keyboard interface</A></TD>
+</TR>
+<TR BGCOLOR="#688878">
+<TD ALIGN="center" colspan="3"><FONT COLOR="#FFFFFF">
+            Note: This article contains text in more than one language.
+          </FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" ALIGN="center">
+<TR>
+<TD rowspan="2"><IMG WIDTH="119" HEIGHT="174" SRC="../../images/giraffe2a.gif" ALIGN="LEFT" ALT="giraffe"></TD><TD ALIGN="right" VALIGN="top"><B><FONT FACE="Verdana,sans-serif" SIZE="4">
+            Page for computer news in<BR>
+            general and MSX news in particular
+          </FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN="center" VALIGN="middle"><B><FONT FACE="Verdana,sans-serif" SIZE="+8">
+          De Maiskoek/Bits and Pieces
+        </FONT></B></TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD BGCOLOR="#688878">&nbsp;</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="32%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top">
+<TABLE WIDTH="100%" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<P>
+<I>
+<FONT SIZE="+1"><B>Gratis internet</B></FONT>
+<BR>
+<BR>
+Wanneer mag een persoon of organisatie en als zodanig rechtspersoon eigenlijk de
+term gratis gebruiken? U komt in de diverse media de laatste tijd regelmatig de
+term gratis tegen in combinatie met internet. Vaak ook nog eens samen met het
+woordje &#8216;met&#8217;. Alsof je ook zou adverteren met &#8216;nu zonder gratis internet&#8217;.
+Taalkundig heb ik met dat laatste geen probleem, maar of het veel klanten
+trekt... Laten we eens kijken wat u moet hebben om op het internet bezig te kunnen zijn. Er blijken diverse mogelijkheden te zijn. 
+</I>
+</P>
+<P>
+<I>
+De gebruikelijke is dat u uw eigen computer uitrust met een modem, zorgt voor een telefoonlijn en zich aanmeldt bij een provider. U hebt daarvoor de volgende kosten: 
+</I></P><UL>
+<LI>
+<I>Electriciteit: aansluitkosten op net, bekabeling naar computer,
+vastrecht/abonnementskosten en verbruikskosten; aangezien u de elektriciteit
+niet echt verbruikt &mdash;&nbsp;het is alleen stroom&nbsp;&mdash; zouden we beter over
+gebruikskosten kunnen spreken.</I>
+</LI>
+<LI>
+<I>Telefoon: ook hier aansluitkosten op het net, abonnementskosten en
+gebruikskosten in de vorm van telefoontikken. Die laatste term is sinds het
+afrekenen per seconde achterhaald, al zijn de kosten feitelijk nu &#8216;tikken&#8217; die
+seconden zijn. Alhoewel... de telefoonrekening meldt een bedrag in centen. Is
+dat een bedrag dat afgerond werd na optelling van alle gesprekskosten of per
+gesprek? Wij vrezen het laatste en dat zou betekenen dat u voor een superkort
+gesprek van drie seconden niet die 1,8 cent per minuut kwijt ben waarmee die
+televisiespot stunt, maar 10 cent voor de totstandkoming van de verbinding en de
+tot 1 cent naar boven afgeronde gesprekskosten. Ik heb vrijwel dagelijks bij het
+versturen van een klein e-mailtje zo&#8217;n &#8216;gesprek&#8217; van drie seconden en ben daar
+dus 11 cent voor kwijt en dat is heel wat meer dan de 0,09 cent die ik op basis
+van die spot meende te mogen verwachten.</I>
+</LI>
+<LI>
+<I>&#8216;Maar wacht, er is meer bij dit verhaal!&#8217;, om met Jerry Springer te spreken.
+Ik heb nog kosten voor aanschaf van computer en modem, eventueel extra kosten
+voor aansluiting van die apparaten aan de netten en als we heel veel meerekenen:
+verlichting en verwarming/verkoeling van de ruimte waar gewerkt wordt en
+meubelen om aan te werken. Zogenaamde internetcaf&eacute;s &mdash;&nbsp;waar ik straks op terug
+kom&nbsp;&mdash; maken al deze kosten ook en rekenen die gegarandeerd door.</I>
+</LI>
+<LI>
+<I>De kern is echter de provider, die zeker vanuit zijn standpunt zichzelf de
+centrale rol toedicht. Om internet op te kunnen moet u bij een provider een
+contract sluiten. De betaling voor zijn diensten zijn meestal aansluitkosten
+&mdash;&nbsp;die heten soms administratiekosten&nbsp;&mdash; abonnementskosten en gebruikskosten.
+Die laatste twee vaak per maand respectievelijk per minuut afgerekend. </I>
+</LI>
+</UL><P><I>
+Sommige providers hebben nu echter een afspraak met de telefoonmaatschappij
+gemaakt dat zij een deel van de door u betaalde telefoonkosten ontvangen.
+Daardoor zijn zij financieel in staat u hun diensten aan te bieden zonder
+daarvoor ook nog van u geld te hoeven ontvangen. Van al uw kosten is hiermee
+&eacute;&eacute;n stap &mdash;&nbsp;de kosten van de provider&nbsp;&mdash; weggevallen. Alle andere kosten blijven bestaan en een telefoonmaatschappij zal nu hij een deel van zijn inkomsten moet afstaan minder snel geneigd zijn tarieven te verlagen. Helemaal als hij voordeelnummers aanbiedt die tien procent goedkoper zijn en iedereen met een internetprovider die telefonisch benaderd wordt prompt dat nummer als voordeelnummer kiest.
+</I>
+</P>
+<P>
+<I>
+Toch lokken ondanks al de kosten providers nog steeds ongehinderd door
+Consumentenbond, Raad voor de reclame of ombudsman klanten met de kreet &#8216;GRATIS
+INTERNET&#8217;. Dat de economische controledienst of de politiek niet aan de bel
+hangt, zijn wij al lang gewend, die komen pas in het geweer als er te veel
+klachten komen en ze bang voor eigen hachje zijn. Die andere organisaties,
+eventueel aangevuld met consumentenprogramma&#8217;s als Kassa of Radar zouden eigenlijk best uit zich zelf mogen reageren op dergelijke ongefundeerde en misleidende kreten.
+</I>
+</P>
+<P>
+<I>
+Er zijn nog meer mogelijkheden om internet op te gaan. Als eerste noem ik de
+zogenaamde WAP-telefoon. U hebt dan inderdaad geen kosten voor een werkkamer of
+computer &mdash;&nbsp;die zit in uw mobieltje&nbsp;&mdash; maar de kosten zijn door hogere telefoonkosten alleen maar hoger. Daarbij krijgt u met het kleine schermpje maar een slap aftreksel van internet. 
+</I>
+</P>
+<P>
+<I>
+Tot slot en het dichtst bij gratis internet en in ieder geval het
+overzichtelijktst wat de kosten betreft wil ik het internetcaf&eacute; noemen.
+De meest simpele is natuurlijk naar een (ex-)primafoonwinkel te stappen die nu
+als internetcaf&eacute; &mdash;&nbsp;zonder koffie weliswaar, maar die is ook in een
+cofffeeshop spaarzaam verkrijgbaar&nbsp;&mdash; is ingericht en daar een kleine som gelds te investeren om daarmee op een der aanwezige computers het internet op te kunnen gaan. Alle hiervoor genoemde kosten zitten dan in dat bedragje voor een (half) uurtje surfen. Leuk om allerlei sites nu echt anoniem te bezoeken, maar niet leuk dat een aantal anderen over uw schouder mee kunnen gluren. Die moeten weliswaar afwachten wat u (ver-)kiest, maar hebben dan wel echt gratis internet.
+</I>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="RIGHT" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B><I>Parcellus</I></B></FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="center">
+<hr>
+<B><tt>I/O</tt></B>
+<hr>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="center"><TT>INPUT</TT>
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+Wanted: Original Metal Gear, of course incl. box and manual. Mail:
+<A HREF="mailto:j.a.schaap@let.rug.nl"><TT>j.a.schaap@let.rug.nl</TT></A>.
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+Who has some cheap MSX stuff for sale/trade? Please mail me!
+<A HREF="mailto:manuel@msxnet.org"><TT>manuel@msxnet.org</TT></A>. You can also see what I already have on
+<A HREF="http://bilderbeek.cjb.net">my homepage</A>! At the moment, I have a
+lot of Konami cartridges for trade only... Check it out.
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+Looking for an MSX2+. No need for it to be original, can be an MSX2 converted to MSX2+.
+Mail me your price, and what kind of 2+ you might want to sell:
+<A HREF="mailto:Bastiaan@nighttown.com"><TT>Bastiaan@nighttown.com</TT></A>
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+Wanted: MCCM 66-90 for a nice price.<BR>
+Mail: <A HREF="mailto:sandy@generation-msx.nl"><TT>sandy@generation-msx.nl</TT></A>.
+<hr>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="center"><TT>OUTPUT</TT>
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+For sale: Philips VS-0080 RGB monitor with SCART and CVBS connectors.
+ It features all knobs that should be on a decent RGB monitor: contrast,
+brightness, centering and stretching knobs, etc.  Condition: fine. I used it for
+a y ear. Ok, sometimes it takes a little effort to turn the thing on/off... The
+power button seems to be a little dirty inside. But just push hard and it works
+fine!  Also, it seems that the image flashes once in every 5 minutes or so...
+But you &#8216;d miss it in an eyeblink. Price: 80 NLG, excluding any shipment. Interested? Mail
+<A HREF="mailto:manuel@msxnet.org"><TT>manuel@msxnet.org</TT></A>.
+<hr>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="center"><TT>CALL</TT>
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+Who wants to write an article about an interesting MSX topic for this
+webmagazine? Please contact us! <A HREF="mailto:mccw@aktu.nl"><TT>mccw@aktu.nl</TT></A>
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+We want to continue with the Art Gallery! So please send us your MSX drawings!
+Thanks!
+<hr>
+</TD>
+</TR>
+<TR>
+<TD>
+Lief Maiskoekje zoekt leuke I/O&#8217;tjes om samen op het net te
+staan. Mail even naar <A HREF="mailto:mccw@aktu.nl"><TT>mccw@aktu.nl</TT></A>.<BR>
+If <I>you</I> have some little advertisement for this page, you can mail
+us at <A HREF="mailto:mccw@aktu.nl"><TT>mccw@aktu.nl</TT></A>.
+<hr>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD WIDTH="32%" VALIGN="top" ALIGN="left">
+<P>
+<FONT SIZE="+1"><B>EVA player for IDE</B></FONT>
+<BR>
+<BR>
+The Spanish MSX user Sergio Guerrero is working on a program that will enable
+your MSX Turob-R or MSX2+ to play EVA files via your IDE interface. If you have
+only (!) an MSX2+, you can use the Music Module for the sound output. Until now
+it was only possible to play EVA files on a MSX&nbsp;turbo&nbsp;R with MEGA-SCSI interface.
+This was the work of the Japanese group ESE Artists Factory, presented in
+Tilburg in 1995. The EVA fileformat is like MPEG and FLI a digital compressed
+movie format.
+</P>
+<P>
+<FONT SIZE="+1"><B>New owners mailinglist</B></FONT>
+<BR>
+<BR>
+Since a few months, the ownership of the MSX mailinglist has been 
+taken over by Maarten ter Huurne and Wynke Stulemeijer. The 
+former listowner, Wiebe Weikamp, didn&#8217;t have the time any more to 
+maintain the list. For more information about the MSX mailinglist 
+you can mail to <A HREF="mailto:msx-owner@stack.nl"><TT>msx-owner@stack.nl</TT></A>.
+</P>
+<P>
+<FONT SIZE="+1"><B>Pentaro Odyssey 2</B></FONT>
+<BR>
+<BR>
+The sequel to Pentaro Odyssey was released in Tilburg. However, we heard that it
+contains quite some bugs. It is even mentioned in the manual that there will be
+enormous bugs in some levels. We hope that Sunrise or the author(s) will improve
+the game. In any case, it will probably be reviewed in the next issue. We will
+keep you updated.
+</P>
+<P>
+<FONT SIZE="+1"><B>Bussum 2000</B></FONT>
+<BR>
+<BR>
+Also this year there will be an MSX fair in Bussum, replacing the former fair in
+Zandvoort. There will also be a second edition of the MSX Marathon. The
+organizers promise improvements: helpers to get your stuff up the stairs, better
+organization of the Marathon, easier payment. All info can be found on the
+updated homepage: <A HREF="http://msxfair.cjb.net"><TT>http://msxfair.cjb.net</TT></A>.
+</P>
+<P>
+<FONT SIZE="+1"><B>www.msx.org renewed</B></FONT>
+<BR>
+<BR>
+The <A HREF="http://www.msx.org"><TT>http://www.msx.org</TT></A> homepage has been renewed. The
+authors are planning to make the biggist general MSX site on the net. 
+</P>
+<P>
+<FONT SIZE="+1"><B>SME3 international PD</B></FONT>
+<BR>
+<BR>
+At the moment Xelasoft is working on an international version of Super Music
+Editor&nbsp;3.0. This version of the program will become public domain and can
+be downloaded from Xelasoft&#8217;s homepage called <A HREF="http://web.inter.NL.net/users/A.P.Wulms/">The MSX Plaza</A>.
+</P>
+<P>
+<FONT SIZE="+1"><B>Superchip</B></FONT>
+<BR>
+<BR>
+Het is allemaal nog in ontwikkeling, maar vanuit Cambridge kregen wij lucht van
+een nieuwe effici&euml;tere chip. Op de universiteit aldaar &mdash;&nbsp;geen
+industrieontwikkeling en dus extra geduld voor een productiemodel&nbsp;&mdash;
+ontwikkelde men een microprocessor die data opslaat als magnetische velden.
+Verteld wordt dat dit 40000 maal zo effici&euml;nt is. De chip is ook veel
+kleiner dan nu gebruikelijk: zitten er nu 6,6 miljoen transistors op een
+vierkante centimeter, zitten er bij de nieuwe chip 5,5 miljard gezellig bij
+elkaar op dezelfde ruimte. Een server met vier of acht Itaniums in uw mobieltje
+behoort daarmee tot de re&euml;le toekomstmogelijkheden; fysiek tenminste want financieel... De techniek is nog niet volledig uitgebuit, want de capaciteit zal zover nu kan worden gezien nog toenemen tot 250 miljard transistors per vierkante centimeter. WAPpen voor vlooien en luizen komt eraan.
+</P>
+<P>
+<FONT SIZE="+1"><B>Hartbewaking via internet</B></FONT>
+<BR>
+<BR>
+Bij een experiment in de Verenigde Staten van Amerika &mdash;&nbsp;waar anders?&nbsp;&mdash; is
+bij een honderdtal hartpati&euml;nten een monitor bij het hart ingebracht. De
+monitor registreert elke onregelmatigheid en zendt die via internet op naar de
+beveiligde site van de arts. Deze kan de gegevens die hij zo van de Chronicle,
+zoals het apparaatje heet, binnenkrijgt eenvoudig bestuderen en op grond daarvan
+de pati&euml;nt uitnodigen voor nader onderzoek of de medicatie aanpassen. Niet
+alleen is dit gunstig voor pati&euml;nten die weten dat de dokter gelijk op de
+hoogte wordt gebracht indien nodig en als toch naar de dokter moet worden gegaan
+is die al bij aanvang van het onderzoek op de hoogte van de recentste gegevens
+en kan sneller en gerichter zijn werk doen. Verder kan hij in noodsituaties
+beoordelen welke pati&euml;nt het snelst aandacht verdient en normale
+routineonderzoekjes, die meestal kort duren, maar veel tijd vergen voor de
+pati&euml;nt verminderen. Wij vragen ons wel af of dit niet een eerste stap is naar een monitor in elk mens die op alles en nog wat let. Gelijk een berichtje naar de politie als u plotseling doodgaat. Die politie hoeft dan alleen maar te kijken naar de mensen in de buurt met een verhoogde hartslag en zij kennen uw moordenaar misschien al voor u rochelend ter aarde stort. En doordenkend... nog voor uw familie goed en wel is ingelicht is de begrafenisondernemer al bezig met zijn voorbereidingen.
+</P>
+<P>
+<FONT SIZE="+1"><B>IEEE stoot door naar 10&nbsp;Gb</B></FONT>
+<BR>
+<BR>
+Het is nog maar een half jaar geleden dat alles met de 1 gigabit Ethernet
+verbindingen rondkwam en nu al is IEEE, de standaardenorganisatie op dit gebied,
+bezig met de norm naar 10&nbsp;gigabit te krijgen. De OSI 192 standaard levert
+al snelheden op van 9,6 miljard bits per seconde op, maar de echte 10 Gb/s zal
+vermoedelijk op de langere termijn iets goedkoper blijken. De hogere
+aanvangskosten komen doordat deze snelheden niet meer op koper kunnen, maar van
+bijvoorbeeld glasvezel gebruik moeten maken. Wilt u op de hoogte blijven kijk
+dan eens op <A HREF="http://grouper.ieee.org/groups/802/3/ae/public/index.html">hun site</A>.
+</P>
+<P>
+<FONT SIZE="+1"><B>Moskou heeft Windows 2000 eerst</B></FONT>
+<BR>
+<BR>
+Je kon er op wachten, maar zo snel? Windows 2000 is het eerst op de markt
+verschenen in Moskou en voor zeer schappelijke prijs van slechts drie dollar
+voor de cd met Windows 2000 Professional. En dat enkele dagen voor de
+offici&euml;le introductiedatum. Het waren illegale kopie&euml;n van de gold-versie, de versie die na de beta&#8217;s geleverd wordt aan OEM-partners en softwareontwikkelaars. Volgens Microsofts marketing manager is 90% van de software in de voormalige Oostbloklanden illegaal.
+</P>
+<P>
+<FONT SIZE="+1"><B>Resultaten Microsoft goed</B></FONT>
+<BR>
+<BR>
+Ondanks alle dreiging van een splitsing in twee of drie onderdelen blijft
+Microsoft goed draaien. Het eerste kwartaal werd afgesloten met 5,6 miljard
+gulden winst bij een omzet van 13,3 miljard. Vergeleken met het vorige jaar zijn
+beide cijfers 23% hoger dan het vergelijkbare kwartaal vorig jaar. Toch was er
+een achterblijven van de omzet naar OEM-klanten. Mogelijk werden door de overgang van 1999 naar 2000 minder computersystemen verkocht en daarmee minder Windows&#8217; aan de fabrikanten daarvan. De markt is, nu de wissel eenmaal genomen is, alweer aan het aantrekken en komende resultaten zullen wellicht nog rooskleuriger zijn.
+</P>
+<P>
+<FONT SIZE="+1"><B>Sony komt met CiXD</B></FONT>
+<BR>
+<BR>
+In de Vaio-serie brengt Sony een nieuwe mininotebook uit met ingebouwde camera.
+Het notebook weegt ondanks die camera nog geen kilogram! Wel bleef het bij de
+prijs inbegrepen diskettestation buiten het notebook. Het beeldscherm is
+8,9&nbsp;inch groot en dat is natuurlijk klein als je het met een normale
+notebook &mdash;&nbsp;laat staan een desktop&nbsp;&mdash; vergelijkt, maar fors als je de
+concurrentie in deze markthoek bekijkt. De verdere uitrusting zal menigeen die
+al een poosje niet upgradede doen watertanden: 64&nbsp;MB intern geheugen en een
+400&nbsp;MHz Mobile Pentium II. Verder een 12&nbsp;GB harddisk en zogenaamde
+jog-dial knoppen om veelgebruikte functies alsmede de camera te bedienen. Het
+machientje is vooral bedoeld voor gebruikers die onderweg opnamen willen maken
+en die van commentaar voorzien via internet op te sturen. De CiXD is biometrisch
+beveiligd en zo alleen door zijn eigen &#8216;baas&#8217; te bedienen.
+</P>
+<P>
+<FONT SIZE="+1"><B>Systeembus naar 400&nbsp;MHz</B></FONT>
+<BR>
+<BR>
+Intel heeft op CeBIT &mdash;&nbsp;en enkele dagen daarvoor in Amerika&nbsp;&mdash; de nieuwe
+Willamette getoond. Deze super Pentium draait tussen 1300 en 1500&nbsp;MHz en is
+nog steeds een 32-bitsprocessor. Daarmee zal hij in performance toch
+achterblijven op de komende 800&nbsp;MHz Itanium. Itanium is de productnaam die
+gekozen is voor de processor die ontwikkeld werd als Merced en die is volledig
+64-bits. Deze ontwikkeling hadden kenners echter al zien aankomen. De
+Merced-lijn werd voor professioneel zware toepassingen ontwikkeld en de
+Willamette als volgende stap voor de thuisgebruiker. De kloksnelheid is echter
+zodanig hoog dat de processor op punten de 64-bitslijn verslaan kan. Een ander
+nieuwtje is de verhoogde bussnelheid; die ligt bij de getoonde Willamette op
+400&nbsp;MHz. Technisch is er een oplossing gekozen die vergelijkbaar is aan het
+2&times; en 4&times; bij AGP, de werkelijke bussnelheid ligt nog steeds op
+100&nbsp;MHz, maar voor de gebruiker lijkt het 400&nbsp;MHz.
+</P>
+<P>
+<FONT SIZE="+1"><B>Word2000 in Frankrijk uit de handel</B></FONT>
+<BR>
+<BR>
+Na het uitkomen van Word2000 is in Frankrijk een stortvloed van kritiek over
+Microsoft uitgestort. De kritiek bedroeg de spellingchecker die rascistische
+trekjes vertoonde. Men viel ondermeer over &#8216;arabe&#8217; dat in tegenstelling tot het
+vermoeden van de meeste Nederlanders geen inwoner van Saoedi-Arabi&euml; mee
+wordt bedoeld maar een immigrant uit Algerije. Dezen voelen de term als
+discriminerend, in ieder geval beledigend. Zou het alleen om het normale,
+verkeerd spellen gaan had het misschien niet zo&#8217;n vaart gelopen, maar de
+gebruiker kreeg het al als alternatief voor anti-stress, dat hoewel geen Frans
+begrip toch vaak gebruikt wordt. De verbeterde versie zal op internet zijn op te halen.
+</P>
+<P>
+<FONT SIZE="+1"><B>AMD verslaat Intel</B></FONT>
+<BR>
+<BR>
+De race naar de 1&nbsp;GHz heeft AMD gewonnen en introduceerde de op die
+snelheid werkende Athlon net een paar dagen voordat Intel zijn Pentium III op
+die snelheid kon aankondigen. Niet dat de gewone gebruiker er veel aan heeft
+want de chips bestaan wel, maar zijn nergens te leveren. Je moet duidelijk meer
+meebrengen dan een stapel dollars om een van de eerste exemplaren te
+bemachtigen. Zelfs de modellen die iets langzamer gaan zijn feitelijk niet
+leverbaar en in de advertenties duiken dan ook nu pas de eerste systemen van
+800&nbsp;MHz pas mondjesmaat op. Geduld is ene schone zaak; het gaat erg snel, maar je moet lang wachten om snel te gaan. 
+</P>
+<P>
+<FONT SIZE="+1"><B>DoS gevaarlijk</B></FONT>
+<BR>
+<BR>
+Het is een oude naam voor nieuw begrip: Denial of Service. Door &#8216;of&#8217; met een
+kleine letter te spellen zijn kenners gewaarschuwd dat het iets anders betekent.
+Het begrip houdt in dat een bedrijf niet de diensten kan aanbieden die men er
+van verwachtte. Het kwam weer in de spotlights te staan toen een aantal crackers
+&mdash;&nbsp;vaak ten onrechte hackers genoemd&nbsp;&mdash; kortgeleden Yahoo bestookte met
+zoveel datastromen dat het systeem daar plat ging. E&eacute;n van de routers kan de gegevensstroom niet meer aan en geeft de pijp aan Maarten. Het is weer eens iets anders dan het maken van een virus, maar de ellende die men anderen ermee bezorgt is vergelijkbaar.
+</P>
+<P>
+<FONT SIZE="+1"><B>CD op stuiver</B></FONT>
+<BR>
+<BR>
+Dataplay is een klein bedrijf dat &mdash;&nbsp;net opgericht&nbsp;&mdash; zich bezighoudt met
+dataopslag. Steve Volk hield zich al bezig met harde schijven voor notebooks in
+de maten 2,5 en 1,8&nbsp;inch, maar is nu weer een stap verder gegaan. Op een
+schijfje zo groot als een Amerikaanse halve-dollarmunt weet hij 500&nbsp;megabyte te krijgen. Zeg maar bijna een cd. Flash cards zijn natuurlijk sneller en nog kleiner in een apparaat, want daar hoeft geen
+ echte drive bij, maar de kosten geven het systeem toch een goede kans. Een schijfje zal vermoedelijk rond zes dollar gaan kosten en dat is stukken minder dan de flash cards drie tot vier duizend dollar.  
+</P>
+<P>
+<FONT SIZE="+1"><B>Cisco duurste bedrijf</B></FONT>
+<BR>
+<BR>
+Lange tijd &mdash;&nbsp;in it-terminilogie&nbsp;&mdash; stond Microsoft bovenaan de lijst met
+waardevolste bedrijf, maar die rol is nu door Cisco overgenomen. Tegen de
+huidige beurskoers was de netwerkleverancier eind maart 579,2&nbsp;miljard
+dollar waard en dat was op dat moment iets meer &mdash;&nbsp;ik wil dat verschil best
+hebben&nbsp;&mdash; dan de 578,2&nbsp;miljard die Microsoft toen waard was. Die laatste is door alle narigheid over de monopolierechtszaak op dit moment vermoedelijk meer dan een miljard minder dan Cisco waard. Op de derde plaats staat nu General Electronics dat in 1998 door Microsoft werd onttroond. De koers van het Cisco-aandeel was bij deze berekening $79,37 en u kunt dus met een blik op de huidige koers weten of het bedrijf nu nog meer waard is of niet. En voor de goede orde het aandeel Microsoft stond voor deze berekening op $111,69.
+</P>
+<P>
+<FONT SIZE="+1"><B>Bescherming tegen webaanvallen</B></FONT>
+<BR>
+<BR>
+Network Associates heeft een programma op de markt gebracht dat kan dienen ter
+bescherming tegen het platleggen van een website door een vloed aan dataverkeer.
+Als een server van de website te veel aanvragen krijgt te behandelen, kan die in
+&#8216;shock&#8217; raken en nergens meer op reageren. Om deze &#8216;denial of service&#8217; te
+voorkomen waarschuwt het programma tijdig als er zich zo&#8217;n congestie dreigt voor
+te doen. En... op de markt gebracht doet de makers onrecht, u kunt het gratis
+downloaden op <A HREF="http://www.nai.com/"><TT>http://www.nai.com/</TT></A>.
+</P>
+<P>
+<FONT SIZE="+1"><B>Foutje in Playstation 2</B></FONT>
+<BR>
+<BR>
+Nu al is de tweede fout in de Playstation 2 van Sony aan het licht gekomen. Of
+de gebruikers daar echt mee zullen zitten valt nog te bezien want met de in
+Japan meegeleverde software om DVD&#8217;s af te spelen is het mogelijk ook de DVD&#8217;s
+uit de andere regio&#8217;s af te spelen. Zeker ook voor Europeanen een interessant
+gegeven daar wij samen met de Japanners in regio 2 zitten. Maar rent u niet
+gelijk naar de winkel; niet alleen is de Playstation 2 buiten Japan nog steeds
+moeilijk te verkrijgen, maar de fout is bij de nu uitgeleverde apparaten &#8216;verbeterd&#8217;.
+</P>
+<P>
+<FONT SIZE="+1"><B>IBM heeft chip om DNA te testen</B></FONT>
+<BR>
+<BR>
+In de laboratoria van IBM maakte men enige jaren geleden al een
+&#8216;silicium-kammetje&#8217; waarmee de aanwezigheid van bepaalde stoffen kon worden
+vastgesteld. Een tandje boog als de stof aanwezig was. Hierop voortbordurend
+heeft men nu de kam laten reageren op bepaalde prote&iuml;neparen in het DNA.
+Met zo&#8217;n kammetje verbonden met een elektronische schakeling om het uit te lezen
+is zo in een draagbaar meetinstrument te maken, maar ook een robot. Deze robots
+kunnen heel klein zijn, zo klein zelfs dat zij in de bloedbaan kunnen worden
+ingebracht. De &#8216;nanoprobes&#8217; uit StarTrek? 
+</P>
+<P>
+<FONT SIZE="+1"><B>Irridium weg</B></FONT>
+<BR>
+<BR>
+Het mooie maar dure satellietnetwerk dat onder de naam Irridium rond de aarde
+cirkelt, maakt &#8216;mobiele&#8217; telefonie op bijna de hele aarde &mdash;&nbsp;alleen de uiterste
+polen op grondniveau niet&nbsp;&mdash; mogelijk. Het was echter aan de prijzige kant,
+rond vijftien gulden per minuut en dan moet je wel heel erg nodig iemand moeten
+bellen om dat te gebruiken. Motorola wil het nog enige tijd aanzien om zaken af
+te handelen en wil de satellieten dan &eacute;&eacute;n voor &eacute;&eacute;n naar beneden laten komen. Ze zullen vermoedelijk in de atmosfeer verbranden, maar eventuele brokjes zullen de eenzame oceaanzeiler het leven zuur maken.
+</P>
+<P>
+<FONT SIZE="+1"><B>No sales-tax werkt averechts</B></FONT>
+<BR>
+<BR>
+In Nederland zijn via internet geregelde aankopen van BTW vrijgesteld. Dit ook omdat in de VS gekozen is voor de vrijstelling van sales tax bij aankopen via internet. In Nederland betreft dit echter alleen digitale producten, maar in Amerika producten die via internet worden besteld. Dat om te voorkomen dat bepaalde staten geen aanbieders konden hebben omdat alleen die staat een bepaalde belasting eiste. Niemand kocht dan natuurlijk bij een zaak die in zo&#8217;n staat was gevestigd. Maar nu hebben de Amerikanen ontdekt dat met name sigaretten en andere rookwaar enorm veel voordeliger kunnen worden aangeschaft door het via internet te bestellen. Lang zal deze situatie wel niet blijven.
+</P>
+<P>
+<FONT SIZE="+1"><B>Silk versnelt chips</B></FONT>
+<BR>
+<BR>
+In de laboratoria van IBM heeft men silk &mdash;&nbsp;geen zijde&nbsp;&mdash; een isolatiemateriaal afkomstig van Dow Chemical in chips weten toe te passen. Het zal nog wel tot midden 2001 duren voordat het massaal in het productieproces zit, maar dan profiteren we ook van een dertig procent sneller werkende chip. Ook de overgang van aluminium naar koper zal dan zijn gerealiseerd en uw computer zal volgend jaar dus weer sneller zijn.
+</P>
+<P>
+<FONT SIZE="+1"><B>Superdisks</B></FONT>
+<BR>
+<BR>
+Na Imation heeft nu ook Seagate een superhoge dichtheid op diskette aangekondigd. Zij demonstreerde dat een opslag van 45 miljard bits op een vierkante inch kan. Bits geen bytes! Maar toch zal een op deze techniek gebaseerde diskette van 3,5&#8221; 60 gigabyte kunnen bevatten. Dat is weliswaar de helft van wat Imation beweerde te kunnen, maar dit was een demonstratie en dat betekent toch wat dichter bij realisatie. 
+</P>
+<P>
+<FONT SIZE="+1"><B>Topscanner bij Microtek</B></FONT>
+<BR>
+<BR>
+De Scanmaker X12USL is het nieuwe topmodel van Microtek. Het apparaat levert een
+scan af met een kleurdiepte van 42-bits. Dit is wel iets minder dan de 44-bits
+van de Scanmaker 3600, maar in dit geval is de resolutie weer wat hoger. Die is
+nu 1200&times;2400&nbsp;dpi, optisch wel te verstaan en de 3600 haalde maar
+600&times;1200. Dat een A4 zo ongecomprimeerd 1,3&nbsp;GB kost zal menigeen nog
+wel even achter de oren doen krabben. Meegeleverd worden de light-versie van
+Adobe Photoshop en Omnipage. Met de &#8216;eigen&#8217; programmatuur is ondermeer scannen
+met slechts &eacute;&eacute;n druk op de knop mogelijk. Blijft de prijs voor al
+dit moois, die is verbazingwekkend laag met 799 gulden; de Professional-versie
+is duurder, maar kan ook transparanten aan en kan van automatische
+documenteninvoer worden voorzien. Voor de goede orde: de Scanmaker 3600 kost maar 249 gulden.
+</P>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD WIDTH="32%" VALIGN="top" ALIGN="left">
+<P>
+<FONT SIZE="+1"><B>New MSX from ASCII?</B></FONT>
+<BR>
+<BR>
+The Japanese MSX-group Frontline has obtained ASCII&#8217;s
+permission for the development of a new MSX. Currently, Frontline is trying
+to develop a new VDP without getting in trouble with the owner of the
+copyright, Yamaha. The Japanese are still looking for contacts all over the
+world to share their knowledge. Panasonic is most likely to produce the new
+system.<BR>
+(source: Ikeda&#8217;s MSX Print)
+</P>
+<P>
+<FONT SIZE="+1"><B>Gameboy Emulator for MSX</B></FONT>
+<BR>
+<BR>
+Patriek Lesparre is working on perfecting a Gameboy emulator for MSX. A lot of
+games already work, but most of them very slow. However, we think this is a very
+impressive accomplisment! The emulator runs on MSX2 and up with MSX-DOS 2 and is
+written fully in assembly. Even sound is emulated through PSG. The author is
+planning to make a GFX9000 version too, which should be faster. If the
+Z380-projects become more succesful he even wants to write a Z380-version. You
+can check out GEM on its page on the site of TNI: <A HREF="http://gem.tni.nl"><TT>http://gem.tni.nl</TT></A>.
+</P>
+<P>
+<FONT SIZE="+1"><B>FAT16 for IDE</B></FONT>
+<BR>
+<BR>
+Jon de Schrijder, who is developing the software for the Sunrise IDE interface,
+recently reported that he has been working on FAT16 support for the IDE
+interface, together with the Japanese MSX user Okei. He says he finished it the last week of May and is will work on an
+<TT>IDEFDISK</TT> program in July to make FAT16 partitions on the IDE harddisk. With
+FAT16 it is possible to use more than 32&nbsp;MB of diskspace per partition, as
+is the case on the normal MSX format FAT12. More news about this later!
+</P>
+<P>
+<FONT SIZE="+1"><B>Moonsound trouble: advice</B></FONT>
+<BR>
+<BR>
+The output amplifiers of the MoonSound are not short-circuit proof. Therefore,
+make sure that if you plug the jack (earphone connector) into or pull it out
+of the MoonSound, the computer and a possible slot expander are switched off.
+Otherwise there is a risk to blow up the output amplifiers.<BR>
+In case it happens afterall, you can contact Sunrise for repairs (see
+<A HREF="http://www.msx.ch/">their homepage</A> for address info). The repair itself isn&#8217;t very
+expensive, only about one euro, but the postage is (for the Netherlands:
+about 10 Euros), so the repair still costs
+a lot (11 Euros for people living in The Netherlands!). So
+here also goes: to prevent is better than to cure.<BR>
+<I>(source: Sunrise Foundation)</I>
+</P>
+<P>
+<FONT SIZE="+1"><B>Improved VDP engine for download</B></FONT>
+<BR>
+<BR>
+On <A HREF="http://web.inter.NL.net/users/A.P.Wulms/">The MSX Plaza</A> is
+now an enhanced VDP command driver available for download to improve the
+performance of fMSX&nbsp;2.x. This code may also be used by other emulator
+authors as a reference for their own VDP engine.
+</P>
+<P>
+<FONT SIZE="+1"><B>Liegen op afstand</B></FONT>
+<BR>
+<BR>
+Wie kent niet het telefoontje naar het caf&eacute; waar mevrouw X vroeg of
+mijnheer X misschien daar was en de barman richting mijnheer X wat non-verbale
+signalen gaf, die werden beantwoord met heftig nee-schudden. De barman zei
+daarop dat hij even zou kijken en deed na enige tijd zijn ogen stijf toe en
+meldde in de telefoon dat hij hem niet zag. Mannesmann maakt het de
+smoezenverteller wat gemakkelijker door op <A HREF="http://www.mannesmann.de">www.mannesmann.de</A> de telephone background
+noise animator beschikbaar te stellen, zodat onze bedrieger zijn smoes met
+passende achtergrondgeluiden kan vertellen. &#8216;Sorry schat, we hebben een brandje
+op kantoor.&#8217; of  &#8216;Het wordt wat later want ik zit vast in een storm.&#8217; U begrijpt al uit de mogelijkheden dat het echt voor noodgevallen gebruikt kan worden, want twee stormen per week die geeneens op het journaal/weerbericht worden genoemd zijn zelfs voor het stereotiepe blondje te veel.
+</P>
+<P>
+<FONT SIZE="+1"><B>Philips start nieuwe chipfabriek</B></FONT>
+<BR>
+<BR>
+Maakte Philips enige tijd geleden de indruk de chipproductie te willen verlaten,
+komt daar nu toch verandering in. Samen met het Franse STMicroelectronics wordt
+in Crolles een fabriek opgezet, die wafers van 30&nbsp;cm (12&nbsp;inch) de
+nieuwe maat voor chipproductie, zal produceren. Er is een bedrag van 1600
+miljoen voor uitgetrokken. Het samenwerkingsverband hoopt hiermee te concurreren
+met TSMC uit Taiwan, die een relatieve voorsprong heeft omdat die alleen de
+8&nbsp;inch faciliteit hoeft om te bouwen naar 12&nbsp;inch en zo al dit jaar in
+staat is te produceren, terwijl Philips pas over twee jaar zo ver is, maar dan wel in een splinternieuwe fabriek. Naar verwachting zal de grote vraag naar 12 inch wafers echter pas rond 2003 op gang komen dus meent Philips precies goed te zitten.
+</P>
+<P>
+<FONT SIZE="+1"><B>Seagate komt met snelle harddisk</B></FONT>
+<BR>
+<BR>
+Dat in onze it-wereld alles steeds groter, kleiner en sneller gaat was bekend,
+maar soms zijn de stappen weer net een slagje groter dan verwacht. Seagate kwam
+op CeBIT op de proppen met een nieuwe harddisk die draait met 15000 toeren per
+minuut. Na 5400 &mdash;&nbsp;nu de standaard&nbsp;&mdash;, 7200 en 10000 hadden wij een volgende
+stap op 12000 of 12500 verwacht. Het eerste model in deze reeks de Cheetah X15
+heeft een opslagcapaciteit van 18 gigabyte en heeft door de hoge rotatiesnelheid
+een gemiddelde zoektijd van 3,9 milliseconde. Naar keuze kan hij worden geleverd
+met Ultra 160 SCSI of met 2&nbsp;GB fibre channel interface. De schijf kan
+gelukkig gecombineerd worden met de oude 10000&nbsp;rpm schijven van Seagate en
+werkt met dezelfde koeling en vraagt ook evenveel energie als de oude modellen.
+Seagate sluit grotere capaciteiten voor in de toekomst niet uit, maar meent dat
+gebruikers nu meer behoefte aan snelheid dan opslag hebben. De hoeveelheid
+geluid die de drive produceert &mdash;&nbsp;men koos nogal eens voor 7200&nbsp;rpm in
+plaats van 10000 vanwege het lawaai&nbsp;&mdash; valt erg mee. Wij hoorden wel wat
+geruis, maar storend was het niet. Natuurlijk had Seagate niet het slechtste
+exemplaar op CeBIT neergezet, maar aan de andere kant stond hij &#8216;vrij&#8217; en was niet ingebouwd en dat scheelt natuurlijk ook veel.
+</P>
+<P>
+<FONT SIZE="+1"><B>ADSL voor UT</B></FONT>
+<BR>
+<BR>
+De TU Twente krijgt in het kader van het Gigaportproject aansluiting op ADLS.
+Met deze Asymetric Digital Subscriber Line zijn snelheden van minstens dertig
+maal ISDN te halen. Niet alleen de universiteitsgebouwen zullen dit krijgen maar
+ook de studenten thuis. De snelheid van dataverkeer is richting gebruiker
+minimaal 2&nbsp;megabit per seconde, maar als de student dicht bij de centrale
+zit kan dit oplopen tot 8&nbsp;Mb/s. Met ADSL zijn videobeelden beeldvullend in
+tv-kwaliteit weer te geven. Tot de huizen blijven de gewone telefoonkabels
+liggen, maar in het net zelf zijn veel glasvezelkabels opgenomen. Voor verkeer
+richting internet is de snelheid lager, maar een halve megabit per seconde is
+altijd nog haast tien keer zo snel als een 56k-modem.
+</P>
+<P>
+<FONT SIZE="+1"><B>WAP beschermd tegen virussen</B></FONT>
+<BR>
+<BR>
+Wij hoorden nog niet van virussen op WAP. WAP, het wireless application protocol, maakt internetten met een geschikte mobiele telefoon mogelijk en heeft naar ons weten nog geen problemen met virussen. F-Secure wil dat voor zijn en levert nu al bescherming tegen dat soort virussen. WAP werkt met speciale versies van internetpagina&#8217;s of beperkt de hoeveelheid gegevens op normale sites tot voor het kleine &#8216;handy&#8217;-schermpje behapbare groottes, maar werkt voor de rest als het normale internet, met alle voordelen en nadelen van dien. Onder de laatste natuurlijk ook virussen; die kon het bedrijf al aanpakken voor normale omstandigheden en nu dus ook voor WAP.
+</P>
+<P>
+<FONT SIZE="+1"><B>Altavista komt met gratis internet</B></FONT>
+<BR>
+<BR>
+Gratis met de nodige korrels zout natuurlijk, niet alleen blijft men
+telefoontikken betalen, maar ook moet een vrij fors entreegeld van rond honderd
+gulden dokken. Toch kan het aantrekkelijk zijn, want men blijft via Altavista
+wel verschoond van reclameteksten die via andere providers &mdash;&nbsp;de
+spellingchecker wil dit veranderen in profiteurs&nbsp;&mdash; wel via de &#8216;gratis internet&#8217;-aanbieding moeten worden geslikt.  
+</P>
+<P>
+<FONT SIZE="+1"><B>Amerikanen surfen onder werktijd</B></FONT>
+<BR>
+<BR>
+In een ongeloofwaardig bericht werd gemeld dat de Amerikaanse werknemers
+gemiddeld 21 &mdash;&nbsp;ja u leest dat goed: eenentwintig&nbsp;&mdash; uur per week onder werktijd websurfend doorbrengen. Het zijn wel niet alle Amerikanen, maar alleen de mensen die op kantoor werken, maar dan nog komt ons het hoeveelheid tijd onwaarschijnlijk voor. Vermoedelijk heeft vrijwel de helft van de kantoorwerkers een pc op zijn bureau staan en aangezien in de VS geen lokale telefoontikken hoeven te worden betaald kost het vrijwel niets om vrijwel constant online te zijn. De 21 uur zegt dus meer over de computerdichtheid op kantoor dan over de gemiddelde surftijd.
+</P>
+<P>
+<FONT SIZE="+1"><B>Betalen via Telekom</B></FONT>
+<BR>
+<BR>
+Om websites waar (iets) moet worden betaald voor het geleverde kent men enige
+methodes, waarvan de creditcard wel de bekendste is. Tegelijk bellen via een
+betaald 06-nummer is een andere, maar dat heeft praktische bezwaren. Deutsche
+Telekom biedt nu aan om als bank te fungeren en tegen een maximale prijs van
+5&nbsp;DM per pagina of per minuut kunt u gewoon doorklikken; afrekenen schiet later gewoon via de telefoonrekening.
+</P>
+<P>
+<FONT SIZE="+1"><B>China neemt gas terug</B></FONT>
+<BR>
+<BR>
+In China neemt men het niet te nauw met de copyrights en dat leidde al tot het
+volledig apart houden van China bij de DVD-regiocodering. Een weinig
+steekhoudende maatregel overigens omdat het niet de kopie&euml;n van Chinese content is die men vreest, maar juist de content die voor de rest van de wereld is bedoeld. De Chinese regering vreest echter de politieke invloed van internet en zo werd ook het verspreiden van nieuws via internet aan banden gelegd. De internetverbreiding is nog niet groot in China; met negen miljoen aansluitingen heeft nog geen vijf procent toegang, maar de groei is enorm: vorig jaar 400%. De aangekondigde maatregelen moeten vooral het verspreiden van MP3-bestanden beperken. Wil men die en andere videoproducten online aanbieden moet men een vergunning aanvragen. Over controle en mogelijke straffen is momenteel nog niets bekend, maar het is in ieder geval een stap in de goede richting.
+</P>
+<P>
+<FONT SIZE="+1"><B>Digitale producten BTW-vrij</B></FONT>
+<BR>
+<BR>
+Onlangs heeft minister Zalm van Financi&euml;n besloten dat digitale producten
+mogen worden verhandeld zonder BTW. Aan de ene kant begrijpelijk vanwege de
+moeilijke controle, maar aan de andere kant onredelijk voor de overige handel.
+Als u een programma legaal downloadt via internet is dat meestal al voordeliger
+omdat de leverancier geen transport- en verpakkingskosten heeft en ook de disk/cd uitspaart. Nu komt er ook nog eens het voordeel van BTW-vrij bij. Zo verdient u uw internetkosten snel terug en het is legaal.
+</P>
+<P>
+<FONT SIZE="+1"><B>Flexibele camera van Toshiba</B></FONT>
+<BR>
+<BR> 
+Het moest er natuurlijk van komen en als u niet te veel op de kwaliteit lette
+was het er al. De videocamera&#8217;s zijn al lang digitaal en de fotocamera&#8217;s volgden
+die tendens. De beeldkwaliteit bij de zogenaamde &#8216;still video&#8217; moet bij een
+fotocamera veel groter zijn dan bij de bewegende beelden bij een video-opname.
+In de Mec100AS van Toshiba gebruikt men MPEG om de beelden te comprimeren en met
+een voor een (digitale) fotocamera redelijke resolutie kan men nu ook
+video-opnames maken. De prijs is met ongeveer 2400 gulden niet laag, maar op dit
+moment wel redelijk gezien de mogelijkheden. Bent u serieus ge&iuml;nteresseerd moet hij (nog) wel in Japan worden besteld.
+</P>
+<P>
+<FONT SIZE="+1"><B>GSM vertaalhulp</B></FONT>
+<BR>
+<BR>
+Misschien handig als je het hard nodig hebt. Virtualplus levert momenteel een
+vertaalservice; stuur een SMSje met vertaalcode naar het bedrijf en je krijgt
+per kerende post &mdash;&nbsp;lees enkele seconden&nbsp;&mdash; een SMSje terug met de vertaling. Werkt voor Nederlands, Frans, Duits, Engels, Spaans en Italiaans. Tot na het examen... 
+</P>
+<P>
+<FONT SIZE="+1"><B>Internet voor post</B></FONT>
+<BR>
+<BR>
+PTT Post heeft een nieuwe service: u kunt voortaan uw postzegels via internet
+regelen. Beter gezegd: u kunt uw post frankeren met een speciale digitale
+postzegel die u via internet kunt bemachtigen. Vervolgens moet u die zelf
+afdrukken en op de enveloppe plakken, maar direct op de enveloppe drukken kan
+natuurlijk ook. De postzegel bestaat uit een speciale &#8216;barcode&#8217; die het gemakkelijkst kan worden aangemaakt op de speciale printer die ook nog eens in staat is uw brief te wegen en zo de juiste frankering te regelen. De printer drukt op speciale stickers af die dan op de enveloppe kunnen worden geplakt. De zo gefrankeerde brief kan dan gewoon in de rode bus worden gepost. 
+</P>
+<P>
+<FONT SIZE="+1"><B>Middeleeuwse teksten op volgorde</B></FONT>
+<BR>
+<BR>
+Teksten uit de (vroege) middeleeuwen werden handmatig gekopieerd en bij dat
+&#8216;monnikenwerk&#8217; werd wel eens van de oorspronkelijke tekst afgeweken. Zo werden
+soms stukken weggelaten, maar andere keren iets opzettelijk veranderd. Vaak
+gebeurde het dan ook nog eens door een kopie van een mogelijk gewijzigde kopie
+te maken. Ben Salemans is kortgeleden gepromoveerd op een onderzoek om met
+behulp van de computer de diverse kopie&euml;n op de juiste tijdsvolgorde te plaatsen. Voor tekstarcheologen een fantastisch hulpmiddel.
+</P>
+<P>
+<FONT SIZE="+1"><B>Playstation mag worden ge&euml;xporteerd</B></FONT>
+<BR>
+<BR>
+De Playstation 2 van Sony is nog steeds beperkt leverbaar, maar mag tenminste wel vrij worden uitgevoerd. De processor is zo krachtig dat er een raketgeleidingssysteem mee te maken is en daarmee is het een militair belangrijk object en mag als zodanig niet vrij Japan uit gaan. In Japan zijn er inmiddels zo&#8217;n 1,4 miljoen verkocht, maar de Europeaan zal tot het najaar moeten wachten om ze in de winkel te kunnen kopen. Sony rekent er op dat in Europa zo&#8217;n zes miljoen een baasje kunnen vinden.
+</P>
+<P>
+<FONT SIZE="+1"><B>Superaanbieding</B></FONT>
+<BR>
+<BR>
+De fabrikant van supercomputers Cray Research is in 1996 opgekocht door Silicon
+Graphics voor 700 miljoen dollar. De kroon op het werk zou je menen, omdat
+Silicon Graphics zelf al zware computersystemen op de markt bracht. De kroon
+knelde blijkbaar, want na er eerst al op te hebben gezinspeeld, is Cray nu weer
+afgestoten. De koper is Tera Computer dat zelf ook supercomputers maakt. Dat
+meervoud is echter nogal voorbarig want Tera Computers leverde tot op heden
+slechts &eacute;&eacute;n systeem af. Met Cray in huis zal dat vermoedelijk veranderen. In ieder geval heeft Tera Computer er met 100 miljoen een superkoopje aan.
+</P>
+<P>
+<FONT SIZE="+1"><B>Telefoontarieven in Belgi&euml; omlaag</B></FONT>
+<BR>
+<BR>
+In Belgi&euml; gaan de telefoontarieven vanaf 15 juni fors omlaag. Waren de
+tarieven 45 frank voor dal en 120 frank voor piek per uur, gaan ze naar respectievelijk 30 en 60 frank per uur. De tarieven komen daarmee wat beter in overeenstemming met wat in Nederland gevraagd wordt.
+</P>
+<P>
+<FONT SIZE="+1"><B>USB&nbsp;2.0 veel sneller</B></FONT>
+<BR>
+<BR>
+De USB Promotor Group heeft de b&egrave;taspecificaties van versie 2 naar de
+fabrikanten gestuurd. Versie 2 zal vooral veel sneller dan de huidige versie 1.1
+zijn en wel veertig maal. Dat betekent dat gegevensoverdracht kan plaatsvinden
+met 480&nbsp;Mb per seconde, ruim voldoende voor digitale beelden zodat
+USB-camera&#8217;s nu een klasse hoger dan webcams kunnen. Bij 30 beeldjes per seconde
+is er 16&nbsp;Mb ofwel 2&nbsp;MB per beeldje beschikbaar. Ofwel 800&times;600
+bij 32 bits kleurdiepte en dat is beter dan uw normale tv en haast
+1024&times;768&times;24. Achter de Promotor Group staan namen als Compaq, HP, Intel, Lucent, Microsoft, Nec en Philips. Tegen het eind van 2000 is de eerste hardware op de markt te verwachten. Analisten verwachten dat het misschien op termijn wel eens de doodsteek voor SCSI kan zijn.
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../Multiplication/en.html">Multiplication on a Z80</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        issue
+        92,
+        March/April/May&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../Keyboard/en.html">The LP keyboard interface</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

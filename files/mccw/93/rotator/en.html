@@ -1,0 +1,704 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>The zooming rotator</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="David Heremans">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 93, June-December">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#800000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#800000">
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../megaguide1/en.html">MEGA Guide</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        issue
+        93,
+        June-December&nbsp;2000<BR>
+</FONT><A HREF="../contents/en.html#rotator">Back to contents</A></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../contents/en.html">MCCW Contents</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>the secrets behind a well known demo effect</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>The zooming rotator</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>One of the most used 2D effects ever has to be the camera
+that rotates and zooms in and out above a, mostly static, picture. This so called zooming rotator can be used in many forms and the techniques upon which
+it is based can be used for much more. It is the simplicity of the final
+algorithm that is the beauty of it all. So for all you demo
+programmers beginners out there, wet your appetite before you plunge into the undiscovered
+depths of source code.</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#886878" HEIGHT="20"><B><I><A HREF="mailto:dhran@planetinternet.be"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">David Heremans</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par2">Look mama, no optimisations</A>
+<BR>
+<A HREF="#Par3">Disadvantages</A>
+<BR>
+<A HREF="#Par5">A more elegant approach</A>
+<BR>
+<A HREF="#Par9">An other perspective</A>
+<BR>
+<A HREF="#Par11">Adjusting a previous example</A>
+<BR>
+<A HREF="#Par13">And now for the really speedy solution</A>
+<BR>
+<A HREF="#Par16">Possible optimisations in assembly</A>
+<BR>
+<A HREF="#Par17">Same idea, other result</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">If you ever get in contact with the current batch of business
+IT&nbsp;developers, you can test their knowledge of demo programming by asking
+them to make a zooming rotator. Since this is not about e-business or about
+handling a lot of &mdash;&nbsp;hopefully structured&nbsp;&mdash; data in a database, you will probably
+find a lot of them giving forfeit, a lot of them will turn to the most
+obvious solution at hand. They will start to deform circles. Do not be surprised
+if their first attempt will behave a lot like the following basic code. </P>
+<A NAME="Par2"></A>
+<P CLASS="bodynoindent">
+<B>Look mama, no optimisations</B>
+<BR>
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>basic-listing:
+                            <TT><A HREF="ROT1.ASC"><FONT COLOR="#FFFFFF">ROT1.ASC</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+10 screen 8,0:set page 1,1
+20 zf=1:za=0.4:al=0.2
+30 pi=4*atn(1)
+40 for r=1to50:for i= 0 to 2*pi step pi/32
+50 setpage,1:c=point(128+r*cos(i),106+r*sin(i))
+60 setpage,0:pset(128+zf*r*cos(i+al),106+zf*r*sin(i+al)),c
+70 next i,r
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+
+This is obviously a simple solution. What happens here is that we are rotating
+around the middle of the screen. We stand in the middle and look around us in
+steps of &plusmn; 10 degrees each time and with a radius <I>r</I>. We store the
+colour of this point in <I>c</I> and calculate were this point should be if we rotate
+it some degrees further and alter the radius by our zoom factor <I>zf</I>. For the
+mathematicians: we do not use the normal screen coordinates, instead we use polar coordinates to calculate the new position of the point
+(radius, angle) to (radius&times;zf, angle+offset).
+</P>
+<A NAME="Par3"></A>
+<P CLASS="bodynoindent">
+<B>Disadvantages</B>
+<BR>
+Although the reasoning used in the previous
+program is mathematically correct, everybody will agree that in practice it is
+insufficient. You could make a zooming rotator in this way, if you would
+translate <I>all</I> of the <I>infinitely small</I> points of a
+mathematical plane. This thing can not be done very well in the not so
+abstract computer bitmaps. First of all, in the mathematics point of view
+every point has dimension zero. This means that to cross even the smallest
+distance we need an infinite number of points. Rotating them will therefore
+take an infinite amount of time, which we do not have.</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+OK, the above statement was just an other theoretical remark. Here are some
+real flaws of the program:
+</P><OL STYLE="text-align: justify">
+<LI>The program calculates too many or too few points.<BR>
+For every radius it takes the same amount of points on the circle, on the
+smaller circles a lot of points will overlap so too many points are calculated.
+The circle will be drawn completely but it is slow. On the greater
+circles there will not be enough points calculated to fill the entire circle and
+you will see giant gaps appear.</LI>
+<LI>You will calculate a filled circle<BR>
+In most case however we want to have a rectangle as end result of the zooming
+rotator. If for example the purpose would be to fill the screen, you would have
+to calculate a lot of points, which would be discarded afterwards because their
+final position is on an off screen coordinate.</LI>
+<LI>Empty points<BR>
+A computer has to store its numbers internally with a finite number of
+digits &mdash;&nbsp;this in itself already introduces rounding errors&nbsp;&mdash; something the
+used mathematical solution did not take into consideration. Later these imperfect
+numbers are again submitted to truncating, introducing even more possible
+rounding errors. Concretely, this results in points on screen which will never
+be filled with an other colour, introducing a moir&eacute; effect.</LI>
+</OL><P CLASS="body">
+A lot of these effects can be corrected in a very crude way:
+</P><OL STYLE="text-align: justify">
+<LI>If we would take into account how many points we would have to
+calculate for a given radius <I>r</I> this argument can be circumvented. We could for
+example store all these values in a simple array.</LI>
+<LI>You could of course test if the rotated point is inside the box
+(x1,y1)-(x2,y2). You could check even if it is inside a triangle or some other
+weird shape. On the other hand these extra tests will slow down the
+process even more.</LI>
+<LI>Instead of drawing a single point, you could draw small boxes. These
+boxes will overlap each other, but they will also overlap the empty holes in
+the end result.</LI>
+</OL><P CLASS="body">
+</P>
+<A NAME="Par5"></A>
+<P CLASS="bodynoindent">
+<B>A more elegant approach</B>
+<BR>
+The previous solution really was a first attempt, now let us start to think
+about what we want to achieve. We want to take an original picture and rotate
+the points so that we get a rotated and possibly zoomed version of it.
+So it makes more sense to take every original point and calculate the new
+position of it.
+People who like mathematics will certainly be aware of the rotation and
+scaling formulas, see Figures 1 and 2.
+</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE>
+<TR>
+<TD VALIGN="top">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5" WIDTH="255">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#F8D0D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" WIDTH="161" ALIGN="MIDDLE" SRC="rotaform.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;1:
+                  </B><I>Standard rotation formula</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD><TD VALIGN="top">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5" WIDTH="255">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#F8D0D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="zoomform.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;2:
+                  </B><I>Standard scaling formula</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" ALIGN="CENTER" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" WIDTH="337">
+<TR>
+<TD>
+<TABLE BORDER="0" BGCOLOR="#F8D0D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><A HREF="combined.gif"><IMG BORDER="0" WIDTH="337" ALIGN="MIDDLE" SRC="combined.gif" ALT=""></A></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;3:
+                  </B><I>Scaling and rotating combined</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+If you combine them, you get the formulas of Figure 3. So:
+<BR>
+<BR>
+<TT>
+X' = zoomfactor ( X.cos + Y.sin )<BR>
+Y' = zoomfactor ( X.(-sin) + Y.cos )<BR>
+</TT>
+</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Now that we have these formulas, let us create a second program.
+We will take every point of the image we want to deform and calculate its new
+coordinates. Also, at this point we can already introduce great speed gains. For example,
+all the points we are going to rotate we need to calculate
+the sines and cosines of angle alpha only once. We will store this value in a
+variable. If we store the scaling factor in another variable we can again
+gain some speed. Here is the first version of our enhanced program.
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>basic-listing:
+                            <TT><A HREF="ROT2.ASC"><FONT COLOR="#FFFFFF">ROT2.ASC</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+10 screen 8,0:set page 1,1
+20 bload"picture.sr8",s
+30 zf=1:al=0.2
+40 co=cos(al):si=sin(al)
+50 for x=-50 to 50:for y=-50 to 50
+60 xa=(x*co+y*si)*zf
+70 xy=(y*co-x*si)*zf
+80 setpage,1:c=point(128+x,106+y)
+90 setpage,0:pset(128+xa,106+ya),c
+100 next x,y
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+This solution is much better.
+</P><UL STYLE="text-align: justify">
+<LI>We do not have to calculate the sines and cosines over and over again. We
+just calculate it once and then we can store it in some variables. This
+increases speed a lot.</LI>
+<LI>Every point in our source picture is calculated
+only once. We will not do the math for the same point over and over again.</LI>
+</UL><P CLASS="body">
+Of course some problems are still there. If we zoom in too much we will
+still have gaps, and if we zoom out too much we will again overdraw most of the
+points.
+</P>
+<A NAME="Par9"></A>
+<P CLASS="bodynoindent">
+<B>An other perspective</B>
+<BR>
+Up until now we always started out from our known picture and tried to
+calculate the points for the unknown picture. We have noticed in our
+examples we keep having problems because some points in our final picture
+are not filled in, or some points of the picture are overdrawn. Another problem
+is that we do not know exactly where our new picture will end up
+on the screen.</P>
+<A NAME="Par10"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Maybe it is time to change our way of looking upon the problem
+and reverse our question. We are not longer interested in  &#8220;Where will the
+original points end up in the final picture&#8221; but the more accurate question
+should be &#8220;what should be the colour of our points in the final picture&#8221;.
+If we look at the problem this way, we solve both problems mentioned in the previous paragraph in one go.
+</P>
+<A NAME="Par11"></A>
+<P CLASS="bodynoindent">
+<B>Adjusting a previous example</B>
+<BR>
+Let us take our last basic program. Instead of taking a rectangle of 100 by 100
+and rotate this original, let us calculate the points we should need to fill
+up a rectangle of 100 by 100. We are going to take every point in our final
+picture and calculate its position in the original one. We could
+take out formulas:
+<BR>
+<TT>X' = zoomfactor ( X.cos + Y.sin )</TT>
+<BR>
+<TT>Y' = zoomfactor ( X.(-sin) + Y.cos )</TT>
+<BR>
+and recalculate them for X and Y, but it is much simpler to say
+<BR>
+<TT>new rotation angle = -(original angle)</TT>
+<BR>
+<TT>new zoomfactor = 1/(original zoomfactor)</TT>
+<BR>
+This means that if we do not change these two parameters we will
+just change the rotation direction and instead of zooming in we will be
+zooming out. Keeping this in mind we can simple change line 80 and
+90
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>basic-listing:
+                            <TT><A HREF="ROT2FIX.ASC"><FONT COLOR="#FFFFFF">ROT2FIX.ASC</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+80 setpage,1:c=point(128+xa,106+ya)
+90 setpage,0:pset(128+x,106+y),c
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+And abracadabra! We have a zooming rotator. One that is free of all the major
+disadvantages we had in our previous examples, there are no gaps, no doubly
+calculated points and we now exactly which place to reserve on screen for the
+end result.
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The above solution is a fast and clean piece of program that is easy to
+understand and rather gracefully combines the pure mathematical approach and
+the real computer implementation of pixels. For demo programmers there
+still is a faster solution.
+</P>
+<A NAME="Par13"></A>
+<P CLASS="bodynoindent">
+<B>And now for the really speedy solution</B>
+<BR>
+Most demo programmers will tell you that the best way to achieve fast results
+is to use only integer &mdash;&nbsp;or fixed point&nbsp;&mdash; calculation and that one should
+use as simple instructions as possible because they execute the fastest. In
+our case this means that we should get rid of all those
+multiplications.</P>
+<A NAME="Par14"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Let us have a look at Figure 4.
+</P><TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5" WIDTH="240">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#F8D0D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="stepvector.png" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;4:
+                  </B><I>
+Red: this is a normal stepvector<BR>
+Green: If we zoom out we start to skip points<BR>
+Blue: Zoomed out and rotated
+</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+Again we change our strategy just a little. Instead of taking every point
+separately through the rotation formula we could say we start at the upper left
+corner of the on screen drawing and take a step to the left: in vector
+notation we take a step (1,0). You can read this as <I>x=x+1</I> and <I>y=y+0</I>.
+If our original picture is not zoomed and rotated, this would also be a
+step of (1,0) in our original image. If we would have a zoom factor of 2 this
+would mean that for every step (1,0) in our result we would take a step of
+(1/2,0) in the original.
+If we would have rotate our picture over 90 degrees instead of zooming, we
+would take steps of (0,1) in our original for every (1,0) step in the final on screen result.
+What we are going to do is the following. Instead of calculating every point, we are just
+going to calculate the start of our line. We are also going to have to calculate
+what the size and direction of our step is going to be. This is very simple: we
+will rotate (1,0) by using our formulas and the corresponding (x,y) is exactly
+the step we need. </P>
+<A NAME="Par15"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Of course, if we can take steps of (1,0) for our horizontal line we can also
+take steps of (0,1) to change our vertical lines. So what we need to calculate
+using our formulas are 3 points:
+</P><OL STYLE="text-align: justify">
+<LI>The upper left corner after rotation</LI>
+<LI>The corresponding steps we need to make to step 1 to the left in our
+result</LI>
+<LI>The size of the step needed to descend a line</LI>
+</OL><P CLASS="body">
+Here is the final basic program:
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>basic-listing:
+                            <TT><A HREF="ROT3.ASC"><FONT COLOR="#FFFFFF">ROT3.ASC</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+10 screen 8,0:set page 1,1
+20 bload"picture.sr8",s:set page 0
+30 zf=1:al=0.2:zs=0.2    REM Zoomfactor and rotation angle
+40 co=cos(al):si=sin(al):REM on time (co)sine calculation for current frame
+50 x=-50:y=-50	         REM coordinates of upper left corner
+60 xc=(x*co+y*si)*zf+128		
+70 yc=(y*co-x*si)*zf+106 REM XC,YC the coordinates in original picture
+80 REM Calculating step (0,1)
+90 xv=(si)*zf+128		
+100 yv=(co)*zf+106	 REM XC,YC the coordinates in original picture
+110 REM Calculating step (1,0)
+120 xh=(co)*zf		
+130 yh=(-si)*zf	REM XC,YC the coordinates in original picture
+140 REM getting trough the picture
+150 for i=0to100
+160 x=xc:y=yc
+170 xc=xc+xv:yc=yc+yv	 REM XC,YC placed one step vertical step lower
+180 for j=0to100
+190 setpage,1:c=point(x,y)
+200 x=x+xh:y=y+yh
+210 setpage,0:pset(j,i),c
+220 next j,i
+230 al=al+0.01
+240 zf=zf+zs:if ((zf=1) or(zf=5)) then zs=-zs
+250 goto 40
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+The way this program works is rather easy to understand.
+</P><UL STYLE="text-align: justify">
+<LI>In the first lines we set up the screen and load the original picture</LI>
+<LI>We initialise the zoom factor (<I>zf</I>), the rotation angle alpha (<I>al</I>) and the zoom speed (<I>zs</I>)</LI>
+<LI>Calculating sines and cosines takes a lot of time so we calculate it once and then store the result in a variable; this will speed up the basic program.</LI>
+<LI>We rotate the upper left corner and store these values in <I>xc</I> and <I>yc</I>, our short notation of x-corner and y-corner.</LI>
+<LI>We calculate the step size for a vertical step and store it in <I>xv</I> and <I>yv</I>. </LI>
+<LI>And we do the same for a horizontal step in <I>xh</I> and <I>yh</I>.</LI>
+</UL><P CLASS="body">
+Then we walk through the resulting picture from left to right (horizontal) and from top to bottom.
+</P><UL STYLE="text-align: justify">
+<LI>Since we need the corner coordinates later we first copy their values in some more convenient variables, <I>x</I> and <I>y</I>.</LI>
+<LI>For every horizontal step, represented by variable <I>j</I>, we add a (rotated and zoomed) horizontal step to <I>x</I> and <I>y</I> in our original picture.</LI>
+<LI>After having walked over a horizontal line we still have the coordinates of our corner in <I>xc</I> and <I>yc</I>. For our next horizontal line we will need start one vertical line below the original corner. So we add a vertical step to our corner coordinates from this step on we can draw a new horizontal line.</LI>
+<LI>Once our entire result has been calculated we change the rotation and zooming factor and start all over again, calculating <I>xc</I>, <I>yc</I>, <I>xv</I>, <I>yv</I>, <I>xh</I> and <I>yh</I> and redrawing the picture.</LI>
+</UL><P CLASS="body">
+Except for the occasional <TT>DEFINT</TT> and <TT>DEFDBL</TT> this is as fast as it can get in basic. The demo programmer will use assembly and luckily the last solution can be very easily ported to it.
+</P>
+<A NAME="Par16"></A>
+<P CLASS="bodynoindent">
+<B>Possible optimisations in assembly</B>
+<BR>
+Here are some hints for the assembly programmers if you want to produce some really fast code. I will not give the entire solution since it is more fun to make one yourself.
+</P><UL STYLE="text-align: justify">
+<LI>The calculation of the sines and cosines will be very fast if one uses a look up table.</LI>
+<LI>Using fixed point you can easily use the <TT>ADD HL,DE</TT> instruction. Use <TT>H</TT> as the integer part and <TT>L</TT> as the fractional part and you have the perfect way to make some fast code.</LI>
+<LI>Try to make the original picture have a width of 32, 64, 128 or even
+better 256. This will make it very simple to look up the colour value of the
+original point.</LI> 
+<LI>Remember, a Z80/R800 has a double set of registers.</LI> 
+</UL><P CLASS="body"> 
+If you want to be creative do not look at this example. If you are not intending to write one yourself, but you would like to see a fast inner loop, a nice example is given below. This inner loop is the equivalent of the basic lines 180-220. 
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="INNRLOOP.ASC"><FONT COLOR="#FFFFFF">INNRLOOP.ASC</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+; The picture is stored at #0000 and has dimensions (256, ??)
+; One byte is one pixel
+; VRAM write is set to the correct address
+; B is the number of horizontal pixels
+; C is #98
+; HL is x
+; DE is xh
+; HL' is y
+; DE' is yh
+
+LOOP:
+ ADD HL,DE ; X=X+XH
+ LD A,H
+ EXX
+ ADD HL,DE ; Y=Y+YH
+ LD C,L 
+ LD B,A
+ LD A,(BC)
+ EXX
+ OUT (C),A
+ DJNZ LOOP
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+</P>
+<A NAME="Par17"></A>
+<P CLASS="bodynoindent">
+<B>Same idea, other result</B>
+<BR>
+With the fixed-point-step-trough-a-picture method described above you have seen
+that it is very easy to rotate a picture, scale a picture or do both at the
+same time. This is also the basis for simple texture mapping. There are however
+some other nice effects to create. You could add a sine to what we have called
+<I>xv</I> and <I>yv</I> or both at the same time. This would create a wave effect in the
+final result. Or you could play with the values of <I>xh</I> and <I>yh</I> during the tracing
+of a horizontal line. If you do this it is possible to create all kinds of lens
+like effects. The few pictures below give you some results of what can be done
+when these variables are altered during the calculation instead of
+keeping them fixed. <I>Editor&#8217;s note: we have never recieved the pictures David mentions here and after asking him, he could not find them back either... So, we apologise for the missing pictures!</I>
+</P>
+<A NAME="Par18"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+A simple idea and a little implementation that opens a whole range of possibilities when used with a little imagination. Great demos are made with great music, great graphics, great programming and some very creative imagination. I wish you all a lot of fun and creativity when playing with these routines, it could well result in some new great demos.
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../megaguide1/en.html">MEGA Guide</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        issue
+        93,
+        June-December&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../contents/en.html">MCCW Contents</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

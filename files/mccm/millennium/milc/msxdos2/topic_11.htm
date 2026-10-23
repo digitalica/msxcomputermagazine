@@ -1,0 +1,186 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-DOS 2.20 functions index</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_10.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_12.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-DOS 2.20 functions index</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                      M S X -- D O S   v e r s i o n  2
+                  =================================
+
+                  The advanced disk operating system
+                         for MSX 2 computers
+
+
+   This  manual describes  in detail  the MSX-DOS  function calls provided by
+MSX-DOS version 2.20
+
+1.   INTRODUCTION
+
+   This document describes in detail each of the MSX-DOS 2 function calls. It 
+should  be read  in conjunction  with the  &quot;Program Interface  specification&quot; 
+which describes  system features  such as  file handles,  fileinfo blocks and 
+environment strings in general terms.
+
+   There are  two ways  of doing  MSX-DOS function  calls, reflecting the two 
+different  environments (MSX-DOS and disk BASIC) in which the system can run. 
+Transient  programs  running  in  the  MSX-DOS  environment  must  access the 
+functions with a &quot;CALL 00005h&quot; instruction. Disk BASIC and other MSX programs 
+running  in  the disk  BASIC environment  (usually executing  from ROM)  must 
+access the system via a &quot;CALL 0F37Dh&quot; instruction.
+
+   There   are  some   limitations  when   calling  the  system  via  0F37Dh, 
+particularly to do with error handling and abort routines. Also no parameters 
+may be passed in page-1, unless they are in the master disk ROM (as they will 
+be for  disk BASIC)  since the master disk ROM will be paged into page-1 when 
+such  a function  call is  made. The individual function descriptions mention 
+the differences for particular functions.
+
+2.   LIST OF FUNCTIONS
+
+   Below there  is a  complete list  of the  functions calls. &quot;CPM&quot; indicates 
+that the function is compatible with the equivalent CP/M 2.2 function, &quot;MSX1&quot; 
+indicates  compatibility  with  MSX-DOS  version  1,  and  &quot;NEW&quot; indicates  a 
+function  which is  new to  this system. An asterisk (&quot;*&quot;) indicates that the 
+function may  be safely  called from  a user disk error routine (see function 
+64h and function 70h).
+
+List of MSX-DOS 2 Function Calls
+
+CPM MSX1  00h -  Program terminate
+     CPM MSX1* 01h -  Console input
+     CPM MSX1* 02h -  Console output
+     CPM MSX1* 03h -  Auxiliary input
+     CPM MSX1* 04h -  Auxiliary output
+     CPM MSX1* 05h -  Printer output
+     CPM MSX1* 06h -  Direct console I/O
+         MSX1* 07h -  Direct console input
+         MSX1* 08h -  Console input without echo
+     CPM MSX1* 09h -  String output
+     CPM MSX1* 0Ah -  Buffered line input
+     CPM MSX1* 0Bh -  Console status
+     CPM MSX1* 0Ch -  Return version number
+     CPM MSX1  0Dh -  Disk reset
+     CPM MSX1  0Eh -  Select disk
+     CPM MSX1  0Fh -  Open file (FCB)
+     CPM MSX1  10h -  Close file (FCB)
+     CPM MSX1  11h -  Search for first entry (FCB)
+     CPM MSX1  12h -  Search for next entry (FCB)
+     CPM MSX1  13h -  Delete file (FCB)
+     CPM MSX1  14h -  Sequential read (FCB)
+     CPM MSX1  15h -  Sequential write FCB)
+     CPM MSX1  16h -  Create file (FCB)
+     CPM MSX1  17h -  Rename file (FCB)
+     CPM MSX1* 18h -  Get login vector
+     CPM MSX1* 19h -  Get current drive
+     CPM MSX1  1Ah -  Set disk transfer address
+         MSX1  1Bh -  Get allocation information
+               1Ch -  Unused
+               1Dh -  Unused
+               1Eh -  Unused
+               1Fh -  Unused
+               20h -  Unused
+     CPM MSX1  21h -  Random read (FCB)
+     CPM MSX1  22h -  Random write(FCB)
+     CPM MSX1  23h -  Get file size (FCB)
+     CPM MSX1  24h -  Set random record (FCB)
+               25h -  Unused
+         MSX1  26h -  Random block write (FCB)
+         MSX1  27h -  Random block read (FCB)
+     CPM MSX1  28h -  Random write with zero fill (FCB)
+               29h -  Unused
+         MSX1* 2Ah -  Get date
+         MSX1* 2Bh -  Set date
+         MSX1* 2Ch -  Get time
+         MSX1* 2Dh -  Set time
+         MSX1* 2Eh -  Set/reset verify flag 
+         MSX1* 2Fh -  Absolute sector read
+         MSX1* 30h -  Absolute sector write
+         NEW*  31h -  Get disk parameters
+               32h - \
+               . .    \ Unused
+               . .    /
+               3Fh - /
+    NEW     40h -  Find first entry
+    NEW     41h -  Find next entry
+    NEW     42h -  Find new entry
+    NEW     43h -  Open file handle
+    NEW     44h -  Create file handle
+    NEW     45h -  Close file handle
+    NEW     46h -  Ensure file handle
+    NEW     47h -  Duplicate file handle
+    NEW     48h -  Read from file handle
+    NEW     49h -  Write to file handle
+    NEW     4Ah -  Move file handle pointer 
+    NEW     4Bh -  I/O control for devices
+    NEW     4Ch -  Test file handle 
+    NEW     4Dh -  Delete file or subdirectory
+    NEW     4Eh -  Rename file or subdirectory
+    NEW     4Fh -  Move file or subdirectory
+    NEW     50h -  Get/set file attributes
+    NEW     51h -  Get/set file date and time
+    NEW     52h -  Delete file handle
+    NEW     53h -  Rename file handle
+    NEW     54h -  Move file handle
+    NEW     55h -  Get/set file handle attributes
+    NEW     56h -  Get/set file handle date and time
+    NEW   * 57h -  Get disk transfer address
+    NEW   * 58h -  Get verify flag setting
+    NEW     59h -  Get current directory
+    NEW     5Ah -  Change current directory 
+    NEW     5Bh -  Parse pathname
+    NEW     5Ch -  Parse filename
+    NEW   * 5Dh -  Check character
+    NEW     5Eh -  Get whole path string
+    NEW     5Fh -  Flush disk buffers 
+    NEW     60h -  Fork a child process
+    NEW     61h -  Rejoin parent process
+    NEW     62h -  Terminate with error code
+    NEW     63h -  Define abort exit routine
+    NEW     64h -  Define disk error handler routine
+    NEW   * 65h -  Get previous error code
+    NEW   * 66h -  Explain error code 
+    NEW     67h -  Format a disk
+    NEW     68h -  Create or destroy RAM disk
+    NEW     69h -  Allocate sector buffers
+    NEW   * 6Ah -  Logical drive assignment
+    NEW   * 6Bh -  Get environment item
+    NEW   * 6Ch -  Set environment item
+    NEW   * 6Dh -  Find environment item
+    NEW   * 6Eh -  Get/set disk check status
+    NEW   * 6Fh -  Get MSX-DOS version number
+    NEW   * 70h -  Get/set redirection status
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_10.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_12.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

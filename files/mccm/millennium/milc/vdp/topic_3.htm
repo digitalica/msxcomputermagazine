@@ -1,0 +1,147 @@
+<html>
+
+<head>
+<title>MILC - Topic Screen 10-12</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Screen 10-12</b><br>
+    <i>M.Dekker</i>, 13-07-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+- Area: (NL ) MSX ------------------------------------------------------------
+  Msg#: 1659                                         Date: 13 Jul 94  11:17
+  From: Martijn Dekker                               Read: Yes    Replied: No 
+    To: Folkert van Heusden                          Mark:                     
+  Subj: screen 10 - 12
+------------------------------------------------------------------------------
+ -=&gt; Quoting Martijn Dekker to Folkert van Heusden &lt;=-
+
+ MD&gt; Op 11 Jul 94  schreef Folkert van Heusden het volgende aan  hullie:
+ FH&gt; Hoe zitten screen 10 t/m 12 in elkaar? enneh, hoe zit dat met die yjk
+ FH&gt; ofzoiets?
+
+ MD&gt; Onderstaand tekstje slingerde toevallig nog op mijn HD rond. Ooit eens
+ MD&gt; gedownd van InfoDrome (die nu al weken off-line is :-(((). De &quot;ik&quot; in
+ MD&gt; dat tekstje ben ik dus niet, en ik weet niet wie het wel is want er
+ MD&gt; staat geen naam onder. De naam Alex Wulms is echter een hele bekende
+ MD&gt; in het MSX-wereldje. 
+ MD&gt; Kleine aanvulling vooraf: screen 10 t/m 12 nemen per scherm evenveel
+ MD&gt; ruimte in als screen 8. In screen 12 zijn per groepje van 4 pixels 4
+ MD&gt; bytes gereserveerd, met voor die vier pixels samen de kleur in YJK
+ MD&gt; codering, en daarnaast per pixel de helderheid (0-31). 
+ MD&gt; In screen 10 en 11 (dat is voor de machine hetzelfde, alleen voor
+ MD&gt; BASIC is er verschil) is de helderheid niet 0-31, maar 0-16. Het bit
+ MD&gt; dat zo vrijkomt wordt gebruikt om te vlaggen of deze pixel een screen
+ MD&gt; 5-style pixel (16 uit 512 kleuren) of een screen 12-style pixel (met
+ MD&gt; groffere helderheid) is. 
+ MD&gt; Overigens wordt in dit tekstje het eigenlijke opslagformaat (wat zit
+ MD&gt; in welke bits) van de screen 10-12 pixels niet beschreven. In MSX
+ MD&gt; Computer Magazine nr. 47 (juni 1991) is echter een uitstekend artikel
+ MD&gt; verschenen dat dat allemaal haarfijn uitlegt. Het staat op pagina's 37
+ MD&gt; tot 41. Heb je MCM 47 niet, bestel hem dan na bij de MCCM
+ MD&gt; LezersService. Kost je een beetje geld, maar dan heb je ook een _goed_
+ MD&gt; artikel. 
+ MD&gt; Dan nu het tekstje van mijn HD, over conversie van RGB naar YJK en
+ MD&gt; vice versa (deze informatie staat _niet_ in dat MCM artikel). 
+ MD&gt; -------------------&lt;&lt;&lt;CUT HERE&gt;&gt;&gt;---------------------
+ MD&gt; (Ik heb deze tekst eens van Alex Wulms gekregen, als reaktie op een
+ MD&gt; vraag van  mij)
+
+ MD&gt; 4 horizontale pixels zijn in screen 12 als volgt gecodeerd:
+
+ MD&gt; |C7 C6 C5 C4 C3|C2 C1 C0|
+ MD&gt; ------+--------------+--------+
+ MD&gt; 1 dot |     Y1       |   Kl   |
+ MD&gt; 1 dot |     Y2       |   Kh   |
+ MD&gt; 1 dot |     Y3       |   Jl   |
+ MD&gt; 1 dot |     Y4       |   Jh   |
+ MD&gt; ------+--------------+--------+
+
+ MD&gt; K = KhKl is een 6-bits 2 complement getal
+ MD&gt; J = JhJl is een 6-bits 2 complement getal
+ MD&gt; Y1..Y4  zijn 5-bits unsigned getallen
+
+ MD&gt; K en J zijn dus getallen met een sign (bit 6 is het sign bit). Dit
+ MD&gt; houdt dus in dat de volgende conventie wordt gebruikt:
+ MD&gt; K = 32  -&gt; -32 wordt bedoeld
+ MD&gt; K = 33  -&gt; -31 wordt bedoeld
+ MD&gt; .    .  .   .   .       .
+ MD&gt; K = 63  -&gt; -1  wordt bedoeld
+ MD&gt; K =  0  -&gt;  0  wordt bedoeld
+ MD&gt; K =  1  -&gt;  1  wordt bedoeld
+ MD&gt; .    .  .   .   .       .
+ MD&gt; K = 31  -&gt; 31  wordt bedoeld
+ MD&gt; Dezelfde conventie wordt bij J gebruikt.
+ MD&gt; In basic kan daarom de volgende 'conversie' formule worden gebruikt
+ MD&gt; (om 6-bits 2-complement om te zetten in 16 bits 2-complement ofwel
+ MD&gt; integers):
+ 
+ if k&gt;32 then k=k-64
+
+ MD&gt; En op de Z80 (in assembler, neem aan: K zit in de Accu)
+ MD&gt; mk8bits:    cp  32      ; is het getal positief ?
+ MD&gt; ret c       ; ja =&gt; alles is goed
+ MD&gt; sub 64      ; nee =&gt; zet om in 8-bits 2-complement
+ MD&gt; ret
+
+ MD&gt; Als je dit eenmaal hebt, kun je de volgende formules gebruiken:
+ MD&gt; -Voor conversie van YJK naar RGB:
+
+ MD&gt; R = Y+J
+ MD&gt; G = Y+K
+ MD&gt; B = (5/4)*Y - (J/2) - (K/4)
+
+ MD&gt; Let op: R, G en B zijn in principe allemaal 5 bits. De uitkomsten
+ MD&gt; kunnen echter te groot of te klein worden! Daarom dient hierop
+ MD&gt; gecontroleerd te worden. Dit kan bijvoorbeeld als volgt (in basic):
+ if r&gt;31 then r=31 else if r&lt;0 then r=0
+ if g&gt;31 then g=31 else if g&lt;0 then g=0
+ if b&gt;31 then b=31 else if b&lt;0 then b=0
+
+ MD&gt; -Voor de conversie van RGB naar YJK
+
+ MD&gt; Y = B/2 + R/4 + G/8
+ MD&gt; J = R - Y    (= (3/4)*R - B/2 - G/8, dus hier zit alles in gecodeerd)
+ MD&gt; K = G - Y    (= (7/8)*G - B-2 - R/4, dus ook hier zit alles in)
+
+ MD&gt; In J en K zit dus alles (R, G em B) gecodeerd, alleen in andere
+ MD&gt; verhoudingen!! -------------------&lt;&lt;&lt;CUT HERE&gt;&gt;&gt;---------------------
+
+ MD&gt; Hopelijk heb je hier wat aan.
+
+ MD&gt; Groeten &amp; zo,  |\/| a r t ij |\|
+ MD&gt; -!- Alice4Mac 2.4.4 E T2 Eval:12Jun94
+ MD&gt;  ! Origin: Point 2 of Paninaro BBS, +31-50-772840 (2:282/525.2)
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

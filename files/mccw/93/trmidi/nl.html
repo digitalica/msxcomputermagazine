@@ -1,0 +1,775 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>MIDI interface of the GT</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Alex Wulms">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 93, June-December">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#800000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#800000">
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../pentaro2/nl.html">[en] Pentaro Odyssey 2</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        nummer
+        93,
+        juni-december&nbsp;2000<BR>
+</FONT><A HREF="../contents/nl.html#trmidi">Terug naar inhoud</A></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../koek3/nl.html">De Maiskoek/Bits and Pieces</A></TD>
+</TR>
+<TR BGCOLOR="#886878">
+<TD ALIGN="center" colspan="3"><FONT COLOR="#FFFFFF">
+            Dit artikel is helaas alleen beschikbaar in het Engels.
+        </FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>how to control it?</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>MIDI interface of the GT</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>One of the least documented and most complex parts of the MSX&nbsp;turbo&nbsp;R GT
+is the built-in MIDI controller. Therefore, it has cost me a lot of time and
+effort to gather the data for this article. </B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#886878" HEIGHT="20"><B><I><A HREF="mailto:awulms@inter.nl.net"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Alex Wulms</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par3">Connection</A>
+<BR>
+<A HREF="#Par6">Setting the UART mode</A>
+<BR>
+<A HREF="#Par10">The UART commands</A>
+<BR>
+<A HREF="#Par14">The UART Status register</A>
+<BR>
+<A HREF="#Par15">Sending and receiving MIDI data</A>
+<BR>
+<A HREF="#Par17">The timer</A>
+<BR>
+<A HREF="#Par18">Counter initialisation</A>
+<BR>
+<A HREF="#Par19">Reading the counter</A>
+<BR>
+<A HREF="#Par21">The counter modes</A>
+<BR>
+<A HREF="#Par22">The listing</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="CENTER" BGCOLOR="#F8D0D8"><B><FONT COLOR="#000000">
+                                    References
+                                  </FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN="LEFT"><FONT COLOR="#FFFFFF">1.</FONT>&nbsp;<A HREF="http://www.inter.nl.net/users/A.P.Wulms"><FONT COLOR="#FFFFFF">http://www.inter.nl.net/u...</FONT></A>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">The MIDI link that is used for communication between two synthesizers or
+one synthesizer and a computer, is a so-called asynchronous serial data link. In
+the computer industry, there are several serial controllers to build such a
+link with. Panasonic uses the 8251 Universal Asynchronous Receiver/Transmitter, or
+UART. </P>
+<A NAME="Par2"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Unfortunately you need more than just a serial interface for a good MIDI
+link. A MIDI apparatus has to be able to send MIDI data with certain timing, for
+example to be able to control the tempo of the music. In the Panasonic GT that is
+done by the 8253 programmable timer controller, which I will simply call the
+&#8216;timer&#8217;. Both the 8251 and 8253 are also used to control the serial connection
+and timing of the official MSX RS232C interface. </P>
+<A NAME="Par3"></A>
+<P CLASS="bodynoindent">
+<B>Connection</B>
+<BR>
+The MIDI-controller in the GT is connected to the I/O ports as shown in the following table:
+</P>
+<A NAME="Par4"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+</P><TABLE BORDER="0" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" ALIGN="center">
+<TR>
+<TD>
+<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="1" BGCOLOR="#FFFFFF">
+<CAPTION STYLE="color: #FFFFFF; background-color: #886878; text-align: center">
+<B>Connections MIDI controller to I/O ports</B>
+</CAPTION>
+<TR>
+<TH ALIGN="LEFT" VALIGN="top">address</TH><TH ALIGN="LEFT" VALIGN="top">description</TH>
+</TR>
+<TR>
+<TD VALIGN="top">0E8h</TD><TD VALIGN="top">UART data register</TD>
+</TR>
+<TR>
+<TD VALIGN="top">0E9h</TD><TD VALIGN="top">UART command/status register</TD>
+</TR>
+<TR>
+<TD VALIGN="top">0EAh</TD><TD VALIGN="top">timer interrupt flag off</TD>
+</TR>
+<TR>
+<TD VALIGN="top">0EBh</TD><TD VALIGN="top">timer-counter 0 data register</TD>
+</TR>
+<TR>
+<TD VALIGN="top">0ECh</TD><TD VALIGN="top">timer-counter 1 data register</TD>
+</TR>
+<TR>
+<TD VALIGN="top">0EDh</TD><TD VALIGN="top">timer-counter 2 data register</TD>
+</TR>
+<TR>
+<TD VALIGN="top">0EFh</TD><TD VALIGN="top">timer command register</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par5"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+The UART and the timer are connected with the CPU in several ways, to guarantee optimal cooperation:
+</P><UL STYLE="text-align: justify">
+<LI>The output of counter 0 of the timer is connected to the clock-input
+        of the UART to get an adjustable baud rate.</LI>
+<LI>       The output of counter 2 of the timer is connected to a so-called
+        flip-flop. This is set when counter 2 becomes 0 and it is reset when
+        any value is written to the I/O register 0EAh.</LI>
+<LI>       The output of the flip-flop and the DTR output of the UART are
+        connected to the input of an AND gate, so the output of the flip-flop
+        is only passed if DTR is set.</LI>
+<LI>       The output of the AND gate is connected to the DSR input of the
+        UART. This DSR signal can be read from the status register of the
+        UART. As a result, the status register shows the status of counter 2.</LI>
+<LI>     The RxRDY output and the RTS output of the UART are connected to
+        another AND gate. The RxRDY signal is thus only passed if RTS is set.
+        The UART uses the RxRDY to signal that MIDI data have been received.</LI>
+<LI>      The outputs of the two AND gates are connected to the Interrupt input
+        of the CPU. Thus, the CPU receives an interrupt request if MIDI data
+        have been received, in which case RxRDY is set, and the CPU also
+        receives an interrupt when counter 2 becomes 0.</LI>
+<LI>      The output of counter 2 is also connected to the input of counter 1.</LI>
+<LI>      The output of counter 1 is not connected to anything, so you cannot
+        generate an interrupt request with counter 1. However, the value of
+        counter 1 can be read through its data register on 0EDh.</LI>
+</UL><P CLASS="body">
+See figure 1 for the connections.
+</P><TABLE BORDER="0" ALIGN="CENTER" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" WIDTH="366">
+<TR>
+<TD>
+<TABLE BORDER="0" BGCOLOR="#F8D0D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><A HREF="trmidi.gif"><IMG BORDER="0" WIDTH="366" ALIGN="MIDDLE" SRC="trmidi.gif" ALT=""></A></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;1:
+                  </B><I>
+This drawing shows how all these outputs and inputs are connected. Some details
+that would make the drawing needlessly complex have been omitted.
+</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par6"></A>
+<P CLASS="bodynoindent">
+<B>Setting the UART mode</B>
+<BR>
+The UART can work in two modes: a synchronous mode and an asynchronous mode. In
+fact, the 8251 is a USART; the S standing for Synchronous. However the MIDI
+controller only needs asynchronous mode. That is the only one I will discuss here.
+</P>
+<A NAME="Par7"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Before the UART can be used, the right mode has to be set. Before we are able to
+do this, it will have to be reset. This is done by writing three zeroes and one
+sixty-four to the UART through the command register at address 0E9h. By the way,
+the timing is critical; between writing two values to the command register,
+you will have to wait 4ms (this is about 1 tick on the counter on I/O-address
+0E6h.</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>After the UART has been reset, the mode can be set by writing the appropriate
+value to the command register. The mode value is composed as follows:
+</P><TABLE>
+<TR>
+<TH VALIGN="top">b7</TH><TH VALIGN="top">b6</TH><TH VALIGN="top">b5</TH><TH VALIGN="top">b4</TH><TH VALIGN="top">b3</TH><TH VALIGN="top">b2</TH><TH VALIGN="top">b1</TH><TH VALIGN="top">b0</TH>
+</TR>
+<TR>
+<TD VALIGN="top">S2</TD><TD VALIGN="top">S1</TD><TD VALIGN="top">EP</TD><TD VALIGN="top">PEN</TD><TD VALIGN="top">L2</TD><TD VALIGN="top">L1</TD><TD VALIGN="top">B2</TD><TD VALIGN="top">B1</TD>
+</TR>
+</TABLE><P CLASS="body">
+
+</P><UL STYLE="text-align: justify">
+<LI>S2/S1: number of stop bits:
+<UL STYLE="text-align: justify">
+<LI>0 = invalid</LI>
+<LI>1 = 1 stop bit</LI>
+<LI>2 = 1.5 stop bits</LI>
+<LI>3 = 2 stop bits</LI>
+</UL>
+</LI>
+<LI>EP: even/odd parity generation:
+<UL STYLE="text-align: justify">
+<LI>0 = odd parity</LI>
+<LI>1 = even parity</LI>
+</UL>
+</LI>
+<LI>PEN: parity enable:
+<UL STYLE="text-align: justify">
+<LI>0 = no parity check or generation</LI> 
+<LI>1 = parity check or generation</LI> 
+</UL>
+</LI>
+<LI>L2/L1: character length:
+<UL STYLE="text-align: justify">
+<LI>0 = 5 bits</LI>
+<LI>1 = 6 bits</LI>
+<LI>2 =7 bits</LI>
+<LI>3 = 8 bits</LI>
+</UL>
+</LI>
+<LI>B2/B1: baud rate factor: 
+<UL STYLE="text-align: justify">
+<LI>0 = synchronous mode</LI>
+<LI>1 = 1&times;</LI>
+<LI>2 = 16&times;</LI>
+<LI>3 = 64&times;</LI>
+</UL>
+</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par9"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>For MIDI, 1 stop bit is needed, no parity check, eight bits character length and
+a baud rate of 31.25&nbsp;kHz. The baud rate is set with counter 0 of the timer and
+the baud rate factor of the mode value. If, for example, counter 0 of the timer
+is set to a clock frequency of 500&nbsp;kHz, the baud rate factor has to be set to
+16&times;. This leads to a binary mode value of 0100110 (decimal value 78). For a
+complete initialisation of the UART, a MIDI program has to write the following
+five values to the command register: 0, 0, 0, 64, 78. Between writing two values it
+has to wait 4 ms.</P>
+<A NAME="Par10"></A>
+<P CLASS="bodynoindent">
+<B>The UART commands</B>
+<BR>
+After a mode has been set, all values that have to be written to the command
+register are interpreted as so called command values. In fact, resetting the
+UART with 0, 0, 0, 64 does in fact mean that four successive commands are written to
+the UART. The first three zeroes are only needed to synchronise the UART with
+the CPU, just in case the UART is in the middle of a multi byte command mode
+setting. The fourth value is the actual reset command. Note that these multi byte
+commands are not used in asynchronous mode, but it could be possible that a
+previous (non-MIDI) program has set the UART to synchronous mode.</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>A UART command is composed as follows:
+</P><TABLE>
+<TR>
+<TH VALIGN="top">b7</TH><TH VALIGN="top">b6</TH><TH VALIGN="top">b5</TH><TH VALIGN="top">b4</TH><TH VALIGN="top">b3</TH><TH VALIGN="top">b2</TH><TH VALIGN="top">b1</TH><TH VALIGN="top">b0</TH>
+</TR>
+<TR>
+<TD VALIGN="top">EH</TD><TD VALIGN="top">IR</TD><TD VALIGN="top">RTS</TD><TD VALIGN="top">ER</TD><TD VALIGN="top">SBRK</TD><TD VALIGN="top">RxE</TD><TD VALIGN="top">DTR</TD><TD VALIGN="top">TXE</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P><UL STYLE="text-align: justify">
+<LI>EH: Enter hunt mode
+<UL STYLE="text-align: justify">
+<LI>This bit has no function in asynchronous mode</LI>
+</UL>
+</LI>
+<LI>IR: Internal reset
+<UL STYLE="text-align: justify">
+<LI>0 = do not reset UART</LI>
+<LI>1 = reset UART so that mode can be changed</LI>
+</UL>
+</LI>
+<LI>RTS: request to send. This bit is linked to the RTS output of the UART and in
+the MSX&nbsp;turbo&nbsp;R GT is used to link the RxRDY to the interrupt request input of the CPU.
+<UL STYLE="text-align: justify">
+<LI>0 = MIDI interrupt is off</LI>
+<LI>1 = MIDI interrupt is on</LI>
+</UL>
+</LI>
+<LI>ER: Error reset
+<UL STYLE="text-align: justify">
+<LI>0 = nothing</LI>
+<LI>1 = reset FE, OE and PE status flags</LI>
+</UL>
+</LI>
+<LI>SRBK: Send break character
+<UL STYLE="text-align: justify">
+<LI>0 = normal operation</LI>
+<LI>1 = pull the serial MIDI output down so a continuous stream of zero bits is sent</LI>
+</UL>
+</LI>
+<LI>RxE = Receive enable
+<UL STYLE="text-align: justify">
+<LI>0 = MIDI in is off</LI>
+<LI>1 = MIDI in is on</LI>
+</UL>
+</LI>
+<LI>DTR: Data terminal ready. This bit is linked to the DTR output of the UART and in the MSX&nbsp;turbo&nbsp;R GT is used to mask the output of counter 2.
+<UL STYLE="text-align: justify">
+<LI>0 = counter 2 is ignored</LI>
+<LI>1 = counter 2 can generate interrupts</LI>
+</UL>
+</LI>
+<LI>TxE = Transmit enable
+<UL STYLE="text-align: justify">
+<LI>0 = MIDI out is off</LI>
+<LI>1 = MIDI out is on</LI>
+</UL>
+</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>To switch MIDI out and MIDI in both to on, the RTS, RxE and TxE bits have to be
+set. If counter 2 is used as a programmable interrupt generator for timing the
+recording or transmission of MIDI data, the DTR bit has to be set as well. All
+other bits can remain reset.</P>
+<A NAME="Par13"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>The result is a binary command value 00100111, the decimal value 39. If no
+programmable interrupt generator is necessary, the binary value 00100101
+suffices (decimal 37). And if no interrupts are needed when MIDI data have been
+received, the binary value 00000101 (decimal 5) is enough.</P>
+<A NAME="Par14"></A>
+<P CLASS="bodynoindent">
+<B>The UART Status register</B>
+<BR> 
+The UART also has a status register that can be read through I/O port 0E9h. This
+status register is composed as follows:
+</P><TABLE>
+<TR>
+<TH VALIGN="top">b7</TH><TH VALIGN="top">b6</TH><TH VALIGN="top">b5</TH><TH VALIGN="top">b4</TH><TH VALIGN="top">b3</TH><TH VALIGN="top">b2</TH><TH VALIGN="top">b1</TH><TH VALIGN="top">b0</TH>
+</TR>
+<TR>
+<TD VALIGN="top">DSR</TD><TD VALIGN="top">BRK</TD><TD VALIGN="top">FE</TD><TD VALIGN="top">OE</TD><TD VALIGN="top">PE</TD><TD VALIGN="top">TxEM</TD><TD VALIGN="top">RxRDY</TD><TD VALIGN="top">TxRDY</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent">
+
+</P><UL STYLE="text-align: justify">
+<LI>DSR: Data set ready
+<UL STYLE="text-align: justify">
+<LI>This bit is connected to the DSR input of the UART, which in the GT is connected
+to the output of counter 2 of the timer.</LI>
+</UL>
+</LI>
+<LI>BRK: Break detect. A break signal is detected by checking the stop bit. If it has been 0 twice in a
+row, there is a break signal. Normally, the stop bit can only become 0 if the
+transmitter has set the SBRK bit of the command register. Break signals are not
+used in the MIDI protocol.
+<UL STYLE="text-align: justify">
+<LI>0 = no break signal detected</LI>
+<LI>1 = break signal detected</LI>
+</UL>
+</LI>
+<LI>FE: Framing error. A framing error is caused by a break signal or an error in the data transfer.
+With MIDI, a FE is always caused by an error in the data transfer, because break
+signals are not used.
+<UL STYLE="text-align: justify">
+<LI>0 = no framing error</LI>
+<LI>1 = stop bit was 0</LI>
+</UL>
+</LI>
+<LI>OE: Overrun error
+<UL STYLE="text-align: justify">
+<LI>0 = no overrun error</LI>
+<LI>1 = the UART has received a new character while the CPU was not ready reading the
+previous character.</LI>
+</UL>
+</LI>
+<LI>PE: Parity error. Since parity is not checked in the MIDI protocol, this bit is always 0 when
+transferring MIDI data.
+<UL STYLE="text-align: justify">
+<LI>0 = no parity error</LI>
+<LI>1 = wrong parity</LI>
+</UL>
+</LI>
+<LI>TxEM: Transmitter empty. If TxEM is 1, the TxEM will become 0 as soon as the CPU has written a new value
+to the data port.
+<UL STYLE="text-align: justify">
+<LI>0 = the UART is sending data </LI>
+<LI>1 = the UART is ready sending the last byte</LI>
+</UL>
+</LI>
+<LI>RxRDY: Receiver ready. This status bit is also connected to the RxRDY output of the UART, which in the
+GT, is combined with the RTS signal and connected to the interrupt input of the
+CPU.
+<UL STYLE="text-align: justify">
+<LI>0 = no byte received</LI>
+<LI>1 = byte received</LI>
+</UL>
+</LI>
+<LI>TxRDY: Transmitter ready. The TxRDY status bit is always equal to the TxEM status bit. The difference
+between these two bits is that the TxEM bit is directly connected to the TxEM
+output of the UART, and the TxRDY bit is masked with two other bits before it is
+connected to the TxRDY output of the UART. For the MSX programmer, this
+difference is irrelevant because these two UART outputs are not used in the
+GT.
+<UL STYLE="text-align: justify">
+<LI>0 = the UART is not ready to send a new byte </LI>
+<LI>1 = the UART is ready to send a new byte </LI>
+</UL>
+</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par15"></A>
+<P CLASS="bodynoindent">
+<B>Sending and receiving MIDI data</B>
+<BR>
+After the UART and counter 0 of the timer have been initialised, it is possible
+to send MIDI data by sending it to I/O port 0E8h and to receive MIDI data by
+reading I/O port 0E8h. Before writing a byte to I/O port 0E8H, the program must
+wait until the TxRDY status bit is set.</P>
+<A NAME="Par16"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>Receiving MIDI data can be done by an interrupt routine which is called every time a new byte
+comes in. Programmers who find interrupt routines too complex can leave the interrupt generation off by resetting the RTS bit to 0 when setting the UART command. Next, they can check 
+when MIDI data arrives by testing the RDY status bit.</P>
+<A NAME="Par17"></A>
+<P CLASS="bodynoindent">
+<B>The timer</B>
+<BR>
+The 8253 programmable timer exists of three independent 16-bit counters. They can
+count in binary or BCD mode. The MSB and LSB of a counter can be independently
+set and read, so that they can also be used as 8 bit counters. They always count
+down. The mode of the counter can be set by writing a mode value byte to I/O
+port 0EFh. This command value is composed as follows:
+</P><TABLE>
+<TR>
+<TH VALIGN="top">b7</TH><TH VALIGN="top">b6</TH><TH VALIGN="top">b5</TH><TH VALIGN="top">b4</TH><TH VALIGN="top">b3</TH><TH VALIGN="top">b2</TH><TH VALIGN="top">b1</TH><TH VALIGN="top">b0</TH>
+</TR>
+<TR>
+<TD VALIGN="top">SC1</TD><TD VALIGN="top">SC0</TD><TD VALIGN="top">RL1</TD><TD VALIGN="top">RL0</TD><TD VALIGN="top">M2</TD><TD VALIGN="top">M1</TD><TD VALIGN="top">M0</TD><TD VALIGN="top">BCD</TD>
+</TR>
+</TABLE><P CLASS="bodynoindent"> 
+
+</P><UL STYLE="text-align: justify">
+<LI>SC1/SC0: Select counter
+<UL STYLE="text-align: justify">
+<LI>0 = select counter 0</LI>
+<LI>1 = select counter 1</LI>
+<LI>2 = select counter 3</LI>
+<LI>3 = not allowed</LI>
+</UL>
+</LI>
+<LI>RL1/RL0: Read/load
+<UL STYLE="text-align: justify">
+<LI>0 = counter latch operation. See below at &#8216;Reading the counter&#8217;</LI>
+<LI>1 = read/write only the LSB </LI>
+<LI>2 = read/write only the MSB </LI>
+<LI>3 = read/write the LSB followed by the MSB</LI>
+</UL>
+</LI>
+<LI>M2/M1/M0: Mode (The counter modes are discussed below.)
+<UL STYLE="text-align: justify">
+<LI>0 = mode 0</LI>
+<LI>1 = mode 1</LI>
+<LI>2,6 = mode 2</LI>
+<LI>3,7 = mode 3</LI>
+<LI>4 = mode 4</LI>
+<LI>5 = mode 5</LI>
+</UL>
+</LI>
+<LI>BCD: Binary coded decimal
+<UL STYLE="text-align: justify">
+<LI>0 = counter works as 16 bits binary counter</LI>
+<LI>1 = counter works as 4 digit BCD counter</LI>
+</UL>
+</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par18"></A>
+<P CLASS="bodynoindent">
+<B>Counter initialisation</B>
+<BR>
+A counter is initialised after the right number of bytes (determined by the RL
+bits) is written to the counter data port. In 16-bits mode (RL1/RL0 = 3) for
+example, the counter will only be initialised after two bytes have been written
+to the data port.</P>
+<A NAME="Par19"></A>
+<P CLASS="bodynoindent">
+<B>Reading the counter</B>
+<BR>
+A counter can be read by reading the right number of bytes from the data port.
+For a reliable result, the countdown must be paused before the counter is read.
+This can be done by setting the mode of the counter.</P>
+<A NAME="Par20"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>To be able to read the counter during countdown, the timer has a special option:
+there is an internal 16 bits buffer for every counter. The value of each counter
+is copied to the buffer as soon as the RL1/RL0 bits of the mode register are
+both 0. The M2/M1/M0 and BCD bits of the mode register are ignored in this case,
+and directly after copying the counter to the internal buffer, the RL1/RL0 bits
+are restored to their original state. When the data port of the counter is read
+the next time, the value in the buffer is shown in stead of the value of the
+counter itself.</P>
+<A NAME="Par21"></A>
+<P CLASS="bodynoindent">
+<B>The counter modes</B>
+<BR>
+Every counter can work in 6 different modes. These modes can be set with the M
+bits.
+</P><UL STYLE="text-align: justify">
+<LI>Mode 0: Interrupt on terminal count<BR>
+After setting this mode, the output of the counter is low. After the counter has
+been set, the output remains low and the counter starts to count down. When the
+counter reaches 0, the output becomes high and stays high until a new value has
+been written to the  counter or the counter mode as been set again. By the way, the
+counter will keep counting after reaching 0.</LI>
+<LI>Mode 1: Programmable one shot<BR>
+This mode cannot be used in the GT because the so called gate input of both
+counters is connected to +5V.</LI>
+<LI>Mode 2: Rate generator<BR>
+With the rate generator you can make a &#8216;divide by N counter&#8217;. After this mode
+has been set, the output of the counter becomes high and will remain high until
+the counter has been set with value N. After this, the output of the counter
+will become low for 1 clock pulse and the output will become high for the next
+N-1 clock pulses. This process keeps repeating itself until the mode is set
+again. If on the other hand the counter is set again during countdown, the
+automatic count-down process will continue. The new setting is only used after
+the counter has passed 0. This mode can be used for making a programmable
+interrupt generator using counter 2. If the DTR bit of the UART is set, every
+time counter 2 reaches 0, an interrupt signal is sent to the CPU. E.g. to make a
+200&nbsp;Hz interrupt generator, counter 2 can be set to mode 2 and to value 20000
+(the clock frequency of the counter is 4&nbsp;MHz).</LI>
+<LI>Mode 3: Square wave rate generator<BR>
+By setting the counter to mode 3, you can make a square wave. If an even number
+N is written to the counter, the output will be high for N/2 clock pulses and
+low for N/2 clock pulses. The result is a symmetrical square wave. If an odd
+number M is written to the counter, the output will be high for (M+1)/2 clock
+pulses and low for (M-1)/2 clock pulses. This will result in an asymmetrical
+square wave. Mode 3 is needed to set a clock frequency for the UART, among
+others. E.g. to provide the UART with a 500&nbsp;kHz clock, counter 0 can be set to
+mode 3 and be initialised with the value 8.</LI>
+<LI>Mode 4: Software triggered strobe<BR>
+After mode 4 has been set, the output of the counter goes high. When the counter
+has been set, it starts counting down and if it reaches 0, the output goes low
+for 1 clock pulse and the counter will stop counting.</LI>
+<LI>Mode 5: Hardware triggered strobe<BR>
+This mode can not be used in the GT.</LI>
+</UL><P CLASS="body">
+</P>
+<A NAME="Par22"></A>
+<P CLASS="bodynoindent">
+<B>The listing</B>
+<BR>
+Below is an example of a MIDI program. It sends all MIDI data that are received
+through to MIDI out. For this, the program first sets counter 0 to generate a
+500&nbsp;kHz square wave. Next, the UART is set to receive serial data and write data
+at a 31.25&nbsp;kHz baud rate. After this, the program will wait for new data to come
+in and send it through to the MIDI out port.</P>
+<A NAME="Par23"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>I have not been able to test this program though, since I do not have enough
+synthesizer equipment. Here it is:
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#886878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#886878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="trmidi.gen"><FONT COLOR="#FFFFFF">TRMIDI.GEN</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+; Example MIDI program for GT which can be run under MSX-DOS(2)
+; Written by Alex Wulms for MCCM
+; 26-9-1995
+
+UARTsend: equ	0e8h	; 8251 data send
+UARTrecv: equ	0e8h	; 8251 data receive
+UARTcmd:  equ	0e9h	; 8251 command/mode register
+UARTstat: equ	0e9h	; 8251 status register
+
+tm_int:	  equ	0eah	; timer interrupt flag off
+
+timer0:	  equ	0ech	; 8253 counter 0 dataport
+timer1:	  equ	0edh	; 8253 counter 1 dataport
+timer2:	  equ	0eeh	; 8253 counter 2 dataport
+tm_cmd:	  equ	0efh	; 8253 command
+
+	  di
+	  in	a,(0aah)
+	  and	0f0h
+	  or	7
+	  out	(0aah),a	; select row 7 of keyboard
+
+          ld	a,00010110b	; set timer 0 to
+	  out	(tm_cmd),a	; generate a square wave
+	  ld	a,8		; set a frequency
+	  out	(tm_cmd),a	; of 200 kHz
+
+	  ld	hl,UARTdata
+	  ld	b,6
+initUART: ld	a,(hl)		; initialize UART for
+	  out	(UARTcmd),a	; MIDI data communication
+	  inc	hl
+	  call	waitUART
+	  djnz	initUART
+	  in	a,(UARTrecv)	; reset outstanding flags
+
+main:	  in	a,(UARTstat)
+	  and	2		; check RxRDY
+	  call	nz,midithru	; data waiting
+	  in	a,(0a9h)	; read keyboard
+	  bit	2,a		; check ESC key
+	  jr	nz,main		; not pressed
+ 
+ 	  xor	a
+	  out	(UARTcmd),a	; set MIDI off
+	  ret			; thats all
+
+waitUART: in	a,(0e6h)	; wait 4 micro seconds
+	  ld	c,a		; between two UART operations
+waitUART2:in	a,(0e6h)
+	  sub	c
+	  jr	z,waitUART2
+	  ret
+
+midithru: in	a,(UARTrecv)
+	  ld	b,a		; B = midi IN data
+midithr2: in	a,(UARTstat)
+	  and	1		; check TxRDY
+	  jr	z,midithr2	; UART not ready
+	  ld	a,b
+	  out	(UARTsend),a	; write to MIDI out
+	  ret
+
+UARTdata: db	0,0,0,64,78,5
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par24"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+More articles &mdash;&nbsp;including the original Dutch version of this one&nbsp;&mdash; can be found on Alex Wulms&#8217; home page, see reference [<A HREF="http://www.inter.nl.net/users/A.P.Wulms">1</A>]
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#886878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#F8D0D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">vorige:<BR>
+<A HREF="../pentaro2/nl.html">[en] Pentaro Odyssey 2</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        nummer
+        93,
+        juni-december&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">volgende:<BR>
+<A HREF="../koek3/nl.html">De Maiskoek/Bits and Pieces</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

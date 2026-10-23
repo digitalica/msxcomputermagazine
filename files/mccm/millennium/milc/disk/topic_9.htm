@@ -1,0 +1,88 @@
+<html>
+
+<head>
+<title>MILC - Topic Installeren MSX-DOS</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_8.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_10.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Installeren MSX-DOS</b><br>
+    <i>Falco van Dam</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Het installeren van MSX-DOS gaat als volgt:
+
+1) Sector 0 van de diskette (de boor-sector) wordt naar C000H overgeheveld.
+   Wanneer een 'DRIVE NOT READY' of 'READ ERROR' optreedt of als byte #0 van de
+   boot-sector geen EBH ofE9H is, wordt DISK-BASIC geinstalleerd.
+
+2) C01EH wordt met de carry gereset aangeroepen. Normaal staat hier RET NC en
+   gebeurt er dus niets.
+
+3) De RAM-capaciteit wordt op een non-destructieve manier onderzocht. Minder dan
+   64K zorgt ervoor dan DISK-BASIC wordt geinstalleerd.
+
+4) Nu is de omgeving voor MSX-DOS klaar en C01EH wordt met carry aangeroepen.
+   MSXDOS.SYS wordt op 0100H geladen en daar gerund. MSX-DOS verplaatst zichzelf
+   naar een hoger adres. Als MSXDOS.SYS niet wordt gevonden wordt DISK-BASIC
+   opgestart.
+
+5) MSX-DOS laadt COMMAND.COM in op 0100H en springt naar het startadres. Ook
+   COMMAND.COM verplaatst zichzelf naar een hoger adres en gat dan zoeken naar
+   een AUTOEXEC.BAT.
+
+Wanneer MSX-DOS niet is geinstalleerd en DISK-BASIC start, wordt een eventuele
+AUTOEXEC.BAS opgestart.
+
+Bij stap 4 is het hele geheugen RAM, maar de volgende BIOS routines zijn wel op
+de juiste plek aanwezig. Ook de in- en uitvoer is hetzelfde als bij de BIOS. Ze
+worden echter niet door het OS maar door MSX-DOS uitgevoerd.
+
+Tabel: BIOS routines
+ 0CH:    RDSLT
+ 14H:    WRTSLT
+ 1CH:    CALSLT
+ 24H:    ENASLT
+ 30H:    CALLF
+ 38H:    KEYINT
+
+Het gebied van 0-0100H heet de System-Scratch-area. Op adres 6 staat het einde
+van de zogenaamde TPA (Transient Program Area). Hierboven staat MSX-DOS. Dit
+gedeelte van het geheugen mag niet vernietigd worden als men nog naar MSX-DOS
+wil terugkeren. COMMAND.COM staat onder dit adres maar kan wel overschreven
+worden. Bij terugkeer uit een extern commando (COM-file) wordt dit gebied
+onderzocht door middel van een checksum en als COMMAND.COM niet meer heel is,
+wordt het weer van disk geladen.
+
+
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_10.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

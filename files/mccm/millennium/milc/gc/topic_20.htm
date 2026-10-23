@@ -1,0 +1,114 @@
+<html>
+
+<head>
+<title>MILC - Topic De interrupt in Basic (2)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_19.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_21.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">De interrupt in Basic (2)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+                    DE INTERRUPT IN BASIC, DEEL 2
+
+Inmiddels is bij iedereen de bekende VDP(24) welbekend. Voor
+de genen onder ons die hier  echter  niks  vanaf  weten:  In
+VDP(24) staat het  nummer  van  de  beeldlijn  die  bovenaan
+staat, maak je dit nummer dus steeds groter (van 0  tot  192
+bijboorbeeld) ontstaat er dus een vertikale scroll.
+
+Dit  biedt  leuke  mogelijkheden,  het  creeren  van   wipes
+bijvoorbeeld, voor de mensen die videographics kennnen.  Het
+is dan mogelijk om eerst een beeld het scherm  in  te  laten
+komen en het vervolgens weer weg laat  scrollen  terwijl  er
+een ander beeld het scherm opkomt scrollen. Je krijgt zo een
+mooi vloeiende beeld overgang.
+
+Voor deze toepassing is echter de interrupt nodig,  er  moet
+namelijk steeds een regel gecopieerd worden van de ene  naar
+de andere pagina in screen 8. Ook  moet  het  gebied  tussen
+pagina 0 en pagina 1 vrij  zijn  van  vuiligheden.  Hiervoor
+moet  het  sprite-,  en  het  sprite-video  geheugen  gewist
+worden. Hieronder volgt de routine:
+
+10 ON INTERVAL=1 GOSUB 110
+20 DEFINT A-Z : SCREEN 8
+30 VDP(9)=VDP(9) OR 2 : COPY(0,0)-(255,44),0TO(0,212),0
+40 SETPAGE0,1:BLOAD&quot;PICTURE1.PIC&quot;,S
+50 S=2 : GOSUB 90
+60 SETPAGE1,0:BLOAD&quot;PICTURE2.PIC&quot;,S
+70 SETPAGE0,1:GOSUB 90
+80 END
+90 S2=SAND255:Y=S2:INTERVAL ON
+95 GOTO 95
+100 S=-S : RETURN
+110 VDP(24)=Y:COPY(0,Y-1)-STEP(255,S),1TO(0,Y-1),0
+120 Y=Y+SAND255:IF Y=S2 THEN INTERVAL OFF :RETURN 100
+130 RETURN
+
+Het lijkt vrij ingewikkeld, maar dat valt best mee.  Aan  de
+hand van het  vorige  artikel  over  de  interrupt  is  deze
+listing makkelijk te analyseren.
+
+In regel 10 het klaarzetten van de interrupt,  50  keer  per
+seconde gaat deze naar regel 110.  In  regel  30  wordt  het
+sprite en sprite-video geheugen gewist In regel 40 wordt het
+eerste  plaatje  ingeladen  op  pagina  1  van   scherm   8,
+vervolgens komt het plaatje het scherm opgescrollt. Dit gaat
+als volgt:
+
+Interrupt wordt ingeschakeld, 50 keer per  seconde  schakelt
+de interrupt over van regel  95,  waar  niks  gebeurt,  naar
+regel 110, waar steeds een verdere regel van pagina 1  wordt
+gecopieerd naar  het  niet  zichtbare  deel  van  pagina  0.
+Vervolgens wordt alles doorgeschoven met behulp van  VDP(24)
+, dan wordt nog gekeken of het hele plaatje al op het scherm
+staat, zo ja dan gaat het programma door met plaatje  nummer
+2.
+
+Toch blijft het een vreemd gezicht die regel  95,  maar  dat
+betekent gewoon dat het programma wacht terwijl de interrupt
+zijn werk doet. Experimenteer er maar eens mee, de S kan  de
+waarden 1,2,4,8 of -1,-2,-4,-8 bevatten. Met dank  aan  Alex
+Wulms  die  zijn  routine  speciaal  voor  deze  gelegenheid
+beschikbaar wilde stellen. Op Clubguide Picturedisk 1 kunt U
+deze methode in de praktijk zien toegepast worden.
+
+Mocht U nog scrollroutines hebben in BASIC of in Machinetaal
+, stuur deze met uitleg naar ons  toe,  wij  kunnen  er  dan
+misschien een volgende aflevering aan wijden.
+
+Ronald Egas
+De Blauwe Wereld 53
+1398 EP Muiden
+tel. 02942-3813 ( alleen s'avonds en in weekends )
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_19.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_21.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

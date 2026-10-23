@@ -1,0 +1,206 @@
+<html>
+
+<head>
+<title>MILC - Topic Vermenigvuldigen in ML</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_6.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_8.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Vermenigvuldigen in ML</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+               VERMENIGVULDIGEN IN MACHINETAAL
+
+Onlangs kregen wij van  een  inventieve  lezer  een  routine
+toegestuurd om te  vermenigvuldigen  in  machinetaal.  Niets
+bijzonders zult U zeggen. Dat is het  ook  niet  echt,  maar
+omdat er in machinetaal geen instrukties voor  zijn  is  het
+toch wel handig. Bovendien schept  het  de  mogelijkheid  om
+eens iets meer over machinetaal uit de doeken te doen.
+
+Bij de Z80 werken we met binaire getallen,  uitsluitend  met
+nullen en enen dus. Laten we eerst eens kijken hoe we binair
+kunnen vermenigvuldigen:
+
+Vb. 15 * 3 = ?     =&gt;      00000011 (3)
+                           00001111 (15)  *
+                           ----------------
+                           00000011 (3)     3 * 2 tot de 0e
+                           00000110 (6)     3 * 2 tot de 1e
+                           00001100 (12)    3 * 2 tot de 2e
+                           00011000 (24)    3 * 2 tot de 3e
+                           ----------------
+                             101101 (45)
+
+We  laten  dit  binair  zien  omdat  zo  in  de  Z80   wordt
+vermenigvuldigd. Allereerst zetten we een programma op.  Wat
+moet er allemaal gebeuren in het  programma,  hieronder  een
+eerste opzet:
+
+- De getallen waarmee gerekend gaat  worden,  moeten  worden
+  ingelezen.
+- Er moet gekeken worden of  het  getal  waar  we  mee  gaan
+  vermenigvuldigen een 0 of een 1 is.
+  - Is het een 0 dan kunnen we het geheel opschuiven.
+  - Is het een 1 dan moeten we vermenigvuldigen.
+- We moeten zorgen dat het programma 8 keer  vermenigvuldigd
+  en dan terug keert naar BASIC.
+
+Lijkt simpel, het valt ook best wel mee. Wat we niet  moeten
+vergeten is dat er elke keer als we het volgende getal nemen
+het 10 * zoveel is en er dus een 0 achter het antwoord  moet
+komen.
+
+Vb.  4                            1
+    22 *                         11 *
+    --                           --
+     8                            1
+    80  ( Met een 0 erachter )   10  ( Met een 0 erachter )
+    -- +                         -- +
+    88                           11
+
+Dus we zullen elke keer als we het volgende getal  nemen  om
+mee te vermenigvuldigen een extra nul moeten toevoegen.
+
+Nu we ongeveer het programma in het hoofd hebben,  moet  het
+natuurlijk nog wel in machinetaal komen te  staan.  Alvorens
+dat te  doen  kiezen  we  voor  een  tweede  tussenfase.  We
+proberen de routine nu  voor  zover  mogelijk  in  BASIC  te
+plaatsen. We gaan uit van A*B=O waarbij A  op  adres  &amp;HA000
+staat, B op adres &amp;HA001 staat en O op &amp;Ha002 en &amp;Ha003 komt
+te staan.
+
+10  B=PEEK (&amp;HA000)
+20  AFTEL=8
+30  A=PEEK (&amp;HA001)
+40  D=0
+50  O=0
+60  REM Routine A **************
+70  C$=MID$(BIN$(B),AFTEL,1):C=VAL(C$)
+80  IF C=0 THEN GOTO 100
+90  O=O+A
+100 REM Routine B **************
+110 A$=BIN$(A)+&quot;0&quot;:A=VAL(A$)
+120 AFTEL=AFTEL-1
+130 IF AFTEL&lt;&gt;0 THEN 60
+140 ' In machinetaal wordt nu d.m.v. een soort poke de
+      oplossing (O) op &amp;HA002 en &amp;HA003 gezet.
+150 end
+
+In regel 70  wordt  gekeken  of  het  eerst  volgende  getal
+waarmee we gaan vermenigvuldigen 0 of 1  is.
+
+In regel 110 wordt er een 0 achter  getal  A  geplaatst.  In
+machinetaal is dit echter zo eenvoudig niet. Hier werkt  men
+in getallen-paren van 8 bits. Dus daar moet het  getal  naar
+links worden opgeschoven, de overgeblevene bewaardt,  en  er
+een 0 achter geplaatst.
+
+Vb.00000000 10111011  =&gt; Naar links schuiven
+   00000000 0111011   =&gt; 0 erbij
+   00000000 01110110  =&gt; Overgeblevene bit in volgend byte.
+   00000001 01110110  =&gt;
+
+Voor het maken  van  het  machinetaal  programma  moeten  we
+alleen nog de juiste instrukties weten. Laten we er een paar
+bespreken:
+
+SRL &lt; variabele &gt; ( In machinetaal:register )
+
+Stel we  geven  de  opdracht  SRL  D,  dan  gebeurt  er  het
+volgende. Net  als  hierboven  beschreven  wordt  het  getal
+verschoven, alleen nu naar rechts , het overgeblevene  getal
+komt in de Carry-flag te staan (Ook een soort variabele)
+
+Vb.  D=10111011  =&gt; SRL D =&gt;   D=01011101
+     Carry=0     =&gt;       =&gt;   Carry=1
+
+SLA &lt; variabele &gt; ( In machinetaal:register )
+
+Zelfde als de vorige instruktie alleen dan naar links.
+
+Vb.  D=10111011  =&gt; SLA D =&gt;   D=01110110
+     Carry=0     =&gt;       =&gt;   Carry=1
+
+RL &lt; variabele &gt; ( In machinetaal:register )
+
+Zelfde als SLA, alleen komt nu de inhoud van de  carry  flag
+er vooraan bij.
+
+Vb.  D=10111011  =&gt; RL D  =&gt;   D=01110110
+     Carry=0     =&gt;       =&gt;   Carry=1
+
+Vb.  D=00111011  =&gt; RL D  =&gt;   D=01110111
+     Carry=1     =&gt;       =&gt;   Carry=0
+
+Verder is ADD optellen in machinetaal, DEC is  aftrekken  en
+ld is poke. Bij dit laatste moeten we nog wat opmerken:
+
+Vb. ld BC,(0A000H) - H=Hexadecimaal
+                     B=0 en C=PEEK(A000)
+
+Dan volgt nu  het  machinetaal  programma  in  de  assembler
+listing :
+
+1 ld BC,(0A00H)   'Zet getal B in register C
+2 ld B,08H        'Zet 8 in register B
+3 ld DE,(0A001H)  'Zet getal A in register E
+4 ld D,00H        'Zet 0 in register D
+5 ld HL,00H       'Maak Carry-flag 0
+6 label A:srl C   'Schuif bit in carry
+7 jr NC,label B   'If not carry then label B
+8 add hl,de       'HL=HL+A
+9 label B:sla E   'Schuif A naar links
+10 rl D           'Bewaar uitgeschoven bit in D
+11 dec B          'Aftel=Aftel-1
+12 jr nz,label A  'If aftel&lt;&gt;0 then label A
+13 ld (0A002H),HL 'Zet antwoord in &amp;HA002 en &amp;HA003
+14 ret            'Terug naar BASIC
+15 end
+
+Dit programma kan alleen getallen tot 256 (8 bits) optellen.
+Het staat op diskette als VERMENIG.MSX (Te laden vanuit  het
+softwaremenu of via FILER.SYS).
+
+Experimenteer er nog maar eens wat  mee,  dit  programma  is
+niet echt voor beginners. Ik zal  misschien  volgende  keer,
+als er  behoefte  aan  is,  de  cursus  wat  meer  op  echte
+beginners richten.
+
+Vragen en/of opmerkingen,
+
+Ronald Egas
+De Blauwe Wereld 53
+1398 EP Muiden
+Tel.02942-3813 (s'avonds + weekends)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

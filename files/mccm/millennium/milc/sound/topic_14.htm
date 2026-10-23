@@ -1,0 +1,199 @@
+<html>
+
+<head>
+<title>MILC - Topic MoonBlaster music cruncher</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_13.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_15.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MoonBlaster music cruncher</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;---- MoonBlaster music cruncher ----
+
+;em1pag	 = constante, banknr waar gecrunchte song in moet komen
+;sngpag	 = constante, banknr waar ongecrunchte song in staat.
+
+sngcrc:	ld	hl,08000h+200	;zet settings neer
+	ld	de,08000h
+	ld	bc,376
+sngcrl1:	call	copcrbyte
+	inc	hl
+	inc	de
+	dec	bc
+	ld	a,b
+	or	c
+	jr	nz,sngcrl1
+
+	ld	a,(08000h)	;last position
+	inc	a
+	ld	b,a
+
+	push	bc	; verplaats pat/pos data
+	ld	hl,08000h
+sngcrl2:	call	copcrbyte
+	inc	hl
+	inc	de
+	djnz	sngcrl2
+
+	push	de
+	pop	ix
+
+	ld	a,sngpag
+	out	(0feh),a
+
+	pop	bc	; zoek hoogste gebruikte pattern
+	ld	e,1
+	ld	hl,08000h
+sngcrl3:	ld	a,(hl)
+	cp	e
+	jr	c,sngcrl4
+	ld	e,a
+sngcrl4:	inc	hl
+	djnz	sngcrl3
+	ld	d,0
+
+	push	ix
+	dec	ix
+	dec	ix
+	pop	hl
+	add	hl,de
+	add	hl,de
+
+	ld	a,sngpag
+	out	(0feh),a
+
+	ld	b,e	;aantal patterns
+	ex	de,hl
+	ld	hl,08240h
+	ld	a,242
+	ld	(numzer),a
+sngcrl5:	push	bc
+	inc	ix
+	inc	ix
+	ld	a,em1pag
+	out	(0feh),a
+
+	push	de
+	res	7,d
+	ld	(ix+0),e	;pattern adres
+	ld	(ix+1),d
+	pop	de
+	ld	a,sngpag
+	out	(0feh),a
+	call	sngcrdat	;crunchen echte songdata
+	pop	bc
+	djnz	sngcrl5
+
+	ld	a,em1pag
+	out	(0feh),a
+	xor	a
+	ld	(de),a
+	inc	de
+	ex	de,hl
+	ld	de,-08000h
+	add	hl,de
+	ld	(lengte),hl	;lengte van uiteindelijke gecrunchte
+	ret		;data, is handig voor saven file
+
+
+
+;---- crunchen echte songdata ----
+
+sngcrdat:	ld	b,16	;aantal steps per pattern
+sngcrl6:	push	bc
+	ld	b,13
+sngcrl7:	push	bc	;aantal bytes per step
+	ld	a,(hl)
+	or	a
+	jr	nz,sngcrl8	;niet 0? dan aantal evt. opgespaarde
+	ld	a,(numzer)	;nullen schrijven
+	inc	a
+	ld	(numzer),a
+	call	wrtcrbyte	;schrijven aantal nullen byte
+	pop	bc
+	djnz	sngcrl7
+	jr	sngcrla
+
+sngcrl8:	ld	a,(numzer)
+	cp	242	;nullen opgespaard?
+	jr	z,sngcrl9
+	inc	de	;ja, dan hier al aantal nullen byte
+sngcrl9:	ld	a,(hl)	;schrijven niet-nulbyte
+	call	wrtcrbyte
+	inc	de
+	ld	a,242
+	ld	(numzer),a
+	pop	bc
+	djnz	sngcrl7
+
+sngcrla:	ld	a,(numzer)
+	cp	242
+	jr	z,sngcrlb
+	inc	de
+	ld	a,242
+	ld	(numzer),a
+sngcrlb:	pop	bc
+	djnz	sngcrl6
+	ret
+
+
+;--- copieer byte van ene bank naar andere ---
+
+copcrbyte:	ld	a,sngpag
+	out	(0feh),a
+	ld	a,(hl)
+	ex	af,af'
+	ld	a,em1pag
+	out	(0feh),a
+	ex	af,af'
+	ld	(de),a
+	ret
+
+
+;---- schrijf byte in lege pagina ---
+
+wrtcrbyte:	ex	af,af'
+	ld	a,em1pag
+	out	(0feh),a
+	ex	af,af'
+	ld	(de),a
+	ld	a,sngpag
+	out	(0feh),a
+	inc	hl
+	ret
+
+numzer:	db	0
+lengte:	dw	0
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_13.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_15.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<html>
+
+<head>
+<title>MILC - Topic Basic Introduction to 3D Programming</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Basic Introduction to 3D Programming</b><br>
+    <i>Synergist</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Basic Introduction to 3D Programming
+By Synergist
+
+Ok, this is NOT fun. Not at all and I'm sure any and all text files on 3D
+programming have done nothing but lost you. That's why I'm here!
+
+Ok, because today's programmer is growing younger and younger, there are a
+large number of you who have not taken Trigonomitry yet. Niether have I!
+Hell, I don't even know how to fuckin spell it. Anyways, first thing we need
+is a set of points. To do this, we define them! We can do this with an array.
+If you are working in C++, this would be a good idea for a 12 point array:
+
+unsigned char vector_a[36]={45, 36, 34, blah blah blah... =) };
+
+The above defined is basically the coordinates for a 12 point vector, basic-
+ally a shape. =) Here's a trick part. Each point stars every three numbers.
+That's right. Ok don't get lost on me. I'll explain:
+
+Say you define a single point like so:
+(this is pseudo code, meaning its not a language but structured like one)
+
+define_array point_1[3] = 10, 10, 10
+     |          |    |        |__ coordinates on the X, Y, Z plane (SEE BELOW)
+     |          |    |__Number of numbers (this one has 3, see?)
+     |          |__Name of the array (we call it point_1 cause its just a point)
+     |__Command to define an array (for whatever language you are doin this)
+
+Ok, you defined an array. Now, what are those 10,10,10's? They are coordinates
+
+Imagine you have a make believe plane. it goes left, right, up, down, AND in and
+out.
+          |
+          |      /
+          |    /              I hope this makes sense. Anyways, say the coord
+          |  /  o             inates are x=10, y=0 and z=10 the &quot;o&quot; shows
+x_________|/____________      where that is. dont let it fool you, if you look
+         /|                   at it from another angle youll see its level with
+       /  |                   the point of origin (where all the lines cross
+     /    |                   or in coordinate talk, 0,0,0)
+   /      |
+ z        y
+
+
+Now, the trickey part. We have an X, Y and Z, but how do we make it so we just
+need X and Y? There's no Z command in putpixel or pset! help!
+
+Heres the trig (UGH)...
+
+Yt = Y * COS(Xan) - Z * SIN(Xan)
+Zt = Y * SIN(Xan) + Z * COS(Xan)
+Y = Yt
+Z = Zt
+Xt = X * COS(Yan) - Z * SIN(Xan)
+Zt = X * SIN(Yan) + Z * COS(Xan)
+X = Xt
+Z = Zt
+Xt = X * COS(Zan) - Y * SIN(Zan)
+Yt = X * SIN(Zan) + Y * COS(Zan)
+X = Xt       &lt;--we plot these!
+Y = Yt   &lt;--we plot these!
+
+See? It's magic! Ok, we take our defined array, and plug it in like so:
+X = point_1[1]  &lt;--this takes the 1st number of our array and makes it X!
+Y = point_2[2]  &lt;--this takes the 2nd number of our array and makes it Y!
+Z = point_3[3]  &lt;--this takes the 3rd number of our array and makes it Z!
+
+NOW we have to tell what those Xan, Yans and Zans are! Those are basically
+how fast you want it to rotate. Xan and Yan MUST be the same, or your vector
+will get all stretchy and icky and gross! Zan on the other hand can do all
+sorts of neat stuff!
+
+The next thing we do is define the Xan, Yan and Zan:
+
+Zan =  .3
+Yan =  .1
+Xan =  .1
+
+Now that everything is defined, we put it all together and make a loop!
+
+X = point_1[1]  &lt;--this takes the 1st number of our array and makes it X!
+Y = point_2[2]  &lt;--this takes the 2nd number of our array and makes it Y!
+Z = point_3[3]  &lt;--this takes the 3rd number of our array and makes it Z!
+
+Zan =  .3
+Yan =  .1
+Xan =  .1
+
+Loop Starts here!
+
+Yt = Y * COS(Xan) - Z * SIN(Xan)
+Zt = Y * SIN(Xan) + Z * COS(Xan)
+Y = Yt
+Z = Zt
+Xt = X * COS(Yan) - Z * SIN(Xan)
+Zt = X * SIN(Yan) + Z * COS(Xan)
+X = Xt
+Z = Zt
+Xt = X * COS(Zan) - Y * SIN(Zan)
+Yt = X * SIN(Zan) + Y * COS(Zan)
+X = Xt       &lt;--we plot these!
+Y = Yt   &lt;--we plot these!
+
+PUTPIXEL(X, Y) &lt;-- whatever command you want to use to plot it!
+
+Loop ends here!
+
+That is the basic procedure for it all. It's fastest to make a whole vector
+just one array (well matrices are fastest really, but these are just the
+basics) so heres how we do it (these are real coordinates for a cube):
+
+                        x   y   z
+
+define_array cube[24] = 40, 40, 40,
+                       -40, 40, 40,
+                       -40,-40, 40,
+                        40,-40, 40,
+                        40, 40,-40,
+                       -40, 40,-40,
+                       -40,-40,-40,
+                        40,-40,-40
+
+Ok. I hope you understand the above. Basically the every three numbers is a
+plane coordinate. therefore, we can easily put this in our look so that
+it calculates all the points and plots them. Heres how we do it:
+
+increment = -2   &lt;-- this here is important! make sure it stars at -2!
+
+Loop Starts here!  &lt;--MAKE SURE IT ENDS AFTER ALL  POINTS ARE CALCULATED!!!!
+
+
+increment = increment + 3   &lt;-- here we add 3 to the increment so it starts at
+                               the next x every time the loop starts again
+
+Yt = cube[increment+1] * COS(Xan) - cube[increment+2] * SIN(Xan)
+
+                        *NOTE I added some lines in between this to explain it
+                        Ok, What we did was replace the Y and Z with the array
+                        coordinates of our current point.
+                        The original, Yt = Y * COS(Xan) - Z * SIN(Xan), simply
+                        gets the Y and Z replaced by array points.
+
+Zt = cube[increment+1] * SIN(Xan) + [increment+2] * COS(Xan)
+                        *Same as above!!!
+
+cube[inc+1] = Yt      *Update the points, just like above,
+cube[inc+2] = Zt      *Only we update the array points!
+
+
+Xt = cube[increment] * COS(Yan) - cube[increment+2] * SIN(Xan)
+Zt = cube[increment] * SIN(Yan) + cube[increment+2] * COS(Xan)
+cube[increment] = Xt
+cube[increment+2] = Zt
+
+Xt = cube[increment] * COS(Zan) - cube[increment+1] * SIN(Zan)
+Yt = cube[increment] * SIN(Zan) + cube[increment+1] * COS(Zan)
+cube[increment] = Xt       &lt;--we plot these!
+cube[increment+1] = Yt   &lt;--we plot these!
+Loop ends here!
+
+NOTE! You can't do ANYTHING to these points within the loop! it will muck them
+up!
+
+Ok, here we didn't plot the points. YET! After we finish caluclating all the
+points, we plot them. You can do this any way you want. Just take the x and
+y of each point (ignore the z, its only for calculations!) and plot it some
+place!
+
+All done, good luck and happy coding!
+
+FINAL NOTE: This is NOT a good file to follow if you want to make a Future Crew
+demo. The above code is SIMPLY a guide to start out in the 3d programming world.
+There are many things to do like optimization, page swapping, and matrices that
+i didn't go over cause those are down the road for both you AND me.
+
+If you have any probs, drop me a line at rhr0982@grace.rit.edu!
+
+                -SynErgist
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

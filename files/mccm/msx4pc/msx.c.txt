@@ -1,0 +1,338 @@
+#include "msx.h"
+//
+// Version 0.0 alpha
+//   Functionality implemented:
+//     128k ram
+//     128k videoram
+//     nonvolatile ram
+//     All MSX1 screens
+//     All MSX2 screens
+//     Most Sprite functionality except screen6&7
+//     All VDP 9938 functions that can be emulated in VGA
+//     Software scroll and pages
+//   Not supported (yet):
+//     vdp(24) reg 23: support in textmodes.
+//     Alternating pages in high screen modes
+//     Set adjust
+//     Sound
+//     Joystick
+//     Mouse
+//     Interrupt on line
+//     Hardware scroll and pages using native VGA
+//     Accessing PC-files from MSX
+//     Proper keyboard support, now US MSX keyboard.
+//   First updates needed:
+//     Disk handling for copyprotected disks
+//     Various performance enhancements
+//     Unlimited memory: Protected mode
+//     212 lines support using VGA registers
+//
+//
+// Version 0.1 alpha
+//   All Sprite functionality implemented except screen 6&7
+//   Debug screen now contains command list.
+//   Bug fixing:
+//     - Palette handling errors fixed
+//     - Blinking screen 0, when high intensity background
+//
+// Version 0.2 alpha
+//   Debug screen now contains screen mode
+//   Some performance improvements
+//   Bug fixing:
+//     - Screen 5 & 8 Spriteplane was not used		      (Columns)
+//     - Screen 5 - 8 Sprites incorrect on other screen pages (Columns)
+//     - Error accessing videomem with hmmm(unsigned offset)  (Columns)
+//     - Error in hmmm screen 6&7, high order bit of x ignored(Tetris,Trojka)
+//     - Screen/Sprites refreshed even when interrupt disabled(Boogy Woogy jungle)
+//     - VDP cmds, if ny=0 then ny=max and not 256 as assumed (YS1)
+//     - ymmm incorrectly implemented			      (Fray,Xak II demo)
+//     - screen 5 used spriteplane incorrectly		      (ZOO, Testament)
+//     - lmcm started return of bytes one byte too early      (ZOO pic->sprites)
+//     - Z80 error res 0,a				      (Hydelide I)
+//     - mem access check changed in msx1 scrs (gave Garbage) (Radarsoft logos, Tasword)
+//
+// Version 0.3 alpha
+//   Diskio updated
+//	 Now able to use any diskrom
+//	 Faster diskio
+//	 Copyprotected disks (not using hard i/o on diskrom) can be handled
+//   hmmc performance improved (loading of vram from cpu)
+//   Some sprite performance improvement
+//   Debugmode changed, preparation for own VGA handling (212 lines)
+//   Bug fixing
+//     - hmmv now correctly handles the color byte	      (XAK I)
+//     - Support for DD11nnnn instruction		      (Vectron)
+//     - Various "Error writing videomem" (ny=0)	      (Milnas)
+//     - Error in dd84,dd85,fd84,fd85 (undoc instr.)	      (Milnas,Road of Darkness)
+//     - Error in pallette handling screen 8		      (Backdrop color)
+//
+// Version 0.4 alpha
+//   Minor changes to debugmode
+//     - Message added at bottom of screen for videoram errors
+//     - (Esc & q, instead of x & h)			      (Edwin Weijdema)
+//     - Action z added to zero rom signature & reset	      (Edwin Weijdema)
+//   212 lines support in screen 5,6,7,8
+//   Rom names changed to names used in saveroms.bas
+//   Mousesupport (Port 1) added			      (Frank Druijff)
+//   MSXSVE.DMP file format changed
+//     - 8 bytes signature "MSX2AvD1"
+//     - z80 registers (af,bc,de,hl,ix,iy,pc,sp,af',bc',de',hl',imask,imode)
+//     - 47 video registers (0-46)
+//     - 10 video status registers (0-9)
+//     - 16 pallette red registers
+//     - 16 pallette green registers
+//     - 16 pallette blue registers
+//     - 128k videoram
+//     - 4 slot select bytes
+//     - 4 subslot select register bytes
+//     - 4 mapper bytes
+//     - nr of 16 k blocks in memory
+//     - n blocks of 16k bytes of memory
+//   slot handling simplified (preparation for protected mode)
+//
+//   Bug fixing
+//     - Minor bug in debugger, ED &DD instructions were displayed wrong.
+//     - Transmit ready is not set when Command executing = 0 (Saziri)
+//     - VDP reg 14 was not masked off causing video read and write errors
+//     - Transparancy bit in vr[8] now handled correctly      (Saziri)
+//     - VGA overscan now loaded instead of leaving it at color 0
+//     - VGA Screensize set to 192 or 212, hardwarewise       (saziri)
+//     - IN r,(C) negative condition code was not set	      (Golvellius
+//     - RRD condition code was set incorrectly 		  +
+//     - RLD condition code was not set at all			MSXFAN)
+//     - Support for CB30-CB37 instructions		      (Day 2)
+//     - Support for DDC3nnnn				      (Day 2)
+//     - Horizontal retrace of VGA now reflected in REG[2]    (Fantasm soldier)
+//     - Ptrs for Nametable, Patterntable & Colortable
+//	 overflowed when > 32767			      (Xanadu)
+//     - Error writing video ram in hmmm, page was not signed (Bubble/Bobble)
+//     - Support for DD3Annnn, DDE6nn			      (Bubble/Bobble)
+//     - vr[23] now also supported for sprites		      (1942,Firebird,Laydock)
+//     - Not& Tnot in logical video operations now correct    (DP)
+//     - 25 line support implemented in TEXT80 mode	      (Ted)
+//
+//
+// Version 0.5 alpha
+//   Setvideomode & Clearscreen C-routines replaced by "own" routines
+//     in preparation of protected mode (also saves 30k memory).
+//   Debugmode output & input changed in preparation of protected mode
+//     also layout for future functionality
+//   Disassembler added in debugmode
+//   Protected mode, 256K and more memory (now set to 1M)
+//   Some sprite performance improvement
+//   Some z80 performance improvement was 180 is now 215-225
+//   Bug fixing
+//     - Return values set in srch command even if no BD      (MSX Designer)
+//     - Debugmode displayed DDxxnn instructions wrong
+//     - vdp x and y masked now according to videomode
+//	 there were still incorrect videomemory addressings   (Super rambo)
+//     - Sprite drawing disabled in screen6&7 until supported
+//	 caused screen corruption			      (Gandhara)
+//
+// Version 0.6 alpha
+//   Bug fixes
+//     - Spriteline 211 was not drawn			      (Tower of gazzle demo)
+//     - Crash, when sprite moved in screen from the right    (Athletic land)
+//     - Initializing of FLOPPY.DSK incorrect
+//     - Initializing of FLOPPY.DSK in msxprot.exe not done
+//     - Write to existing FLOPPY.DSK gave access denied in msxprot
+//     - Video was not refreshed properly when reg[9] was updated
+//	 causing incorrect bottom part of screen in all modes
+//     - bug in Z80, interrupts were missed		      (Timing, Starquake)
+//     - autoincrement of vdp reg 14 corrected
+//   Comment
+//     - Ramdisk Paul te Bokkel V2.16 uses address 7fff for
+//	 checking the amount of memory. When using this address
+//	 in page 0 at 4000, this conficts with the slotregister-emulation
+//	 After changing this addres to 7ffe, the ramdisk works properly.
+//
+//
+//-----Production V1.1 for Tilburg 8-4-95-------------------------------------------
+//
+// Version 2.0 alpha
+//   Video Memory write performance improved (10-15%)
+//   Sprite drawing performance improved (25-30%)
+//   Memory & Videomemory initialized to zero, when MSX4PC is started
+//   Harddisk can now be set to a: and floppy to b:
+//   Sprite refresh algorithm changed for blinking
+//   Sprite redrawing algorithm changed
+//     sprites are now not redrawn if the same as previous
+//   Sprite redrawing algorithm changed when attrtable is switched
+//     sprites are not redrawn if not necessary
+//   PSG emulated on ADLIB (no noice and envelope)
+//
+//   Bugs
+//    - DEC C was incorrectly displayed as DEC D in debugger
+//    - EDA7 now treated as NOP 			       (Eggerland2)
+//
+// Version 2.1 alpha
+//   FLOPPY.DSK file now formatted if it doesn't exist;
+//   Debugger now also accepts commands in help screen
+//   Debugger command added to switch floppy disk
+//   Debugger command added to switch mouseport
+//
+//   Bugs:
+//    - Video_reg[2] high bit now masked		       (thexder)
+//    - sprite overlap sometimes caused background to be drawn
+//	  i.o. other sprite.				       (rollerball, penquin 1)
+//    - DDCB instructions incorrect length in debugger
+//    - RLD instruction modified high nibble of AF	       (Hero)
+//    - Mouse support changed to more resemble hardware, for
+//	people who do their own mouse support and don't do the
+//	official 8 required read's                             (Compass)
+//    - Number of video-registers extended to 64
+//	as progam can set 64 registers (47 are used by msx2)   (Compass)
+//    - videomem access algorithm changed to support programs
+//	that say they are going to read and then start writing
+//	to videomemory. Now mixed reading and writing is
+//	supported as in an msx. 			       (ROM, Disk magazine)
+//    - Support added for ED70 & ED71 instructions	       ( ""    "")
+//
+// Version 2.2 alpha
+//   Printer now supported on lpt1,lpt2 or lpt3
+//   Bugs
+//    - Bug introduced with sound fixed, float not allowed in
+//	my protected mode handler, so removed.
+//    - Protected mode version now also runs under qemm dpmi
+//	without windows, thus saving some cpu-power.
+//
+// Version 2.3 alpha
+//   Sprites in Screen 6 & 7 now supported
+//   MSX.INI configuration file support added
+//   Unknown undocumented instructions can be made to be nop in MSX.INI
+//   Simulated horizontal retrace interrupt (10 hor ints per 1 vert)
+//   Bugs
+//    - Sram register was only 2*13 long, sometimes causing crash
+//	especially when pos 28 was 0
+//
+// Version 2.4 alpha
+//   Bugs
+//    - Register a now cleared after diskio, when io succesfull (BK problem)
+//    - Dir_floppy and Name_floppy now also saved when changed online
+//
+// Production version 2.4 Zandvoort 23-9-95
+//--------------------------------------------------------------------------
+//
+// Version 3.0
+//   When switching floppy disk the filesize is checked to be 737280
+//	thus making sure we cannot corrupt another file.
+//   Video reg 23 implemented via VGA hardware registers, hardware VGA scroll
+//
+//   Bugs
+//    - After use of Sprites in screen6, all videomemwrites caused  (EASE etc.)
+//	incorrect screen output (blocky screen)
+//	VGA register was not reset properly
+//    - Screen refresh in screen6 did not set all VGA registers, sometimes
+//	causing a corrupted screen				    (EASE)
+//    - Sprites in screen 6 corrected for hardware tiling function
+//	this simulates a finer sprite resolution
+//    - Palette 0 not handled properly in Screen 6, value not masked(HIBRID)
+//    - EDF1 now seen as nop					    (KONAMI SOCCER)
+//    - Pattern & ColorTable in graf2&3 now also handle the mask bits
+//	to visibly repeat the screen and reuse the pattern & colortable (Dr Archie)
+//
+//--------------------------------------------------------------------------
+//
+// Version 3.1
+//   Optional Set adjust implemented through vga registers
+//    0 no support
+//    1 Full vertical support, but only each 4 for horizontal
+//    2 Full vertical + horizontal, but because of vga (in)capability
+//	this mode can give distortions on the screen.
+//   End of command content of video_reg[32] upto video_reg[46] implemented
+//   Due to Harware VGA scroll further performance improvements were
+//    possible in videomem writes in screen 5 & 7
+//   Performance improvements in all videocommands having a logical operand
+//    Copy, Line, Box etc (+/- 30%).
+//   Sound switched off at quit. The emulator sometimes left a highpitched
+//    note on at exit.
+//
+//--------------------------------------------------------------------------
+//
+// Version 3.2
+//
+//   Bugs
+//    - When loading roms and there was no memory then no check was
+//	was done, crashing the machine
+//
+//--------------------------------------------------------------------------
+//
+// Version 3.3
+// Production version Version 3.3 for Tilburg 30-03-96
+//   MSX-Music support added
+//
+//--------------------------------------------------------------------------
+//
+// Version 4.0
+// Version for MCCM CD-Rom
+//     - Cleanup of some of the coding, removing some debugging and old code
+//     - MSX_CONF changed to check if writing of INI file is allowed
+//	 else emulator can crash machine if run from a CD-Rom
+//     - Support for readonly floppy files for CD-Rom support
+//     - Readonly sram.ram file now supported
+//     - Startup with command line parameter sets first arg as A:
+//     - 360k Images supported
+//     - VGA Cursor now set to MSX position
+//     - added possibility to disable MSX font loading, so VGA character
+//	 set can be used for those cards that are a little bit different
+//	 like the Tseng ET6000
+//     - Drums in Opl-3 mode correctly implemented by switching left and
+//	 right channel for psg and fmpac, was left psg and now right psg
+//	  ALLTHOUGH ON MY CURRENT MACHINE EVERYTHING GOES TO THE
+//	  RIGHT CHANNEL, BUT ANYWAY WE NOW HAVE ALL SOUNDS
+//     - Wait loop introduced in z80 emulator so speed can be set
+//
+// Version x.x
+//     - Videomemory is accessed differently in screen 7&8     (Breaker)
+//
+//
+// Not supported:
+//   PSYCHO WORLD: (switches between screen5 & 6 & uses line interrupt
+
+void main(int argv, char * argc[])
+{
+union _REGS inregs,outregs;
+
+    if(argv > 1) {strncpy(flopname,argc[1],sizeof(flopname));FloppyParm=1;}
+
+    fm_init();
+
+#ifdef protected
+    goprot();
+#endif
+
+    read_conf();
+
+
+    sprite_init();
+    if (!mem_init()
+     || !video_init())
+    {
+	printf("Problems allocating memory!");
+	exit(0);
+    }
+    read_roms();
+    keyb_init();
+    Disk_init();
+    loadsram();
+    z80_reset();
+    io_init();
+    snd_reset();
+    snd_init();
+    for(;;)
+    {
+	z80_exec();
+	msx_dbug();
+	if(halt && !imask) break;
+    }
+    savesram();
+    save_conf();
+    sprite_exit();
+    video_exit();
+    keyb_exit();
+    Disk_exit();
+    io_exit();
+    snd_off();
+    inregs.x.ax=_TEXTC80; _int86(0x10,&inregs,&outregs);
+    exit(0);
+}

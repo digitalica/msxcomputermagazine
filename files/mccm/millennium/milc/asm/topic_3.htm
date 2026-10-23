@@ -1,0 +1,278 @@
+<html>
+
+<head>
+<title>MILC - Topic ADPCM and PCM conversion routines</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">ADPCM and PCM conversion routines</b><br>
+    <i>Xelasoft</i>, 00-00-95</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+; **************************************
+; * ADPCM and PCM conversion routines
+; * Copyright (c) 1995 XelaSoft
+; *   A. Wulms
+; *   Pelikaanhof 127 c
+; *   2312 EG Leiden
+; * email: awulms@wi.leidenuniv.nl
+; *
+; * These routines may be freely used by any means as long
+; * as you mention in your programs that you have made use of
+; * XelaSoft ADPCM and PCM conversion routines (XADPCM for short)
+; *
+; * The following routines are provided:
+; * pcm2adp:  convert a PCM sample into an ADPCM sample, params:
+; *           HL = PCM buffer, DE = ADPCM buffer, BC = #ADPCM bytes to process
+; * adp2pcm:  convert an ADPCM sample into a PCM sample, params:
+; *           HL = ADPCM buffer, DE = PCM buffer, BC = #ADPCM bytes to process
+; * init_adpcmpcm: initialize PCM to ADPCM conversion and vice versa
+; * pcm_adpcm: convert the PCM code in A into a ADPCM code in A
+; * adpcm_pcm: convert the ADPCM code in A into a PCM code in A
+; *
+; * The PCM data are in 8 bit unsigned format
+; * The ADPCM data are in (packed) 4 bit format, it is the
+; * format which is used by the MSX AUDIO processor. It is not
+; * compatible with the 4 bit format of the Soundblaster and compatibles
+; *
+; * note: MSX is a registered trademark of ASCII corporation
+; *       Soundblaster is a registered trademark of Creative Labs Inc.
+
+; **************************************
+; * some usefull macros
+divhl2:		macro
+		srl	h
+		rr	l
+		endm
+
+ld_de_hl:	macro
+		ld	e,l
+		ld	d,h
+		endm
+
+; **************************************
+; * convert a 8 bit unsigned PCM sample
+; * into a 4 bit ADPCM sample
+; * in:  HL = buffer containing the PCM sample
+; *      DE = buffer for the ADPCM sample
+; *      BC = #bytes to place in the ADPCM buffer
+; * out: HL = HL+2*BC
+; *      DE = DE+BC
+; *      BC = 0
+; * changes: HL', DE', BC', AF
+pcm2adp:	exx
+		call	init_adpcmpcm	; init. conversion
+		exx
+pcm2adp2:	ld	a,(hl)		; get PCM code
+		inc	hl
+		exx			; save registers
+		call	pcm_adpcm	; convert to ADPCM
+		rrca
+		rrca
+		rrca
+		rrca			; put ADPCM code in MSB of A
+		push	af
+		exx			; restore registers
+		ld	a,(hl)		; get second PCM code
+		inc	hl
+		exx
+		call	pcm_adpcm	; convert also this one into ADPCM
+		pop	bc		; B = previous ADPCM code
+		or	b		; A now contains both ADPCM codes
+		exx
+		ld	(de),a		; store ADPCM codes
+		inc	de
+		dec	bc
+		ld	a,b
+		or	c
+		jr	nz,pcm2adp2	; and continue with the remainder
+		ret
+
+; **************************************
+; * convert a 4 bit ADPCM sample
+; * into a 8 bit unsigned PCM sample
+; * in:  HL = buffer containing the ADPCM sample
+; *      DE = buffer for the PCM sample
+; *      BC = #bytes in the ADPCM buffer
+; * out: HL = HL+BC
+; *      DE = DE+2*BC
+; *      BC = 0
+; * changes: HL', DE', BC', AF
+adp2pcm:	exx
+		call	init_adpcmpcm	; init. conversion
+		exx
+adp2pcm2:	ld	a,(hl)		; get ADPCM code
+		rrca
+		rrca
+		rrca
+		rrca			; put 1st ADPCM code in LSB
+		exx			; save registers
+		call	adpcm_pcm	; convert into PCM
+		exx
+		ld	(de),a		; and store in memory
+		inc	de
+		ld	a,(hl)		; get ADPCM code again
+		inc	hl
+		exx
+		call	adpcm_pcm	; convert into PCM
+		exx
+		ld	(de),a		; and store again
+		inc	de
+		dec	bc
+		ld	a,b
+		or	c
+		jr	nz,adp2pcm2	; continue with the remainder
+		ret
+
+; **************************************
+; * Initialise the conversion parameters
+; * changes: HL
+init_adpcmpcm:	ld	hl,#8000
+		ld	(sample),hl
+		ld	hl,#7f
+		ld	(delta_n),hl
+		ret
+
+; **************************************
+; * convert PCM code A into ADPCM code A
+; * in:  A = PCM code (unsigned format)
+; * out: A = ADPCM code
+; * changes: HL, DE, BC
+pcm_adpcm:	ld	h,a
+		xor	a
+		ld	l,a		; HL = 256 * PCM code
+		ld	de,(sample)	; DE = previous sample
+		sbc	hl,de		; HL = delta sample
+		jr	nc,pcm_a2	; positive
+		ex	de,hl		; DE = - abs(delta sample)
+		ld	hl,1
+		sbc	hl,de		; HL = 1 - C-flg - -abs(delta sample)
+pcm_a2:		rla			; C-flg into bit 0 =&gt; l4: sign bit
+		ld	de,(delta_n)	; calculate l3..l1
+		sbc	hl,de		; HL = delta sample - delta n
+		jr	nc,pcm_a3	; delta s &gt; delta n ==&gt; set l3
+		add	hl,de		;         &lt;         ==&gt; restore HL
+pcm_a3:		rla			; shift (not L3) into A
+		srl	d
+		rr	e
+		or	a
+		sbc	hl,de		; compare with delta_n/2
+		jr	nc,pcm_a4
+		add	hl,de
+pcm_a4:		rla			; shift (not L2) into A
+		srl	d
+		rr	e
+		or	a
+		sbc	hl,de		; compare with delta_n/4
+		rla			; shift (not L1) into A
+		xor	7		; A = l4 l3 l2 l1 = ADPCM code
+		push	af
+		call	adpcm_pcm	; calculate new sample and delta_n
+		pop	af
+		ret
+
+; **************************************
+; * convert ADPCM code A into PCM code A
+; * in:  A = ADPCM code
+; * out: A = PCM code (unsigned formaat)
+; * changes: HL, DE, BC
+adpcm_pcm:	and	15
+		ld	c,a		; remember PCM code
+		ld	hl,(delta_n)
+		ld_de_hl		; DE := HL = delta_n (dn for short)
+		divhl2			; HL = delta_n/2
+		rra			; examine l1 (bit 0 of ADPCM code)
+		jr	nc,$+3
+		add	hl,de		; HL = l1 * dn + dn/2
+		divhl2			; HL = l1*dn/2 + dn/4
+		rra			; examine l2 (bit 1 of ADPCM code)
+		jr	nc,$+3
+		add	hl,de		; HL = l2*dn + l1*dn/2 + dn/4
+		divhl2			; HL = l2*dn/2 + l1*dn/4 + dn/8
+		rra			; examine l3 (bit 2 of ADPCM code)
+		jr	nc,$+3
+		add	hl,de		; HL = l3*dn + l2*dn/2 + l1*dn/4 + dn/8
+		ld	de,(sample)	; DE = previous sample value
+		and	1		; examine l4
+		jr	nz,adpcm_pmin	; negative ==&gt; substract
+		add	hl,de
+		jp	nc,adpcm_p2	; JP is faster then JR
+		ld	hl,#ffff	; value was to large ==&gt; take maximum
+		jp	adpcm_p2
+adpcm_pmin:	ex	de,hl		; DE = (2*(l and 7)+1)*dn/8, HL = samp.
+		sbc	hl,de
+		jp	nc,adpcm_p2
+		ld	hl,0
+adpcm_p2:	ld	(sample),hl	; store new sample value
+		res	3,c		; C = abs(l) = abs(ADPCM code)
+		ld	hl,factors
+		ld	b,0
+		add	hl,bc		; HL = addr of correct factor
+		ld	a,(hl)		; A = f(l) * #40
+		ld	h,b
+		ld	l,b		; HL = 0
+		ld	de,(delta_n)	; start calculation of dn = dn*f(l)
+		ld	b,6		; use 6 bit fixed point arithmetic
+adpcm_p3:	rra
+		jr	nc,$+3
+		add	hl,de
+		divhl2
+		djnz	adpcm_p3	; HL = delta_n * (f(l) and 63)
+		rra
+		jr	nc,$+3
+		add	hl,de		; HL = delta_n * (f(l) and 127)
+		rra
+		jr	nc,$+4
+		add	hl,de
+		add	hl,de		; HL = delta_n * f(l)
+		ex	de,hl		; DE = delta_n * f(l)
+		ld	hl,#a000
+		add	hl,de		; DE &lt; #6000 =&gt; this is allowed
+		jr	c,adpcm_p4	; error =&gt; DE &gt; #6000 ==&gt; to large
+		ld	hl,#ff81	; - 127
+		add	hl,de		; check if DE &lt; 127
+		jp	c,adpcm_p5	; no =&gt; everything ok
+		ld	de,127		; use minimum value
+		jp	adpcm_p5
+adpcm_p4:	ld	de,#6000	; use maximum value
+adpcm_p5:	ld	(delta_n),de	; store new delta_n
+		ld	a,(sample+1)	; A = msb of sample = PCM value
+		ret
+
+sample:		dw	#8000		; last used sample value
+delta_n:	dw	#7f		; last used delta_n
+
+factors:	db	#39,#39,#39,#39	; multiply factors to calculate
+		db	#4d,#66,#80,#99	; a new delta_n
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<html>
+
+<head>
+<title>MILC - Topic Barcode reader</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Barcode reader</b><br>
+    <i>Jurgen Kramer</i>, 01-01-93</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+; BARCODE.ASM - Read Bar Codes
+; NMS1170 Bar Code Reader
+; (C) 1993 KMcs
+; Written by Jurgen Kramer - 17/10/93 -
+
+IOPRT:  EQU   18H
+LINL40: EQU   0F3AEH
+CHGMOD: EQU   5FH
+ERAFNK: EQU   0CCH
+CHPUT:  EQU   0A2H
+DCOMPR: EQU   20H
+
+CR:     EQU   0DH
+LF:     EQU   0AH
+EOT:    EQU   0
+
+; Read I/O port
+;       bit 7: Buffer status
+;       0   = Barcode staat gereed
+;       1   = Einde barcode
+;       bit 6....0 = ASCII teken, barcode cijfer of Code ID
+;
+; Write I/O port
+;       bit 7 en 6     = Command bits
+;       bit 5....0     = Data bits
+;
+; Commands:
+;
+; 00 : Pairs length
+;      Stel de barcode lengte in voor Interleaved 2 of 5.
+;      0 betekent een variabele lengte
+;
+; 01 : Decoding symbologies
+;      b0 = 1: Code 3 or 9
+;      b1 = 1: UPC
+;      b2 = 1: EAN
+;      b3 = 1: Interleaved 2 or 5
+;      b4 = 1: Msi/Plessey
+;      b5 = 1: Codabar
+;
+; Het wordt aangeraden maximaal een optie tegelijk aan te zetten voor een
+; zo hoog mogelijke leeszekerheid. Mochten er toch meerdere tegelijk worden
+; aangezet, dan is het aan te raden het Code ID meet te laten sturen.
+;
+; 10 : Enable Format Options
+;      b5 = 1: Code ID meesturen
+;      b4 = 1: Start/Stop tekens sturen bij Codabar
+;      b3 = 1: Code 3 of 9 decoderen in full-ASCII
+;      b2 = 1: 'Addena' van de UPC en EAN codes meesturen bij links naar
+;              rechts inlezen van de barcode
+;
+; 11 : Enable / Disable scan
+;      b3 = 1: Enable scan
+;      b2 = 1: Disable scan
+;
+;
+; Code ID of a barcode
+;
+; Het code ID staat als eerste teken voor de eigenlijke barcode en bestaat uit
+; een letter. Als het een kleine letter is, dan is bit 5 gezet en is de barcode
+; van rechts naar links ingelezen. Als het een hoofdletter is, dan is de
+; barcode van links naar rechts ingelezen. De richting waarin de barcode
+; ingelezen is is niet van belang voor de barcode die achter het code ID staat.
+; Deze wordt altijd in de juiste volgorde doorgegeven.
+;
+; a / A = Codabar
+; b / B = Code 3 of 9
+; c / C = UPC
+; d / D = EAN
+; e / E = Interleaved 2 of 5
+; g / G = Msi/Plessey
+;
+
+        ORG   0C000H
+
+
+INIT:   PUSH  AF
+        PUSH  DE
+        PUSH  BC
+        PUSH  HL
+
+        EI                    ; Enable interrupt
+        LD    A,00000000B     ; Pairs length &gt; variable length
+        OUT   (IOPRT),A
+        HALT
+        LD    A,01111111B     ; Decoding symbologies &gt; all
+        OUT   (IOPRT),A
+        HALT
+        LD    A,10111111B     ; Enable format options &gt; Send code ID etc.
+        OUT   (IOPRT),A
+        HALT
+        LD    A,11001000B     ; Enable scan
+        OUT   (IOPRT),A
+        HALT
+        DI
+        LD    A,80
+        LD    (LINL40),A
+        XOR   A
+        LD    (STATUS),A
+        CALL  CHGMOD          ; Init screen 0 width 80
+        CALL  ERAFNK          ; Keys off
+        LD    HL,INITXT
+        CALL  PRINT           ; Print init text
+        LD    HL,6*80
+        LD    (CSRXY),HL
+        LD    A,00001101B
+        OUT   (0ABH),A        ; Caps led off
+
+; Read &amp; print barcode
+
+LOOP:   CALL  READKY          ; Test spacebar
+        JR    Z,ENDE          ; Spacebar pressed
+        HALT
+        IN    A,(IOPRT)
+        BIT   7,A             ; Test status
+        JR    NZ,LOOP         ; No barcode ready
+        CALL  READY
+        LD    HL,BUFFER
+        AND   01111111B       ; Mask code ID &amp; direction
+NXTCHR: LD    (HL),A          ; Store character
+        INC   HL
+        HALT
+        IN    A,(IOPRT)
+        BIT   7,A             ; End of barcode
+        JR    Z,NXTCHR
+        DI
+        AND   01111111B
+        LD    (HL),A          ; Store last character
+        INC   HL
+        LD    (HL),0          ; Mark end of barcode
+        LD    HL,(CSRXY)
+        LD    BC,80
+        ADD   HL,BC
+        LD    DE,20*80
+        RST   DCOMPR
+        CALL  Z,CLRSCR
+        LD    (CSRXY),HL
+        CALL  SETWRT
+
+        LD    DE,BUFFER
+        LD    A,(DE)          ; Get code ID
+        BIT   5,A             ; Test direction
+        PUSH  AF              ; Save zero-flag
+        LD    HL,BARTYP
+        LD    DE,20
+        RES   5,A             ; Upper case
+        SUB   41H
+SRHCOD: AND   A
+        JR    Z,WRSORT
+        ADD   HL,DE
+        DEC   A
+        JR    SRHCOD
+WRSORT: LD    B,E
+        OTIR                  ; Write barcode type
+        LD    DE,BUFFER+1
+WRCODE: LD    A,(DE)          ; Get charater of barcode
+        AND   A               ; Last character
+        JR    Z,PRDIR
+        OUT   (C),A           ; Write char.
+        INC   DE
+        JR    WRCODE
+PRDIR:  LD    HL,(CSRXY)
+        LD    DE,40
+        ADD   HL,DE
+        CALL  SETWRT
+        POP   AF
+        LD    HL,LFTTXT
+        JR    Z,RGTLFT
+        LD    HL,RGTTXT
+RGTLFT: LD    B,10
+        OTIR                  ; Print direction
+        CALL  READY
+        JR    LOOP
+ENDE:   POP   HL
+        POP   DE
+        POP   BC
+        POP   AF
+        RET
+
+READY:  PUSH  AF
+        LD    HL,4*80+67
+        CALL  SETWRT
+        LD    A,(STATUS)
+        XOR   1
+        LD    (STATUS),A
+        LD    HL,BSYTXT
+        LD    A,00001100B
+        JR    NZ,BUSY
+        LD    HL,RDYTXT
+        XOR   1
+BUSY:   OUT   (0ABH),A        ; Toggle CAPS led
+        LD    B,5
+        OTIR
+        POP   AF
+        RET
+
+CLRSCR: LD    HL,6*80
+        CALL  SETWRT
+        LD    H,4
+        LD    A,&quot; &quot;
+FILL:   OUT   (C),A           ; 256 * space
+        DJNZ  FILL
+        DEC   H
+        JR    NZ,FILL
+        LD    B,96
+FILL2:  OUT   (C),A
+        DJNZ  FILL2
+        LD    HL,7*80
+        RET
+
+PRINT:  LD    A,(HL)
+        AND   A
+        RET   Z
+        CALL  CHPUT
+        INC   HL
+        JR    PRINT
+
+READKY: DI
+        IN    A,(0AAH)
+        AND   0F0H
+        OR    8
+        OUT   (0AAH),A
+        IN    A,(0A9H)
+        BIT   0,A
+        EI
+        RET
+
+; SETWRT
+; DOEL: zet VDP om te schrijven naar page 0
+; INVOER: HL=VRAM adres
+; UITVOER: C bevat data schrijfprt.
+
+SETWRT: DI
+        LD    BC,99H
+        LD    A,H
+        AND   0C0H
+        OR    B
+        RLCA
+        RLCA
+        OUT   (C),A           ; schrijf drie hoogste
+        LD    A,8EH           ; bits naar reg. 14
+        OUT   (C),A
+        LD    A,H
+        OUT   (C),L           ; schrijf 8 laagste bits
+        AND   3FH             ; zet bit 6 om te
+        OR    40H             ; schrijven
+        OUT   (C),A           ; schrijf restbits
+        DEC   C
+        EI
+        RET
+
+INITXT: DEFB  &quot;Barcode tester version 1.0 (C) 1993 KMcs&quot;,CR,LF
+        DEFB  &quot;Written by Jurgen Kramer - 23/10/93 -&quot;,CR,LF,CR,LF
+        DEFB  CR,LF,9,9,9,9,9,9,9,&quot;   STATUS: READY&quot;,CR,LF
+        DEFB  &quot;Type:               Barcode:            Direction:&quot;,CR,LF,EOT
+
+BARTYP: DEFB  &quot;Codabar             &quot; ; A / a
+        DEFB  &quot;Code 3 / 9          &quot; ; B / b
+        DEFB  &quot;UPC                 &quot; ; C / c
+        DEFB  &quot;EAN                 &quot; ; D / d
+        DEFB  &quot;Interleaved 2 / 5   &quot; ; E / e
+        DEFB  &quot;                    &quot; ;        dummy
+        DEFB  &quot;Msi / Plessey       &quot; ; G / g
+RGTTXT: DEFB  &quot;right-left&quot;
+LFTTXT: DEFB  &quot;left-right&quot;
+STATUS: DEFB  0
+RDYTXT: DEFB  &quot;READY&quot;
+BSYTXT: DEFB  &quot;BUSY &quot;
+
+CSRXY:  DEFW  6*80
+BUFFER: DS    20
+
+KEEP:   DEFB  0
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

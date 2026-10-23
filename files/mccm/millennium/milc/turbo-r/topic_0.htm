@@ -1,0 +1,180 @@
+<html>
+
+<head>
+<title>MILC - Topic TurboR RAM up grade</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">TurboR RAM up grade</b><br>
+    <i>Benoit</i>, 25-10-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+From:	IN%&quot;msx@stack.urc.TUE.NL&quot; 25-OCT-1994 09:13:53.62
+To:	msx@stack.urc.TUE.NL (MSX mailinglist)
+CC:	
+Subj:	RE: Turbo R RAM up grade
+
+Return-path: &lt;wiebe@stack.urc.TUE.NL&gt;
+Received: from HROVX4.HRO.NL by HROVX1.HRO.NL with PMDF#10221; Tue, 25 Oct 1994
+ 08:56 MET
+Received: from HEARNV by HROVX4.HRO.NL (PMDF V4.3-8 #6017) id
+ &lt;01HIORNLNVDC0029QS@HROVX4.HRO.NL&gt;; Tue, 25 Oct 1994 08:56:19 +0100 (MET)
+Received: from mailhost.tue.nl by HEARNVAX.nic.SURFnet.nl (PMDF V4.2-12 #3330)
+ id &lt;01HIORO3ZHIO007H40@HEARNVAX.nic.SURFnet.nl&gt;; Tue, 25 Oct 1994 08:56:31
+ +0200 (MET-DST)
+Received: from terra.stack.urc.tue.nl (terra.stack.urc.tue.nl
+ [131.155.140.128]) by mailhost.tue.nl (8.6.9/8.6.9) with SMTP id IAA19194;
+ Tue, 25 Oct 1994 08:55:19 +0100
+Received: from  by terra.stack.urc.tue.nl (4.1/1.53) id AB29318; Tue, 25 Oct 94
+ 08:55:09 +0100
+Received: (wiebe@localhost) by blade.stack.urc.tue.nl (8.6.9/8.6.4) id
+ HAA02799; Tue, 25 Oct 1994 07:52:10 GMT
+Received: from terra.stack.urc.tue.nl (terra.stack.urc.tue.nl
+ [131.155.140.128]) by blade.stack.urc.tue.nl (8.6.9/8.6.4) with SMTP id
+ HAA02782 for &lt;wiebe@blade.stack.urc.tue.nl&gt;; Tue, 25 Oct 1994 07:52:03 GMT
+Received: from world-net.sct.fr by terra.stack.urc.tue.nl (4.1/1.53) id
+ AA29304; Tue, 25 Oct 94 08:52:16 +0100
+Received: from client34.sct.fr (client34.sct.fr [194.2.128.64]) by
+ world-net.sct.fr (8.6.9/8.6.9) with SMTP id IAA15667 for
+ &lt;msx@stack.urc.tue.nl&gt;; Tue, 25 Oct 1994 08:51:31 +0100
+Date: Tue, 25 Oct 1994 08:51:31 +0100
+From: benoi1@world-net.sct.fr (BENOIT)
+Subject: RE: Turbo R RAM up grade
+To: msx@stack.urc.TUE.NL (MSX mailinglist)
+Errors-to: owner-msx@stack.urc.TUE.NL
+Reply-to: msx@stack.urc.TUE.NL
+Message-id: &lt;199410250751.IAA15667@world-net.sct.fr&gt;
+X-Envelope-to: STW_DAM
+Content-type: text/plain; charset=&quot;us-ascii&quot;
+X-Sender: benoi1@world-net.sct.fr (Unverified)
+MIME-version: 1.0
+X-Mailer: &lt;PC Eudora Version 1.4&gt;
+Content-transfer-encoding: 7BIT
+
+
+&gt;I read your message about Turbo R info in the MSX mailinglist. (It was 
+&gt;forwarded by Wiebe Weikamp.)
+&gt;The function of port E9 is in the textfile below. About the ports EC, EE and 
+&gt;EF, (among others) I don't know what they do exactly but I've seen they were 
+&gt;used in the ASM-listing of a MIDI-player.
+
+Thanks for this textfile! now I understand what is the use of E9, EC, EE, EF :-)
+
+&gt;What you said about ports E4/E5 I didn't understand. I made up from it, that 
+&gt;you think the MSX Turbo R has 1 MB DRAM internally? I doubt this VERY much. 
+&gt;But I guess I misunderstood what you wrote.
+
+Well, sorry if my English is not as good as I would like it to be, but 
+translating technical French (I mean electronic words etc..) is not very 
+easy for me ;-) anyway I did not say that Turbo R GT have 1Mb internaly, I 
+only said that it can have it with out to much hardware modification, I get 
+this information from Japanese textfile (so writen in KANJI :-( , here is 
+some info I did understood because they were writen in (ROMANJI = ROMAN 
+charset and also because I have the schematic diagram of the Turbo R GT )
+
+Between the S1990 and R800 there are three signals: A15, A14, A12. Those 
+signal are tied (connected) to a &quot;diode&quot; (&lt;- French word;-) named D301 via 
+resistors (R352 (A15), R353 not connect (A14), R354 (A12)). Here is the 
+meanning 
+of those bits:
+
+S1990      A15   A14   A12
+                 L       L        L     64Kbyte                              
+                 L       L       H    128Kbyte                              
+                 L       H       H     256Kbyte(ST)                          
+                 L       H       L     512Kbyte(GT)                          
+                 H       L        -      1Mbyte ( see note 1)
+
+R800        A15   A14
+                L       L             64Kb * 4 (bits)
+                L       H            256K  * 4bits (ST/GT)
+                H       L            1M * 4bits ( see note 1)
+                H       H            4M * 4 bits
+
+NOTE 1:  there was KANJI in this place and do not understand them :-( since 
+that was the same KANJI, I think that it was to say that they will use this 
+configuration for the RAM upgrade ?
+
+For the memory upgrade on the Turbo R GT, you &quot;only&quot; have to move R352 to 
+the R353 place to make A15 become H and A14 becom L (H is High and L is Low 
+in logical electronic ;-) see table above for more information, those 
+resistor are under the S1990 (solder side). Fill the J302 near the R800 
+(coponents side) this jumpper is the MA19 address bit normaly it is not 
+connect between S1990 and R800. Replace the 4 DRAM chips 44256 by new one: 
+514400 (90ns maximim) if you can find one ;-) because even in Japan there no 
+more of them :-( I know it because a friend of mine study Japanes in Japan! 
+But you can use aSIMM bar of 1Mbyte for PC or ATARI &amp; MAC (apple ;-) but you 
+will have to make a PCB (Printed Circuit Board;-) if you want I have draw 
+one using EAGLE layout editor I can send you the file if you want?
+
+Well, now you can close you MSX Tr GT and switch it on to see: MAIN RAM 
+1024Kb!. But those 1024Kb only seem to work under DOS 2! under Basic or if a 
+program use Memman, it dos not work! I have use an utility mapper tester 
+from Digital KC (I get it when I bought my external 2Mb mapper), so when I 
+run this utility it says (in Dutch! :-( I do not understant it!!!!!!!!) (I 
+think it say that ;-)  that I found 6 bits for the mapper (00PPPPPP where P 
+is the page number on 6 bits! so 64 pages ;-) but only 5 of them are 
+available! so only 512Kb can be use and not 1024Kb! and when I use ALLOCATE 
+USER SEGMENT fonction of the DOS2, it seem to work!
+
+That's all, I hope you will understand, if your are interesting in, I can 
+send you all the files I have about it? using normal mail, here is my 
+&quot;normal mail&quot; address:
+BENOIT Martial
+36, av Maurice Gallais
+93150 Blanc Mesnil
+FRANCE
+
+Greets from FRANCE
+ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+&lt; Service World-Net  &quot;L'Internet en toute securite&quot;  &gt;
+&lt; Tel: +33 1 60 20 85 14      Fax: +33 1 64 21 65 35 &gt;
+&lt; Email: info@world-net.sct.fr                       &gt;
+ \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+
+   M    M  SSSSS X    X    TTTTT U   U RRRR  BBBB   OOO      RRRR
+   MM  MM S       X  X       T   U   U R   R B   B O   O     R   R
+   M MM M  SSSS    XX        T   U   U RRRR  BBBB  O   O --- RRRR
+   M    M      S  X  X       T   U   U R  R  B   B O   O     R  R
+   M    M SSSSS  X    X      T    UUU  R   R BBBB   OOO      R   R
+			
+			    GGGG TTTTT
+			   G       T
+			   G  GG   T
+			   G   G   T
+			    GGGG   T
+
+M-KID: THE NEXT GENERATION OF MSX GAME ;-)
+
+                                               
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

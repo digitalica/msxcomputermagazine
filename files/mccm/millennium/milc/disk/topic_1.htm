@@ -1,0 +1,105 @@
+<html>
+
+<head>
+<title>MILC - Topic Beschrijving van de BOOT-sector</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Beschrijving van de BOOT-sector</b><br>
+    <i>CYBERNETICS</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                                De BOOT-sector
+                               ================
+
+Alle schijven hebben gemeen, dat de eerste sector op de schijf (sector 0) de 
+zogenaamde 'boot'-sector is. Deze 'boot'-sector heeft een speciale indeling, 
+die er als volgt uitziet:
+
+Byte:		  Betekenis:
+=============================================================================
+
+&amp;H00		- &amp;HEB of &amp;HE9
+		  Het eerste byte van de eerste sector moet ‚‚n van deze 
+		  waarden hebben als het een MSXDOS-schijf is. In dat geval 
+		  vindt u op displacements &amp;H0B t/m &amp;H1D het Drive Parameter 
+		  Block (DPB).
+
+&amp;H03/0A 	- OEM-naam van de computer fabrikant. Deze ruimte wordt voor 
+		  MS-DOS schijven gebruikt om er een Volume naam in te zetten 
+		  (zie ook het attribute byte).
+
+&amp;H0B/0C 	- Aantal bytes per sector.
+
+&amp;H0D		- Aantal sectoren in een cluster.
+
+&amp;H0E/0F 	- Aantal gereserveerde sectoren. 
+
+&amp;H10		- Aantal FAT's (File Allocation Tabels).
+
+&amp;H11/12 	- Aantal directory entries. 
+
+&amp;H13/14 	- Het totaal aantal sectoren op de schijf. 
+
+&amp;H15		- Medium descriptor:
+		  &amp;HF8 = 80 tracks, 9 sectoren/track, 1 side
+		  &amp;HF9 = 80 tracks, 9 sectoren/track, 2 sides
+		  &amp;HFA = 80 tracks, 8 sectoren/track, 1 side
+		  &amp;HFB = 80 tracks, 8 sectoren/track, 2 sides
+		  &amp;HFC = 40 tracks, 9 sectoren/track, 1 side
+		  &amp;HFD = 40 tracks, 9 sectoren/track, 2 sides
+		  &amp;HFE = 40 tracks, 8 sectoren/track, 1 side
+		  &amp;HFF = 40 tracks, 8 sectoren/track, 2 sides
+
+&amp;H16/17 	- Aantal sectoren per FAT.
+
+&amp;H18/19 	- Aantal sectoren per track.
+
+&amp;H1A/1B 	- Aantal zijden. Het aantal zijden kan 1 of 2 zijn voor 
+		  gewone diskettes. Het 'boot'-sectorformaat wordt echter ook 
+		  voor harddisks gebruikt, en daar kan een groter aantal 
+		  zijden aanwezig zijn.
+
+&amp;H1C/1D 	- Aantal verborgen sectoren.
+&amp;H1E            - hier begint de boot-routine
+
+Bij het initialiseren van de computer (na het aanzetten of resetten) wordt de
+bootsector (0) in het geheugen ingelezen op adres &amp;HC000-&amp;HC0FF. Vervolgens
+wordt adres &amp;HC01E aangeroepen. Hier staat gewoonlijk een RET NC instructie.
+Door op een eigen diskette op deze plaats van de boot-sector een
+machinetaal-routine te zetten kan men de initialisatie onderscheppen.
+
+
+
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

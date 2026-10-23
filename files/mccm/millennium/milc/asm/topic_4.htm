@@ -1,0 +1,656 @@
+<html>
+
+<head>
+<title>MILC - Topic Routines</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_3.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_5.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Routines</b><br>
+    <i>Hans Kester</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+; Deze subroutines zijn bedoeld om vele MSX-ers een duwtje in de rug te
+; geven en het maken van machinetaal-programma's makkelijker te maken. Voor de
+; duidelijkheid: deze routines zijn Public Domain; ze mogen door iedereen
+; gebruikt en gekopi‰erd worden. Ze mogen zelfs voor commerci‰le programma's
+; aangewend worden. Heeft u vragen of opmerkingen, dan kunt u mij altijd
+; schrijven of mailen in Jos-Tel (05149-1837) of Risoft (01804-15958).
+; Ik wens iedereen veel plezier hiermee!
+;
+;			Hans Kester
+;			Van Limburg Stirumstraat 18
+;			4102 HA  Culemborg
+;
+; Belangrijk: - voor een goede werking van de routines moet in vele gevallen
+;               de routine INIT eerst aangeroepen worden.
+;             - de systeem-adressen en BIOS-calls dienen ook in de source-code
+;               te staan, anders zal uw assembler foutmeldingen geven van
+;               niet-aanwezige adressen.
+
+
+; Systeemadressen
+TXTNAM       EQU	0F3B3h		; Bevat beginadres naamtabel
+TXTCOL       EQU	0F3B5h		; Bevat beginadres kleurtabel
+CSRY         EQU	0F3DCh		; CurSoR Y-position
+CSRX         EQU	0F3DDh		; CurSoR X-position
+PUTPNT       EQU	0F3F8h
+GETPNT       EQU	0F3FAh
+FNKSTR       EQU	0F87Fh		; Funktietoets-definitie
+
+
+; MSX-1 BIOS-routines
+RDSLT        EQU	000Ch		; ReaD SLoT
+CALSLT       EQU	001Ch		; CALl SloT
+WRTVDP       EQU	0047h		; WRiTe to VDP
+CHGET        EQU	009Fh		; CHaracter GETter
+CHPUT        EQU	00A2h		; CHaracter PUTter
+XBEEP        EQU	00C0h		; BEEP (X i.v.m. BEEP-macro)
+
+
+; Macro's ten behoeve van de programmeur (alleen voor GEN80 en M80)
+
+; Definieer LOCATE als in BASIC.
+; Bijvoorbeeld:  LOCATE 10,10
+LOCATE       MACRO	@XPOS,@YPOS
+             PUSH	HL
+             LD	HL,(@XPOS+1)*256+(@YPOS+1)
+             LD	(CSRY),HL
+             POP	HL
+             ENDM
+
+; Definieer het commando BEEP
+BEEP         MACRO
+             LD	IX,XBEEP
+             CALL	BIOS1
+             ENDM
+
+; Trek een horizontale lijn
+; Voorbeeld:   HORLIJN 0,0,80
+; Dit levert vanaf positie (0,0) een 80 karakters lange lijn
+HORLIJN      MACRO	@XPOS,@YPOS,@LENGTE	; horizontale lijn trekken
+             LD	B,@XPOS 	; bijvoorbeeld:
+             LD	C,@YPOS 	;	HORLIJN 12,13,20
+             LD	A,@LENGTE
+             CALL	LIJN_HOR
+             ENDM
+
+; Trek een verticale lijn
+; Voorbeeld:   VERTLIJN 12,10,13
+; Dit levert vanaf positie (12,10) een 13 karakters lange lijn naar onder
+VERTLIJN     MACRO	@XPOS,@YPOS,@LENGTE	; verticale lijn trekken
+             LD	B,@XPOS 	; bijvoorbeeld:
+             LD	C,@YPOS 	;	VERTLIJN 12,3,15
+             LD	A,@LENGTE
+             CALL	LIJN_VERT
+             ENDM
+
+
+
+; Deze routine leest de poort-adressen uit ROM en zet ze op de adressen VDP_DR
+; en VDP_DW. Zonder aanroep van deze routine werken vele andere routines niet!
+; Hoeft slechts 1 keer aangeroepen te worden, liefst aan begin v/h programma.
+INIT         LD	IX,RDSLT	; lees adres HL in een slot
+             LD	HL,0006h	; adres is 0006h
+             LD	A,(0FCC1h)	; en het slot is slot 0
+             CALL	BIOS1		; lees dat adres
+             LD	(VDP_DR),A	; zet VDP-leespoort neer
+             INC	HL		; nu adres 0007h
+             LD	A,(#FCC1)	; lees ook die
+             CALL	BIOS1
+             LD	(VDP_DW),A	; en zet schrijfpoort neer
+             RET			; keer terug
+
+
+; Deze routine roept de MSX1-BIOS aan op het adres dat in IX staat
+; en keert weer terug naar het aanroepadres
+BIOS1        PUSH	IY		; Bewaar inhoud IY
+             LD	IY,(#FCC0)	; Laad met EXPTBL
+             CALL	CALSLT		; Roep routine in IX aan
+             EI			; Interrupts weer aan
+             POP	IY		; Haal IY terug
+             RET			; En terug naar waar we waren
+
+
+; Deze routine doet hetzelfde als BIOS1 , maar dan met de MSX2-BIOS i.p.v.
+; de MSX1-BIOS      (SUB-ROM)
+BIOS2        PUSH	IY
+             LD	IY,(#FAF7)	; EXBRSA i.p.v. EXPTBL
+             CALL	CALSLT
+             EI
+             POP	IY
+             RET
+
+
+; Deze routine vult vanaf adres HL het geheugen BC maal met A
+BLOKFILL     PUSH   DE			; bewaar DE
+             DEC    BC			; verlaag BC ivm eerste byte
+             LD     D,H 		; DE gelijk aan HL
+             LD     E,L
+             INC    DE			; DE wijst op byte achter HL
+             LD     (HL),A		; vul adres HL met A
+             LDIR			; en alle volgende adressen ook
+             POP    DE			; haal DE terug
+             RET
+
+
+; Deze routine haalt een J of een N van het toetsenbord
+; Uitvoer: J -&gt; A=1   of N -&gt; A=0
+GET_ZEKWET   CALL	GETCHAR 	; vraag om toets
+             OR	A		; was er wel een toetsdruk?
+             JR	Z,GET_ZEKWET	; nee, nog een keer dan
+             CALL	UPPER		; maak er een hoofdletter van
+             CP	&quot;J&quot;                     ; was het ja?
+             JR	Z,ZEKWET_J	; goed zo
+             CP	&quot;N&quot;                     ; of misschien nee?
+             JR	Z,ZEKWET_N	; dat is ook goed
+             JR	GET_ZEKWET	; verkeerde toets ingedrukt
+ZEKWET_J     LD	A,1		; ja is 1
+             RET
+ZEKWET_N     XOR	A		; nee is 0
+             RET
+
+
+; Deze routine maakt van de letter in A een hoofdletter (indien mogelijk).
+UPPER        CP      &quot;z&quot;+1                      ; groter dan &quot;z&quot;?
+             RET     NC 		; ja, kan dus niet
+             RET     Z
+             CP      &quot;a&quot;                        ; kleiner dan &quot;a&quot;?
+             RET     C			; mag ook niet
+             XOR     32 		; draai bitje om
+             RET			; en keer terug
+
+
+; Deze routine maakt van de letter in A een kleine letter (indien mogelijk).
+LOWER        CP      &quot;Z&quot;+1                      ; groter dan &quot;Z&quot;?
+             RET     NC 		; dan gaat het niet door
+             RET     Z
+             CP      &quot;A&quot;                        ; kleiner dan &quot;A&quot;?
+             RET     C			; gaat ook niet
+             XOR     32 		; draai bitje om
+             RET			; en terug
+
+
+; Deze routine wacht tot er geen functietoets meer is ingedrukt
+WAITFUNC     CALL    GETFUNC		; haal functie-toets
+             OR      A			; was er nog ‚‚n?
+             JR      NZ,WAITFUNC	; ja, nogmaals
+             RET			; nee, terug
+
+
+; Deze routine kijkt of er een functietoets is ingedrukt
+; Na aanroep bevat A het nummer van de functietoets (1...10)
+; of 0 als er niets ingedrukt was
+GETFUNC      LD	HL,(#FBEB)	; Haal stukje NEWKEY matrix
+             XOR	A		; Teller op 0
+             BIT	0,L		; SHIFT ?
+             CALL	Z,SHIFT_FUNC	; Ja, zet teller op 5
+             BIT	5,L		; F1 ?
+             JR	Z,FUNC1
+             BIT	6,L		; F2 ?
+             JR	Z,FUNC2
+             BIT	7,L		; F3 ?
+             JR	Z,FUNC3
+             BIT	0,H		; F4 ?
+             JR	Z,FUNC4
+             BIT	1,H		; F5 ?
+             JR	Z,FUNC5
+             JR	FUNC_END
+SHIFT_FUNC   ADD	A,5		; Vijf bijtellen
+             RET
+FUNC1        ADD	A,1		; Functienummer bijtellen
+             JR	FUNC_END
+FUNC2        ADD	A,2
+             JR	FUNC_END
+FUNC3        ADD	A,3
+             JR	FUNC_END
+FUNC4        ADD	A,4
+             JR	FUNC_END
+FUNC5        ADD	A,5
+             JR	FUNC_END
+FUNC_END     CP	5		; Is A=5 en ook SHIFT ?
+             RET	NZ		; want dan is er alleen
+             BIT	0,L		; SHIFT ingedrukt en geen F5 !!
+             RET	NZ
+             XOR	A		; Jep, A moet 0 zijn...
+             RET
+
+
+; Deze routine maakt alle functietoets-definities leeg
+KILLFUNC     LD	B,159		; Lengte van het blok (10*16)
+             LD	HL,FNKSTR	; Startadres
+             XOR	A		; Vullen met nullen (rijmt!)
+KILL_LOOP    LD	(HL),A
+             INC	HL
+             DJNZ	KILL_LOOP
+             RET
+
+
+; Deze routine kijkt of er een toets is ingedrukt en haalt hem dan
+; uit de buffer.
+; Na aanroep bevat A het karakter of 0 als er geen karakter was
+GETCHAR      PUSH	HL		; bewaar HL en IX
+             PUSH	IX
+             LD	HL,(GETPNT)	; is GETPNT gelijk aan PUTPNT?
+             LD	A,(PUTPNT)
+             SUB	L
+             JR	Z,NO_CHAR	; ja, dan geen tekens in buffer
+             LD	IX,CHGET	; wel teken, haal uit de buffer
+             CALL	BIOS1		; via de BIOS
+             JR	CHAR_END	; en verlaat de routine
+NO_CHAR      XOR	A		; geen tekens, A=0
+CHAR_END     POP	IX		; herstel IX en HL
+             POP	HL
+             RET
+
+
+; Deze routine trekt een horizontale lijn op positie (B,C) met lengte A
+; Zie ook de MACRO!!
+LIJN_HOR     DI			; interrupts uit
+             PUSH	HL		; bewaar registers
+             PUSH	DE
+             PUSH	BC
+             PUSH	AF
+             CALL	GET_ADRES	; bepaal het adres in VRAM
+             PUSH	AF		; bewaar de lengte eventjes
+             CALL	SETWRT		; zet VDP klaar voor schrijven
+             POP	AF		; lengte weer in A
+             LD	BC,(VDP_DW)	; in C de schrijf-poort
+             LD	B,A		; lengte nu in B
+             LD	A,23		; teken van streepje in A
+HOR_LUS2     OUT	(C),A		; geef door aan VDP
+             DJNZ	HOR_LUS2	; en dat B maal
+             POP	AF		; herstel registers
+             POP	BC
+             POP	DE
+             POP	HL
+             EI			; interrupt weer aan
+             RET
+
+
+; Deze routine trekt een verticale lijn op positie (B,C) met lengte A
+; Zie ook de MACRO!!
+LIJN_VERT    DI			; interrupt uit
+             PUSH	HL		; bewaar registers
+             PUSH	DE
+             PUSH	BC
+             PUSH	AF
+             CALL	GET_ADRES	; bepaal VRAM-adres
+             PUSH	AF		; bewaar de lengte eventjes
+             CALL	SETWRT		; VDP op schrijven voorbereiden
+             POP	AF		; lengte in A
+             LD	BC,(VDP_DW)	; in C de schrijf-poort
+             LD	B,A		; lengte in B
+             LD	DE,80		; voor 80 bytes verder in VRAM
+VERT_LUS2    LD	A,22		; streepjescode in A
+             OUT	(C),A		; naar de VDP sturen
+             ADD	HL,DE		; 80 bytes verder in VRAM
+             CALL	SETWRT		; en dat adres weer schrijven
+             DJNZ	VERT_LUS2	; totdat B nul is
+             POP	AF		; herstel de registers
+             POP	BC
+             POP	DE
+             POP	HL
+             EI			; en interrupt weer aan
+             RET			; keer terug
+
+
+; Deze routine zet een regel tekst op het scherm
+; Bij aanroep wijst HL naar het begin van de tekst, afgesloten met een 0 byte
+PRINT        LD	A,(HL)		; neem een teken
+             INC	HL		; verhoog de wijzer
+             OR	A		; is het teken een 0?
+             RET	Z		; ja, einde
+             CALL	PUTCHAR 	; nee, zet teken op het scherm
+             JR	PRINT		; en neem volgende teken
+
+
+; Deze routine zet een letter op het scherm, ASCII-code in A
+PUTCHAR      PUSH	IX		; bewaar IX
+             LD	IX,CHPUT	; en roep de CHPUT routine aan
+             CALL	BIOS1		; in de BIOS
+             POP	IX		; herstel IX
+             RET			; terug
+
+
+; Snellere  printroutine. Zelfde parameters als PRINT.
+FAST_PRINT   DI			; interrupts uit
+             PUSH      BC		; bewaar registers
+             PUSH      DE
+             PUSH      HL
+             LD        A,(CSRX) 	; x-positie in A
+             DEC       A		; met 1 verlagen
+             LD        B,A		; x-positie nu in B
+             LD        A,(CSRY) 	; zelfde met y-positie
+             DEC       A
+             LD        C,A		; gaat naar C
+             CALL      GET_ADRES	; bepaal adres in VRAM
+             CALL      SETWRT		; schrijf adres naar de VDP
+             POP       HL		; haal tekstwijzer terug
+             LD        BC,(VDP_DW)	; VDP-schrijfpoort naar C
+FP_LUS2      LD        A,(HL)		; neem teken
+             INC       HL		; verhoog wijzer
+             OR        A		; einde tekst?
+             JR        Z,FP_END 	; ja
+             OUT       (C),A		; nee, teken naar VDP
+             JR        FP_LUS2		; tot einde tekst
+FP_END       POP       DE		; herstel registers
+             POP       BC
+             EI			; interrupt weer aan
+             RET			; en einde routine
+
+
+; Deze routine maakt een balkje met lengte A op positie (B,C)
+; Deze balkjes kunnen knipperen en van een kleur worden voorzien door resp.
+; de routines KNIPPER en KNIPKLEUR aan te roepen (zie onder)
+BALKJE       PUSH	HL		; bewaar registers
+             PUSH	BC
+             PUSH	DE
+             PUSH	AF
+             PUSH	AF		; A nogmaals bewaren
+             LD	HL,(TXTCOL)	; adres in VRAM van blakjes
+             LD	A,C		; neem de y-co”rdinaat
+             ADD	A,A		; vermenigvuldig die met 10
+             LD	C,A
+             ADD	A,A
+             ADD	A,A
+             ADD	A,C
+             LD	D,0		; maak DE gelijk aan A
+             LD	E,A
+             ADD	HL,DE		; tel dat bij het adres op
+             LD	E,B		; neem x-co”rdinaat
+             SRL	E		; deel die door 8
+             SRL	E
+             SRL	E
+             ADD	HL,DE		; tel op bij VRAM-adres
+; HL bevat nu het juiste adres in VRAM, nu wordt er een masker gemaakt om
+; de bits in VRAM te kunnen zetten.
+             LD	A,B		; x-co”rdinaat in B
+             AND	7		; alleen laagste 3 bits nemen
+             INC	A		; en verhogen
+             LD	B,A		; bewaren in B
+             XOR	A		; A=0
+             SCF			; zet carry-flag
+BLUS         RRA			; roteer de carry B maal in A
+             DJNZ	BLUS		; zodat het masker goed is
+             LD	B,A		; masker in B
+             LD	A,(VDP_DR)	; VDP-leespoort in C
+             LD	C,A
+             LD	A,(VDP_DW)	; VDP-schrijfpoort in E
+             LD	E,A
+             POP	AF		; haal lengte terug
+             LD	D,A		; lengte in D zetten
+             XOR	A		; A=0
+             DI			; interrupt uit, niet storen
+             CALL	SETRD		; VDP klaar voor lezen
+BLUS1        IN	A,(C)		; lees byte uit VRAM
+             CALL	SETWRT		; zet VDP meteen schrijfklaar
+BLUS2        OR	B		; zet het juiste bit op 1
+             DEC	D		; is de juiste lengte bereikt?
+             JR	Z,EIND_BLOKJE	; ja, einde van het balkje
+             RR	B		; nee, roteer masker
+             JR	C,ZET_BLOKJE	; nieuw byte lezen?
+             JR	BLUS2		; nee, volgende bit
+
+; masker is &quot;doorgedraaid&quot;, schrijf byte naar VRAM
+ZET_BLOKJE   PUSH	BC		; bewaar B en C
+             LD	C,E		; schrijfpoort naar C
+             OUT	(C),A		; schrijf A naar VRAM
+             POP	BC		; herstel B en C
+             INC	HL		; verhoog VRAM adres
+             CALL	SETRD		; zet VDP op lezen
+             RR	B		; roteer masker weer goed
+             JR	BLUS1		; en ga nog even verder
+
+EIND_BLOKJE  LD	C,E		; schrijf laatste byte weg
+             OUT	(C),A		; naar VRAM
+             POP	AF		; en herstel de gewijzigde
+             POP	DE		; registers
+             POP	BC
+             POP	HL
+             EI			; mag weer storen
+             RET
+
+
+; Haal het balkje op positie (B,C) met lengte A weer weg
+BALKJE_WEG   PUSH	HL		; bewaar registers
+             PUSH	BC
+             PUSH	DE
+             PUSH	AF
+             PUSH	AF		; A nogmaals bewaren
+             LD	HL,(TXTCOL)	; adres in VRAM van blakjes
+             LD	A,C		; neem de y-co”rdinaat
+             ADD	A,A		; vermenigvuldig die met 10
+             LD	C,A
+             ADD	A,A
+             ADD	A,A
+             ADD	A,C
+             LD	D,0		; maak DE gelijk aan A
+             LD	E,A
+             ADD	HL,DE		; tel dat bij het adres op
+             LD	E,B		; neem x-co”rdinaat
+             SRL	E		; deel die door 8
+             SRL	E
+             SRL	E
+             ADD	HL,DE		; tel op bij VRAM-adres
+; HL bevat nu het juiste adres in VRAM, nu wordt er een masker gemaakt om
+; de bits in VRAM te kunnen zetten.
+             LD	A,B		; x-co”rdinaat in B
+             AND	7		; alleen laagste 3 bits nemen
+             INC	A		; en verhogen
+             LD	B,A		; bewaren in B
+             XOR	A		; A=0
+             SCF			; zet carry-flag
+BWLUS        RRA			; roteer de carry B maal in A
+             DJNZ	BWLUS		; zodat het masker goed is
+             CPL			; neem daar het complement van
+             LD	B,A		; masker in B
+             LD	A,(VDP_DR)	; VDP-leespoort in C
+             LD	C,A
+             LD	A,(VDP_DW)	; VDP-schrijfpoort in E
+             LD	E,A
+             POP	AF		; haal lengte terug
+             LD	D,A		; lengte in D zetten
+             XOR	A		; A=0
+             DI			; interrupt uit, niet storen
+             CALL	SETRD		; VDP klaar voor lezen
+BWLUS1       IN	A,(C)		; lees byte uit VRAM
+             CALL	SETWRT		; zet VDP meteen schrijfklaar
+BWLUS2       AND	B		; zet het juiste bit op 0
+             DEC	D		; is de juiste lengte bereikt?
+             JR	Z,EIND_WBLOKJE	; ja, einde van het balkje
+             RR	B		; nee, roteer masker
+             JR	NC,ZET_WBLOKJE	; nieuw byte lezen?
+             JR	BWLUS2		; nee, volgende bit
+
+; masker is &quot;doorgedraaid&quot;, schrijf byte naar VRAM
+ZET_WBLOKJE  PUSH	BC		; bewaar B en C
+             LD	C,E		; schrijfpoort naar C
+             OUT	(C),A		; schrijf A naar VRAM
+             POP	BC		; herstel B en C
+             INC	HL		; verhoog VRAM adres
+             CALL	SETRD		; zet VDP op lezen
+             RR	B		; roteer masker weer goed
+             JR	BWLUS1		; en ga nog even verder
+
+EIND_WBLOKJE LD	C,E		; schrijf laatste byte weg
+             OUT	(C),A		; naar VRAM
+             POP	AF		; en herstel de gewijzigde
+             POP	DE		; registers
+             POP	BC
+             POP	HL
+             EI			; mag weer storen
+             RET
+
+; Deze routine wist alle balkjes op het scherm
+WEGBALK      DI			; niet meer storen
+             PUSH	HL		; bewaar registers die
+             PUSH	BC		; veranderd gaan worden
+             PUSH	AF
+             PUSH	DE
+             LD	HL,(TXTCOL)	; vanaf 0800H
+             CALL	SETWRT		; VDP schrijfklaar
+             LD	DE,270		; 27 regels van 10 bytes
+             LD	BC,(VDP_DW)	; in C poortadres
+WEGBALK2     XOR	A		; A=0
+             OUT	(C),A		; schrijf A naar VRAM
+             DEC	DE		; verlaag de teller
+             LD	A,E		; is de teller al 0?
+             OR	D
+             JR	NZ,WEGBALK2	; nee, nog eens
+             EI			; ja, interrupt weer aan
+             POP	DE		; herstel registers
+             POP	AF
+             POP	BC
+             POP	HL
+             RET			; en weer terug
+
+
+; LDIRMV en LDIRVM, maar dan onder MSXDOS
+; Kopi‰ren respectievelijk VRAM naar RAM en RAM naar VRAM
+; Bij aanroep bevat HL het adres waar de data vandaan komt en DE het adres waar
+; de data heen moet gaan. BC geeft de lengte van het blok aan.
+LDIRMV       DI			; niet storen
+             CALL	SETRD		; zet VDP op lezen
+             LD	H,B		; HL=BC (teller)
+             LD	L,C
+             LD	BC,(VDP_DR)	; C bevat poort-adres
+MV_LUS       IN	A,(C)		; neem teken uit VRAM
+             LD	(DE),A		; zet dat in RAM op adres DE
+             INC	DE		; verhoog  RAM-wijzer
+             DEC	HL		; verlaag teller HL
+             LD	A,H		; is de teller al nul?
+             OR	L
+             JR	NZ,MV_LUS	; nee, ga verder
+             EI			; ja, stoor maar weer
+             RET			; einde routine
+
+
+LDIRVM       DI			; ook niet storen
+             EX	DE,HL		; verwissel adressen
+             CALL	SETWRT		; zet VDP op schrijven
+             LD	H,B		; HL=BC (teller)
+             LD	L,C
+             LD	BC,(VDP_DW)	; C bevat poort-adres
+VM_LUS       LD	A,(DE)		; neem teken uit RAM
+             OUT	(C),A		; en zet dat in VRAM
+             INC	DE		; verhoog RAM-wijzer
+             DEC	HL		; verlaag de teller
+             LD	A,H		; is de teller al nul?
+             OR	L
+             JR	NZ,VM_LUS	; nee, nogmaals
+             EI			; ja, mag weer storen
+             RET			; en keer terug
+
+
+; Deze routine zorgt voor het knipperen van de VDP-balkjes
+; In high-B staat de tijd die de balkjes te zien zijn en in low-B de tijd
+; dat ze weg zijn. Tijd in vijfden van seconden. Maximum is 15.
+KNIPPER      PUSH	BC		; bewaar BC
+             PUSH	IX		; en IX
+             LD	C,13		; C bevat VDP register-nummer
+             LD	IX,WRTVDP	; schrijf via de BIOS de tijd
+             CALL	BIOS1
+             POP	IX		; en herstel de registers
+             POP	BC
+             RET
+
+
+; Deze routine zet de knipperkleur in het VDP register
+; In high-B staat de voorgrondkleur en in low-B de achtergrondkleur
+KNIPKLEUR    PUSH	BC		; bewaar BC en IX
+             PUSH	IX
+             LD	C,12		; registernummer voor kleur
+             LD	IX,WRTVDP	; schrijf ook via de BIOS
+             CALL	BIOS1
+             POP	IX		; herstel registers
+             POP	BC
+             RET
+
+
+; Zet VDP-schrijf adres op adres HL. INTERRUPTS GAAN UIT EN BLIJVEN UIT !!!!
+SETRD        DI			; niet storen!!
+             PUSH	HL		; bewaar HL en BC
+             PUSH	BC
+             RES	7,H		; vertel dat er gelezen wordt
+             RES	6,H
+             LD	BC,(VDP_DW)	; neem schrijfpoort-adres
+             INC	C		; en tel daar 1 bij op
+             OUT	(C),L		; schrijf resp. lage en hoge
+             OUT	(C),H		; deel v/h adres
+             POP	BC		; en herstel de boel weer
+             POP	HL
+             RET			; keer terug met interrupt uit!
+
+
+; Stel schrijfadres VDP in op adres HL, INTERRUPTS GAAN UIT EN BLIJVEN UIT!!!!
+SETWRT       DI			; niet storen!!
+             PUSH	HL		; bewaar registers
+             PUSH	BC
+             SET	6,H		; we gaan schrijven, meneer VDP
+             RES	7,H
+             LD	BC,(VDP_DW)	; neem schrijf-poort+1
+             INC	C
+             OUT	(C),L		; eerste lage deel, dan hoge
+             OUT	(C),H
+             POP	BC		; en herstel de boel
+             POP	HL
+             RET
+
+
+; Deze routine bepaalt het adres in de naamtabel (VRAM) van positie (B,C)
+; Adres komt in HL
+GET_ADRES    PUSH	DE		; bewaar registers
+             PUSH	BC
+             PUSH	AF
+             LD	HL,(TXTNAM)	; begin van de naamtabel (VRAM)
+             LD	A,C		; neem y-positie
+             LD	C,B		; zet x-positie in BC
+             LD	B,0
+             ADD	HL,BC		; en tel die bij HL op
+             OR	A		; kijk of y-positie nul is
+             JR	Z,ADRES_END	; ja. einde routine
+             LD	B,A		; zet y-positie in B
+             LD	DE,80		; en tel bij HL B*80 op
+ADRES_LUS    ADD	HL,DE
+             DJNZ	ADRES_LUS
+ADRES_END    POP	AF		; herstel registers
+             POP	BC
+             POP	DE
+             RET			; keer terug, HL bevat nu adres
+
+
+; hier komen de poort-adressn van de VDP
+VDP_DR       DEFB	#00		; VDP-read poortadres
+VDP_DW       DEFB       #00                     ; VDP-write poortadres
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<html>
+
+<head>
+<title>MILC - Topic De interrupt in Basic (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_34.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_36.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">De interrupt in Basic (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                   De Interrupt in Basic
+
+Velen denken bij  de  interrupt  aan  machinetaal,  het  kan
+echter ook gewoon in basic gebruikt worden en  wel  met  het
+commando ON INTERVAL= GOSUB. Waarom is dit zo handig?  Welnu
+men kan  praktisch  gezien  een  beweging  regelmatig  laten
+verlopen, bij scrolls bijvoorbeeld kan dit heel handig zijn.
+Ik zal hieronder in simpel basic een voorbeeld geven:
+
+10 ON INTERVAL=1 GOSUB 50
+20 PRINT &quot;Begin&quot;:INTERVAL ON
+30 GOTO 30
+50 PRINT &quot;De routine loopt&quot;:RETURN
+
+Uitwerking :
+
+Begin
+De Routine Loopt
+De Routine Loopt
+De Routine Loopt
+etc.
+
+Het is dus duidelijk  wat  er  gebeurt:  Elke  keer  als  de
+interrupt 1 is (om de  2  honderdste  seconde)  springt  het
+programma naar regel 50. Verder verblijft het in  regel  30.
+Je zou dus in regel 30 ook nog een  commando  kunnen  zetten
+zodat de  computer  steeds  van  het  ene  naar  het  andere
+commando springt. Hieronder volgt een kleine toepassing  van
+het bovenstaande:
+
+10 SCREEN 8:OPEN&quot;GRP:&quot;AS#1
+20 ON INTERVAL=1 GOSUB 50 :INTERVAL ON
+30 ON STRIG GOSUB 60:STRIG(0)ON
+40 READ A$:FOR G=1 TO LEN (A$):Q$=MID$(A$,G,1) :FOR W=1TO30:
+NEXT W : PRESET (160,0) : PRINT#1,Q$:NEXT G:RESTORE:GOTO 40
+50 COPY (76,0)-(166,7)TO(75,0):RETURN
+60 INTERVAL OFF:END
+70 DATA .DIT IS EEN PROEFSCROLLTEKST VOOR DE SCROLL....
+
+Dit  programmaatje  maakt  het  mogelijk  om   een   soepele
+lichtkrant te verkrijgen. Een paar opmerkingen:
+
+REGEL 10 : Scherm 8 en het openen van &quot;GRP:&quot; voor tekst
+REGEL 20 : Als interval =1 ga dan naar 50 . Zet 'm aan.
+REGEL 30 : Als de spatie wordt ingedrukt dan naar 60
+REGEL 40 :- Lees de tekst uit DATA in A$
+          - Begin een lus van 1 tot de lengte van A$
+          - Neem de letter die aan de beurt is
+          - Een  wachtroutine  ,dit  is  noodzakelijk  omdat
+            anders de scroll te  snel  gaat  en  de  letters
+            elkaar overlappen.
+          - Print de letter
+          - Begin overnieuw met het lezen van de DATA
+          - Ga naar het begin van de regel
+REGEL 50 : De belangrijkste regel van dit stuk ,hier springt
+           de interrupt naar toe deze schuift de letters een
+           plaats verder en keert terug.
+REGEL 60 : Einde programma
+REGEL 70 : De tekst in de DATA-regel
+
+Er valt  natuurlijk  makkelijk  te  experimenteren  met  dit
+programma er kan nog van alles bij regel 40. Als de  letters
+dan niet meer op goede afstand staan moet  men  de  wachtlus
+veranderen. Het is ook mogelijk om eigen letters te maken op
+pagina 1 en deze weer te copieeren naar pagina 0 om ze zo te
+laten  scrollen  (Een  voorbeeld  hiervan  vindt  U  op   de
+Clubguide Picturedisk #1, waarop overigens  ook  een  scroll
+staat met VDP(24)  (horizontale  scroll)  ,die  ook  aan  de
+interrupt gekoppeld is.
+
+Het programmaatje van hierboven staat ook op deze disk onder
+de naam &quot;INTERUPT.BAS&quot;.  Veel  plezier  met  experimenteren,
+heeft u nog vragen of idee‰n, of weet  u  scrollroutines  in
+machinetaal: Het is van harte welkom. Wie weet kunnen we dan
+ook  nog  eens  een  artikel   plaatsen   over   Scroll   in
+machinetaal. Neem kontakt op met:
+
+Ronald Egas
+De Blauwe Wereld 53
+1398 EP Muiden
+tel. 02942-3813
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_34.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_36.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

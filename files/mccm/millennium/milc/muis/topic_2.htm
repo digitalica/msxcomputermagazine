@@ -1,0 +1,85 @@
+<html>
+
+<head>
+<title>MILC - Topic Muis aansturing in ASM</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_3.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Muis aansturing in ASM</b><br>
+    <i>Alex vd Wal</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+             DE MUIS LEESAKTIE
+
+Er  is in  het verleden nogal wat verwarring geweest over de 
+vraag hoe  een MSX2  de muis leest omdat de VDP van een MSX2 
+een  hardwarematische muisleesroutine bevat, die echter niet 
+gebruikt  wordt.  De  twee  joystickpoorten  zitten  op alle 
+MSX'en aan  register 14  en 15 van de PSG en de VDP heeft er 
+geen bal mee te maken.
+
+Om een komplete leesaktie te doen is nogal wat  nodig  omdat
+de muis maar de beschikking heeft over een 4  bits  databus.
+Om dus 2 keer een 8 bits offset te lezen (X en  Y)  moet  er
+dus 4 keer gelezen worden waarbij de muis eerst verteld moet
+worden dat er gelezen  gaat  worden.  Aan  de  hand  van  de
+routine (GTMOUS) zal ik nu het algoritme verklaren.
+
+We nemen even aan dat de muis in poort 1 zit. In  dat  geval
+staat in (PORT) de waarde 10111111B en in (PORT+1) de waarde
+00010000B
+
+GTMOUS:
+- Lees PSG register 15
+- Wis bit 6, dit geeft aan dat de muis in poort 1 zit
+  (Zet bit 6 om aan te geven dat de muis in poort 2 zit)
+- Zet bit 4, zodat de muis weet dat nu XH klaargezet moet
+  worden. Bit 5 doet hetzelfde voor poort 2
+  Opm: XH/YH = Bit 4-7 van X/Y offset
+       XL/YL = Bit 0-3 van X/Y offset
+- Wacht even op muis (het is een relatief traag ding)
+- Lees XH (Verdere details volgen)
+- Lees XL
+- Lees YH
+- Lees YL
+Dit lezen is niet eenvoudig omdat de muis  niet  automatisch
+weet wanneer een van de waarden gelezen is. Om aan  de	muis
+te vertellen dat je de  waarde  gelezen  hebt,  moet  bit  4
+(indien de muis in poort 2 zit bit 5) van  PSG  register  15
+geinverteerd  worden.  Als  tijdens  de  volgende  leesaktie
+register  15  weer  geschreven  wordt  zal   de   muis   dit
+geinverteerde bit zien waarop het  beestje  de	volgende  te
+lezen waarde op zijn 4  bits  databus  zet.  Na  een  kleine
+wachttijd wordt deze waarde dan uit register 14 gelezen.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<html>
+
+<head>
+<title>MILC - Topic De V9938 Videoprocessor</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">De V9938 Videoprocessor</b><br>
+    <i>Arsoft & ??</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                   *** De MSX2 ViDeo-Processor ***
+
+ Hier zullen de meeste registers genoemd worden met hun functie, het is 
+ aan te bevelen om al enige kennis (Basic in ieder geval) hiervan te 
+ hebben, deze tekst is meer bedoeld voor het snel opzoeken van 'hoe was 
+ tie ook alweer'.
+
+ Allereerst alle registers op een rijtje, met basic en de video nummers, 
+ want de basic interpreter gebruikt andere waardes voor de vdp registers.
+
+
+ VDP() reg  |  7  |  6  |  5   |  4   | 3    |  2   |  1   |  0
+ -----------+-----+-----+------+------+------+------+------+--------
+     0   0  | 0   | DG  | IE0  | IE1  | M5   | M4   | M3   |  D
+     1   1  | 0   | BLK | IE2  | M1   | M2   | 0    | SZ   | MAG
+     9   8  | MSE | LCS | TP   | CBD  | VRS1 | VRS0 | SPD  | B/W
+    10   9  | LN  |  0  | SYM1 | SYM0 | IL   | E/O  | NTSC | DCD
+
+ Betekenis:
+ -----------
+ DG      - Digitize
+           0=Normaal, 1=Digitaliseer mode
+ IE0     - Vertical Retrace Interrupt Enable
+ IE1     - Horizontal Retrace Interrupt Enable
+ IE2     - Light pen/mouse Interrupt Enable
+ M5/1    - M5 M4 M3 M2 M1 Screen
+            0  0  0  0  0    1
+            0  0  0  0  1    0 ( 40 koloms)
+            0  0  0  1  0    3
+            0  0  1  0  0    2
+            0  1  0  0  0    4
+            0  1  0  0  1    0 ( 80 koloms)
+            0  1  1  0  0    5
+            1  0  0  0  0    6
+            1  0  1  0  0    7
+            1  1  1  0  0    8
+         Screen 10,11 en 12 zijn verbouwde screen 8. 
+ D       - External VDP-input
+ BLK     - Enable/Disable Display
+           Het scherm aan of uit zetten
+ SZ      - Sprite Size
+           0=8*8 Sprites, 1=16*16 Sprites
+ MAG     - Magnify Sprites
+           0=Normaal, 1=2* zo groot
+ MSE     - Light pen/mous (1=mouse)
+ LCS     - Light pen/coincidence select (1=light pen)
+ TP      - Transparant mode
+           0=Kleur 0 is transparant, 1=Kleur 0 niet transparant
+ CBD     - Color Bus Direction
+           0=Output(normaal), 1=Input(Digitaliseren)
+ VRS1/0  - Video RAM Select
+            VRS1 VRS0  KB
+              0    0  1*16
+              0    1  4*16
+              1    0  1*64
+              1    1  64 High speed
+ SPD     - Sprite Disable (Sprites: 0=normaal, 1=geen sprites op scherm)
+ SYM1/0  - Synchronisation mode (Voor digitaliseren en mixen)
+           SYM1 SYM0 mode
+            0    0 Intern
+            0    1 Mix
+            1    0 Extern (Digitize)
+            1    1 none
+ IL      - Interlace mode (uitleg over interlace volgt later)
+ E/O     - Even/Odd Display
+ NTSC    - TV mode select(0=NTSC (Japan), 1=PAL (Europa))
+           De interne interrupt is in europa 50 Hz, door NTSC nul te
+           maken, wordt het beeldscherm 60 * per seconde naar het
+           beeldscherm gestuurd, ook zal de muziek anders gaan klinken
+           (PLAY). De z80 processor wordt niet sneller, zoals onterecht
+           een keer is geschreven in een blad!
+ DCD     - Dot Clock Direction
+
+
+   VDP() reg |  7  |  6  |  5  |  4  |  3  |  2  |  1  |  0
+  -----------+-----+-----+-----+-----+-----+-----+-----+-----
+     2   2   |  0  | A16 | A15 | A14 | A13 | A12 | A11 | A10
+     3   3   | B13 | B12 | B11 | B10 | B9  | B8  | B7  | B6
+    11  10   |  0  |  0  |  0  |  0  |  0  | B16 | B15 | B14
+     4   4   |  0  |  0  | C16 | C15 | C14 | C13 | C12 | C11
+     5   5   | D14 | D13 | D12 | D11 | D10 | D9  | D8  | D7
+    12  11   |  0  |  0  |  0  |  0  |  0  |  0  | D16 | D15
+     6   6   |  0  |  0  | E16 | E15 | E14 | E13 | E12 | E11
+    15  14   |  0  |  0  |  0  |  0  |  0  | F16 | F15 | F14
+
+ Betekenis:
+ A16/A10 - Scherminfo Tabel
+ B16/B6  - Kleur Tabel
+ C16/C11 - Matrix Tabel
+ D16/D7  - Spriteinfo Tabel
+ E16/E11 - Sprite patroon Tabel
+ F16/F14 - Video RAM access
+
+ - Scherm info:
+ Kan alleen in pagina's van een Kbyte schakelen, en bevat het adres 
+ waarvandaan de data van het scherm staat. (screen 0 : #00000) In screen 5 
+ tot 8 kan hiermee de pagina geschakeld worden en wordt dan ook in basic 
+ door SET PAGE gebruikt. In screen 2 tot 4 staan hier getallen die niet 
+ verandert worden, deze getallen geven aan welke plaats op het scherm bij 
+ een karakter hoort, screen 2 en 4 bevatten derhalve 3 maal 0 tot 255.
+
+ - Kleur tabel wordt door de schermen 1 tot 4 gebruikt: Screen 1: kleurcode 
+ voor 8 karakters, de tabel is dus 32 bytes lang. Screen 2 en 4: Hier 
+ wordt per rij van 8 pixels de kleur bijgehouden. In de scherm matrix 
+ tabel staat per acht bits aangegeven of die pixels aan of uit staan. Bits 
+ 3 tot 0 bepalen de kleur van een '0' bit uit de scherminfo tabel. Terwijl 
+ 7 tot 4e '1' bepalen. Screen 3: Iedere Byte bevat de kleuren van twee 
+ pixels.
+
+ - Matrix tabel wordt in screen 0 tot 4:
+ Hier worden de patronen opgebouwd, deze patronen worden door de namen 
+ tabel getoond. Screen 0: 2048 bytes groot, bevat alle karakters. De 
+ processor zoekt bij het opbouwen van het scherm uit de namen tabel welk 
+ karakter er getoond moet worden, en uit de patroon tabel hoe dat karakter 
+ er uit moet zien. Screen 1: dezelfde manier, behalve dan dat uit de kleur 
+ tabel ook nog de kleur van dat karakter opgezocht wordt. Screen 2 tot 4: 
+ In de namentabel wordt aangewezen welk 'karakter' er getoond wordt, en in 
+ deze matrix wordt aangegeven of die pixels aan of uit staan. 
+
+ - Sprite info:
+ Bevat y-as, x-as en het nummer van de geprojecteerde sprite. Deze tabel 
+ bevat waardes voor 32 sprites, die sprites kunnen de nummers 0 tot 255 
+ hebben, en dus bij 16*16 sprites ook andere delen van het VRAM bestrijken 
+ dan de sprite patroon tabel. Bij de MSX2 wordt het 4de byte niet 
+ gebruikt, in MSX1 bevatte dit de kleur van de sprite.
+
+ Opbouw tabel:
+ byte 1: Y-as sprite
+ byte 2: X-as sprite
+ byte 3: sprite nummer (verwijst naar sprite patroon tabel)
+ byte 4: Ongebruikt
+
+ Voor de MSX2 geld dat alle horizontale sprite lijnen een andere kleur 
+ kunnen hebben. Deze tabel staat 512 bytes onder de sprite info tabel en 
+ voor iedere sprite zijn hier 16 bytes gereserveerd.
+ 
+ Opbouw:
+ bit 0 tot 3: kleurcode horizontale lijn.
+ bit 5: geSET betekend dat een sprite botsing niet gedetecteerd wordt.
+
+ bit 6: geSET betekend dat deze lijn niet getoond wordt; voor deze lijn
+        nooit botsingdetectie. Als deze lijn van de sprite een lijn van
+        een andere sprite met een hogere prioriteit (eerder in de
+        sprite info tabel staat) passeert met dit bit op nul en als de
+        lijnen van de sprites op dezelfde horizontaal liggen, dan wordt
+        de lijn van deze sprite toch geprojecteerd. Bij overlap wordt op
+        de spritelijnen echter ook nog een logische OR toegepast.
+ bit 7: geSET betekend dat de sprite lijn 32 beeldpunten naar links
+        geprojecteerd wordt.
+
+ - Sprite patroon tabel:
+ Bij 8*8 sprites zijn hier 8 bytes en bij 16*16 sprites zijn hier 32 bytes 
+ gereserveerd.
+
+   VDP() reg |  7  |  6  |  5  |  4  |  3   |  2   |  1   |  0
+  -----------+-----+-----+-----+-----+------+------+------+------
+     7    7  | TC3 | TC2 | TC1 | TC0 | BDC3 | BDC2 | BDC1 | BDC0
+    13   12  | C3  | C2  | C1  | C0  | BC3  | BC2  | BC1  | BC0
+    14   13  | ON3 | ON2 | ON1 | ON0 | OF3  | OF2  | OF1  | OF0
+
+ Betekenis:
+ TC3/0   - Text Color
+ BCD3/0  - Back Drop Color
+ C3/0    - Color
+ BC3/0   - Back Color
+ ON3/0   - Blink On (1/5 seconde)
+ OF3/0   - Blink Off(1/5 seconde)
+
+ register 7 bevat in elk ander scherm dan 0 de rand (border) kleur, Screen 
+ 8 gebruikt voor zijn 256 kleuren alle bits. Screen 1-5 en 7 gebruiken 
+ allen bit 3 tot 0. Screen 6 gebruikt BDC3 en BDC2 voor de kleur van alle 
+ verticale even lijnen, terwijl BDC1 en BDC0 gebruikt worden voor alle 
+ verticale oneven lijnen, dit geeft een 16 kleuren effect.
+
+ In screen 0 kan tekst met deze registers geinventeerd worden of een 
+ andere kleur krijgen. Dan bevat TC3 tot TC0 de voorgrond kleur van de 
+ geinventeerde tekst en BDC3 tot BDC0 de achtergrond kleur. Dit is de 
+ reden dat het tekstscherm geen andere border kleur dan de voorgrond kleur 
+ kan krijgen. Met register 13 kan daarna de tijd ingesteld worden dat het 
+ getoond moet worden. ON3 tot ON0 voor aan en OF3 tot OF0 voor uit. Dit 
+ kan ook voor interlacing gebruikt worden, ON wordt gebruikt voor de even 
+ pagina en OF voor de oneven pagina. C3/0 en BC3/0 bevatten de voorgrond 
+ en de achtergrond kleur in screen 0.
+
+   VDP() reg |  7  |  6  |  5   |  4   |  3   |  2   |  1   | 0
+ ------------+-----+-----+------+------+------+-------------+-----
+    16   15  |  0  |  0  |  0   |  0   | RS3  | RS2  | RS1  | RS0
+    17   16  |  0  |  0  |  0   |  0   | C3   | C2   | C1   | C0
+    18   17  | S/I |  0  | RC5  | RC4  | RC3  | RC2  | RC1  | RC0
+    19   18  | dV3 | dV2 | dV1  | dV0  | dH3  | dH2  | dH1  | dH0
+    20   19  | IL7 | IL6 | IL5  | IL4  | IL3  | IL2  | IL1  | IL0
+    21   20  |  0  |  0  | CBX5 | CBX4 | CBX3 | CBX2 | CBX1 | CBX0
+    22   21  |  0  |  0  | CBY5 | CBY4 | CBY3 | CBY2 | CBY1 | CBY0
+    23   22  |  0  |  0  | CBZ5 | CBZ4 | CBZ3 | CBZ2 | CBZ1 | CBZ0
+    24   23  | LS7 | LS6 | LS5  | LS4  | LS3  | LS2  | LS1  | LS0
+
+ Betekenis:
+ RS3/0   - Register nummer van Statusregister
+ C3/0    - Color code
+ S/I     - 0=Automatisch ophogen van RC5/0, 1=Niet ophogen
+ RC5/0   - Register nummer van Controlregister
+           Hier kan een register nummer worden opgeslagen:
+           Met indirecte toegangs poort (#0007)+3 kan er naar het
+           register geschreven worden dat RC5/0 aanwijst, als er
+           geschreven is wordt aan de hand van S/I wel of niet opgehoogd
+           Dit is handig om achter elkaar een aantal registers van
+           waarde te veranderen.
+ dV3/0   - delta Vertical adjust
+ dH3/0   - delta Horizontal adjust
+ IL7/0   - vertical line number of Line Interrupt
+ CBX5/0  - Color Burst value of phase 0
+ CBY5/0  - Color Burst value of phase 1/3
+ CBZ5/0  - Color Burst valeu of phase 2/3
+ LS7/0   - horizontal line start Video RAM
+
+ Toekennen van kleuren palet:
+ Eerst register 16 (C3 tot C0) met kleurcode vullen.
+ Daarna verzenden van twee Bytes naar de pallette schrijfpoort nl:
+
+ bit         7    6    5    4    3    2    1    0
+ --------------------------------------------------
+ Byte 1      0   R2   R1   R0    0   B2   B1   B0
+ Byte 2      0    0    0    0    0   G2   G1   G0
+
+ Deze kleurcodes worden door de computer ergens apart in het VRAM 
+ opgeslagen, dat doet de VDP niet zelf, daarom hebben de BIOS routines in 
+ het EXTROM de voorkeur: GETPLT (#0149) om kleur code op te halen en 
+ SETPLT (#014D) om een kleur te zetten.
+
+ In screen 8 geldt de volgende formule: 32*G+4*R+B waarbij G en R tussen 
+ de 0 en de 7 liggen en B tussen de 0 en de 3.
+
+ Adjust: dV3/0 en dH3/0 zijn als volgt opgebouwd: Het 4e bit is geSET als 
+ het getal positief is. Het registers kan 2* de waardes -7 tot 8 bevatten 
+ en wordt opgeslagen in het two complement. Dus -7 wordt 0111 en 8 wordt 
+ 1000.
+
+ Smooth scroll:
+ In register 24 staat voor screen 5 tot 8 de eerste Y-as die afgebeeld 
+ moet worden. In screen 0 wordt hiermee het eerste byte aangegeven die 
+ voor het vormen van de karakters gebruikt wordt, dit houd in dat een 
+ karakter rolt als je het register de waarde 0 tot 7 geeft.
+
+
+ - Statusregisters:
+
+    VDP() reg |  7  |  6  |  5  |  4  |  3  |  2  |  1  | 0
+  ------------+-----+-----+-----+-----+-----+-----+-----+-----
+      8    0  |  F  | SD  |  C  | S4  | S3  | S2  | S1  | S0   *)
+     -1    1  | FL  | LPS | I4  | I3  | I2  | I1  | I0  | FH
+     -2    2  | TR  | VR  | HR  | BD  |  0  |  0  | E/O | CE
+     -3    3  | X7  | X6  | X5  | X4  | X3  | X2  | X1  | X0
+     -4    4  |  0  |  0  |  0  |  0  |  0  |  0  | X9  | X8
+     -5    5  | Y7  | Y6  | Y5  | Y4  | Y3  | Y2  | Y1  | Y0
+     -6    6  |  0  |  0  |  0  |  0  |  0  |  0  | Y9  | Y8
+     -7    7  | C7  | C6  | C5  | C4  | C3  | C2  | C1  | C0
+     -8    8  | BX7 | BX6 | BX5 | BX4 | BX3 | BX2 | BX1 | BX0
+     -9    9  |  0  |  0  |  0  |  0  |  0  | 0   | BX9 | BX8
+
+ *) Dit register staat in het AF register bij de interrupt-routine
+
+ Betekenis:
+ F       - Vertical Retrace Interrupt
+           Bij een interrupt wordt hier gekeken of het van de VDP kwam
+           (0=Nee, 1=Ja) zoniet dan wordt naar de NMI-routine gesprongen
+ SD      - Vijfde cq. negende sprite gedetecteerd (1=teveel sprites)
+ C       - Botsing tussen sprites gedetecteerd (1=botsing)
+ S4/0    - Nummer van de vijfde cq. negende sprite
+ FL      - Muis of lichtpen schakelaar status
+ LPS     - Tweede muis of lichtpen schakelaar status
+ I4/0    - Videochip LSI-nummer (Identicatie 1-V9938 2-V9958)
+ FH      - Horizontal Retrace Interrupt
+ TR      - Transfer met CPU data ready
+ VR      - Vertical Retrace timing
+ HR      - Horizontal Retrace timing
+ BD      - Border Detected
+ E/O     - Even or Odd field status (0=even, 1=oneven pagina afgebeeld)
+ CE      - Command Executing status (0=klaar)
+ X9/0    - X-coordinaat spritebotsing, muis of lichtpen
+ Y9/0    - Y-coordinaat spritebotsing, muis of lichtpen
+ C7/0    - Kleurencode gelezen kleurregister
+ BX9/0   - Border X-coordinaat van spritebotsing
+
+
+ - Het programmeren van de VDP:
+ De registers:
+
+  VDP() reg |  7  |  6  |  5  |  4  |  3   |  2   |   1   |    0
+ -----------+-----+-----+-----+-----+------+------+-------+--------
+    32  33  | SX7 | SX6 | SX5 | SX4 | SX3  | SX2  |  SX1  |   SX0
+    33  34  |  0  |  0  |  0  |  0  |  0   |  0   |   0   |   SX8
+    34  35  | SY7 | SY6 | SY5 | SY4 | SY3  | SY2  |  SY1  |   SY0
+    35  36  |  0  |  0  |  0  |  0  |  0   |  0   |  SY9  |   SY8
+    36  37  | DX7 | DX6 | DX5 | DX4 | DX3  | DX2  |  DX1  |   DX0
+    37  38  |  0  |  0  |  0  |  0  |  0   |  0   |   0   |   DX8
+    38  39  | DY7 | DY6 | DY5 | DY4 | DY3  | DY2  |  DY1  |   DY0
+    39  40  |  0  |  0  |  0  |  0  |  0   |  0   |  DY9  |   DY8
+    40  41  | NX7 | NX6 | NX5 | NX4 | NX3  | NX2  |  NX1  |   NX0
+    41  42  |  0  |  0  |  0  |  0  |  0   |  0   |  NX9  |   NX8
+    42  43  | NY7 | NY6 | NY5 | NY4 | NY3  | NY2  |  NY1  |   NY0
+    43  44  |  0  |  0  |  0  |  0  |  0   |  0   |  NY9  |   NY8
+    44  45  |  C7 |  C6 |  C5 | C4  | C3   | C2   |  C1   |   C0
+    45  46  |  0  |  0  |  0  |  0  | DIRY | DIRX | (N)EQ | MAJ/MIN
+    46  47  | CM3 | CM2 | CM1 | CM0 | LO3  | LO2  |  LO1  |   LO0
+
+  SX= source X-coordinaat    
+  SY= source Y-coordinaat
+  DX= destination X-coordinaat
+  DY= destination Y-coordinaat
+  NX= number X-dots
+  NY= number Y-dots
+  C = kleur register
+  CM= commando
+  LO= logische operatie
+
+ We kunnen alleen een begin punt opgeven, als we van 0 tot 255 (x) willen 
+ copieeren dan moet in NX 256 staan en in DIRX 0. Als er we van begin-X 
+ naar rechts gaan om bij eind-X te komen dan moet DIRX nul zijn, anders 1. 
+ Bij Y geldt, werken we van boven naar beneden, dan DIRY=0.
+
+ Tabel van commando's en wat er allemaal ingevuld moet worden:
+
+ Code Com  SX SY DX DY NX NY C DIRY DIRX (N)EQ MAJ/MIN LOG COM
+ 1111 HMMC       *  *  * *  * *   *                    *
+ 1110 HMCM +  +        + +    +   +                    +
+ 1101 HMMM *  *  *  *  * *    *   *                    *
+ 1100 HMMV       +  +  + +  + +   +                    +
+ 1011 LMMC       *  *  * *  * *   *                *   *
+ 1010 LMCM +  +        + +    +   +                +   +
+ 1001 LMMM *  *  *  *  * *    *   *                *   *
+ 1000 LMMV       +  +  + +  + +   +                +   +
+ 0111 LINE       *  *  * *  * *   *         *      *   *
+ 0110 SRCH +  +              +    +     +              +
+ 0101 PSET       *  *        *                     *   *
+ 0100 PINT +  +                                        +
+
+ LOGische bewerkingen:        
+ 0000 PSET       1000 TPSET
+ 0001 AND        1001 TAND
+ 0010 OR         1010 TOR
+ 0011 XOR        1011 TXOR
+ 0100 NOT        1100 TNOT
+ nieuwe schermkleur=oude kleur LOG source kleur
+
+ Bij de commando's staat de eerste H of L voor High of Low speed, dit houd 
+ in dat er bij het copiereen wel (High) of niet (Low) de bewerkingen in 
+ Bytes worden uitgevoerd. het copieeren van een stuk VRAM gebeurt in 
+ screen 5 dus met 2 punten tegelijk als een H commando gebruikt wordt.
+
+ - HMMC en LMMC: Verplaatsen van RAM naar VRAM
+ Kleur van eerste byte (of pixel) moet in het kleur register(44) staan. 
+ Vervolgens wordt het kader gevuld door de rest van de data achter elkaar 
+ naar het kleur register te schrijven. Uit het TR bit van statusregister 2 
+ kunnen we afleiden of alle data verplaatst is. 
+
+ - HMCM en LMCM: Verplaatsen van VRAM naar RAM
+ Nu wordt de data gelezen uit statusregister 7 (andere registers kunnen 
+ immers niet gelezen worden). het TR bit verteld wanneer alles binnen is.
+
+ - HMMM en LMMM: verplaatsen VRAM-&gt;VRAM
+ razendsnel verplaatsen SX,SY,NX,NY,DIRY,DIRX geven source weer. Beginpunt 
+ van destination gaat in DX en DY. Dus eigenlijk het zelfde als BASIC 
+ 'COPY(SX,SY)-(SX+NX,SY+NY) TO (DX,DY)' als DIRX en DIRY nul zijn 
+ tenminste.
+
+ - HMMV en LMMV: VRAM vullen met kleur
+ Op de zelfde manier als bij ?MMM wordt hier het te bewerken gebied 
+ aangegeven. bij H commando's zijn dus geen LOGische bewerkingen mogelijk!
+
+ - LINE: Kader in DX,DY,NX,NY,DIRX,DIRY en MAJ/MIN
+ Het bijzondere is dat als er meer Y dan X punten zijn, dat dan NY en NX 
+ verwisseld worden en moet MAJ/MIN geSET zijn!!
+
+ - SRCH: zoekt een punt in DIRX richting, SY bevat lijn waarop gezocht 
+ moet worden. (N)EQ =0 dan wordt er een punt gezocht die dezelfde kleur 
+ heeft als het kleurregister (44). (N)EQ =1 dan wordt er een punt gezocht 
+ die een andere kleur heeft als het kleurregister.
+
+ - PINT: geeft kleur code van (SX,SY) in statusregister 7.
+
+ Bij het programmeren moet de interrupt uit staan, dan eerst CE-bit 
+ controleren of de processor de volgende opdracht kan uitvoeren. Dan 
+ parameters wegschrijven, met als laatste het register 46, omdat dan de 
+ VDP met het uitvoeren van de opdracht begint.
+
+ In het MSXROM bevatten adres #0006 en #0007 een aantal I/O poorten die 
+ gebruikt mogen worden om de VDP op een snelle manier te lezen.
+
+  (#0006)   data leespoort
+  (#0006)+1 status leespoort (de inhoud van adres #0006 dus, plus 1)
+  (#0007)   schrijfpoort
+  (#0007)+1 commando schrijfpoort
+  (#0007)+2 pallette schrijfpoort
+  (#0007)+3 indirecte toegangspoort
+
+ Schrijven naar een VDP-register:
+
+ Eerst wordt data geschreven, daarna het registernummer MET BIT 7 geSET! 
+ De gewone VDP registers kunnen niet gelezen worden de Status registers 
+ wel. In schema:
+
+ bit         7    6    5    4    3    2    1    0
+ -------------------------------------------------------
+ Byte 1     da7  da6  da5  da4  da3  da2  da1  da0
+ Byte 2      1    0   re5  re4  re3  re2  re1  re0
+
+ Betekenis:
+ da7/0       - data bits (7 in totaal)
+ re5/0       - register (39 registers)
+ Dit wordt naar (#0007)+1 gestuurd
+
+ - VRAM lezen of schrijven:
+
+ Werkwijze bij lezen en schrijven
+ - register 14 beschrijven
+   bit 0-2: komen overeen met de 3 hoogste bits van het 17 bits adres
+   bit 3-7: moeten geRESET zijn.
+ - byte wegschrijven naar commandopoort
+   bit 0-7: komen overeen met 8 laagste bits van 17 bits adres
+ - byte wegschrijven naar commando poort
+   bit 0-5: komen overeen met bit 8-13 van het 17 bits adres
+   bit 6  : geRESET betekent LEZEN, geSET betekend SCHRIJVEN
+   bit 7  : Moet geRESET zijn
+
+ In schema:
+
+ bit:        7    6    5     4     3     2     1     0
+ --------------------------------------------------------
+ byte 1:     0    0    0     0     0    Ab16  Ab15  Ab14
+ byte 2:     1    0    0     0     1     1     1     0
+ byte 3:    Ab7  Ab6  Ab5   Ab4   Ab3   Ab2   Ab1   Ab0
+ byte 4:     0   L/S  Ab13  Ab12  Ab11  Ab10  Ab9   Ab8
+
+ Betekenis:
+ Ab17/0      - VRAM adres bits, 17 bits voor 128k
+ L/S         - 0 lezen (I/O poort (#0006)+1)
+               1 schrijven (I/O poort (#0007)+1)
+
+
+ - Organisatie van het VIDEO geheugen:
+
+ Scherm:                            5        6        7        8
+ resolutie:                      256*212  512*212  512*212  256*212
+ bits per pixel:                    4        2        4        8
+ punten per byte:                   2        4        2        1
+ max aantal kleuren:               16        4       16       256
+ grootte van een pagina:           32k      32k      64k      64k
+ aantal pagina's:                   4        4        2        2
+ Eind adres in VRAM (begin=0):    #7FFF    #7FFF    #FCFF    #D3FF
+ (Dit betreft BSAVE,S adressen,
+  voor de schermen)
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

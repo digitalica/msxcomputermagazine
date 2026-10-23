@@ -1,0 +1,120 @@
+<html>
+
+<head>
+<title>MILC - Topic Partities</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_20.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_22.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Partities</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+PAR-WATTUS?
+
+Partities. Iedereen heeft het tegenwoordig over SCSI en over partities van
+zoveel Mega byte met die en die rechten. Wat zijn partities nu eigenlijk met
+die rechten ? Ik hoop dat in het volgende stukje wat duidelijker te maken.
+Het verhaal is niet specifiek gericht op programmeurs, maar een beetje kennis
+van diskettes (bijv. boot sector en sowieso sectoren/tracks) ben ik van uit
+gegegaan dat die aanwezig is (lees: ik leg dit niet uit).
+
+Wat zijn partities ?
+
+Een paritie is een aantal sectoren bij elkaar die voor het besturings systeem
+(DOS 2) aanspreekbaar zijn als een drive. Om te voorkomen dat we hier
+te diep op ingaan hoe dit in zijn werk gaat nemen we een voorbeeld:
+
+&quot;Bert heeft een harde schijf gekocht van 425 Mb en wil die aansluiten op zijn
+MSXje. Helaas gaat dit niet zomaar, Bert heeft een probleempje. Zijn DOS2 kan
+maar 65535 sectoren lezen. Een simpel rekensommetje leert ons dat 1 sector
+512 bytes lang is en dat DOS2 dus maximaal 32 Mb kan bestrijken van de 425 Mb.
+Niet echt een effectief gebruik dus.&quot;
+
+Dit kan anders. Lang geleden is iemand dit zelfde probleem tegen gekomen (op
+de PC). Om dit probleem op te lossen heeft diegene het volgende bedacht:
+
+De eerste sector van de Harde Schijf (voortaan HD, Hard Disc) is een speciale
+sector. Deze sector is het begin van de partitie tabel. Zo'n partitie sector
+bevat informatie over de daarop volgende partitie. Er staat hoe groot hij is,
+waar de werkelijke partitie begint (offset) ten opzichte van de partitie
+sector, de rechten (alleen op de MSX, niet op PC) en waar de volgende partitie
+sector te vinden is.
+Een hele hap. Misschien wordt het een en ander duidelijker in het volgende
+figuur;
+
+
+	partitie sector #0 - lengte van de partitie(32 Mb=65535=FFFF sectoren)
+			   - offset van de partitie (1 = volgende sector)
+			   - rechten van de partitie (later meer)
+			   - waar de volgende partitie sector staat -\
+	sector 0 t/m 0FFFFh = partitie A:			      |
+								      |
+								     /
+	partitie sector 010000h &lt;----------------------------------/
+	sector 010001h t/m 01FFFFh = partitie B:
+
+Overigens staat de 'h' voor hexadecimaal.
+De offset van de partitie is aanwezig om de mogelijkheid open te laten om
+meerdere partities in 1 partitie sector op te slaan. Deze manier van
+partitioneren is niet gebruikt bij de B.E.R.T. interface, hij kan het wel aan
+maar FDISK v2.1 en zodadelijk v2.2 kunnen deze niet aanmaken.
+Om te weten te komen waar de partitie begint hanteren we de volgende formule;
+  partitie sector nummer + offset = eerste sector van de partitie
+
+Vrij eenvoudig toch? Een voorbeeld: Stel onze huidige partitie sector nummer
+is 0h en de offset is 1 dan begint de partitie op de FYSIEKE sector 1.
+&quot;maar dan kan de MSX nooit de bootsector lezen want die staat bekend als
+sector 0 !&quot;
+Niet helemaal waar, binnen de partitie wordt er gehanteerd met zogenaamde
+logische sectoren. Deze logische sectoren kunt u ook zien als een soort
+offset. Want de fysieke sector 1 is in de MSX bekend als sector 0, juist de
+boot sector ! Het volgend figuur maakt het allemaal wat duidelijker;
+
+		  eerste partitie | tweede partitie
+			&lt;-------- | --------&gt;
+Fysiek  | 0 | 1 | 2 |	  |010000h|010001h|010002h|010003h|
+--------+---+---+---+-//-+-------+-------+-------+-------+-//
+Logisch | x | 0 | 1 |    | 65535 |   x   |   0   |   1   |
+	   |   |  |	     |	      |       |       |
+	   |   |  |	     |	      |       |       BEGIN FAT
+	   |   |  |	     |	      |       BOOT SECTOR
+	   |   |  |	     |	      PARTITIE SECTOR
+	   |   |  |	     |
+	   |   |  |	 LAATSTE SECTOR
+	   |   |  |
+	   |   |  BEGIN FAT
+	   |   BOOT SECTOR
+	   PARTITIE SECTOR
+
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_20.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_22.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

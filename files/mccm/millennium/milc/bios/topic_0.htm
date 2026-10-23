@@ -1,0 +1,763 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-1 BIOS-calls</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-1 BIOS-calls</b><br>
+    <i>Albert Beevendorp</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                                     MSX1BIOS calls
+                                 --------------
+
+Deze tekst bevat de MSX1 BIOS sprongen. Deze zullen feilloos op MSX2 werken. Er
+zijn ook calls voor MSX2 die in dit gedeelte ROM staan. Dit is gedaan om oa. de
+SUB-ROM die MSX2 heeft aan te roepen. Ook staan hier enkele sprongen die met de
+video-aansturing te maken hebben. Uiteraard staan deze ook in de  SUB-ROM. Daar
+meer over in de daarvoor bedoelde BIOS-lijst. De lijst met MSX1 calls komt nu:
+
+Naam   : CHKRAM (ook wel STARTUP, RESET of BOOT)
+Adres  : #0000
+Functie: Controleert RAM en initialiseert slots.
+Wijzig.: Alle registers
+Opm.   : Zodra dit achter de rug is, moet een sprong worden gemaakt naar INIT
+         voor verdere initialisatie.
+
+Naam   : RDSLT
+Adres  : #000C
+Functie: Leest de waarde van een adres in een ander slot.
+Input  : A  - ExxxSSPP
+              |   ||++ Primair  slotnummer  (00-11)
+              |   ++-- Secundair slotnummer (00-11)
+              +------- Expanded slot (0 voor nee, 1 voor ja)
+         HL - Het te lezen adres
+Output : A  - Bevat de waarde van het gelezen adres
+Wijzig.: AF, BC, DE
+Opm.   : Deze routine zet interupts uit maar niet meer aan.
+
+Naam   : CHRGTR
+Adres  : #0010
+Functie: Haalt volgende teken (of token) van Basic-tekst
+Input  : HL - Adres laatste teken
+Output : HL - Wijst naar volgende teken
+         A  - bevat het teken
+         C-flag gezet indien het een nummer is
+         Z-flag gezet indien einde statement
+Wijzig.: AF, HL
+
+Naam   : WRSLT
+Adres  : #0014
+Functie: Schrijft een waarde in een adres in een ander slot.
+Input  : A  - Slot waar waarde in moet komen
+              zie RDSLT voor input
+         HL - Adres van de te schrijven waarde
+         E  - Te schrijven waarde
+Wijzig.: AF, BC, D
+Opm.   : Zie RDSLT
+
+Naam   : OUTDO
+Adres  : #0018
+Functie: Uitvoer naar huidige uitvoerkanaal (printer, diskfile, enz.)
+Input  : A  - PRTFIL, PRTFLG
+Opm.   : Wordt gebruikt in Basic, in ML is lastig.
+
+Naam   : CALSLT
+Adres  : #001C
+Functie: Voert inter-slot call uit.
+Input  : IY - Hoge byte met wat in RDSLT in A moet
+         IX - Het aan te roepen adres
+Opm.   : Argumenten kunnen nooit worden meegegeven in de alternatieve registers
+         van de Z-80 of IX en IY
+
+Naam   : DCOMPR
+Adres  : #0020
+Functie: Vergelijk HL met DE
+Input  : HL, DE
+Output : Z-flag gezet indien HL en DE aan elkaar gelijk is.
+Wijzig.: AF
+
+Naam   : ENASLT
+Adres  : #0024
+Functie: Schakelt aangegeven slot op aangegeven pagina permanent in.
+Input  : A  - ExxxSSPP
+              +--+++++-- zie RDSLT voor opzet
+         H - Bit 6 en 7 moeten het pagina-nummer bevatten (00-11)
+
+Naam   : GETYPR
+Adres  : #0028
+Functie: Bepalen van type van laatst geevalueerde expressie
+Input  : VALTYP
+Output : Vlaggen
+Wijzig.: AF
+
+Naam   : CALLF
+Adres  : #0030
+Functie: Voert interslot call uit
+Output : Vlaggen
+Wijzig.: AF
+Opm.   : Wijze van Aanroep:
+         RST #30
+         DB bestemmings slot (zie RDSLT accu)
+         DW bestemmings adres
+
+Naam   : KEYINT
+Adres  : #0038
+Functie: Voert hardware-interupt uit, waaronder toetsenbord afhandeling
+
+Naam   : INITIO
+Adres  : #003B
+Functie: Initialiseert I/O naar randapparatuur
+Wijzig.: Alles
+
+Naam   : INIFNK
+Adres  : #003E
+Functie: Initialiseert van definities funktietoetsen
+Wijzig.: Alles
+
+Naam   : DISSCR
+Adres  : #0041
+Functie: Schakelt beeldscherm uit
+Wijzig.: AF, BC
+
+Naam   : ENASCR
+Adres  : #0044
+Functie: Schakelt beeldscherm aan
+Wijzig.: AF, BC
+
+Naam   : WRTVDP
+Adres  : #0047
+Functie: Schrijven naar VDP-register
+Input  : B - te schrijven data
+         C - nummer van het register
+Wijzig.: AF, BC
+
+Naam   : RDVRM
+Adres  : #004A
+Functie: Lezen van VRAM-adres
+Input  : HL - te lezen adres
+Output : A  - gelezen waarde
+Wijzig.: AF
+
+Naam   : WRTVRM
+Adres  : #004D
+Functie: Schrijven naar VRAM-adres
+Input  : HL - te schrijven adres
+         A  - te schrijven data
+Wijzig.: AF
+
+Naam   : SETRD
+Adres  : #0050
+Functie: Maak VDP gereed om te lezen. Wordt aangeroepen door RDVRM en LDIRMV
+Input  : HL - Adres (geloof ik)
+Wijzig.: AF
+
+Naam:  : SETWRT
+Adres  : #0053
+Functie: Maak VDP gereed om te schrijven. Wordt aangeroepen door WRTVRM, FILVRM,
+         en LDIRVM
+Input  : HL - Adres (geloof ik)
+Wijzig.: AF
+
+Naam   : FILVRM
+Adres  : #0056
+Functie: Vul VRAM met waarde
+Input  : A  - data
+         BC - lengte van te vullen blok
+         HL - beginadres van blok
+Wijzig.: AF, BC
+
+Naam   : LDIRMV
+Adres  : #0059
+Functie: Kopieer blok van VRAM naar gewoon geheugen
+Input  : BC - lengte van het te kopieren blok
+         DE - doeladres
+         HL - bronadres
+Wijzig.: Alles
+
+Naam   : LDIRVM
+Adres  : #005C
+Functie: Kopieer blok van gweoon geheugen naar VRAM
+Input  : BC - lengte van het te kopieren blok
+         DE - doeladres
+         HL - bronadres
+Wijzig.: Alles
+
+Naam   : CHGMOD
+Adres  : #005F
+Functie: Schakelt opgegeven schermmodus in.
+Input  : A  - in te schakelen scherm-modus
+Wijzig.: Alles
+
+Naam   : CHGCLR
+Adres  : #0062
+Functie: Verandert de schermkleuren
+Input  : A=schermmode
+         FORCLR=voorgrondkleur
+         BAKCLR=achtergrondkleur
+         BDRCLR=borderkleur
+Wijzig.: Alles
+
+Naam   : NMI
+Adres  : #0066
+Functie: Voert non-maskable interupts uit
+
+Naam   : CLRSPR
+Adres  : #0069
+Functie: Initialiseert alle sprites
+Input  : SCRMOD
+Wijzig.: Alles
+
+Naam   : INITXT
+Adres  : #006C
+Functie: Schakelt naar SCREEN 0 (tekst-scherm met 40*24 tekens)
+Input  : TXTNAM, TXTCGP
+Wijzig.: Alles
+
+Naam   : INIT32
+Adres  : #006F
+Functie: Schakelt naar SCREEN 1 (tekst-scherm met 32*24 tekens)
+Input  : T32NAM, T32CGP, T32COL, T32ATR, T32PAT
+Wijzig.: Alles
+
+Naam   : INIGRP
+Adres  : #0072
+Functie: Schakelt naar SCREEN 2 (hoge resolutie-scherm 256*192 pixels)
+Input  : GRPNAM, GRPCGP, GRPCOL, GRPATR, GRPPAT
+Wijzig.: Alles
+
+Naam   : INIMLT
+Adres  : #0075
+Functie: Schakelt naar SCREEN 3 (multi-color scherm 64*48 pixels)
+Input  : MLTNAM, MLTCGP, MLTCOL, MLTATR, MLTPAT
+Wijzig.: Alles
+
+Naam   : SETTXT
+Adres  : #0078
+Functie: Schakelt VDP in SCREEN 0 modus
+Input  : Zie INITXT
+Wijzig.: Alles
+
+Naam   : SETT32
+Adres  : #007B
+Functie: Schakelt VDP in SCREEN 1 modus
+Input  : Zie INIT32
+Wijzig.: Alles
+
+Naam   : SETGRP
+Adres  : #007E
+Functie: Schakelt VDP in SCREEN 2 modus
+Input  : Zie INIGRP
+Wijzig.: Alles
+
+Naam   : SETMLT
+Adres  : #0081
+Functie: Schakelt VDP in SCREEN 3 modus
+Input  : Zie INIMLT
+Wijzig.: Alles
+
+Naam   : CALPAT
+Adres  : #0084
+Functie: Geeft beginadres van sprite-patroon tabel
+Input  : A  - Sprite ID (nummer)
+Output : HL - Adres van spritetabel van ID
+Wijzig.: AF, DE, HL
+
+Naam   : CALATR
+Adres  : #0087
+Functie: Geeft beginadres van sprite-attribuut tabel
+Input  : A  - Sprite ID
+Output : HL - Adres van sprite-attribuut tabel van ID
+Wijzig.: AF, DE, HL
+
+Naam   : GSPSIZ
+Adres  : #008A
+Functie: Geeft huidige sprite-afmeting
+Output : A  - Sprite-afmeting in aantal bytes
+         C-flag gezet indien 16*16 sprites gebruikt worden anders C-flag gereset
+Wijzig.: AF
+
+Naam   : GRPPRT
+Adres  : #008D
+Functie: Plaatst teken op het grafische scherm
+Input  : A  - ASCII waarde te printen teken
+         LOGOPR (bij scherm 5-8) bevat code logische operatie
+
+Naam   : GICINI
+Adres  : #0090
+Functie: Initialiseert PSG en vaste gegevens voor het PLAY-commando
+Wijzig.: Alles
+
+Naam   : WRTPSG
+Adres  : #0093
+Functie: Schrijft waarde in PSG-register
+Input  : A  - PSG register nummer
+         E  - te schrijven waarde
+
+Naam   : RDPSG
+Adres  : #0096
+Functie: Leest waarde uit PSG-register
+Input  : A  - te lezen PSG-register
+Output : A  - gelezen waarde
+
+Naam   : STRTMS
+Adres  : #0099
+Functie: Controleert/start achtergrond taken voor PLAY
+Wijzig.: Alles
+
+Naam   : CHSNS
+Adres  : #009C
+Functie: Controleert de status van de toetsenbord-buffer
+Output : Z-flag gezet indien buffer gevuld is
+Wijzig.: AF
+Opm    : Volgens mijn gegevens is de Z-flag=1 als buffer leeg.
+
+Naam   : CHGET
+Adres  : #009F
+Functie: Wachten op en binnenhalen van invoer toetsenbord
+Output : A  - ASCII-code van gelezen teken
+Wijzig.: AF
+
+Naam   : CHPUT
+Adres  : #00A2
+Functie: Stuurt teken naar console (scherm)
+Input  : A  - ASCII-code te plaatsen teken
+
+Naam   : LPTOUT
+Adres  : #00A5
+Functie: Stuurt teken naar printer
+Input  : A  - ASCII-code te printen teken
+Output : C-flag=1 indien uitvoer werd afgebroken
+Wijzig.: F
+
+Naam   : LPTSTT
+Adres  : #00A8
+Functie: Controleer printer status
+Output : A=#FF en Z-flag gereset indien printer klaar is
+         A=#00 en Z-flag gezet indien dat niet zo is
+Wijzig.: AF
+
+Naam   : CNVCHR
+Adres  : #00AB
+Functie: Controleert op grafisch voorloop-byte (CHR$(1)) en converteert codes
+Input  : A  - karaktercode
+Output : C-flag gereset indien grafisch voorloop byte
+         C-flag en Z-flag gezet indien grafisch geconverteerde code in A
+         C-flag gezet en Z-flag gereset indien indien niet geconverteerde code
+Wijzig.: AF
+
+Naam   : PINLIN
+Adres  : #00AE
+Functie: Accepteert een regel van toetsenbord en beeldscherm tot een CR of
+         CTRL-STOP ingetypt wordt en slaat de regel op in een buffer
+Output : HL - Eindadres buffer minus 1
+         C-flag gezet indien CTRL-STOP werd ingedrukt
+Wijzig.: Alles
+
+Naam   : INLIN
+Adres  : #00B1
+Functie: Zie PINLIN, behalve wanneer AUTFLG wordt gezet
+Output : HL - Eindadres buffer minus 1
+         C-flag gezet indien CTRL-STOP werd ingedrukt
+Wijzig.: Alles
+
+Naam   : QINLIN
+Adres  : #00B4
+Functie: Print een vraagteken en een spatie en gaat dan naar INLIN
+Output : HL - Eindadres buffer minus 1
+         C-flag gezet indien CTRL-STOP werd ingedrukt
+Wijzig.: Alles
+
+Naam   : BREAKX
+Adres  : #00B7
+Functie: Controleert status van de CTRL-STOP toetscombinatie
+Output : C-flag gezet indien ingedrukt
+Wijzig.: AF
+Opm.   : Deze routine wordt gebruikt indien de interupts niet werken.
+
+Naam   : ISCNTC
+Adres  : #00BA
+Functie: Controleert de status van de SHIFT-STOP toets
+Opm    : BASIC keert terug naar de commando-mode bij toetsindruk
+
+Naam   : CKCNTC
+Adres  : #00BD
+Functie: Zelfde als ISCNTC. Wordt gebruikt in Basic
+
+Naam   : BEEP
+Adres  : #00C0
+Functie: Laat beep-geluid horen
+Wijzig.: Alles
+
+Naam   : CLS
+Adres  : #00C3
+Functie: Wist beeldscherm
+Wijzig.: AF, BC, DE
+Opm.   : De Z-flag moet gezet zijn om de routine te kunnen draaien. Een XOR A
+         volstaat meestal wel.
+
+Naam   : POSIT
+Adres  : #00C6
+Functie: Plaatst cursor op aangegeven positie
+Input  : H  - kolom
+         L  - regel
+Wijzig.: AF
+
+Naam   : FNKSB
+Adres  : #00C9
+Functie: Controleert of de funktietoets teksten aanstaan. Indien dat het geval
+         is dan worden de teksten afgedrukt. Zo niet, doet het niets
+Input  : FNKFLG
+Wijzig.: Alles
+Opm    : Volgens mijn gegevens is input: CNSDFG
+
+Naam   : ERAFNK
+Adres  : #00CC
+Functie: Uitschakelen funktietoetsen-display en geeft een extra regel
+Wijzig.: Alles
+
+Naam   : DSPFNK
+Adres  : #00CF
+Functie: Laat funktietoetsen display zien en verwijdert de laatste regel
+Wijzig.: Alles
+
+Naam   : TOTEXT
+Adres  : #00D2
+Functie: Dwingt het scherm in tekst-modus
+Wijzig.: Alles
+
+Naam   : GTSTCK
+Adres  : #00D5
+Functie: Geeft de huidige joystick status
+Input  : A  - Joystick ID (0=cursors, 1 en 2 voor resp. poort 1 en 2)
+Output : A  - Richting
+Wijzig.: Alles
+
+Naam   : GTTRIG
+Adres  : #00D8
+Functie: Geeft de huidige vuurknop status
+Input  : A  - Vuurknop ID (0=spatiebalk. 1, 2, 3, 4 voor resp. poort 1 knop A,
+                           poort 2 knop A, poort 1 knop B, port 2 knop B)
+Output : A  - #00 indien niet ingedrukt
+              #FF indien  wel ingedrukt
+Wijzig.: AF
+
+Naam   : GTPAD
+Adres  : #00DB
+Functie: Geeft huidige touchpad status
+Input  : A  - Touchpad ID
+Output : A  - Waarde
+Wijzig.: Alles
+
+Naam   : GTPDL
+Adres  : #00DE
+Functie: Geeft huidige waarde van de paddle
+Input  : A  - Paddle ID
+Output : A  - Waarde van ID
+
+Naam   : TAPION
+Adres  : #00E1
+Functie: Zet cassette motor aan en leest de header
+Output : C-flag gezet indien werd afgebroken
+Wijzig.: Alles
+
+Naam   : TAPIN
+Adres  : #00E4
+Functie: Invoer van cassette
+Output : A  - gelezen waarde
+         C-flag gezet indien werd afgebroken
+Wijzig.: Alles
+
+Naam   : TAPIOF
+Adres  : #00E7
+Functie: Stopt het cassette lezen
+
+Naam   : TAPOON
+Adres  : #00EA
+Functie: Zet cassette motor aan en schrijft de header
+Input  : A = #00 voor een korte header
+          &lt;&gt; #00 voor een lange header
+Output : C-flag gezet indien werd afgebroken
+Wijzig.: Alles
+
+Naam   : TAPOUT
+Adres  : #00ED
+Functie: Uitvoer naar cassette
+Input  : A  - Te schrijven data
+Output : C-flag gezet indien werd afgebroken
+Wijzig.: Alles
+
+Naam   : TAPOOF
+Adres  : #00F0
+Functie: Stopt het schrijven naar cassette
+
+Naam   : STMOTR
+Adres  : #00F3
+Functie: Stuur cassette motor
+Input  : A  - #00 voor motor uit
+              #01 voor motor aan
+              #FF voor motor switch (indien motor uit dan aan en vice versa)
+Wijzig.: AF
+
+Naam   : LFTQ
+Adres  : #00F6
+Functie: Geeft aantal bytes in queue op
+Input  : A  - nummer van queue
+Output : A  - lengte queue in bytes
+Wijzig.: AF,BC,HL
+Opm.   : Intern gebruik
+
+Naam   : PUTQ
+Adres  : #00F9
+Functie: Zet byte in queue
+Input  : A  - nummer van queue
+         E  - waarde
+Output : Z-vlag=1: queue vol
+Wijzig.: AF,BC,HL
+Opm.   : Intern gebruik
+
+Naam   : RIGHTC
+Adres  : #00FC
+Functie: Schuift beeldpunt naar rechts
+Wijzig.: AF
+
+Naam   : LEFTC
+Adres  : #00FF
+Functie: Schuift beeldpunt naar links
+Wijzig.: AF
+
+Naam   : UPC
+Adres  : #0102
+Functie: Schuift beeldpunt naar boven
+Wijzig.: AF
+
+Naam   : TUPC
+Adres  : #0105
+Functie: Test of UPC mogelijk is, indien mogelijk wordt UPC uitgevoerd
+Output : C-flag gezet indien operatie buiten scherm zou eindigen
+Wijzig.: AF
+
+Naam   : DOWNC
+Adres  : #0108
+Functie: Schuift beeldpunt naar beneden
+Wijzig.: AF
+
+Naam   : TDOWNC
+Adres  : #010B
+Functie: Test of DOWNC mogelijk is, indien mogelijk wordt DOWNC uitgevoerd
+Output : C-flag gezet indien operatie buiten scherm zou eindigen
+Wijzig.: AF
+
+Naam   : SCALXY
+Adres  : #010E
+Functie: Controle of punt binnen scherm valt. Bij negatief resultaat wordt
+         omgeschaald.
+Input  : BC=x-positie
+         DE=y-positie
+Output : BC=&quot;nieuwe&quot; x-positie
+         DE=&quot;nieuwe&quot; y-positie
+Wijzig.: AF
+
+Naam   : MAPXY
+Adres  : #0111
+Functie: Omzetten coordinaten in absoluut adres
+Input  : BC=x-positie
+         DE=y-positie
+Output : SCREEN 2-4: HL=adres; A=masker
+         SCREEN 5-8: HL=x-positie; A=y-positie
+
+Naam   : FETCHC
+Adres  : #0114
+Functie: Haalt huidige cursor-adres en masker-patroon
+Output : HL - Cursor-adres
+         A  - Maskerpatroon
+
+Naam   : STOREC
+Adres  : #0117
+Functie: Slaat huidige cursor-adres en masker-patroon op
+Input  : HL - Cursor-adres
+         A  - Masker-patroon
+
+Naam   : SETATR
+Adres  : #011A
+Functie: Veranderen van werkkleur voor grafische acties
+Input  : A  - werkkleur
+Output : C-vlag=1 bij ongeoorloofde code
+Wijzig.: F
+
+Naam   : READC
+Adres  : #011D
+Functie: Bepalen van kleur van huidige pixel
+Wijzig.: F
+
+Naam   : SETC
+Adres  : #0120
+Functie: Veranderen van kleur van huidige pixel
+Wijzig.: AF
+
+Naam   : NSETCX
+Adres  : #0123
+Functie: Zetten van pixels in horizontale richting
+Input  : HL=teller
+Wijzig.: alle
+
+Naam   : GTASPC
+Adres  : #0126
+Functie: Haalt beeld-verhoudingen op
+Output : DE, HL
+
+Naam   : PNTINI
+Adres  : #0129
+Functie: Initaliseert de PAINT-instructie
+Wijzig.: AF
+
+Naam   : SCANR
+Adres  : #012C
+Functie: Scant beeldpunten naar rechts bij PAINT
+Input  : B=pseudo vlag
+         DE=randteller
+Output : C=verandere vlag
+         DE=randteller
+Wijzig.: alle
+
+
+Naam   : SCANL
+Adres  : #012F
+Functie: Scant beeldpunten naar links bij PAINT. Zie SCANR
+
+Naam   : CHGCAP
+Adres  : #0132
+Functie: Verandert status van CAPS-lock lamp
+Input  : A  - #00 voor lamp aan
+         niet #00 voor lamp uit
+Wijzig.: AF
+
+Naam   : CHGSND
+Adres  : #0135
+Functie: Verandert status van de 1-bit geluidspoort
+Input  : A  - #00 om uit te zetten
+         niet #00 om aan te zetten
+Wijzig.: AF
+
+Naam   : RSLREG
+Adres  : #0138
+Functie: Leest het primaire slot register
+Output : A  - Gelezen slotstructuur:
+              33221100
+              ||||||++-- Pagina 0 (#0000-#3FFF)
+              ||||++---- Pagina 1 (#4000-#7FFF)
+              ||++------ Pagina 2 (#8000-#BFFF)
+              ++-------- Pagina 3 (#C000-#FFFF)
+Wijzig.: A
+
+Naam   : WSLREG
+Adres  : #013B
+Functie: Schrijft naar het primaire slotregister
+Input  : A  - Te schrijven slotstructuur (zie RSLREG)
+
+Naam   : RDVDP
+Adres  : #013E
+Functie: Leest VDP status-register
+Output : A  - Gelezen waarde
+
+Naam   : SNSMAT
+Adres  : #0141
+Functie: Geeft status van gespecificeerde toetsenbord-matrix rij
+Input  : A  - Te lezen rij
+Output : A  - Status van rij (overeenkomstig bit wordt 0 bij contact)
+Wijzig.: AF
+Opm.   : Voor meer uitleg over het toetsenbord-matrix verwijs ik naar MCM-52
+
+Naam   : PHYDIO
+Adres  : #0144
+Functie: Voert I/O uit voor massa-opslag media zoals diskettes
+Input  : B  - Aantal sectoren
+         C  - Media ID van de diskette
+         DE - Begin sector
+         HL - Beginadres in geheugen
+Wijzig.: Alles
+Opm.   : Voordat de call wordt aangeroepen, moet de Z-flag gereset zijn en het
+         executie-adres dat in HL stond op de laatste stack-adres staan.
+         Overigens is voor de minimum configuratie alleen een HOOK beschikbaar.
+
+Naam   : FORMAT
+Adres  : #0147
+Functie: Initialiseert massa-opslag media zoals het formatteren van diskettes
+Wijzig.: Alles
+Opm.   : In de minimum configuratie alleen een HOOK beschikbaar.
+
+Naam   : ISFLIO
+Adres  : #014A
+Functie: Controleert of I/O naar randapparaat plaatsvindt
+Output : A  - #00 indien niet bezig
+         niet #00 indien  wel bezig
+Wijzig.: AF
+
+Naam   : OUTDLP
+Adres  : #014D
+Functie: Voert uit naar printer
+Input  : A  - te printen code
+Wijzig.: F
+Opm.   : Verschillen met LPTOUT:
+         1) TABs worden ge-expandeerd tot spaties
+         2) Hiragana en graphics worden geconverteerd bij een niet-MSX printer
+         3) Bij afbreken CTRL-STOP wordt een sprong gemaakt naar ERROR 19
+
+Naam   : GETVCP
+Adres  : #0150
+Functie: Opvragen van pointer naar muziek-wachtrij
+Input  : A  - Kanaal-nummer
+Output : HL - Pointer
+Wijzig.: AF
+Opm.   : Wordt alleen gebruikt om muziek te spelen op de achtergrond
+
+Naam   : GETVC2
+Adres  : #0153
+Functie: Geef pointer naar variabele in wachtrij nummer VOICEN (byte op #FB38)
+Input  : L  - Pointer in muziekbuffer
+Output : HL - Pointer
+Wijzig.: AF
+
+Naam   : KILBUF
+Adres  : #0156
+Functie: Maakt toetsenbord-buffer leeg
+Wijzig.: HL
+
+Naam   : CALBAS
+Adres  : #0159
+Functie: Voert far_call uit naar de Basic-interpreter
+Input  : IX - Aanroep-adres
+Output : Hangt van de aangeroepen functie af
+Wijzig.: Idem
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

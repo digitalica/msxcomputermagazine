@@ -1,0 +1,458 @@
+<html>
+
+<head>
+<title>MILC - Topic Sliding into bdos [1/6]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_12.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_14.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Sliding into bdos [1/6]</b><br>
+    <i>M.J.Karas</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+[ Converted Mnemonics to Z80, -PG ]
+
+                        SLIDING INTO BDOS
+
+                     THE SMOOTH AND EASY WAY
+
+
+                                   by: Michael J. Karas
+                                       2468 Hansen Court
+                                       Simi Valley, CA 93065
+
+
+     What  is this thing everybody is talking about called  BDOS? 
+This  series will attempt to answer this question in some  detail 
+but  first we need a little basis to understand WHY in the  first 
+place.  Digital  Research CP/M is an operating system for smaller 
+type micro processor computer systems that is designed to  remove 
+much of the normal computer operation drudgery experienced by the 
+computer  operator.  The  operating  system software  embodies  a 
+&quot;system  philosophy&quot;  that structures and  generalizes  upon  the 
+operating  environment  of a piece of electronics  hardware.  The 
+environment  presented  actually  allows  that  piece  of  quiet, 
+transistorized machinery to be used at a much higher  level.  The 
+full  impact of what this operating system provides to a computer 
+is  most probably felt by the typical micro computer hacker  that 
+worked  the  hard way to get a computer system  up  and  running. 
+While  building,  debugging,  and  integrating  the  pieces,  the 
+computer  was just a whole bunch of parts interfaced together  in 
+an  organized  manner.  However,  when  the thing  is  finally  a 
+&quot;computer&quot; how does it get used.  The low level process of poking 
+data into memory from a front panel or even filling,  dumping, or 
+block  moving  memory data with an EPROM based &quot;monitor  program&quot; 
+hardly  makes this computer &quot;useful&quot;.  The process of putting  on 
+disks  and  bringing  up  CP/M  lights  the  torch  for  computer 
+usability.  In this case the hacker experiences an elated feeling 
+now &quot;NOW I CAN DO SOMETHING!&quot;
+
+     Buried inside of the total operating system presentation  is 
+the   concept  of  generalization  brought  up  in  the  previous 
+paragraph.  One  of  the major requirements in order  to  make  a 
+computer  useful  is that there has to be  applications  software 
+that  performs  the  jobs intended for the  computer.  Jobs  like 
+accounting,  word  processing,  spread sheet  data  analysis,  or 
+inventory   control.   Unfortunately  the  process  of  producing 
+applications software is very, very expensive. A good package may 
+take anywhere from one to ten man years of development effort  to 
+make.  If the process of making an applications package had to be 
+custom  taylored to a specific hardware environment,  then  there 
+would  not be affordable software available for use upon a  given 
+XYZ  computer.  Generalization  in the operation  of  a  computer 
+environment  solves this problem however.  With the understanding 
+that at a certain level &quot;all microprocessor computer systems  are 
+alike&quot; it is possible,  with minimum constraints, to define a set 
+of logical type operations that make a computer useful. 
+
+     This  logical  set of operations,  for the Digital  Research 
+CP/M operating system,  is defined within the BDOS portion of the 
+operating system.  Here in about 3 1/2 K bytes of tightly written 
+assembly  language is the &quot;generalization converter&quot;  that  takes 
+I/O  requests for hardware independant applications programs  and 
+turns them into a lower level set of simplistic hardware oriented 
+functions  that  are  then  processed  through  the  BIOS.   This 
+conversion  process is beneficial in the light that CP/M Ver  2.2 
+can be setup to run on a typical brand XYZ computer for about one 
+half  of  the effort needed to convert even one of  the  simplest 
+application  packages  had  that application been  written  in  a 
+hardware  dependant manner.  Conclusion;  software developers can 
+make better,  more sophisticated applications available for lower 
+cost  and computer users find a competitive software market place 
+where  there  are  many times multiple  packages  available  that 
+perform similar functions.
+
+     The  thrust of this presentation is to show the  prospective 
+applications  programmer  how to use most of the generalized  set 
+of  &quot;BDOS System Calls&quot; within Digital Researches CP/M  Ver  2.2. 
+The presentation scheme will be to describe all of the  functions 
+and  use  simple examples.  The reader is assumed to be  modistly 
+familiar  with 8080 Assembly Language Programming as all  of  the 
+examples  will be given in machine language.  Likewise,  in  this 
+environment  it  is  assumed  by  default  that  the  prospective 
+programmer  is planning to code in assembly language.  If a  CP/M 
+compatible  high level language is used for programming,  such as 
+Digital  Research PL/I-80 or Microsoft BASIC-80,  then of  course 
+the  program  interface  at  the  &quot;System  Call&quot;  level   becomes 
+transparent to the programmer. Run time subroutines make the high 
+level  coded application get converted through yet another  step. 
+(One major reason applications code in a high level language runs 
+slower   than   the  equivalent  function  written  in   assembly 
+language).
+
+SUMMARY OF CP/M SYSTEM CALLS 
+
+     The  set of system or &quot;BDOS&quot; I/O entry points  available  to 
+the CP/M programmer is complete yet simple. The primary beauty of 
+the  CP/M  system  is  this small  world  of  completeness.  Many 
+programmers  familair with other operating systems complain  that 
+the CP/M system is weak,  unflexible, and incomplete. However, in 
+a  microprocessor type computer world,  the generalization  level 
+defined for the CP/M system allows 85% of all microprocessor type 
+appliciation jobs to be programmed with relative ease.  Also,  in 
+my  opinion,  8-bit microprocessor hardware is easily capable  of 
+performing  about  90 percent of the typical tasks  targeted  for 
+microcomputers.  So  what is this set of functions?  The chart of 
+Figure 1 summarizes,  in function number order, all of the system 
+operations  specific to CP/M Version 2.2 that will be covered  in 
+this  presentation.  In the subsequent sections that  follow  the 
+functions  will  be  grouped  into  categories  so  that  related 
+operations may become familiar with reference to one another.
+
+       FIGURE 1. DETAILED SUMMARY OF CP/M 2.2 SYSTEM CALLS
+
+
+Function                           Entry Value to     Return Value from
+ Number                            BDOS Passed in       BDOS Passed in 
+DEC  HEX     Function             (DE) or (E) regs   (HL) or (A) register
+-------------------------------------------------------------------------
+ 0    00 | System Reset           |      ****        |      ****        |
+ 1    01 | Console Input          |      ****        | (A)=character    |
+ 2    02 | Console Output         | (E)=character    |      ****        |
+ 3    03 | Reader Input           |      ****        | (A)=character    |
+ 4    04 | Punch Output           | (E)=character    |      ****        |
+ 5    05 | Printer Output         | (E)=character    |      ****        |
+ 6    06 | Direct Console I/O     | (E)=0FFH is input| (A)=character    |
+         |                        | (E)=chr is output|      ****        |
+ 7    07 | Get IOBYTE             |      ****        | (A)=IOBYTE       |
+ 8    08 | Set IOBYTE             | (E)=IOBYTE       |      ****        |
+ 9    09 | Display Console String | (DE)=string addr |      ****        |
+10    0A | Input Console String   | (DE)=string addr | (A)=# chr input  |
+11    0B | Get Console Status     |      ****        | (A)=000H idle    |
+         |                        |                  | (A)=0FFH ready   |
+12    0C | Get CP/M Version Number|      ****        | (HL)=Version #   |
+13    0D | Reset Disk Subsystem   |      ****        |      ****        |
+14    0E | Select Disk Drive      | (E)=disk number  |      ****        |
+15    0F | Open a File            | (DE)=FCB address | (A)=dir code     |
+16    10 | Close a File           | (DE)=FCB address | (A)=dir code     |
+17    11 | Search for File        | (DE)=FCB address | (A)=dir code     |
+18    12 | Search for Next        |      ****        | (A)=dir code     |
+19    13 | Delete File            | (DE)=FCB address | (A)=dir code     |
+20    14 | Read next Record       | (DE)=FCB address | (A)=error code   |
+21    15 | Write next Record      | (DE)=FCB address | (A)=error code   |
+22    16 | Create New File        | (DE)=FCB address | (A)=dir code     |
+23    17 | Rename File            | (DE)=FCB address | (A)=dir code     |
+24    18 | Get Login Vector       |      ****        | (HL)=login vector|
+25    19 | Get Logged Disk Number |      ****        | (A)=logged disk  |
+26    1A | Set R/W Data Buff Addr | (DE)=buffer addr |      ****        |
+27    1B | Get Allocation Vector  |      ****        | (HL)=alloc vector|
+         |                        |                  |      address     |
+28    1C | Write Protect Disk     | (E)=disk number  |      ****        |
+29    1D | Get Read Only Vector   |      ****        | (HL)=R/O vector  |
+30    1E | Set File Attributes    | (DE)=FCB address | (A)=dir code     |
+31    1F | Get Addr of Disk Parms |      ****        | (HL)=parm addr   |
+32    20 | Get/Set User Select    | (E)=0FFH get     | (A)=current user |
+33    21 | Read Random Record     | (DE)=long FCB adr| (A)=error code   |
+34    22 | Write Random Record    | (DE)=long FCB adr| (A)=error code   |
+35    23 | Get Size of File       | (DE)=long FCB adr| (r0-2=rec cnt)   |
+36    24 | Set Random Record Num  | (DE)=long FCB adr| (r0-2=rec numb)  |
+37    25 | Reset Drive            | (DE)=drive vector|      ****        |
+38    26 | Not used               |                  |                  |
+39    27 | Not used               |                  |                  |
+40    28 | Write Random with      | (DE)=long FCB adr| (A)=error code   |
+-------------------------------------------------------------------------
+     The  technical means required to &quot;use&quot; or interface  to  the
+CP/M system for each function contains a certain common structure 
+that  will  be discussed here.  The base memory page  of  a  CP/M 
+system memory map includes,  at a specific memory address, a JUMP 
+instruction  to the CP/M BDOS entry point.  For most CP/M systems 
+this is address 00005H.  To accomplish BDOS I/O the number of the 
+function  is  placed  into the (C)  register.  If  the  parameter 
+requires  input  parameters,  then they are passed  in  the  (DE) 
+register  pair  or  the individual (E)  register  depending  upon 
+whether the parameter is a word or byte value. Result information 
+returned  by some functions is sent back to the users program  in 
+either  the (A) register or the (HL) register pair depending upon 
+if  the  value is a byte or word.  The following  simple  program 
+segment demonstrates the scheme used to output the 26  characters 
+A-Z to the console screen through the use of function number 2.
+
+
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+CONOUT  EQU     2               ; OUTPUT FUNCTION
+
+        ORG     0100H           ; TPA BASE
+        LD      B,26            ; PRINT 26 COUNTER
+        LD      C,'A'           ; START WITH 'A'
+;
+LOOP:
+        PUSH    BC              ; SAVE COUNTER &amp; LETTER
+        LD      E,C             ; LETTER TO (E) FOR OUTPUT
+        LD      C,CONOUT        ; BDOS FUNC TO (C)
+        CALL    BDOS            ; GO GO OUTPUT
+        POP     BC
+        INC     C               ; SEQUENCE TO NEXT CHAR
+        DEC     B               ; DECREASE CHR COUNTER
+        JP      NZ,LOOP         ; MORE TO DO IF NOT TO ZERO
+        RET                     ; IMMEDIATE CCP RETURN
+
+
+SYSTEM CALLS FOR OPERATOR CONSOLE INPUT AND OUTPUT
+
+     Intrinsic   to   the  operation  of  any  computer   system, 
+especially  of  the CP/M gender,  is the  operator  console.  The 
+device  provides  the human interface to the machine and as  such 
+the  BDOS  includes a generalized set of  operator  communication 
+functions  to  perform I/O with the console device.  The  various 
+options available will each be presented with a brief example.
+
+
+INPUT FROM CONSOLE KEYBOARD: Function 1.
+
+     This  function waits for and reads in a character  from  the 
+console  device keyboard.  The operator typed character is echoed 
+automatically back to the console display if the character is  an 
+ASCII  printable  character  (020H to 07EH) or it is  a  carriage 
+return,  line  feed,  back  space,  or tab.  Note that  the  BDOS 
+automatically expands tabs to columns of eight  characters.  Upon 
+outputting  the  character  for the echo,  a check  is  made  for 
+console  start/stop,  CTL-S,  and if so the console input routine 
+does not return to the users program until another arbitrary  key 
+is depressed.
+
+      
+;CONSOLE INPUT EXAMPLE
+;
+CONIN   EQU     001H            ; FUNC # 1
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+
+        ORG     0100H           ; START
+        LD      C,CONIN         ; FUNCTION
+        CALL    BDOS            ; GO GET CHARACTER
+        LD      (INCHAR),A      ; SAVE FOR WHATEVER REASON
+        RET                     ; IMMEDIATE CCP RETURN
+;
+INCHAR:
+        DEFS    1               ; PLACE TO STORE INPUT CHAR
+;
+        END
+
+
+OUTPUT TO CONSOLE DISPLAY: Function 2.
+
+     The  ASCII  character  in the (E) register is  sent  to  the 
+console display device. The output may be any byte value but many 
+times  the hardware driver BIOS routines automatically strip  off 
+the  upper  bit of the byte.  Upon output the printer  echo  flag 
+within  BDOS is checked (CTL-P) and if set the character is  also 
+sent  to  the  printer  peripheral device.  Note  that  the  BDOS 
+automatically expands output tabs to columns of eight characters. 
+Upon  outputting  the  character a check is  made  for  input  of 
+console start/stop,  CTL-S,  and if so the console output routine 
+does  not return to the users program until another arbitrary key 
+is depressed.
+
+      
+;CONSOLE OUTPUT EXAMPLE
+;
+CONOUT  EQU     002H            ; FUNC # 2
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+
+        ORG     0100H           ; START
+        LD      A,(OUTCHAR)     ; GET CHARACTER TO OUTPUT
+        LD      E,A
+        LD      C,CONOUT        ; FUNCTION
+        CALL    BDOS            ; GO SEND CHARACTER
+        RET                     ; IMMEDIATE CCP RETURN
+;
+OUTCHAR:
+        DEFB    'X'             ; PLACE TO GET OUTPUT CHAR
+;
+        END
+
+
+DIRECT USER INTERFACE TO CONSOLE: Function 6.
+
+     Some  programming  applications require that  the  BDOS  not 
+monitor  the  input/output  character  stream  as  is  done  with 
+functions  1  &amp; 2.  To allow for these functions the  direct  I/O 
+function is supported. The following example shows how it is used 
+to  input values and echo them until an input control-Z character 
+is typed.
+
+;DIRECT CONSOLE I/O EXAMPLE
+;
+DIRCIO  EQU     006H            ; FUNCTION NUMBER
+BDOS    EQU     0005H           ; SYSTEM ENTRY POINT
+CTLZ    EQU     'Z'-040H        ; ASCII CTL-Z CHARACTER
+INPUT   EQU     0FFH            ; DIRECT INPUT FLAG
+
+        ORG     0100H           ; CONSOLE INPUT
+;
+LOOP:
+        LD      E,INPUT         ; SET FOR INPUT
+        LD      C,DIRCIO        ; FUNCTION
+        CALL    BDOS            ; GET INPUT OR STATUS
+        OR      A               ; IF (A)=0 NO CHAR WAS READY
+        JP      Z,LOOP          ; CONTINUE TO WAIT FOR INPUT
+        CP      CTLZ            ; IF INPUT WAS CTL Z THEN END
+        RET     Z               ; CCP RETURN ON END
+        LD      E,A             ; CHARACTER TO (E) FOR OUTPUT
+        LD      C,DIRCIO        ; SAME FUNCTION NUMBER AGAIN
+        CALL    BDOS            ; GO OUTPUT IT
+        JP      LOOP            ; NEXT CHARACTER INPUT LOOP
+;
+        END
+
+
+
+PRINTING STRINGS OF CHARACTERS TO THE CONSOLE: Function 9.
+
+     Message  string  sequences of characters to be sent  to  the 
+console  are quite common in  applications  programming.  Typical 
+uses  may be for user prompt messages,  program sign-on  messages 
+etc.  The  BDOS  provides  a convenient mechanism  to  allow  the 
+programmer  to  output a whole string of characters  rather  than 
+having  to  loop with single character  outputs.  The  string  is 
+intended  to  be stored in consecutive memory locations  and  end 
+with  the  ASCII '$' character.  The (DE) registers are  used  to 
+point to the start of the string.  The '$' signals the end of the 
+string  to  display and is not sent to the  console.  The  output 
+bytes  may be any 8-bit value but many times the hardware  driver 
+BIOS  routines automatically strip off the upper bit of the byte. 
+Upon  output of each character the printer echo flag within  BDOS 
+is  checked (CTL-P) and if set the character is also sent to  the 
+printer  peripheral  device.  Note that  the  BDOS  automatically 
+expands  output  tabs  to  columns  of  eight  characters.   Upon 
+outputting  each  character a check is made for input of  console 
+start/stop,  CTL-S,  and if so the console string output  routine 
+does  not return to the users program until another arbitrary key 
+is depressed.
+      
+
+;CONSOLE STRING PRINT EXAMPLE
+;
+CONSTR  EQU     009H            ; FUNC # 9
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+CR      EQU     0DH             ; ASCII CARRIAGE RETURN
+LF      EQU     0AH             ; ASCII LINE FEED
+
+        ORG     0100H           ; START
+        LD      DE,MESSAGE      ; POINT AT STRING TO SEND
+        LD      C,CONSTR        ; FUNCTION
+        CALL    BDOS            ; GO SEND STRING
+        RET                     ; IMMEDIATE CCP RETURN
+;
+MESSAGE:
+        DEFB    CR,LF,'Hello Operator',CR,LF,'$'
+;
+        END
+
+
+READING A STRING OF CHARACTERS IN FROM KEYBOARD: Function 10.
+
+     The CP/M console command processor (CCP) assumed to be  vary 
+familiar  to  most CP/M system operators allows buffered  command 
+input with editing features.  It turns out that this operation is 
+a  much needed function for getting in strings of text  from  the 
+operator console.  Use of this function allows standardization of 
+the command input functions so that the operator can easily learn 
+the  editing key functions.  It also removes the pain of  writing 
+the  same  function  over  and over  again  by  the  applications 
+programmer.  The  read string command inputs the edited text to a 
+buffer  pointerd  to  by  the  (DE)  register  pair.  The  caller 
+specifies  the  maximum length desired and the BDOS  returns  the 
+actual  length  of string entered if carriage return  is  entered 
+prior to exceeding the maximum input length.  The input length is 
+returned  in  both the (A) register and as part  of  the  buffer. 
+Bytes  in the string buffer past the end of the entered text  are 
+uninitialized. The example shown below gives an assembly language 
+view  point  of the buffer structure and how to program an  input 
+function.
+
+     The  editing functions supported are the  following  control 
+and/or special characters:
+
+          rub/del        removes and echos the last entered char
+           ctl-C         initiates system reboot if first char
+           ctl-E         echos a CR &amp; LF to console without
+                           putting them into buffer
+           ctl-H         (or back space key) back spaces one char
+                           removing last entered character
+           ctl-J         (or line feed key) terminates line input
+           ctl-M         (or carriage return) terminates input
+           ctl-R         retypes currently entered characters 
+                           under current line
+           ctl-U         deletes all of currently entered data
+                           and restarts buffer input on new line
+           ctl-X         deletes all of currently entered data
+                           and restarts buffer input on same line
+
+
+;CONSOLE INPUT BUFFER EXAMPLE
+;
+CONBUF  EQU     00AH            ; STRING INPUT FUNCTION
+BDOS    EQU     0005H           ; SYSTEM ENTRY POINT
+LENGTH  EQU     32              ; DESIRED MAXIMUM CHARACTERS
+
+        ORG     0100H           ; START POINT
+        LD      DE,STRING       ; POINT AT BUFFER AREA
+        LD      C,CONBUF        ; FUNCTION NUMBER
+        CALL    BDOS            ; GO GET STRING
+        RET                     ; RETURN TO CCP WITHOUT
+                                ; ...DOING ANYTHING WITH DATA
+;
+;
+;CONSOLE INPUT BUFFER LAYOUT
+;
+STRING:
+        DEFB    LENGTH          ; MAXIMUM DESIRED INPUT LENGTH
+AMOUNT:
+        DEFS    1               ; BYTE WHERE BDOS RETURNS
+                                ; ..ACTUAL BYTE COUNT
+STRBF:
+        DEFS    LENGTH          ; RESERVED STORAGE FOR UP TO
+                                ; &quot;LENGTH&quot; NUMBER OF CHARACTERS
+;
+        END
+                                   
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_12.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_14.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

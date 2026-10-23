@@ -1,0 +1,3156 @@
+<html>
+
+<head>
+<title>MILC - Topic SV738 X'press I/O MAP version 1.5</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_7.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">SV738 X'press I/O MAP version 1.5</b><br>
+    <i>Mayer</i>, 14-05-95</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+
+               MAYER's SV738 X'press I/O MAP version 1.5
+
+Creation date: 1991.
+Last edition: Sunday 14-May-95 11:57:57.
+
+This I/O documentation was written 1991 by MAYER of WC HAKKERS.
+It consists of gathered info about the MSX computer SV738 X'Press
+(here upgraded to MSX 2 by changing ROM and VRAM - see documentation
+ about MSX-2 upgrading).
+
+Thanks to Henrik Gilvad (Denmark) for info about the MSX-2 MVDP and
+the MSX-2 ROMs, to P&aring;l F Hansen (Norway) for VRAM info and to
+Jonas Lindstr&ouml;m (Sweden) for some MVDP info.
+
+This documentation is not completed, but it includes the most important
+things when dealing with I/O ports on a MSX.
+
+I do not take any responsibility for changes done by anybody else 
+later in the text. If You change anything I advise You to leave a note
+on the last page about the change.
+
+
+
+
+This text may not be sold, included in commercial software/hardware
+or firmware packages and it may not be duplicated by any means
+without the authors permission.
+
+This text is shareware; You might copy it an spread it as long as You
+doesn't sell the copies.
+
+So if You spread this documentation, leaving this page intact and
+without changes, You have my permission to duplicate it.
+
+
+MAYER
+-----
+
+How to use this documentation
+-----------------------------
+
+The documentation is divided in four parts:
+1. Port summary
+2. Port descriptions and examples
+3. Hardware connections
+4. Useful tables
+
+ Part 1 - The port summary.
+The port summary contains port numbers in hex, R/W if known, Note reference,
+chip name and function.
+The port number is the hex value of the address bus when accessing the port.
+R/W tells if the port is Read only (R), Read/ Write (R/W), Write only (W)
+or not connected as far as I know (NC). A &quot;?&quot; tells that I do not know what kind
+of port this is.
+Chip name is mostly the chip part number and a small description in
+pharenthesis or (if for example the port refers to something as simple as a 74LSxx)
+only a description.
+Function is a short function description. If the description is surrounded by
+&quot;?&quot; I am not sure about the function.
+
+ Part 2 - Port descriptions and examples.
+This part is divided in small blocks to make it easier to search
+for information on specific ports. The search pattern is:
+
+****----
+Note naN,naN, ... :
+PORT.PP,PP,PP, ...    (Chip description)
+------------------
+
+Port summary:
+PP     (description)
+PP-PP  (description)
+
+Note naN: 
+PORT.PP         (port description)
+-------
+
+(Information)
+
+Note naN: 
+PORT.PP,PP         (port description)
+----------
+
+(Information)
+
+----****
+
+The &quot;****----&quot; marks start of block and the &quot;----****&quot; marks the end of block.
+After the first block start mark, there is a EOL and the text &quot;Note &quot; that is followed by 
+the note references separeted by commas and ended by a &quot;:&quot;.
+On the next line the text &quot;PORT.&quot; is followed by the included ports, separated
+by commas.
+
+The port summary of the involved ports is now present on the next lines. It ends
+at the first occurance of the text &quot;Note &quot; which denotes the start of a port
+description. The port description contains of the heading Note number (naN) and
+the text &quot;PORT.&quot;+ port number following on the next line.
+Thereafter, the port information follows and the information starts at the next line.
+At the end of the chip block, the &quot;----****&quot; marks end of block.
+
+In the examples,
+the BASIC variable A corresponds to the CPU register [a].
+The BASIC variable B corresponds to the CPU register [b].
+The BASIC variable HL corresponds to the CPU register pair [hl].
+
+If You are usimg a editor, look at the port summary page and search for a note
+by searching for example &quot;1a1:&quot; (this will find the note for port 80, ACIA).
+
+ Part 3 - Hardware connections.
+The hardware connections contains of a page of semigraphic pictures of different
+connectors, followed by pin descriptions of the MSX connectors.
+Some other connectors is added for reference.
+
+ Part 4 - Useful tables.
+A SV738 specification, ASCII table and a VT-52 code table.
+
+
+                Port summary
+                -------------
+
+I/O     R/W: Note: Chip/Name:           Function:
+port:													
+00-3F   NC   ***  Unspecified ***
+40-7B   NC   ***  Reserved ***
+7C      ?    0a1    FM-PAK (MSX MUSIC) reg. select
+7D      ?    0b1    FM-PAK (MSX MUSIC) data I/O
+7E-7F   NC   ***  Reserved ***
+80      R/W  1a1   I8251 (ACIA)         Data            RS232
+81      R/W  1b1   I8251 (ACIA)         Status/Command  RS232
+82      R    1c2   RS232                Status for CTS,Timer/counter2,RI,CD
+82      W    1d2   RS232                Interrupt mask register
+83      R    1e2   RS232                ?Clock 0,1,2 read?
+83      W    1f2   RS232                ?Receive ready interrupt enable?
+84      R/W  1g3   I8253 (Baud gener.)  Counter 0 Receive clock
+85      R/W  1h3   I8253 (Baud gener.)  Counter 1 Transmit clock
+86      R/W  1i3   I8253 (Baud gener.)  Counter 2 Used by programs
+87      W    1j3   I8253 (Baud gener.)  Mode register
+88      ?    1k2   ?                    ?Modem enable?
+89-8B   ?    2a1   Reserved for MSX-1 MVDP 9938 adaptor
+8C-8D   ?    1m2   Reserved for modem
+90      R    3a1   ULA5RA087 Centronic  BUSY state (bit 1=1)
+90      W    3b1   ULA5RA087 Centronic  STROBE output (bit 0=0)
+91      W    3c1   ULA5RA087 Centronic  Printer Data (characters out ASCII)
+92-97   NC   ***  Reserved  ***
+98      R    4a1   9918,9929,9938,9958,9978     VRAM data READ
+98      W    4b1   9918,9929,9938,9958,9978     VRAM data WRITE
+99      R    4c2   9938,9958,9978,9929  VDP status (Interrupt,Spr Conc,5th)
+99      W    4d2   9938,9958,9978,9929  VDP address setup/Register write
+9A      W    5a1   MVDP colour palette registers data write (2 bytes)
+9B      ?    5b1   MVDP Register data
+9C-9F   NC   ***  Reserved  ***
+A0      W    6a1   I AY-3-8910 PSG      Register select
+A1      W    6b1   I AY-3-8910 PSG      Data write
+A2      R    6c1   I AY-3-8910 PSG      Data read
+A3-A7   NC   ***  Reserved ***
+A8      R    7a1   I 8255A/ULA9RA041    Port A  Memory slot reister Read  
+A8      W    7b1   I 8255A/ULA9RA041    Port A  Memory slot reister Write
+A9      R    7c2   I 8255A/ULA9RA041    Port B  Keyboard column inputs
+A9      W    7d2   I 8255A/ULA9RA041    Port B
+AA      R    7e2   I 8255A/ULA9RA041    Port C Get Kbd Row sel,LED,CASo,CASm
+AA      W    7f2   I 8255A/ULA9RA041    Port C Set Kbd Row sel,LED,CASo,CASm
+AB      R    7g3   I 8255A/ULA9RA041    Mode
+AB      W    7h3   I 8255A/ULA9RA041    Mode select and I/O setup of A,B,C
+AC-AF   NC   ***  Reserved  ***
+B0-B3   ?    8a1   External 8255 (SONY DataRamPack)
+B4      W    9a1   RP 5C01 (Not in 738) RTC Register select
+B5      R/W  9b1   RP 5C01 (Not in 738) RTC data
+B6-B7   NC   ***   Reserved ***
+B8-BB   ?    10a1  SANYO Light pen interface
+BC-BF   ?    11a1  VHD control
+C0-C1   ?    12a1  MSX audio (MSX MUSIC again?)
+C2-C7   NC   ***  Reserved  ***
+C8-CF   ?    13a1  MSX Interface (??)
+D0-D7   ?    14a1  External Floppy Disk Controller
+D8-DB   ?    15a1  Kanji ROM for Chinese characters (Not included in European vers)
+DC-F4   NC   ***  Reserved  ***
+F5      ?    16a1  System control
+F6      ?    17a1  colour bus
+F7      W    18a1  Audio/Video control
+F8-FB   NC   ***  Reserved  ***
+FC-FF   R/W  19a1  Memory mapper
+100-FFFF    *** Unspecified on SV 738 X'press *** (can be used via reg [bc] only).
+
+
+
+				Notes
+                                -----
+****----
+Note 0a1,0b1: 
+PORT.7C,7D               FM-PAK
+----------
+
+Port summary:
+7C      NC   0a     FM-PAK (MSX MUSIC) reg. select
+7D      NC   0b     FM-PAK (MSX MUSIC) data I/O
+
+Note 0a1: 
+PORT.7C         Reg. Select
+-------
+
+No info
+
+Note 0b1: 
+PORT.7D         Data I/O
+-------
+
+No info
+
+----****
+
+****----
+Note 1a1,1b1:
+PORT.80,81              ACIA (Asynchronous Communication Interface Adapter)
+----------
+
+Port summary:
+80      R/W  1a1   I8251 (ACIA)         Data            RS232
+81      R/W  1b1   I8251 (ACIA)         Status/Command  RS232
+
+For RS232 signal levels and null modem example see note 1j3 (port 87).
+For initialization example of ACIA (read) see note 1b1 (port 81).
+For baudrate initialization example see note 1j3 (port 87).
+For read byte example see note 1b1 (port 81).
+
+
+Note 1a1:
+PORT.80         RS232 data
+-------
+
+This port holds the byte received from RS232.
+This port is also used to send bytes to RS232.
+
+See example at note 1b1 (port 81).
+
+Note 1b1:
+PORT.81         RS232 status/ACIA command
+-------
+
+Input from this port will give the status of the RS232 interface.
+
+ Bit:   Function:
+  0     TxRDY; Transmit Ready
+  1     RxRDY; Receive Ready    (1 when received byte is enable for CPU).
+  2     TxEMPTY; Transmit buffer Empty
+  3     PE; Parity Error if 1
+  4     OE; Overrun Error if 1 (CPU has not received character)
+  5     FE; Framing Error if 1 (ASYNC only, STOP BIT not valid)
+  6     SYNDET/BRKDET; SYNC/BREAK found
+  7     DSR; Data Set Ready
+
+Output to this port will set parameters in the i8251 ACIA. 
+Directly after a RESET command (see command format below), the
+MODE SETUP byte may be written:
+
+;               -- MODE SETUP --
+
+word            EQU     00001100b       ; 8 data bits
+
+                ;       xxxx00xxb = 5 bits
+                ;       xxxx01xxb = 6  &quot;
+                ;       xxxx10xxb = 7  &quot;
+                ;       xxxx11xxb = 8  &quot;
+;----
+
+paren           EQU     00000000b       ; No parity
+
+                ;       xxx0xxxxb = Disable parity
+                ;       xxx1xxxxb = Enable    &quot;
+;----
+
+parity          EQU     00000000b       ; Odd
+
+                ;       xx0xxxxxb = Odd parity generation/Check
+                ;       xx1xxxxxb = Even parity generation/Check
+;----
+
+STOP            EQU     01000000b       ; 1 Stop bit
+
+                ;       00xxxxxxb = Invalid
+                ;       01xxxxxxb = 1   Bit
+                ;       10xxxxxxb = 1.5 Bit
+                ;       11xxxxxxb = 2   Bit
+;----
+
+baudfact        EQU     00000010b       ; x16
+
+                ;       xxxxxx00b = SYNC MODE
+                ;       xxxxxx01b = 1    * CLK
+                ;       xxxxxx10b = 1/16 * CLK
+                ;       xxxxxx11b = 1/64 * CLK
+;----
+
+After the MODE SETUP byte has been written, the COMMAND SETUP BYTE may be
+written:
+;               -- COMMAND SETUP --
+
+tx              EQU     00000001b       ; Transmit enable/Disable
+                ;       xxxxxxx0b       ; Transmit disable
+                ;       xxxxxxx1b       ; Transmit enable
+
+dtr             EQU     00000010b       ; Set Data Terminal Ready/Not Ready
+                ;       xxxxxx0xb       ; Data Terminal Not Ready
+                ;       xxxxxx1xb       ; Data Terminal Ready
+
+rx              EQU     00000100b       ; Receive enable, 0= Disable
+                ;       xxxxx0xxb       ; Receive Disable
+                ;       xxxxx1xxb       ; Receive enable
+
+brk             EQU     00001000b       ; Break/Normal operation
+                ;       xxxx0xxxb       ; Normal Operation
+                ;       xxxx1xxxb       ; Send Break (TxD=Low)
+
+err_reset       EQU     00010000b       ; Error reset
+                ;       xxx0xxxxb       ; No operation
+                ;       xxx1xxxxb       ; Reset error flags PE,OE and FE
+
+rts             EQU     00100000b       ; Set/reset Request To Send
+                ;       xx0xxxxxb       ; _RTS = 1 (No Request To Send)
+                ;       xx1xxxxxb       ; Request to send
+
+reset           EQU     01000000b       ; Internal reset
+                ;       x0xxxxxxb       ; No operation
+                ;       x1xxxxxxb       ; RESET and wait for MODE instr.input
+
+Hunt            EQU     10000000b       ; Enter Hunt mode
+                ;       0xxxxxxxb       ; No operation
+                ;       1xxxxxxxb       ; Enable search for SYNC character
+
+An example routine to initialize the i8251A (for write) is shown below:
+
+        xor     a               ; Make sure i8251 is in COMMAND mode
+        out     (081h),a        ; Sync mode
+        out     (081h),a        ; Dummy sync char
+        out     (081h),a        ; Dummy sync char
+
+        inc     a
+        out     (088h),a        ; mdm enable
+
+        ld      a,reset
+        out     (081h),a        ; Set i8251 in MODE state
+
+        ld      a,word+stop+paren+parity+baudfact
+        out     (081h),a
+        nop
+
+; Now, i8251 is in COMMAND state
+
+        ld      a,err_reset     ; Reset error flags
+        out     (081h),a
+
+        ld      a,dtr+rx+tx
+        out     (081h),a
+        nop
+
+        in      a,(081h)        ; Read status
+        ret
+
+An example routine to receive a byte to [a] from RS232 is shown below:
+
+;       Get RS232 -&gt; [a]
+
+recv:   ld      a,dtr+rx+err_reset
+        out     (081h),a
+rec2:
+        in      a,(081h)
+        and     00000010b       ; Mask in RxRDY
+        jr      z,rec2          ; Jp if no data
+
+        in      a,(080h)
+        ret
+
+----****
+
+****----
+Note 1c2,1d2,1e2,1f2:
+PORT.82,82,83,83        RS232 Status/Int
+----------
+
+Port summary:
+82      R    1c2   RS232                Status for CTS,Timer/counter2,RI,CD
+82      W    1d2   RS232                Interrupt mask register
+83      R    1e2   RS232                ?Clock 0,1,2 read?
+83      W    1f2   RS232                ?Receive ready interrupt enable?
+
+For RS232 signal levels and null modem example see note 1j3 (port 87).
+
+Note 1c2:
+PORT.82         Status for CTS,Timer/counter2,RI,CD
+-------
+
+Input from port 82h will get the status of  CTS,Timer/counter2, RingIndicator and Carrier detect.
+bit   Expl.
+0   = CD - Carrier detect, 0=Active, 1=Not active
+1   = RI - Ring indicator, 0=Active, 1=Not active (*)
+6   = Timer/counter2 output from i8253
+7   = CTS - Clear to send, 0=Active, 1=Not active
+
+For output to port 82, see note 1d2.
+
+Note 1d2:
+PORT.82         Interrupt mask register
+-------
+
+Output to port 82h will set the interrupt mask (interrupt 
+enable/disable, bits: 0=Enable, 1=Disable).
+bit   Expl.
+0   = RxReady Receive data ready
+1   = TxReady Transmit data ready               (*)
+2   = Sync/Break found                          (*)
+3   = Timer interrupt  from i8253 channel 2     (*)
+
+(*) = Not connected, see engineering document #STM-738-006
+
+For input from port 82, see note 1c2.
+
+Note 1e2:
+PORT.83         ?Clock 0,1,2 read?
+-------
+
+Sorry, no info.
+
+Note 1f2:
+PORT.83         ?Receive ready interrupt enable?
+-------
+
+Sorry, no info.
+
+
+----****
+
+****----
+Note 1g3,1h3,1i3,1j3:
+PORT.84,85,86,87        PCI i8253 Baud rate clock generator
+----------------
+
+Port summary:
+84      R/W  1g3   I8253 (Baud gener.)  Counter 0 Receive clock
+85      R/W  1h3   I8253 (Baud gener.)  Counter 1 Transmit clock
+86      R/W  1i3   I8253 (Baud gener.)  Counter 2 Used by programs
+87      W    1j3   I8253 (Baud gener.)  Mode register
+
+For RS232 signal levels and null modem example see note 1j3 (port 87).
+For initialization example of ACIA (read) see note 1b1 (port 81).
+For baudrate initialization example see note 1j3 (port 87).
+For read byte example see note 1b1 (port 81).
+
+Note 1g3:
+PORT.84         Counter 0, Receive clock
+-------
+
+Output to port 84:
+Counter 0; Receive clock
+
+For initialization example see note 1j3 (port 87).
+
+Note 1h3:
+PORT.85         Counter 1, Transmit clock
+-------
+
+Output to port 85h:
+Counter 1; Transmit clock
+
+For initialization example see note 1j3 (port 87).
+
+Note 1i3:
+PORT.86         Counter 2, Custom clock
+-------
+
+Output to port 86h:
+Counter 2; Clock used by different programs (time out counter)
+
+For initialization example see note 1j3 (port 87).
+
+Note 1j3:
+PORT.87         Mode register
+-------
+
+Output to port 87h:
+Mode register.
+
+An example routine to initialise the 3 clocks for use of 19 200 BpS
+(the frequency is 1.8432*10^6/6=307,200 Hz) is shown below:
+
+def_baud        EQU     6       ; 192000 bps = (1/16)*1.8432*10^6/6
+;                                    ^            ^         ^     ^
+;                                    |            |         |     |
+;                                   Rate        BaudFact  X-Tal  def_baud
+
+timer0_ctrl     EQU     00110110b
+timer1_ctrl     EQU     01110110b
+timer2_ctrl     EQU     10110000b
+
+; INIT i8253 CLOCK:
+
+        ld      hl,def_baud
+
+        ld      a,timer0_ctrl   ; Receive clock
+        out     (087h),a
+
+        ld      a,l
+        out     (084h),a
+        ld      a,h
+        out     (084h),a
+;
+        ld      a,timer1_ctrl   ; Transmit clock
+        out     (087h),a
+
+        ld      a,l
+        out     (085h),a
+        ld      a,h
+        out     (085h),a
+;
+        ld      a,timer2_ctrl   ; Utl clock
+        out     (087h),a
+
+        ld      a,l
+        out     (086h),a
+        ld      a,h
+        out     (086h),a
+        ret
+
+
+Notes on RS232C
+
+Signal levels:
+0:&gt;=+3V, +15V max  SPACE
+1:&lt;=-3V, -15V max  MARK
+
+Sending the byte 10100101 (bin), A5 (hex):
+
+	       START D0  D1  D2  D3  D4  D5  D6  D7  STOP (1 or 2)    
+&gt;+3V		 ___     ___     _______     ___
+&lt;-3V ... _______|   ____|   ____|       ____|   _____________ ....
+
+      &quot;MARKING&quot; |   |   |   |   |   |   |   |   |   |   |   |
+	  1	  0   1   0   1   0   0   1   0   1   1   1 
+
+D7 might be parity if 7 bit data is set.
+
+
+Null modem (pin assignments for IBM XT connector type):
+With handshaking, modem emulation, pin configuration:
+DTE	DTE
+2-------3
+3-------2
+8-------4	DCD-RTS
+4-------8
+20-----|5	(5 and 6 connected in same connector and wired to pin 20
+       |6	 at the other computer)
+5|-----20	CTS,DSR-DTR
+6|
+7-------7
+
+Without handshaking, pin configuration:
+DTE	DTE
+2-------3
+3-------2
+
+4|     |4	(RTS-CTS, 4-5 connected in same connector)	
+5|     |5
+
+6 |   | 6	(DSR-DCD-DTR, 6,8 and 20 connected in same connector)
+8 |   | 8
+20|   |20
+
+7-------7
+
+Timing diagram of RS232 signals.
+
+Read the diagram from left top to right bottom.
+The diagram illustrates a terminal using a modem to dial up another
+modem connected to a computer. Time is increasing downwards in the
+diagram. First, the computer is turned on which activates DTR.
+Then the user dials the number which affects RI at the computer.
+The computer sets RTS and the computer&cent;s modem sends out a carrier tone
+and (after a short delay) sets the CTS signal.
+When the terminal modem receives the carrier tone, it activates the CD
+signal telling the terminal that the line is ok.
+Connection is now established and the user is prompted to press the
+&quot;data button&quot; (if terminal has such a button).
+The data button sends DTR to the terminal modem which sets the DSR
+that lights a indicator.
+
+The computer starts sending (TxD) at the CTS signal.
+The data tones is converted by the terminal modem to text which is presentated
+on the screen.
+
+When the computer is done, it turns off the RTS signal. The computer modem
+responds by turning off CTS and turn off the carrier tone.
+The terminal modem detect that the tone is off and turns off the CD signal.
+
+Now the terminal starts a transmission by activating the RTS signal.
+The terminal modem responds (after a short delay) by activating CTS which
+turns on a indicator. The terminal now starts transmitting via TxD
+(computer receives with RxD).
+
+When done, the terminal turns off RTS. Terminal modem turns off CTS which
+turns off a CTS indicator and also turns off the tones.
+The computer modem detects that there is no carrier and turns off CD.
+User now replaces the handset on the phone and the terminal modem then 
+turns off DSR, telling the terminal that it is not ready for any more data.
+
+
+   DTE          DCE             PSTN                    DCE             DTE
+(terminal)    (Modem)                                 (Modem)        (Computer)
+..................................................................................
+
+                                                      (      ) &lt;----( DTR on )
+                                                                    (computer turned on)
+User dials--(Dial digits)-------\
+number                           \-------------------&gt;(RI on )-----&gt;(--|     )
+                                                                    (  |     )
+                                                                    (  V     )
+Push    &lt;----( CD on )&lt;-------(tone on)----------&lt;----(--+---)-&lt;----( RTS on )
+data                                                  (  |   )
+button                                                (  V   )
+ |                                                    (short )
+ V                                                    (delay )      
+DTR on -----&gt;(--|     )                               (  |   )
+             (  |     )                               (CTS on)-----&gt;(---|    ) 
+  *   &lt;------( DSR on )                                             (   |    )    
+Light                                                               (   |    )    
+ on                                                                 (   V    )    
+                                                                    (   |    )    
+                                                                    (   |    )
+Text &lt;-------(&lt;-RxD---)-&lt;-----(Data tones)--&lt;---------(&lt;-----)&lt;-----(--TxD   )
+on
+screen
+
+.................................................................................
+
+
+  -&lt;-------(CD off)-&lt;-------(Tone off)--&lt;----------(----+---)&lt;-----( RTS off)
+ |                                                 (    |   )
+ |                                                 ( CTS off)-----&gt;(        )
+ |
+RTS on---&gt;(---|  )
+          (   |  )
+          ( Short)
+          ( delay)
+          (   |  )
+  * &lt;-----(CTS on)
+Light 
+ on
+  |
+  |------&gt;( TxD  )---------&gt;(Data tones)----------&gt;( RxD   )-----&gt;-(        )
+
+
+.................................................................................
+
+
+RTS off-&gt;(----+---)--------&gt;(Tone off)------------&gt;( CD off)-----&gt;-(        )
+         (    |   )
+Light&lt;---(CTS off )
+ off
+
+        User replaces
+        handset
+              |
+Light&lt;---( DSR off )
+ off
+
+..................................................................................
+
+----****
+
+****----
+
+Note 1k2,1m2:
+PORT.88,8C,8D           Modem control
+-------------
+
+Port summary:
+88      ?    1k2   ?                    ?Modem enable?
+8C-8D   ?    1m2   Reserved for modem
+
+For RS232 signal levels and null modem example see note 1j3 (port 87).
+For initialization example of ACIA (read) see note 1b1 (port 81).
+For baudrate initialization example see note 1j3 (port 87).
+For read byte example see note 1b1 (port 81).
+
+Note 1k2:
+PORT.88         ?Modem enable?
+-------
+
+Sorry, no info
+
+Note 1m2:
+PORT.8C,8D      Reserved for modem
+----------
+
+Sorry, no info
+
+----****
+
+****----
+Note 2a1:
+PORT.89,8A,8B   MSX-1 MVDP 9938 adaptor
+-------------
+
+Port summary:
+89-8B   ?    2a1   Reserved for MSX-1 MVDP 9938 adaptor
+
+
+Note 2a1:
+PORT.89,8A,8B      Reserved for MSX-1 MVDP 9938 adaptor
+-------------
+
+Reserved for MSX-1 MVDP 9938 adaptor.
+Sorry, no info
+
+----****
+
+****----
+Note 3a1,3b1,3c1:
+PORT.90,90,91           ULA5RA087 Centronic
+-------------
+
+Port summary:
+90      R    3a1   ULA5RA087 Centronic  BUSY state (bit 1=1)
+90      W    3b1   ULA5RA087 Centronic  STROBE output (bit 0=0)
+91      W    3c1   ULA5RA087 Centronic  Printer Data (characters out ASCII)
+
+For character print example, see note 3c1 (port 91).
+For notes on Centronic standard, see note 3c1 (port 91).
+
+Note 3a1:
+PORT.90         ULA5RA087 Centronic  BUSY state (bit 1=1)
+-------
+
+Input from this port reads the BUSY signal state from the centronics port.
+Bit 1=1 if printer is BUSY.
+
+For character print example, see note 3c1 (port 91).
+For notes on Centronic standard, see note 3c1 (port 91).
+
+Note 3b1:
+PORT.90         ULA5RA087 Centronic  STROBE output (bit 0=0)
+-------
+
+Output to this port controls the _STROBE signal at the centronics port.
+Bit 0=0 to activate centronic _STROBE.
+
+For character print example, see note 3c1 (port 91).
+For notes on Centronic standard, see note 3c1 (port 91).
+
+Note 3c1:
+PORT.91         ULA5RA087 Centronic  Printer Data (characters out ASCII)
+-------
+
+Output to this port controls the printer data lines, D0-D7.
+A character written to this port is latched on the centronic data lines.
+
+Examples:
+This routine will do the same as the BASIC command 
+LPRINT CHR$(A);
+where A is the character ASCII code. There is no check for CTRL-STOP in this routine.
+
+print:  push    af
+prtb:   in      a,(090h)        ; Check if BUSY (0=not BUSY)
+        rrca
+        rrca                    ; Rotate bit 1 to carry
+        jr      c,prtb          ; Loop if BUSY
+
+        pop     af              ; Get back ASCII value
+        push    af
+        out     (091h),a        ; Put ASCII in [a] to centronic data bus
+
+        xor     a
+        out     (090h),a        ; Send strobe (--_--)
+        dec     a
+        out     (090h),a        ; [a]=0ffh
+        pop     af
+        ret
+
+Notes on Centronic standard:
+
+Level                   : TTL
+Handshaking             : BUSY/ACK
+Connector (printer)     : 57-30360 (AMPHENOL) 36-pin
+Cable                   : Shielded 1.95 meters or less
+
+Timing:
+
+                ____________
+DATA1-8: ______|XXXXXXXXXXXX|_______________________  Data on D1-D8
+         _________     _____________________________  Strobe set
+_STB              |___|
+                   _____________________
+BUSY     _________|                     |___________  BUSY set
+         _______________________________      ______  _ACK set
+_ACK                                    |____|
+
+
+Strobe is set 0.5uS (min) after data is present on D1-D8
+Strobe length is 1uS (min)
+Delay before data is removed from D1-D8 after strobe has 
+ gone high (inactive) is 0.5uS (min)
+Acknowledge (_ACK) pulse is set for 5uS (max).
+BUSY pulse width is 1ms or less when buffer is not full in printer or
+ 1s or less if buffer is full.
+
+----****
+
+****----
+Note 4a1,4b1,4c2,4d2:
+PORT.98,98,99,99        VDP (Video Display Processor)
+----------------
+
+Port summary:
+98      R    4a1   9918,9929,9938,9958,9978     VRAM data READ
+98      W    4b1   9918,9929,9938,9958,9978     VRAM data WRITE
+99      R    4c2   9938,9958,9978,9929  VDP status (Interrupt,Spr Conc,5th)
+99      W    4d2   9938,9958,9978,9929  VDP address setup/Register write
+
+For VPEEK example, see note 4a1 (port 98).
+For block VRAM-&gt;RAM copy, see note 4a1 (port 98).
+
+For VPOKE example, see note 4b1 (port 98).
+For VRAM fill example, see note 4b1 (port 98).
+For block RAM-&gt;VRAM copy, see note 4b1 (port 98).
+
+For VRAM addresses in different screens, see note 4b1 (port 98).
+For VRAM address explanation, see note 4b1 (port 98) subnotes A-I.
+For VDP(B)=A example, see note 4d2 (port 99).
+For VDP register explanation, see note 4d2 (port 99).
+For screen selection, see note 4d2 (port 99).
+For palette redefination example, see note 5a1 (port 9A).
+
+Note 4a1:
+PORT.98         VRAM data READ
+-------
+
+Input from port 98h: Read byte from VRAM. 
+
+Example:
+
+This routine will do the same as the BASIC command 
+A=VPEEK HL
+where HL is the VRAM address and A is the byte read from VRAM
+
+vpeek:  di
+        call    setup_read_address      ; Setup VRAM read start address
+        in      a,(098h)                ; Get byte from VRAM to [a]
+        ret
+
+Setup_read_address:
+        ld      a,l
+        out     (099h),a   ; Send Low Byte to VDP
+        ld      a,h        ; Note: no special bit is set to indicate READ
+        out     (099h),a   ; Send High Byte to VDP
+        ret
+
+Note that once set, the VRAM READ address will be incremented after each byte
+read from the VRAM DATA READ port.
+
+This routine will read the block in the VRAM addresses 100h-300h and copy it
+to the RAM address 9000h
+
+get_vram:
+        di
+        ld      hl,0100h        ; Source address in VRAM
+        ld      bc,0200h        ; Byte counter
+        ld      de,09000h       ; Destination address in RAM
+        call    read_vram
+        ret
+
+read_vram:
+        call    Setup_read_address      ; See routine above
+read_loop:
+        in      a,(098h)                ; Read byte from VRAM address
+        ld      (de),a                  ; Save it to RAM
+        inc     de                      ; Increment RAM counter
+                                        ; (VRAM counter will be incremented by 						    ;	itself)
+        dec     bc                      ; Decrement number of bytes to read
+        ld      a,b
+        or      c
+        jr      nz,read_loop            ; Loop if not ready
+        ret
+
+Note 4b1:
+PORT.98         VRAM data WRITE
+-------
+
+Output to port 98h: Write byte to VRAM
+
+Example:
+
+This routine will do the same as the BASIC command 
+VPOKE HL,A
+where HL is the VRAM address and A is the byte to write
+
+vpoke:  di
+        call    setup_write_address     ; Setup VRAM write start address
+        out     (098h),a                ; Write byte in [a] to VRAM
+        ret
+
+Setup_write_address:
+
+        push    af                      ; Save byte in [a]
+        ld      a,l
+        out     (099h),a                ; Send LOW byteto VDP
+        ld      a,h
+        or      01000000b               ; Set bit 6 in High byte to 
+                                        ; indicate WRITE
+        out     (099h),a                ; Send MSB to VDP
+        pop     af
+        ret
+
+Note that once set, the VRAM WRITE address will be incremented after each byte send
+to the VRAM DATA WRIITE port. 
+
+This routine will fill the VRAM 100h-300h with the byte 0fh
+
+fill:   di
+        ld      hl,0100h                ; Destination
+        ld      bc,0200h                ; Number of bytes to fill
+        ld      a,0fh                   ; Fill byte
+        call    setup_write_address     ; See routine above
+        push    af                      ; Save the byte
+fill_loop:
+        pop     af                      ; Get back the byte to fill
+        out     (098h),a                ; Send it to VRAM
+        push    af                      ; Save fill byte
+        dec     bc                      ; Decrement counter
+        ld      a,b
+        or      c
+        jr      nz,fill_loop            ; Go loop if counter &lt;&gt;0
+        pop     af                      ; Get back fill byte
+        ret     
+
+
+Copy a RAM block to an address in VRAM is  
+demonstrated by this routine, which copies the RAM addresses 9000h-9200h  
+to the VRAM address 100h
+
+ldir_vram:
+        di
+        ld      hl,09000h       ; Source address in RAM
+        ld      bc,0200h        ; Byte counter
+        ld      de,0100h        ; Destination address in VRAM
+        call    read_ram
+        ret
+
+read_ram:
+        ex      de,hl                   ; Swap [de] with [hl]
+        call    Setup_write_address     ; See routine above
+        ex      de,hl                   ; Swap [de] with [hl]
+write_loop:
+        ld      a,(hl)                  ; Get byte in RAM
+        out     (098h),a                ; Send it to VRAM
+        inc     hl                      ; Increment RAM counter
+                        ; (VRAM counter will be incremented by itself)
+        dec     bc                      ; Decrement number of bytes to read
+        ld      a,b
+        or      c
+        jr      nz,read_loop            ; Loop if not ready
+        ret
+
+The addresses of the VRAM has special functions. Theese can be changed
+via the VDP registers 2-6. 
+
+
+
+VRAM addresses:
+
+The addresses for each of the 8 (MSX2) screen modes is shown below. 
+ &quot;*&quot; = Screen only available on MSX2 or higher.
+
+
+SCREEN 0 (Text mode, 40 column):
+Name table (char positions)     0000-03BF       (See note A)
+Character patterns (font)       0800-0FFF       (See note B)
+
+
+SCREEN 1 (coloured text mode, 32 column):
+Character patterns (font)       0000-07FF       (See note B)
+Name table (char positions)     1800-1AFF       (See note A)
+Sprite attribute table          1B00-1B7F       (See note C)
+Characters colour table (8/byte)2000-201F       (See note F)
+Sprite character patterns       3800-3FFF       (See note D)
+
+
+SCREEN 2 (256*192 Graphics mode):
+Charcter patterns               0000-17FF       (See note B)
+Name table (char positions)     1800-1AFF
+Sprite attribute table          1B00-1B7F       (See note C)
+PixelByte colour table          2000-37FF       (See note E)
+Sprite character patterns       3800-3FFF       (See note D)
+
+
+SCREEN 3 (4x4 pixel blocks/Multicolour mode):
+Charcter colour patterns        0000-05FF
+Name table (char positions)     0800-0AFF
+Sprite attribute table          1B00-1B7F       (See note C)
+Sprite character patterns       3800-3FFF       (See note D)
+
+
+*SCREEN 4 (256*192 Graphics mode with multicolour sprites):
+Charcter patterns               0000-17FF       (See note B)
+Name table (char positions)     1800-1AFF
+Sprite colours                  1C00-1DFF
+Sprite attribute table          1E00-1E7F
+Palette                         1E80-1E9F
+PixelByte colour table          2000-37FF
+Sprite character patterns       3800-3FFF
+
+
+*SCREEN 5 (256*212 Graphic mode, 16 colours):
+Matrix                          0000-69FF
+Sprite colours                  7400-75FF
+Sprite attribute table          7600-767F
+Palette                         7680-769F
+Sprite character patterns       7800-7FFF
+
+
+*SCREEN 6 (512*212 Graphic mode, 4 colours):
+Matrix                          0000-69FF
+Sprite colours                  7400-75FF
+Sprite attribute table          7600-767F
+Palette                         7680-769F
+Sprite character patterns       7800-7FFF
+
+
+*SCREEN 7 (512*212 Graphic mode, 16 colours):
+Matrix                          0000-D3FF
+Sprite character patterns       F000-F7FF
+Sprite colours                  F800-F9FF
+Sprite attribute table          FA00-FA7F
+Palette                         FA80-FA9F
+
+
+*SCREEN 8 (256*212 Graphic mode, 256 colours):
+RGB Matrix                      0000-D3FF               (See note H)
+Sprite character patterns       F000-F7FF
+Sprite colours                  F800-F9FF               (See note I)
+Sprite attribute table          FA00-FA7F
+Palette                         FA80-FA9F
+
+
+*SCREEN 0 (Text mode, 80 column):
+Name table (char positions)     0000-077F (086F)        (See note A)
+Character attribute (Blink)     0800-08EF (090D)        (See note G)
+Character patterns (font)       1000-17FF               (See note B)
+
+
+(Addresses in pharentheses is used in 26.5 lines mode. Observe that they are overlapping).
+
+                Tables explanation:
+
+        Name table (Note A):
+
+Byte:   Expl.:
+  0     Pattern number to be displayed in upper hand left corner of screen
+  1     Pattern number to be displayed in upper hand left corner of screen+1
+  2     Pattern number to be displayed in upper hand left corner of screen+2
+  3     Pattern number to be displayed in upper hand left corner of screen+3
+  ...
+
+        Font (Note B):
+
+Byte (+offset):         Expl.:
+     0-7                Pattern number 0 (First character)
+
+                        0:      00000000
+                        1:      00001000
+                        2:      00010100
+                        3:      00100010                = &quot;A&quot;
+                        4:      00111110
+                        5:      00100010
+                        6:      00100010
+                        7:      00000000
+
+    8-F                 Pattern number 1 (2nd character)
+   10-17                Pattern number 2 (3rd character)
+   1F-20                Pattern number 3 (4th character)
+    ...
+
+
+        Sprite attribute (Note C):
+
+Byte (+offset):         Expl.:
+     0-3                Sprite 0 attribute
+                        
+                0:      Vertical position
+                1:      Horizontal position
+                2:      Pattern number
+                3:      Bit:    Expl.:
+                        0-3     Colour code
+                        4-6     0
+                        7       EC (Early Clock, 1=&gt; Shift sprite 32 pixels
+                                    to the left)
+
+     4-7                Sprite 1 attribute
+     8-B                Sprite 2 attribute
+     ...
+
+        Sprite character patterns (Note D):
+
+Used like the 8*8 pixel Font in screen 0 when using 8*8 pixel sprites.
+When using 16*16 pixel sprites, four blocks of 8*8 pixels is organised like:
+
+Byte (+offset):         Expl.:
+     0-7                8 Bytes, Block A
+     8-F                8 Bytes, Block B
+    10-17               8 Bytes, Block C
+    18-1F               8 Bytes, Block D
+
+And the sprite will be assembled on screen like this:
+
+                +---------+---------+
+                |         |         |
+                | Block A | Block C |
+                |         |         |
+                +---------+---------+
+                |         |         |
+                | Block B | Block D |
+                |         |         |
+                +---------+---------+
+        PixelByte colour (Note E):
+
+Byte (+offset):         Expl.
+        0               Colour code for 8 bits in scrn pos X=0-7, Y=0
+
+                        Bit:    Expl.:
+                        0-3     Colour for bit reset (&quot;0&quot;) in pattern table
+                        4-7     Colour for bit set (&quot;1&quot;) in pattern table
+
+        1               Colour code for 8 bits in scrn pos X=0-7, Y=1
+        2               Colour code for 8 bits in scrn pos X=0-7, Y=2
+        ...
+
+        8               Colour code for 8 bits in scrn pos X=8-15, Y=0
+        9               Colour code for 8 bits in scrn pos X=8-15, Y=1
+        A               Colour code for 8 bits in scrn pos X=8-15, Y=2
+        ...
+        Characters colour table (Note F):
+
+Byte (+offset):         Expl.
+        0               Colour code for patterns 0-7 in pattern table
+
+                        Bit:    Expl.:
+                        0-3     Colour for bit reset (&quot;0&quot;) in pattern table
+                        4-7     Colour for bit set (&quot;1&quot;) in pattern table
+
+        1               Colour code for patterns 8-F in pattern table
+        2               Colour code for patterns 10-17 in pattern table
+
+        Characters attribute (Note G):
+
+Byte (+offset):         Expl.
+        0               Attribute bits for character patterns 0-7
+
+                Bit:    Expl.:
+                 7      Char 0, &quot;1&quot; = Blink mode on, &quot;0&quot; = Blink mode off
+                 6      Char 1, &quot;1&quot; = Blink mode on, &quot;0&quot; = Blink mode off
+                 5      Char 2, &quot;1&quot; = Blink mode on, &quot;0&quot; = Blink mode off
+                 4      Char 3, &quot;1&quot; = Blink mode on, &quot;0&quot; = Blink mode off
+                ...
+        1               Attribute bits for character patterns 8-F
+        2               Attribute bits for character patterns 10-17
+        ...
+
+
+        RGB Matrix (Note H):
+Byte (+offset):         Expl.
+        0               Red, Green and blue combination for first pixel
+
+                Bit:    Expl.:
+                 0-1    Blue, 0-3
+                 2-4    Red, 0-7
+                 5-7    Green, 0-7
+
+        1               Red, Green and blue combination for 2nd pixel
+        2               Red, Green and blue combination for 3rd pixel
+        ...
+        (4(Blue)*8(Red)*8(Green)=256 colours totally)
+
+        Sprite colours (Note I):
+Byte (+offset):         Expl.:
+     0-7                Colour map for sprite 0 
+                        Upper left part
+                        (Horizontal lines)
+
+        0: Colour for line 0:
+
+                Bit:    Expl.:
+                 0      Blue  on/off (1=on, 0=off)
+                 1      Red   on/off (1=on, 0=off)
+                 2      Green on/off (1=on, 0=off)
+                 3      Intensity (1=Light, 0=dark)
+
+                4-7     Not used
+
+      1-7: Colour for line 1-7
+
+     8-F                Colour map for sprite 0
+                        Upper right part (if using 16*16pixel sprites).
+
+    10-17               Colour map for sprite 1
+                        Upper left part
+     ...
+The base registers are the registers 2-6. For further information (about
+how the registers are handled to form a 16-bit address), see the MSX RED BOOK by Kuma.
+
+
+Note 4c2:
+PORT.99         VDP status (Interrupt,Spr Conc,5th)
+-------
+
+Input from port 99h:
+Read the VDP status register (selected via register 0Fh on MSX2).
+Status register 0 (default):
+bit  Name  Expl.
+0-3  5/9th Number for the 5'th sprite (9'th in screen 4-8) on a line
+5    C     1 if overlapping sprites
+6    5D    1 if more than 4 sprites on a horizontal line (9 in screen 4-8)
+7    F     Copy of the CPU interrupt (1=interrupt)
+
+
+Note 4d2:
+PORT.99         address setup/Register write
+-------
+
+Output to port 99h:
+Setup VRAM address for write or read, 
+send data to register and select register
+
+Examples:
+
+This routine will do the same as the BASIC command 
+VDP(B)=A
+where A is the byte to be send to the VDP register B
+
+write_register:
+        out     (099h),a        ; Send data (note: the data is send FIRST)
+        ld      a,b             ; Get the VDP register in [a]
+        or      10000000b       ; Set bit 7 to indicate register WRITE
+        out     (099h),a        ; Select register
+        ret
+
+The VDP register can be (on MSX 1) in the range of 0-7.
+On the MSX2 VDP (the one in the SV738 X'Press) it can be in the range of  0-47.
+In some of the registers, a bit will be reffered to as M1-M5.
+Theese bits are used to set up the VDP screen mode (BASIC screen 0-8).
+The relationship between the bits and the screen is:
+
+M1 M2 M3 M4 M5  Screen format
+1  0  0  0  0   Text                            (BASIC SCREEN 0)
+0  0  0  0  0   Half text                       (BASIC SCREEN 1)
+0  0  1  0  0   Hi resolution                   (BASIC SCREEN 2)
+0  1  0  0  0   Multicolour                     (BASIC SCREEN 3)
+
+0  0  0  1  0   Scrn2 with 8 Sprites/Line       (BASIC SCREEN 4)
+0  0  1  1  0   256*212, 16  colours/pixel      (BASIC SCREEN 5)
+0  0  0  0  1   512*212, 4   colours/pixel      (BASIC SCREEN 6)
+0  0  1  0  1   512*212, 16  colours/pixel      (BASIC SCREEN 7)
+0  0  1  1  1   256*212, 256 colours/pixel      (BASIC SCREEN 8)
+1  0  0  1  0   80 column text screen           (BASIC SCREEN0, WIDTH 80)
+
+Register 0:
+Mode register 0
+bit  Name  Expl.
+0    D     External video input (0=input disable, 1=enable)
+1    M3    Mode M3
+2    M4    Mode M4 (Not on MSX 1)
+3    M5    Mode M5 (Not on MSX 1)
+4    IE1   Horizontal Retrace Interrupt Enable
+5    IE0   Vertical Retrace Interrupt Enable
+6    DG    DiGitize mode
+7    0     Always 0
+
+Register 1:
+Mode register 1
+bit  Name  Expl.
+0    MAG   Sprite zoom          (0=x1, 1=x2)
+1    SZ    Sprite size          (0=8x8, 1=16x16)
+2    0     Always 0 on MSX 1
+3    M2    Mode M2
+4    M1    Mode M1
+5    IE2   Interrupt control (50Hz (PAL),
+           60 Hz (NTSC) and Light pen/mouse on
+           MVDP colour bus)             (0=Disable, 1=Enable)
+6    BLK   Screen output control        (0=Disable, 1=Enable)
+7    416   VRAM size control            (0=4K, 1=16K)
+
+
+Register 2:
+Name table base address
+Bit     7    6    5    4    3    2    1    0
+Name    0   A16  A15  A14  A13  A12  A11  A10
+
+Register 3:
+colour table base address Low 
+Bit     7    6    5    4    3    2    1    0
+Name   A13  A12  A11  A10  A09  A08  A07  A06
+
+Register 4:
+Pattern generator base address
+Bit     7    6    5    4    3    2    1    0
+Name    0    0   A16  A15  A14  A13  A12  A11
+
+Register 5:
+Sprite attribute table base address Low
+Bit     7    6    5    4    3    2    1    0
+Name   A14  A13  A12  A11  A10  A09  A08  A07
+
+Register 6:
+Sprite pattern generator base address
+Bit     7    6    5    4    3    2    1    0
+Name    0    0   A16  A15  A14  A13  A12  A11
+
+Register 7:
+colour register.
+bit  Name  Expl.
+0-3  TC0-3 Background colour in SCREEN 0 (also border colour in SCREEN 1-3)
+4-7  BD0-3 Foreground colour in SCREEN 0
+The bits 0-3 and 4-7 can hold a number in the range of 0-15. 
+The corresponding colours are:
+0 = Transparent         8 = Medium red          
+1 = Black               9 = Light red
+2 = Medium green        10= Dark yellow
+3 = Light green         11= Light yellow
+4 = Dark blue           12= Dark green
+5 = Light blue          13= Magenta
+6 = Dark red            14= Gray
+7 = Cyan                15= White
+
+*** MSX1 VDP REGISTERS ENDS HERE! ***
+
+Register 8:
+Mode register 2
+bit  Name  Expl.
+0    BW    32 Greylevel MVDPmode out trough CompositeVideo output.
+           (Normally composite video and RGB are not generated from this
+           output but from another on the MVDP).
+1    SP    ? Sprite             (0=On, 1=Off)
+2    VR0   VRAM size and speed
+3    VR1   VRAM size and speed
+4    CB    colour Bus direction         (0=Output, 1=Input)
+5    TP    ?Transparent from palette
+6    LCS   Lightpen Select (active 1) connected trough colourbus
+7    MSE   Mouse select (active 1) connected trough colourbus
+
+Register 9:
+Mode register 3
+bit  Name  Expl.
+0    DC    DLCLK Dot Clock Direction    (0=Dot clock Input, 1=Output)
+1    NT    NTSC                         (0=60Hz, 1=50Hz)
+2    E0    Even Odd                     (0=Normal, 1=Two screen)
+3    IL    Interlace                    (1=On, 0=Off)
+4    S0    Simultaneus mode
+5    S1    Simultaneus mode 
+6    0     Always 0
+7    LN    Vertical higth (pixels)      (0=192, 1=212)
+
+Simultaneus mode:	S0  S1  Expl.
+			0   0   Normal (Intern)
+			0   1   Mix
+			1   x   External(Digitize)
+Register 0Ah:
+colour table base address High
+Bit     7    6    5    4    3    2    1    0
+Name    0    0    0    0    0   A16  A15  A14
+
+Register 0Bh:
+Sprite attribute base address High
+Bit     7    6    5    4    3    2    1    0
+Name    0    0    0    0    0    0   A16  A15
+
+
+Register 0Ch
+Inverse text colour
+bit  Name  Expl.
+0-3  BC0-3 Inverse/blink text background colour
+4-7  T20-3 Inverse/Blink text forground colour
+The bits 0-3 and 4-7 can hold a number in the range of 0-15. 
+The corresponding colours are the same as for register 7.
+
+Register 0Dh:
+Blinking period
+bit  Name  Expl.
+0-3  OF0-3 Off blink time (1/5 sec)
+4-7  ON0-3 On blink time (1/5 sec)
+
+Register 0Eh:
+VRAM access (VRAM address select, higher address lines)
+Bit  Name  Expl.
+0    A14   1 if 4000h   and forward
+1    A15   1 if 8000h   and forward
+2    A16   1 if 10 000h and forward
+7-3  0     Always 0
+
+A16  A15  A14   Expl.
+ 0    0    0        0  - 3FFFh          (VRAM memory)
+ 0    0    1     4000h - 7FFFh
+ 0    1    0     8000h - BFFFh
+ 0    1    1     C000h - FFFFh
+ 1    0    0    10000h -13FFFh
+ 1    0    1    14000h -17FFFh
+ 1    1    0    18000h -1BFFFh
+ 1    1    1    1C000h -1FFFFh
+
+To setup a VRAM address (see note about the BASIC command VPOKE) the first byte
+ send to the VDP is the low byte. Then the second byte, containing the high byte,
+ is send with bit 6 set to 1.
+So to setup VRAM address 19F18h for write, the first operation to be done is
+to setup the higher address lines:
+        ld      a,00000110b     ; 18000h -
+        out     (099h),a        ; Send data
+        ld      a,0Eh           ; Select VDP register 0Eh 
+        or      10000000b       ; Bit 7=1 indicates REGISTER
+        out     (099h),a
+Then the low address (0-3FFFh) has to be send to the VDP.
+Here we send the word 1F18h:
+        ld      a,18h           ; Low byte
+        out     (099h),a
+        ld      a,1Fh           ; High byte
+        or      01000000b       ; Bit 6=1 indicates ADDRESS
+        out     (099h),a
+The byte can then be written to port 098h:
+        ld      a,0Fh           ; Byte to write
+        out     (098h),a
+The instructions above does the same thing as the BASIC command
+VPOKE &amp;h19F18,&amp;h0F
+
+Register 0Fh:
+Status register
+bit  Name  Expl.
+0-3  S0-3  Status register number (0-9)
+4-7  0     Always 0
+
+b6 Shake
+
+Register 010h:
+Palette #
+bit  Name  Expl.
+0-3  C0-3  colour palette register number (0-15 for colour 0-15)
+           to receive data from port 09Ah
+4-7  0     Always 0
+
+Register 011h:
+Register pointer
+bit  Name  Expl.
+0-5  R0-5  VDP register number
+6    0     Always 0
+7    AII   Auto increment RP (Register Pointer)         (0=on, 1=off)
+
+Register 012h:
+Display adjust
+bit  Name  Expl.
+0-3  H0-3  Horizontal adjust (0-0Fh, +-8 pixels)
+4-7  V0-3  Vertical adjust   (0-0Fh, +-8 pixels)
+
+Register 013h:
+Interrupt line
+bit  Name  Expl.
+0-7  IL0-7 Interrupt line
+
+Register 014h:
+colour burst register 1
+bit  Name
+0-7  0
+
+Register 015h:
+colour burst register 2
+Bit     7    6    5    4    3    2    1    0
+Name    0    0    1    1    1    1    0    1
+
+Register 016h:
+colour burst register 3
+Bit     7    6    5    4    3    2    1    0
+Name    0    0    0    1    0    1    0    1
+
+Register 017h:
+Display offset
+bit  Name  Expl.
+0-7  DO0-7 Display offset Y (0-255).
+
+- - - -
+
+Register 020h:                  Register 021h:
+Source X Low byte               Source X High byte
+
+Register 022h:                  Register 023h:
+Source Y Low byte               Source Y High byte
+
+Register 024h:                  Register 025h:
+Destination X Low byte          Destination X High byte
+
+Register 026h:                  Register 027h:
+Destination Y Low byte          Destination Y High byte
+
+Register 028h:                  Register 029h:
+Number of X dots low byte       Number of X dots high byte
+
+Register 02Ah:                  Register 02Bh:
+Number of Y dots low byte       Number of Y dots high byte
+
+Register 02Ch:
+colour register
+bit  Name  Expl.
+0-3  CL0-3 ? Graphic command colour register (LINE, POINT...)
+4-7  CH0-3 ? Graphic command colour register (LINE, POINT...)
+
+
+Register 2D:
+Argument register
+bit  Name  Expl.
+0    MAJ   Longest side, used by line 0=X, 1=Y
+1    EQ    ?Search?
+2    DIX   X step direction             (0=right, 1=left) 
+3    DIY   Y step direction             (0=down, 1=up)
+4    MXS   Source external memory       (0=128K VRAM, 1=64K VRAM)
+5    MXD   Destination external memory  (0=128K VRAM, 1=64K extra)
+6    MXC   CPU Access external memory?  (0=128K VRAM, 1=64K VRAM)
+7    0     Always 0
+
+Register 2E:
+Command register
+bit  Name  Expl.
+0-2  AR0-2 Logical argument, see below.
+3    TRN   Transparet no effect
+4-7  C0-3  Command, see below.
+
+Commands  (C0-3):
+Value:  Expl.:
+0       Stop
+4       Point,  VRAM -&gt; VDP
+5       Pset,   VDP  -&gt; VRAM
+6       Search, VRAM -&gt; VRAM
+7       Line,   VDP  -&gt; VRAM
+8       Logical move, VDP  -&gt; VRAM
+9       Logical move, VRAM -&gt; VRAM
+A       Logical move, VRAM -&gt; CPU
+B       Logical move, CPU  -&gt; VRAM
+C       High speed move (bits 0-3 has no effect), VDP  -&gt; VRAM
+D       High speed move (bits 0-3 has no effect), VRAM -&gt; VRAM
+E       High speed move (bits 0-3 has no effect), VRAM -&gt; CPU
+F       High speed move (bits 0-3 has no effect),  CPU -&gt; VRAM
+
+Arguments (AR0-AR2):
+Value:  Name:   Expl.:
+0       PSET    Set bits, set old bits to 0
+1       AND     Mask bits
+2       OR      Set bits, include old
+3       XOR     Swap new bits
+4       NOT     Set new bits to 0
+
+----****
+
+****----
+Note 5a1,5b1:
+PORT.9A,9B              MVDP colour palette/Register data
+----------
+
+Port summary:
+9A      W    5a1   MVDP colour palette registers data write (2 bytes)
+9B      ?    5b1   MVDP Register data
+
+For VPEEK example, see note 4a1 (port 98).
+For block VRAM-&gt;RAM copy, see note 4a1 (port 98).
+
+For VPOKE example, see note 4b1 (port 98).
+For VRAM fill example, see note 4b1 (port 98).
+For block RAM-&gt;VRAM copy, see note 4b1 (port 98).
+
+For VRAM addresses in different screens, see note 4b1 (port 98).
+For VRAM address explanation, see note 4b1 (port 98) subnotes A-I.
+For VDP(B)=A example, see note 4d2 (port 99).
+For VDP register explanation, see note 4d2 (port 99).
+For screen selection, see note 4d2 (port 99).
+For palette redefination example, see note 5a1 (port 9A).
+
+Note 5a1:
+PORT.9A         MVDP colour palette registers data write (2 bytes)
+-------
+
+Output to port 9Ah:
+This is the colour palette data port. The data is send consists of two bytes:
+Byte 1:                                 Byte 2:                         
+
+Bit:    Expl.:                          Bit:    Expl.:                  
+0-2 =   Blue data (0-7)                 0-2 =   Green data (0-7)                
+3   =   Always 0 (no effect)            3-7 =   Always 0 (no effect)
+4-6 =   Red data (0-7)
+7   =   Always 0 (no effect)
+
+
+
+Examples:
+This routine will define the colour white (15 in BASIC) to the new values 
+RED=7, GREEN=4 and BLUE=1 (light red).
+First the colour number to change must be defined by sending colour number
+(0-15) to VDP register 10h.
+Then the Red, Green and Blue colours are sent trough port 09Ah.
+This mix of R, G and B will give colour # 15 a colour of lighgt red.
+
+        RED     EQU     7       ; 0-7
+        GREEN   EQU     4       ; 0-7
+        BLUE    EQU     1       ; 0-7
+
+        di
+        ld      a,0fh           ; colour to change=colour 15(orginally white)
+        out     (099h),a        ; Send data
+        ld      a,090h          ; =Register 10h with bit 7 set
+	nop
+	nop
+        out     (099h),a        ; Select register
+;
+        ld      a,RED*16+BLUE   ; Setup red and blue in reg. [a]
+        out     (09ah),a        ; Send red &amp; blue
+        ld      a,GREEN         ; Setup green
+        out     (09ah),a        ; Send it.
+        ret
+
+To set a colour to pure red, the other bits for green and blue should be set to 0.
+
+
+
+Note 5b1:
+PORT.9B         MVDP Register data
+-------
+
+No information.
+
+----****
+
+****----
+Note 6a1,6b1,6c1:
+PORT.A0,A1,A2           I AY-3-8910 PSG (Programmable Sound Generator)
+----------
+
+Port summary:
+A0      W    6a1   I AY-3-8910 PSG      Register select
+A1      W    6b1   I AY-3-8910 PSG      Data write
+A2      R    6c1   I AY-3-8910 PSG      Data read
+
+The AY-3-8910 is a I/O chip whith 3 sound generators.
+It controls the three MSX std. audio channels, joystick and cassette.
+
+Function/register table:
+Frequency, audio channel A-C:   0...5
+Noise freq.:                    6
+Mixer:                          7
+Volume:                         8 ...10
+Envelope:                       11...13
+Joystick and cassette:          14
+Paddle,joystick sel,touchpad:   15
+
+For register summary, see note 6a1 (port A0).
+For SOUND A,B (register write) example, see note 6b1 (port A1).
+For register read example, see note 6c1 (port A2).
+For joystick read example, see note 6c1 (port A2).
+
+Note 6a1:
+PORT.A0         I AY-3-8910 PSG      Register select
+-------
+
+Port A0h WRITE = PSG register select.
+This port selects the current PSG register (0-15).
+
+Registers are:
+0 = Fine freq. channel A        (0-255)
+1 = Freq. channel A             (0-15)
+2 = Fine freq. channel B        (0-255)
+3 = Freq. channel B             (0-15)
+4 = Fine freq. channel C        (0-255)
+5 = Freq. channel C             (0-15)
+
+        Output frequency (tone):
+
+        f =          3.579M/2
+         T      -------------------
+                16*(256*fine+coarse)
+
+        Where &quot;coarse&quot; are one of the coarse frequency setting registers, 1,3 or 5
+        and &quot;fine&quot; are one of the fine frequency setting registers, 1,2 or 4.
+
+6 = Noise period                (0-31)
+
+        Output frequency (noise):
+
+        f =        3.579M/2
+         N      --------------
+                16*NoisePeriod
+
+        Where &quot;NoisePeriod&quot; are register 6.
+
+7 = Mixer
+        bit   Expl.
+        0 = Channel A tone enable       (0=Enable,1=Disable)
+        1 = Channel B tone enable       (0=Enable,1=Disable)
+        2 = Channel C tone enable       (0=Enable,1=Disable)
+        3 = Channel A noise enable      (0=Enable,1=Disable)
+        4 = Channel B noise enable      (0=Enable,1=Disable)
+        5 = Channel C noise enable      (0=Enable,1=Disable)
+        6 = I/O port A mode             (0=input, 1=Output)
+        7 = I/O port B mode             (0=input, 1=Output)
+8 = Volume channel A            (0-15, 16=Envelope)
+9 = Volume channel B            (0-15, 16=Envelope)
+10= Volume channel C            (0-15, 16=Envelope)
+11= Envelope fine freq.         (0-255)
+12= Envelope freq.              (0-255)
+
+        Envelope frequency (tone or noise):
+
+
+        f =            3.579M/2
+         E      ----------------------
+                256*(256*ECoarse+EFine)
+
+        Where &quot;ECoarse&quot; are the coarse envelope frequency setting register 12
+        and &quot;EFine&quot; are the fine envelope frequency setting register 11.
+        Note that the envelope period is  
+
+                 1
+               -----
+                f
+                 E
+
+13= Envelope shape              (0-15)
+
+        C A A H
+        O T L L
+        N T T D
+        T
+        0 0 X X  \________   0
+        0 1 X X  /________   4
+        1 0 0 0  \\\\\\\\\   8  (Repeating, see figure)
+        1 0 0 1  \________   9
+        1 0 1 0  \/\/\/\/\   10 (Repeating, see figure)
+        1 0 1 1  \           11 (See figure)
+        1 1 0 0  /////////   12 (Repeating)
+        1 1 0 1  /           13
+        1 1 1 0  /\/\/\/\/\  14 (Repeating)
+        1 1 1 1  /           15
+
+14= I/O port A (Joystick and cassette)
+        bit   Expl.
+        0 = Joystick UP                 (0=Moved, 1=Not moved)
+        1 = Joystick DOWN               (0=Moved, 1=Not moved)
+        2 = Joystick LEFT               (0=Moved, 1=Not moved)
+        3 = Joystick RIGHT              (0=Moved, 1=Not moved)
+        4 = Joystick trigger A
+        5 = Joystick trigger B
+        6 = Keyboard mode               (On japanese machines only)
+        7 = Cassette input
+
+15= I/O port B (Joystick select)
+        bit   Expl.
+        0 =   1         (Used as handshaking output if touchpad)
+        1 =   1         (Used as handshaking output if touchpad)
+        2 =   1         (Used as handshaking output if touchpad)
+        3 =   1         (Used as handshaking output if touchpad)
+        4 =   Pulse 1   (Positive pulse starting a monostable timer)
+        5 =   Pulse 2   (Positive pulse starting a monostable timer)
+        6 =   Joystick select           (0=Connector 1, 1=Connector 2)
+        7 =   Kana LED (Keyboard mode indicator. On japanese machines only)
+
+        Bits 4 and 5 is used by a program wich uses a paddle.
+        A short positive edge pulse on bit 4 (or 5) starts a monostable timer
+        (in the attatched paddle) and the paddle sets one of the joystick bits in 
+        register 14 low (FIRE A (FIRE B),L,R,D or U).
+        When the monostable times out, the joystick bit in port 14 is set high again.
+        The length of the counting period of the monostable timer is set 
+        (in the attatched paddle) by a variable resistor.
+        The computer determine the position of the variable resistor by measuring
+        the time while the joystick bit in register 14 is low.
+
+        PULSE           _________|-|______________________
+
+        FIRE A/B
+        or              ---------|______________|---------
+        L R D U
+                                 | - - - - - - -| = Variable resistor
+
+Note 6b1:
+PORT.A1         I AY-3-8910 PSG      Data write
+-------
+Port A1h WRITE = PSG data write.
+Used to send data to current PSG register.
+
+Examples:
+
+This routine will do the same as the BASIC command 
+SOUND A,B
+where A is the PSG register and B is the byte to write
+
+sound:  out     (0A0h),a                ; Select register
+        ld      a,b
+        out     (0A1h),a                ; Send data
+        ret
+
+Note 6c1:
+PORT.A2         I AY-3-8910 PSG      Data read
+-------
+Port A2h READ = PSG data read.
+Used to read data from current PSG register.
+
+Examples:
+
+How to read a byte from a register is shown in this routine
+(Input: [a]=PSG register, Output: [a]=Data read)
+
+read_psg:
+        out     (0A0h),a                ; Select register
+        in      a,(0A2h)                ; Read data
+        ret
+
+This rotine will read joystick 1 or 2:
+F3    di
+3E 0F ld a,0fh         Write this for          Write this for
+D3 A0 out (0a0h),a     Joystick port 1:        Joystick port 2:
+DB A2 in a,(0a2h)
+E6 DF / E6 AF          and 11011111b; 0DFh     and 10101111b; 0AFh
+F6 4C / F6 03           or 01001100b; 04Ch      or 00000011b; 003h
+D3 A1 out (0a1h),a
+3E 0E ld a,0eh
+D3 A0 out (0a0h),a
+DB A2 in a,(0a2h)
+
+Now register [a] will have the following configuration for joystick
+in port 1 (or port 2):
+Bit #:  76  5    4   3210
+        ||  |    |   ||||
+Name:   10 TRG2 TRG1 RLDU
+
+Where TRG2 is the second trigger button (not used on most Commodore 
+joysticks).
+
+
+----****
+
+****----
+Note 7a1,7b1:
+PORT.A8,A8              I 8255A/ULA9RA041 PPI (Programmable Peripheral Interface)
+----------
+
+Port summary:
+A8      R    7a1   I 8255A/ULA9RA041    Port A  Memory slot reister Read  
+A8      W    7b1   I 8255A/ULA9RA041    Port A  Memory slot reister Write
+
+For memory map, see note 7b1 (port A8).
+
+Note 7a1:
+PORT.A8         I 8255A/ULA9RA041    Port A  Memory slot reister Read
+-------
+
+Port 0A8h READ = PPI port A (Primary slot register read)
+Reads the current PSLOT (Primary Slot) configuration. Returned byte is:
+        bit   Expl.
+        0-1 = Primary slot number (0-3) for memory page 0 (Addr. 0000-3FFF)
+        2-3 = Primary slot number (0-3) for memory page 1 (Addr. 4000-7FFF)
+        4-5 = Primary slot number (0-3) for memory page 2 (Addr. 8000-BFFF)
+        6-7 = Primary slot number (0-3) for memory page 3 (Addr. C000-FFFF)
+
+Note 7b1:
+PORT.A8         I 8255A/ULA9RA041    Port A  Memory slot reister Write
+-------
+
+Port 0A8h WRITE = PPI port A (Primary slot register setup)
+Selects the current PSLOT (Primary Slot) configuration. Byte to write is:
+        bit   Expl.
+        0-1 = Primary slot number (0-3) for memory page 0 (Addr. 0000-3FFF)
+        2-3 = Primary slot number (0-3) for memory page 1 (Addr. 4000-7FFF)
+        4-5 = Primary slot number (0-3) for memory page 2 (Addr. 8000-BFFF)
+        6-7 = Primary slot number (0-3) for memory page 3 (Addr. C000-FFFF)
+
+
+
+The standard RAM/ROM areas on a MSX machine is described by the map below:
+(Note: the characters &quot;a-i&quot; is special memory blocks, see notes).
+
+        STANDARD |STANDARD |CARTRIDGE|SYSTEM
+        ROM      |RAM      |MEMORY   |MEMORY
+-----------------|---------|---------|---------
+PSLOT#: :   0   : :  1    : :   2   : :   3   |
+--------|SSLOT#:| |SSLOT#:| |SSLOT#:| |SSLOT#:|
+        |0|1|2|3| |0|1|2|3| |0|1|2|3| |0|1|2|3| Addresses:
+PAGE: --- - - - -=- - - - -=- - - - -=- - - - -
+        | | | | |=| | | | |=| | | | |=| | | | |  0
+0       |a| | | |=|c| | | |=| | | | |=| |h| | |
+        | | | | |=| | | | |=| | | | |=| | | | |
+        | | | | |=| | | | |=| | | | |=| | | | |  3FFF
+      --- - - - -=- - - - -=- - - - -=- - - - --
+        | | | | |=| | | | |=| | | | |=| | | | |  4000
+1       |b| | | |=|d| | | |=| | | | |=|g|i| | |
+        | | | | |=| | | | |=| | | | |=| | | | |
+        | | | | |=| | | | |=| | | | |=| | | | |  7FFF
+      --- - - - --- - - - -=- - - - -=- - - - --
+        | | | | |=| | | | |=| | | | |=| | | | |  8000
+2       | | | | |=|e| | | |=| | | | |=| | | | |
+        | | | | |=| | | | |=| | | | |=| | | | |
+        | | | | |=| | | | |=| | | | |=| | | | |  BFFF
+      --- - - - --- - - - -=- - - - -=- - - - --
+        | | | | |=| | | | |=| | | | |=| | | | |  C000
+3       | | | | |=|f| | | |=| | | | |=| | | | |
+        | | | | |=| | | | |=| | | | |=| | | | |
+        | | | | |=| | | | |=| | | | |=| | | | |  FFFF
+      ------------------------------------------
+Notes:  (Memory configuration on a MSX2 expanded SV738 X'Press,
+        memory mapper for 256 Kbyte not implemented)
+a=      ROM BIOS  (Games often use this ROM block)
+b=      ROM BASIC (This is the BASIC interpreter)
+
+c=      RAM 16K   (1/4 of 64K bytes standard RAM) \
+d=      RAM 16K   (1/4 of 64K bytes standard RAM)  |
+e=      RAM 16K   (1/4 of 64K bytes standard RAM)  | = 64K bytes totally
+f=      RAM 16K   (1/4 of 64K bytes standard RAM) /
+
+g=      ROM RS232 (Port drivers &amp; terminal program)
+h=      ROM MSX2  (Complement to BASIC ROM)
+i=      ROM DOS   (FDC drivers &amp; MSX DOS)
+*** OBSERVE ***
+The memory location 7FBC-7FBF in [PSLOT 3, SSLOT 1] are used as command port
+for the FDC (Floppy Disk Controller) chip, FD1793. Writing to this area  might destroy the inserted disk.
+Memory locations in that area:
+
+        reqpt   equ     07fbch  ; Data request port read only
+                                ;  bit 7=1 for 1793 interrupt
+                                ;  bit 6=0 for 1793 data request
+        selpt   equ     07fbch  ; Drive select port 
+                                ; (write 0 to turn off drive motor)
+                                ;  bit 0=1 for select drive 0
+                                ;  bit 1=1 for select drive 1
+                                ;  bit 2=1 for select side 1
+                                ;  bit 3=1 for motor on
+        compt   equ     07fb8h  ; command port write only
+        sttpt   equ     07fb8h  ; Status port read only
+        trkpt   equ     07fb9h  ; Track register port  (R/W)
+        secpt   equ     07fbah  ; Sector register port (R/W)
+        datapt  equ     07fbbh  ; data register port   (R/W)
+
+For further information about the FD1793 commands, see data manual.
+
+----****
+
+****----
+Note 7c2,7d2,7e2,7f2:
+PORT.A9,A9,AA,AA        I 8255A/ULA9RA041 PPI (Programmable Peripheral Interface)
+----------
+
+Port summary:
+A9      R    7c2   I 8255A/ULA9RA041    Port B  Keyboard column inputs
+A9      W    7d2   I 8255A/ULA9RA041    Port B
+AA      R    7e2   I 8255A/ULA9RA041    Port C Get Kbd Row sel,LED,CASo,CASm
+AA      W    7f2   I 8255A/ULA9RA041    Port C Set Kbd Row sel,LED,CASo,CASm
+
+This part of the 8255 compatible chip controls the keyboard keys,
+keyboard CAPS LED, cassette audio out and cassette motor relay.
+
+For cassette input line, see note 6a1 (port A0).
+
+For keyboard map, see note 7c2 (port A9).
+For key depression detect, see note 7e2 (port AA).
+For keyclick sound example, see note 7f2 (port AA).
+
+Note 7c2:
+PORT.A9         I 8255A/ULA9RA041    Port B  Keyboard column inputs
+-------
+
+Port 0A9h READ = PPI port B (Keyboard columns):
+Reading this port will get back the state of the selected 
+keyboard line (selected via port 0AAh). Each bit corresponds to one
+of 8 keys on each line.
+
+bit  Name    Expl.
+0-7  KC0-7   Keyboard line status
+
+The matrix connected keyboard can be described by this map:
+
+     Bit#:|  7  |  6  |  5  |  4  |  3  |  2  |  1  |  0  |
+          |     |     |     |     |     |     |     |     |
+Line:     |     |     |     |     |     |     |     |     |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  0       | &quot;7&quot; | &quot;6&quot; | &quot;5&quot; | &quot;4&quot; | &quot;3&quot; | &quot;2&quot; | &quot;1&quot; | &quot;0&quot; |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  1       | &quot;;&quot; | &quot;]&quot; | &quot;[&quot; | &quot;\&quot; | &quot;=&quot; | &quot;-&quot; | &quot;9&quot; | &quot;8&quot; |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  2       | &quot;B&quot; | &quot;A&quot; | &quot;&pound;&quot; | &quot;/&quot; | &quot;.&quot; | &quot;,&quot; | &quot;'&quot; | &quot;`&quot; |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  3       | &quot;J&quot; | &quot;I&quot; | &quot;H&quot; | &quot;G&quot; | &quot;F&quot; | &quot;E&quot; | &quot;D&quot; | &quot;C&quot; |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  4       | &quot;R&quot; | &quot;Q&quot; | &quot;P&quot; | &quot;O&quot; | &quot;N&quot; | &quot;M&quot; | &quot;L&quot; | &quot;K&quot; |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  5       | &quot;Z&quot; | &quot;Y&quot; | &quot;X&quot; | &quot;W&quot; | &quot;V&quot; | &quot;U&quot; | &quot;T&quot; | &quot;S&quot; |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  6       | F3  | F2  | F1  |CODE | CAP |GRAPH|CTRL |SHIFT|
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  7       | RET | SEL | &lt;== |STOP | TAB | ESC | F5  | F4  |
+ ---------+-----+-----+-----+-----+-----+-----+-----+-----|
+  8       |RIGHT|DOWN | UP  |LEFT | DEL | INS |HOME |SPACE|
+ ----------------------------------------------------------
+
+
+Note 7d2:
+PORT.A9         I 8255A/ULA9RA041    Port B write
+-------
+
+Port 0A9h WRITE= PPI port B (Keyboard columns):
+? Writing to this port is not allowed (?).
+
+Note 7e2:
+PORT.AA         I 8255A/ULA9RA041    Port C Get Kbd Row sel,LED,CASo,CASm
+-------
+
+Port 0AAh READ = PPI port C (Keyboard line and Cassette):
+bit  Name   Expl.
+0-3  KB0-3  Keyboard line               (0-8 on SV738 X'Press)
+4    CASON  Cassette motor relay        (0=On, 1=Off)
+5    CASW   Cassette audio out          (Pulse)
+6    CAPS   CAPS-LOCK lamp              (0=On, 1=Off)
+7    SOUND  Keyboard klick bit          (Pulse)         
+
+Examples:
+This routine will detect if a key is pressed:
+
+DB AA  in a,(0AAh)   ; Get old value for port C.
+E6 F0  and 0f0h      ; Don't change bit 4-7
+F6 __  or LINE       ; Set the keyboard line (0-8).
+D3 AA  out (0AAh),a  ; Send it to port C (KB0-3).
+DB A9  in a,(0A9h)   ; Read the line's columns (port B)
+E6 __  and bbbbbbbb  ; Mask the keys we don't want
+20 __  jr z,pressed  ; Jump if depressed.
+
+Note 7f2:
+PORT.AA         I 8255A/ULA9RA041    Port C Set Kbd Row sel,LED,CASo,CASm
+-------
+
+Port 0AAh WRITE = PPI port C (Keyboard and Cassette control):
+bit  Name   Expl.
+0-3  KB0-3  Keyboard line select                (0-8 on SV738 X'Press)
+4    CASON  Cassette motor relay control        (0=On, 1=Off)
+5    CASW   Cassette audio out                  (Pulse)
+6    CAPS   CAPS-LOCK lamp control              (0=On, 1=Off)
+7    SOUND  Keyboard klick bit                  (Pulse)
+
+This routine will produce a tone from the keyclick bit:
+loop:   DB AA   in      a,(0AAh)        ; Get old value for port C.
+        EE 80   xor     080h            ; Swap bit 7
+        D3 AA   out     (0AAh),a        ; Send it to port C.
+        00      nop                     ; Changing the delay here will
+        00      nop                     ; change the frequency.
+        18 F6   jr      loop            ; Go back to the loop.
+
+----****
+
+****----
+Note 7g3,7h3:
+PORT.AB,AB              I 8255A/ULA9RA041 PPI (Programmable Peripheral Interface)
+----------
+
+Port summary:
+AB      R    7g3   I 8255A/ULA9RA041    Mode
+AB      W    7h3   I 8255A/ULA9RA041    Mode select and I/O setup of A,B,C
+
+PPI mode selection and bit manipulation ports.
+
+
+Note 7g3:
+PORT.AB         I 8255A/ULA9RA041    Mode
+-------
+
+Port 0BAh READ = PPI mode or reset/set bit port
+? Reading from this port is not allowed (?).
+
+Note 7h3:
+PORT.AB         I 8255A/ULA9RA041    Mode select and I/O setup of A,B,C
+-------
+
+Port 0ABh WRITE = PPI mode or reset/set bit port
+This port is used in two ways depending on bit 7. If bit 7 is set to 1,
+this port will be used as a mode setup port. If bit7=0 this port will be
+used to set or reset a bit in port C.
+
+PPI mode port (bits):
+   |      --- GROUP A ---             |            --- GROUP B ---
+7  |  6 5        4        3           |  2         1                0
+|  |  | |        |        |           |  |         |                |
+1  |  A&amp;C        A        C Upper     |  B&amp;C       B                C Lower
+   |  MODE       Dir      Dir 1=Input |  Mode      Dir 1=Input  Dir 1=Input
+   |  00=Mode 0  1=Input  0=Output    |  0=Mode 0      0=Output     0=Output
+   |  01 Mode 1  0=Output             |  1=Mode 1
+   |  1x Mode 2                       |
+
+Mode 0: Basic input/output     (Mode setup by reset)
+Mode 1: Strobed input/output
+Mode 2: Bi-Directional bus
+
+In other words:
+
+Bit  Name    Expl.
+0    CLOWER  Port C (lower four bits) direction (0=Output (MSX), 1=Input)
+1    BDIR    Port B direcition                  (0=Output, 1=Input (MSX))
+2    B&amp;C     Port B and lower four bits of port C
+             operating mode.                    (0=Normal (MSX), 1=Strobed)
+3    CUPPER  Port C (Upper four bits) direction (0=Output (MSX), 1=Input)
+4    ADIR    Port A direction                   (0=Output (MSX), 1=Input)
+5-6  A&amp;C     Port A and upper four bits of port C
+             operating mode.
+                        (00=Normal mode (MSX),
+                         01=Strobed mode,
+                         1x=Bidirectional mode (x=Don't care)).
+7    -       1 if mode setup function is selected.
+
+The mode port can be used to directly set or reset any bit of port C when bit 7 is 0.
+
+Bit  Name   Expl.
+0    -      Set/reset the bit           (0=Reset, 1=Set)
+1-3  -      Bit number                  (0-7)
+4-6  -      Not used
+7    -      0 if set/reset function selected.
+
+----****
+
+****----
+Note 8a1:
+PORT.B0,B1,B2,B3        External 8255 (SONY DataRamPack)
+----------------
+
+Port summary:
+B0-B3   ?    8a1   External 8255 (SONY DataRamPack)
+
+Note 8a1:
+PORT.B0,B1,B2,B3        I 8255A/ULA9RA041    Mode
+----------------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 9a1,9b1:
+PORT.B4,B5        RTC (Real Time Clock)
+----------
+
+Port summary:
+B4      W    9a1   RP 5C01 (Not in 738) RTC Register select
+B5      R/W  9b1   RP 5C01 (Not in 738) RTC data
+
+
+Note 9a1:
+PORT.B4         RP 5C01 (Not in 738) RTC Register select
+-------
+
+Port 0B4h = RTC Register select port (write only)
+Bit  Name   Expl.
+0-3  ?      RTC register (0-15)
+4-7  ?      Not used (don't care)
+
+Note 9b1:
+PORT.B5         RP 5C01 (Not in 738) RTC data
+-------
+
+Port 0B5h = RTC data read/write port
+Bit  Name   Expl.
+0-3  ?      RTC data read/write
+4-7  ?      Not used (set to 1)
+
+----****
+
+****----
+Note 10a1:
+PORT.B8,B9,BA,BB        SANYO Light pen interface
+----------------
+
+Port summary:
+B8-BB   ?    10a1  SANYO Light pen interface
+
+Note 10a1:
+PORT.B8,B9,BA,BB   SANYO Light pen interface
+----------------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 11a1:
+PORT.BC,BD,BE,BF        VHD control
+----------------
+
+Port summary:
+BC-BF   ?    11a1  VHD control
+
+Note 11a1:
+PORT.BC,BD,BE,BF   VHD control
+----------------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 12a1:
+PORT.C0,C1              MSX audio (MSX MUSIC again?)
+----------
+
+Port summary:
+C0-C1   ?    12a1  MSX audio (MSX MUSIC again?)
+
+Note 12a1:
+PORT.C0,C1              MSX audio (MSX MUSIC again?)
+----------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 13a1:
+PORT.C8,C9,CA,CB,CC,CD,CE,CF    MSX Interface (??)
+----------------------------
+
+Port summary:
+C8-CF   ?    13a1  MSX Interface (??)
+
+Note 13a1:
+PORT.C8,C9,CA,CB,CC,CD,CE,CF   MSX Interface (??)
+----------------------------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 14a1:
+PORT.D0,D1,D2,D3,D4,D5,D6,D7    External Floppy Disk Controller
+----------------------------
+
+Port summary:
+D0-D7   ?    14a1  External Floppy Disk Controller
+
+Note 14a1:
+PORT.D0,D1,D2,D3,D4,D5,D6,D7   External Floppy Disk Controller
+----------------------------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 15a1:
+PORT.D8,D9,DA,DB        Kanji ROM for Chinese characters
+----------------
+
+Port summary:
+D8-DB   ?    15a1  Kanji ROM for Chinese characters (Not included in European vers)
+
+Note 15a1:
+PORT.D8,D9,DA,DB        Kanji ROM for Chinese characters
+----------------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 16a1:
+PORT.F5                 System control
+-------
+
+Port summary:
+F5      ?    16a1  System control
+
+Note 16a1:
+PORT.F5         System control
+-------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 17a1:
+PORT.F6                 colour bus
+-------
+
+Port summary:
+F6      ?    17a1  colour bus
+
+Note 17a1:
+PORT.F6         colour bus
+-------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 18a1:
+PORT.F7                 Audio/Video control
+-------
+
+Port summary:
+F7      W    18a1  Audio/Video control
+
+Note 18a1:
+PORT.F7         Audio/Video control
+-------
+
+Sorry, no info.
+
+----****
+
+****----
+Note 19a1:
+PORT.FC,FD,FE,FF        Memory mapper
+----------------
+
+Port summary:
+FC-FF   R/W  19a1  Memory mapper page select
+
+
+Note 19a1:
+PORT.FC,FD,FE,FF   Memory mapper page select
+----------------
+
+Ports 0FCh-0FFh. These ports are normally not connected on a 
+standard MSX1 SV738 X'press. However, upgrading to MSX 2 is usually done
+by changing some ROM's, set the VRAM to 128Kb and set the internal
+RAM to 256Kb. The last thing is done by mapping 16Kbyte blocks to the 
+ports 0FCh-0FFh. The normal format of theese ports are:
+0FCh=03         RAM block # for memory page 0 (Addr. 0000-3FFF)
+0FDh=02         RAM block # for memory page 1 (Addr. 4000-7FFF)
+0FEh=01         RAM block # for memory page 2 (Addr. 8000-BFFF)
+0FFh=00         RAM block # for memory page 3 (Addr. C000-FFFF)
+The number in each port is the number of the current 16Kbyte RAM block
+(0-255). Observe that more than one memory page can use the same 16Kbyte
+block. The total RAM (fully expanded) is (16Kbyte * 256 blocks)= 4Mbyte.
+Usually the ports 0FCh-0FFh only uses 4 bits, so the maximum RAM is then
+(16Kbyte * 16 blocks)= 256Kbyte.
+
+Page: Port:     Addr.:                  Available RAM blocks:
+                --------- 0000h         ---------       ---------
+                | 16Kb  |               | 16Kb  |       | 16Kb  |
+  0   0FCh      | BLOCK |               | BLOCK |       | BLOCK |
+                |  #3   |               |  #4   |       |  #5   |
+                --------- 3FFFh         ---------       ---------
+                                        
+                --------- 4000h         ---------       ---------
+                | 16Kb  |               | 16Kb  |       | 16Kb  |
+  1   0FDh      | BLOCK |               | BLOCK |       | BLOCK |
+                |  #2   |               |  #6   |       |  #7   |
+                --------- 7FFFh         ---------       ---------
+                                        
+                --------- 8000h         ---------       ---------
+                | 16Kb  |               | 16Kb  |       | 16Kb  |
+  2   0FEh      | BLOCK |               | BLOCK |       | BLOCK |
+                |  #1   |               |  #8   |       |  #9   |
+                --------- BFFFh         ---------       ---------
+                                        
+                --------- C000h         ---------       ---------
+                | 16Kb  |               | 16Kb  |       | 16Kb  |
+  3   0FFh      | BLOCK |               | BLOCK |       | BLOCK |
+                |  #0   |               |  #10  |       |  #11  |
+                --------- FFFFh         ---------       ---------
+
+                                           ... and so on to
+                                        
+                                        ---------       ---------
+                                        | 16Kb  |       | 16Kb  |
+                                        | BLOCK |       | BLOCK |
+                                        |  #254 |       |  #255 |
+                                        ---------       ---------
+
+----****
+
+
+                    HARDWARE PORTS
+
+
+                      Front view
+
+
+        9-PIN D-SUB AMP 9               9-PIN D-SUB AMP 9
+          (FEMALE)                         (MALE)
+
+          5 4 3 2 1                       1 2 3 4 5
+        -------------                   -------------
+        \ o o o o o /                   \ * * * * * /
+         \ o o o o /                     \ * * * * /
+           -------                         -------
+           9 8 7 6                         6 7 8 9
+
+         DE-09x-P-F                      DE-09x-P-M
+
+
+
+
+                        25-PIN D-SUB
+                          (FEMALE)
+                                                        
+               13 12 11 10 9 8 7 6 5 4 3 2 1
+                ---------------------------
+                \ o o o o o o o o o o o o /
+                 \ o o o o o o o o o o o /
+                   ---------------------
+             25 24 23 22 21 20 19 18 17 16 15 14
+
+                        DE-25x-P-F
+
+
+
+
+                        25-PIN D-SUB
+                           (MALE)
+                                                        
+               1 2 3 4 5 6 7 8 9 10 11 12 13
+                ---------------------------
+                \ * * * * * * * * * * * * /
+                 \ * * * * * * * * * * * /
+                   ---------------------
+             14 15 16 17 18 19 20 21 22 23 24 25
+
+                        DE-25x-P-M              
+
+
+
+
+         Micro-Ribbon / 14-pin AMPhenol  Micro-Ribbon / 14-pin AMPhenol
+                (FEMALE)                         (MALE)         
+                                                                
+             7 6 5 4 3 2 1                   1 2 3 4 5 6 7              
+          -------------------             -------------------           
+         |   H H H H H H H   |           |   _ _ _ _ _ _ _   |          
+          \ =============== /             \ =============== /           
+           \ H H H H H H H /               \ - - - - - - - /            
+            ---------------                 ---------------             
+           14 13 12 11 10 9 8              14 13 12 11 10 9 8           
+
+              57LE-40140                        57-30140
+
+
+
+
+                 Phono RCA                      Phono RCA
+                (FEMALE)                        (MALE)  
+                                                             
+                  ---                             ---           
+                 ( O )                           ( * )          
+                  ---                             ---           
+                   1  2                            1  2
+          
+                PRC/1CS                         SPC/10          
+
+
+
+
+
+                       2.54 space DGE
+                           (FEMALE)
+ Polarisation
+     mark
+     |___|
+
+ 49 47 45 43 41 39 37 35 33 31 29 27 25 23 21 19 17 15 13 11 9 7 5 3 1
+        +---------------------------------------------------+
+        | H H H H H H H H H H H H H H H H H H H H H H H H H |
+        | ================================================= |
+        | H H H H H H H H H H H H H H H H H H H H H H H H H |
+        +---------------------------------------------------+
+ 50 48 46 44 42 40 38 36 34 32 30 28 26 24 22 20 18 16 14 12 10 8 6 4 2 
+
+                             DGE
+
+
+
+
+                           DIN audio
+                            (FEMALE)
+                               2
+                             _____
+                            /  o  \
+                         4 / o   o \ 5
+                        3 ( o  o  o ) 1  (8=center pin)
+                         7 \ o   o / 6
+                            \__^__/
+                               9
+
+                           DIN-45326
+
+
+
+                INTERNAL (or external) 3.5&quot; drive
+                          (MALE)
+                        rear, *=pin
+
+        F-353
+        CHINON
+        _____________________________________________________  PC
+                        
+            __          1-----------------------------------+
+        ----------      | * * * * * * * * * * * * * * * * * |
+        *  *  *  *      | * * * * * * * * * * * * * * * * * |
+                        +-----------------------------------+
+        |  |  |  |      
+       +5V | GND |      
+          GND  +12V
+
+       Power supply              34-pin 2.54 contact
+
+Pin number:
+
+ 1  3  5  7  9  (upper line)
+ *  *  *  *  *
+                ..... etc...
+ *  *  *  *
+ 2  4  6  8     (lower line)
+
+
+                EXTERNAL 5 1/4&quot; DRIVE
+                      (MALE)
+
+        2 4   6 8
+        _ _   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+                                                (PC board)
+        - -   - - - - - - - - - - - - - - -
+        1 3   5 7 9 ....
+
+            ^
+            |
+  (Polarisation mark)
+
+Note: Setting the drive signal connector upside-down will cause the 
+      drive LED lamp to light continously and the drive will not work.
+      Mostly, this will not damadge the system.
+
+
+
+              5 1/4&quot; drive Power supply
+                   (MALE ON DRIVE)
+
+                +12V   GND   GND  +5V
+                  |     |     |    |
+                -----------------------
+                | *     *     *    *  |
+                \_____________________/
+                  U
+
+WARNING! PIN CONFIGURATION FOR CONNECTOR ON DISK DRIVE! CHANGING +12V AND
+         +5V MIGHT DESTROY TTL LEVEL IC'S IN THE DISK DRIVE.
+
+
+                PIN CONFIGURATION
+
+
+OC= Open collector      -= No specified direction       I= Input (to MSX)
+NC= Not connected                                       O= Output (to device)
+
+
+RS-232-C        MSX Serial              DE-09x-P-F
+
+Pin     Name  EIA RS232    I/O          Comment
+              :CCITT V24
+                
+1       PG      AA:101      -           Protective Ground
+2       TD      BA:103      O           Transmitted Data
+3       RD      BB:104      I           Received Data
+4       RTS     CA:105      O           Request To Send
+5       CTS     CB:106      I           Clear To Send
+6       DSR     CC:107      I           Data Set Ready
+7       SG      AB:102      -           Signal Ground
+8       DCD     CF:109      I           Data Channel received line
+                                        signal Detector,
+                                        Data Carrier Detect
+9       DTR     108/2       O           Data Terminal Ready
+
+
+Full 25 pin (IBM XT/Amiga) and 9 pin (IBM AT) RS232 matching pin description
+is added for reference below. Amiga pins is in pharenthesis:
+
+RS-232-C        IBM XT/(Amiga) Serial   DB-25x-P-M
+
+Pin     Name               I/O          Comment
+                
+1       Shield              -           Protective Ground
+2       TXD                 O           Transmitted Data
+3       RXD                 I           Received Data
+4       RTS                 O           Request To Send
+5       CTS                 I           Clear To Send
+6       DSR                 I           Data Set Ready
+7       SG                  -           Signal Ground
+8       DCD                 I           Data Channel received line signal Detector,
+                                        Data Carrier Detect
+9       +VCC                O           + VOLTAGE (+12V)
+10      -VEE                O           - VOLTAGE (-12V)
+11      (AUDO)             (O)          Unassigned  (Audio out from Amiga)
+12      S.SD                I           Secondary Received line signal detector
+13      S.CTS               I           Secondary Clear to send
+14      S.TXD               O           Secondary Transmitted Data
+15      TXC                 I           Transmitter signal element timing
+16      S.RXD               I           Secondary Received data
+17      RXC                 I           Receiver signal element timing
+18      LL (AUDI)           O (I)       Local loopback (Audio into Amiga)
+19      S.RTS               O           Secondary Request to send
+20      DTR                 O           Data terminal ready
+21      RL / SQD            O           Remote loopback
+22      RI                  I           Ring indicator
+23      SS                  I/O         Data signal rate selector
+24      TXC1                O           Transmit signal element timing
+25                          I           Test mode
+
+
+RS-232-C        IBM AT Serial           DB-09x-P-M
+
+Pin     Name                I/O          Comment
+                
+1       DCD                 I           Data Channel received line signal Detector,
+                                        Data Carrier Detect
+2       RXD                 I           Received Data
+3       TXD                 O           Transmitted Data
+4       DTR                 O           Data terminal ready
+5       SG                  -           Signal Ground
+6       DSR                 I           Data Set Ready
+7       RTS                 O           Request To Send
+8       CTS                 I           Clear To Send
+9       RI                  I           Ring indicator
+
+
+Centronic       MSX Paralell            57LE-40140
+
+1   _STB        O       Centronic Strobe pulse (char data on PDB lines)
+2   PDB0        O       Character data line, bit 0
+3   PDB1        O	Bit 1
+4   PDB2        O
+5   PDB3        O
+6   PDB4        O
+7   PDB5        O
+8   PDB6        O
+9   PDB7        O	Bit 7
+10  N.C         -
+11  BUSY        I       Signals if printer is busy
+12  N.C         -
+13  N.C         -
+14  GND         -       Signal ground
+
+Full 25 pin (IBM XT/Amiga) Centronic matching pin description
+is added for reference below:
+
+Centronic       Amiga Paralell            DB-25x-P-F
+
+1   _STROBE     O       Centronic Strobe pulse (char data on PDB lines)
+2   D0          O       Character data line, bit 0
+3   D1          O       Bit 1
+4   D2          O
+5   D3          O
+6   D4          O
+7   D5          O
+8   D6          O
+9   D7          O       Bit 7 (MSB)
+10  _ACK        I       Acknowledge
+11  BUSY        I       Signals if printer is busy
+12  POUT        I       Paper Out
+13  SEL         I       Select
+14  +5V PULLUP  O       +5 Volts DC (_AUTO FEED XT on some printers)
+15              -       Not used
+16  _RESET      O       Reset (Also called _PRIME)
+17  GND         -       Signal ground
+18  GND         -       Signal ground
+19  GND         -       Signal ground
+20  GND         -       Signal ground
+21  GND         -       Signal ground
+22  GND         -       Signal ground
+23  GND         -       Signal ground
+24  GND         -       Signal ground
+25  GND         -       Signal ground
+
+Full printer connector pin desctiption is added for reference below:
+
+Centronic       Printer Paralell          57-30360 AMPHENOL
+
+1   _STB        I       Sync pulse. Data is read when low at least 1us
+2   D0          I       Bit 0.          Data bits must be present 0.5uS
+3   D1          I                       and 0.5us after _STB pulse
+4   D2          I
+5   D3          I
+6   D4          I
+7   D5          I
+8   D6          I
+9   D7          I       Bit 7 (MSB)
+10  _ACK        O       Acknowledge, request for data. Sent when printer is turned on.
+11  BUSY        O       Signal is high under following conditions:
+                        Receive buffer is full, Printer is processing data,
+                        Printer is offline or Printer is in a error condition.
+12  POUT        O       Paper Out sensor active.
+13  SEL         O       Select. High when printer is ON LINE.
+14  _AUTO FEED  I       When low, printer preforms CR+LF. When high, only CR.
+15  
+16  SG          -       Signal ground
+17  FG          -       Frame ground
+18  +5V         O       +5V output
+19  SG          -       _STB return for twisted pair (ground)
+20  SG          -       D0 return for twisted pair (ground)
+21  SG          -       D1 return for twisted pair (ground)
+22  SG          -       D2 return for twisted pair (ground)
+23  SG          -       D3 return for twisted pair (ground)
+24  SG          -       D4 return for twisted pair (ground)
+25  SG          -       D5 return for twisted pair (ground)
+26  SG          -       D6 return for twisted pair (ground)
+27  SG          -       D7 return for twisted pair (ground)
+28  SG          -       _ACK return for twisted pair (ground)
+29  SG          -       BUSY return for twisted pair (ground)
+30  SG          -       _PRIME return for twisted pair (ground)
+31  _PRIME      I       Reset signal.
+32  _ERROR      O       Goes low when Paper out, offline, overload or cover open.
+33  SG          -       Signal ground
+34...36                 Unused
+
+Shugart         3.5&quot; or 5 1/4&quot;          DE-25x-P-F
+                MSX Disk drive
+                (external)
+
+1   +12V                O
+2   +5V                 O
+3   +5V                 O
+4   _INDEX              I       This interface signal is provided by the
+                                drive each time an index or sector hole is
+                                sensed by the INDEX/SECTOR sensing
+                                photo transducer. Low when passing index hole
+                                or no disk inserted.
+5   _DRIVE SELECT 1     O       Will turn drive 1 on. Drive number is set via
+                                the shunts in each drive.
+6   DIRECTION           O       Selects direction of the R/W head for the
+                                STEP signal. &quot;1&quot;=Out (away from center),
+                                &quot;0&quot;=In, (towards the center of the disk).
+7   _STEP               O       Moves the R/W head in the direction set by 
+                                DIRECTION pin.
+8   WRITE DATA          O       Bit stream of data to write on disk.
+                                Should be &quot;0&quot; when reading data.
+9   _WRITE GATE         O       When&quot;0&quot;:Enables WRITE DATA to be written
+                                on the diskette.
+                                When&quot;1&quot;:Enables STEP and disables WRITE DATA.
+10  _TRACK 00           I       &quot;0&quot; when R/W head is over the track number 0
+                                (the outermost data track).
+11  _WRITE PROTECT      I       When &quot;0&quot;: No data can be written on the disk.
+12  READ DATA           I       Data read from the diskette.
+                                Normally kept high.
+13  _SIDE SELECT        O       Selects one of the two sides on a diskette.
+                                &quot;1&quot;= Side 0
+                                &quot;0&quot;= Side 1
+14  +12V                O       
+15  +12V                O       
+16  +5V                 O       
+17  _DRIVE SELECT 0     O       Will turn drive 0 on. Drive number is set via
+                                the shunts in each drive.
+18  _MOTOR ON           O       Low level turns the selected drive
+                                motor(s) on.
+        
+19  READY               I       &quot;0&quot; when drive has counted two index pulses
+                                after drive motor gives normal speed.
+                                &quot;1&quot; when drive is not ready.
+20,21,22  GND           -       Logical ground.
+23,24,25  GND           -
+
+Shugart         3.5&quot;                    34-pin 2.54 contact (3.5&quot;)
+                MSX Disk drive          or PC-board (5 1/4&quot;)
+                (internal)
+                or 5 1/4&quot;
+
+2  DISK CHANGE         I
+4  _IN USE             O
+6  _DRIVE SELECT 3     O
+8  _INDEX              I
+10 _DRIVE SELECT 0     O
+12 _DRIVE SELECT 1     O
+14 _DRIVE SELECT 2     O
+16 _MOTOR ON           O
+18 DIRECTION           O
+20 _STEP               O
+22 WRITE DATA          O
+24 _WRITE GATE         O
+26 _TRACK 00           I
+28 _WRITE PROTECT      I
+30 READ DATA           I
+32 _SIDE SELECT        O 
+34 _READY              I
+
+1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33 GND
+
+Joystick        MSX std                 DE-09x-P-M
+
+1  _FWD         I       Joystick pushed forward when high
+2  _BACK        I       Backward
+3  _LEFT        I       Left
+4  _RIGHT       I       Right
+5  +5V          O       50mA power supply
+6  _TRG1        I/O     Trigger A / Output 1
+7  _TRG2        I/O     Trigger B / Output 2
+8  OUTPUT       O       Output 3
+9  GND          -       Signal ground
+
+Amiga Joystick port is added for reference below.
+
+WARNING!
+Pin 5 is +5V on MSX and Mouse Button 2 on Amiga. Since Amiga mouse button
+is active low, connecting a Amiga mouse to a MSX and pressing button 2 will
+shortcut the supply voltage.
+
+Joystick        Amiga std               DE-09x-P-M
+
+1  _FWD         I       Joystick pushed forward when high
+2  _BACK        I       Backward
+3  _LEFT        I       Left
+4  _RIGHT       I       Right
+5  POTX         I       Horizontal potentiometer / LIGHT PEN PRESSED (LP Switch)
+6  _FIRE        I       Trigger / _LIGHT PEN (Beam capture position)
+7  +5V          O       +5 Volts DC
+8  GND          -       Signal ground       
+9  POTY         I       Vertical potentiometer       
+
+Mouse           Amiga std               DE-09x-P-M
+
+1  MOUSE V      I       Mouse Vertical
+2  MOUSE H      I       Mouse horizontal
+3  MOUSE VQ     I       Vertical quadrature
+4  MOUSE HQ     I       Horizontal quadrature
+5  BUTTON 2     I       Mouse button 2
+6  BUTTON 1     I       Mouse button 1
+7  +5V          O       +5 Volts DC
+8  GND          -       Signal ground       
+9  BUTTON 3     I       Mouse button 3       
+
+
+
+Casette         MSX std                 DIN-45326
+
+1  GND          -       Signal ground
+2  GND          -       
+3  GND          -       
+4  CMTOUT       O       Sound output
+5  CMTIN        I       Sound input
+6  REM+         O       Remote control (from relay)
+7  REM-         O       Remote control (from relay)
+8  GND          -       Signal ground
+9  GND          -       Frame ground
+
+
+
+MSX Video       Composite               PRC/1CS
+
+1  Monitor video                O
+2  Ground                       -
+
+
+
+MSX Audio (mono) 200mV                  PRC/1CS
+
+1  Mono, mixed SOUNDIN,         O
+   PPI and PSG
+2  Ground                       -
+
+
+
+MSX RF video    Antenna                 PRC/1CS
+
+1  Composite RF signal          O
+   for TV
+2  Ground                       -
+
+
+Expansion       MSX std                 DGE
+
+1   _CS1        O       Memory read in addresses 4000-7FFF
+2   _CS2        O       Memory read in addresses 8000-BFFF
+3   _CS12       O       Memory read in addresses 4000-BFFF
+4   _SLTSL      O       Low when SLOT 2 (cartridge slot) is selected
+5   reserved    -       NC, Reserved for future expansion. Do not use.
+6   _RFSH       O       Refresh signal from CPU
+7   _WAIT       I       OC, Tells CPU to wait. Refresh signal is not maintained.
+8   _INT        I       OC, Requests a interrupt to CPU (call to addr. 38h).
+9   _M1         O       CPU fetches first part of instruction from memory
+10  _BUSDIR     I       NC, was used to control the direction of external
+                        data bus buffer. It is on LOW level when data is sent
+                        by the cartridge.
+11  _IORQ       O       I/O (port) request signal.
+                        (address bus holds valid port address).
+12  _MREQ       O       Memory request signal.
+                        (address bus holds valid memory address).
+13  _WR         O       Write signal from CPU (used as strobe to device)
+14  _RD         O       Read signal from CPU (used as strobe to device)
+15  _RESET      I       System reset signal. [PC]=0, [I]=0,[R]=0.
+16  Reserved    -       NC, Reserved for future expansion. Do not use.
+17  A0          O       Address bus.
+18  A1          O       
+19  A2          O       
+20  A3          O       
+21  A4          O       
+22  A5          O       
+23  A6          O       
+24  A7          O       
+25  A8          O       
+26  A9          O       
+27  A10         O       
+28  A11         O       
+29  A12         O       
+30  A13         O       
+31  A14         O       
+32  A15         O       
+33  D0          I/O     Data bus.
+34  D1          I/O     
+35  D2          I/O     
+36  D3          I/O     
+37  D4          I/O     
+38  D5          I/O     
+39  D6          I/O     
+40  D7          I/O     
+41  GND         -       Signal/power ground
+42  CLOCK       O       CPU clock, 3.579 M Hz.
+43  GND         -       Signal/power ground
+44  SW1         -       NC, Insert/remove detect for protection
+45  +5V         O       +5V power supply, 300mA /slot
+46  SW2         -       NC, Insert/remove detect for protection
+47  +5V         O       +5V power supply, 300mA /slot
+48  +12V        O       +12V power supply, 50mA /slot
+49  SOUNDIN     I       Sound input (-5dBm) (used by external sound gener.)
+50  -12V        O       -12V power supply, 50mA /slot
+
+
+                SV 738 SPECIFICATIONS
+
+                        Normal          Expanded (MSX2)
+CPU
+Name:                   Z80
+Frequency:              3.579MHz        3.579 MHz / 6 MHz
+
+
+PRIMARY STORAGE
+User RAM:               64k             64k (Up to 4MB with mapper)
+Video RAM:              16k             128k
+MSX BASIC ROM:          16k             16k+16k
+MSX BIOS ROM:           16k
+RS 232 firmware ROM:    8k              8k
+MSX DOS firmware ROM:   16k             16k (+64k with DOS 2.20)
+Total internal ROM:     56k             72k (136k with DOS 2.20)
+Total internal RAM:     80k             192k  (384k with 256k mapper)
+
+
+SECONDARY STORAGE
+Diskdrive
+Disk:                   3.5&quot; Soft sectored
+Sides:                  1               2
+Format:                 
+
+ CP/M-80                             MSX DOS (IBM PC 720k compatible)  
+   # of tracks /side:     80          # of tracks /side:     80
+   # of sectors/track:    17          # of sectors/track:    9
+   # of bytes/sector:     256         # of bytes/sector:     512     
+
+Encoding method:        MFM
+Recording density:      8187  BPI
+Track density:          135   BPI
+Formatted capacity:     360k (328k)     720k
+Unformatted:            500k
+Rotational speed:       300rpm
+Data transfer rate:     250 k Bps
+Seek time:              6/3 mSec
+Setting time:           15 mSec
+Motor start time:       400 mSec
+Average access time:    173/94 mSec
+
+
+Casette (recorder optional)
+Data transfer rate
+(baud rate)             1200 BpS (1200Hz - 1 wave &quot;0&quot;, 2400Hz - 2 waves &quot;1&quot;)
+                        2400 BpS (2400Hz - 1 wave &quot;0&quot;, 4800Hz - 2 waves &quot;1&quot;)
+Input (to computer):    From earphone terminal of tape recorder
+Output (from computer): To microphone terminal of tape recorder
+Synchronization:        Asynchronous
+Modulation:             FSK
+Remote control:         Yes (block)
+
+
+DISPLAY
+Text mode characters:   32*24, 40*24    32*24, 40*24
+                        or 80*26.5      or 80*26.5  
+Text colours:           2 of 16 of 512  2 of 16 of 512
+Graphic resolution:     256*192         512*212 (512*424 interlaced)
+Graphic colours:        16 of 512       4,16 or 256 of 512
+
+
+INPUT &amp; OUTPUT PORTS
+Serial:                 RS 232 C, 19200 BpS max
+Paralell:               Centronic (Strobed OUTPUT only)
+Expansion:              34- pin CPU bus
+Audio/Video:            Audio:  3 channel 0-113kHz square output,
+                                4 bit volume control (logarithmic),
+                                15 envelope shapes  and
+                                1 square keyklick signal
+			RF and video ports:
+                                Composite colour video out (standard)
+                                Analog RGB (internal)
+                                RF out (standard)
+Storage:                Cassette and disk dirve (+external drive port)
+Joystick ports:         2, 4bit input, 1bit output, 2bits bidirectional
+                        TTL level
+
+
+KEYBOARD
+Control keys (grey):    20
+Cursor movement keys:   4   (enlarged)
+Charcater keys (white): 49
+Total keys:             73
+
+
+OPERATIVE SYSTEMS (Microsoft)
+MSX DOS version:        1.03            1.03 or 2.20
+Diskbasic version:      1.0             2.0
+CP/M-80 version:        2.2             2.2
+
+
+
+ASCII table
+
+Name			Control	Char	Hex
+null			ctrl-@	NUL	00
+start of heading	ctrl-A	SUH	01
+start of text		ctrl-B	STX	02
+end of text		ctrl-C	ETX	03	Cancel/abort in MSX DOS
+end of xmit		ctrl-D	EOT	04
+enquiry			ctrl-E	ENQ	05
+acknowledge		ctrl-F	ACK	06
+bell			ctrl-G	BEL	07
+backspace		ctrl-H	BS	08
+horizontal tab		ctrl-I	HT	09
+line feed		ctrl-J	LF	0A
+vertical tab		ctrl-K	VT	0B
+form feed		ctrl-L	FF	0C	Clear screen
+carridge return		ctrl-M	CR	0D
+shift in 		ctrl-N	SO	0E
+shift out		ctrl-O	SI	0F
+
+data line escape	ctrl-P	DLE	10	Printer copy on in MSX DOS
+device control 1	ctrl-Q	DC1	11	XON
+device control 2	ctrl-R	DC2	12
+device control 3	ctrl-S	DC3	13	XOFF
+device control 4	ctrl-T	DC4	14
+neg acknowledge		ctrl-U	NAK	15
+synchronous idle	ctrl-V	SYN	16
+end of xmit block	ctrl-W	ETAB	17
+cancel			ctrl-X	CAN	18
+end of medium		ctrl-Y	EM	19
+substitute		ctrl-Z	SUB	1A	EOF in MSX DOS
+escape			ctrl-[	ESC	1B
+file separator		ctrl-\	FS	1C
+group separator		ctrl-]	GS	1D
+record separator	ctrl-^	RS	1E
+unit separator		ctrl-_	US	1F
+
+Char	Hex	Char	Hex	Char	Hex	Char	Hex	Char	Hex	Char	Hex
+SP	20	0	30	@	40	P	50	&cent;	60	p	70
+!	21	1	31	A	41	Q	51	a	61	q	71
+&quot;	22	2	32	B	42	R	52	b	62	r	72
+#	23	3	33	C	43	S	53	c	63	s	73
+$	24	4	34	D	44	T	54	d	64	t	74
+%	25	5	35	E	45	U	55	e	65	u	75
+&amp;	26	6	36	F	46	V	56	f	66	v	76
+`	27	7	37	G	47	W	57	g	67	w	77
+(	28	8	38	H	48	X	58	h	68	x	78
+)	29	9	39	I	49	Y	59	i	69	y	79
+*	2A	:	3A	J	4A	Z	5A	j	6A	z	7A
++	2B	;	3B	K	4B	[	5B	k	6B	{	7B
+,	2C	&lt;	3C	L	4C	\	5C	l	6C	|	7C
+-	2D	=	3D	M	4D	]	5D	m	6D	}	7D
+.	2E	&gt;	3E	N	4E	^	5E	n	6E	~	7E
+/	2F	?	3F	O	4F	_	5F	o	6F	DEL	7F
+
+
+
+VT-52 standard codes
+
+07H	Bell, Sound bell
+09H	BS, cursor left
+0AH	TAB, Cursor to next tab position
+0BH	LF, Cursor down a row
+0CH	HOME, Cursor to home
+0DH	FORMFEED, Clear screen and home
+1BH	ESC, Enter escape sequence
+1CH	RIGHT, Cursor right
+1DH	LEFT, Cursor left
+1EH	UP, Cursor up
+1FH	DOWN, Cursor down
+
+ESC+&quot;j&quot;		Clear screen and home
+ESC+&quot;E&quot;		Clear screen and home
+ESC+&quot;K&quot;		Clear to end of line
+ESC+&quot;J&quot;		Clear to end of screen
+ESC+&quot;l&quot;		Clear line
+ESC+&quot;L&quot;		Insert line
+ESC+&quot;M&quot;		Delete line
+ESC+&quot;Y&quot;+a+b	Set cursor coordinates, a=row+1FH, b=coulumn+1FH
+ESC+&quot;A&quot;		Cursor UP
+ESC+&quot;B&quot;		Cursor DOWN
+ESC+&quot;C&quot;		Cursor LEFT
+ESC+&quot;D&quot;		Cursor RIGHT
+ESC+&quot;H&quot;		Cursor home
+ESC+&quot;x&quot;+&quot;#&quot;	Change cursor,
+		&quot;#&quot;=&quot;4&quot; if block cursor,
+		&quot;#&quot;=&quot;5&quot; if cursor normally disabled
+ESC+&quot;y&quot;+&quot;#&quot;	Change cursor,
+		&quot;#&quot;=&quot;4&quot; if underline cursor,
+		&quot;#&quot;=&quot;5&quot; if cursor normally enabled
+ESC+&quot;p&quot;		Inverse text (SV328)
+ESC+&quot;q&quot;		Normal text (SV328)
+
+
+
+************************
+End of I/O documentation.
+
+
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

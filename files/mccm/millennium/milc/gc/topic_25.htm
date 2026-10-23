@@ -1,0 +1,198 @@
+<html>
+
+<head>
+<title>MILC - Topic Sprites in ML</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_24.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_26.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Sprites in ML</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+SPRITES IN ML
+
+               SPRITES ZOALS ZE WERKELIJK ZIJN
+              =================================
+
+Iedereen die een beetje met BASIC heeft zitten  klooien  zal
+gemerkt hebben  dat  sprites  heel  makkelijk  zijn  in  het
+gebruik en in aansturing, maar dat komt alleen maar omdat de
+BIOS zich intensief bemoeit met de spriteaansturing. Als  je
+dus gaat proberen om sprites in ML te gebruiken  kom  je  al
+snel voor raadsels te staan die je niet  ‚‚n  twee  drie  op
+weet te lossen. Je kunt natuurlijk gebruik gaan maken van de
+BIOS routines maar persoonlijk heb ik daar een hekel aan.
+
+Als je besluit om een aansturing te gebruiken die niets  met
+de BIOS te maken heeft, dan kan je een aantal leuke  grapjes
+uithalen die heel handig kunnen zijn.  Zo is het mogelijk om
+op 1 scherm van 32kB 1024 sprites  van  16x16  te  ontwerpen
+waarvan je er 64 per keer kunt gebruiken. Als er van  pagina
+gewisseld wordt, dan hoeven de sprites niet mee veranderd te
+worden. De feitelijke aansturing wordt ook sneller en het is
+bij een sprite botsing mogelijk om  de  coordinaten  van  de
+gebotste sprites op te vragen. Dit zijn een paar voorbeelden
+van de verschillen tussen de BIOS aansturing een een direkte
+aansturing. Nu volgt een beschrijving en uitleg van  de  VDP
+registers die met sprites te maken hebben.
+
+
+         B7  B6  B5  B4  B3  B2  B1  B0
+
+Reg. 1   x   x   x   x   x   x   SZ MAG
+     8   x   x   x   x   x   x  SPD  x
+     11  x   x   x   x   x   x  D16 D15
+     5  D14 D13 D12 D11 D10 D09 D08 D07
+     6    0   0 E16 E15 E14 E13 E12 E11
+
+     SZ  = Sprite size (0=8*8 1=16*16)
+     MAG = Magnify sprites (1=magnify)
+     D16 - D07 = Adres voor spritekleur en positie in VRAM
+     E16 - E11 = Adres voor spritepatronen in VRAM
+                 (Hierover later meer)
+
+Statusregisters:
+
+        B7  B6  B5  B4  B3  B2  B1  B0
+
+Reg. 0   x  5S   C  F4  F3  F2  F1  F0
+     3  X7  X6  X5  X4  X3  X2  X1  X0
+     4   1   1   1   1   1   1   1  X8
+     5  Y7  Y6  Y5  Y4  Y3  Y2  Y1  Y0
+     6   1   1   1   1   1   1   x  Y8
+
+     5S = 1 als: er op screen 1 t/m 3 meer dan 4 sprites op
+                 1 horizontale lijn staan.
+                 er op screen 5 t/m 8 meer dan 8 sprites op
+                 1 horizontale lijn staan.
+      C = 1 als er een spritebotsing plaats vindt.
+     F4 - F0 = Is het nummer van de sprite die als vijde of
+               negende op 1 horizontale lijn staat.
+     X8 - X0 = X-coordinaat van botsende sprite
+     Y8 - Y0 = Y-coordinaat van botsende sprite
+
+
+Dit is alle informatie over sprites die in de VDP  registers
+te vinden is. Het tweede deel over de  statusregisters  laat
+niets te wensen over en is helemaal  duidelijk.  Het  eerste
+deel is echter wat lastiger omdat er wat addertjes onder het
+gras zitten. Het gaat daarbij over de registers 11,5 en 6.
+
+Reg. 11 en 5 vormen  samen  een  adres  waar  de  kleur-  en
+positietabel van de sprites  zich  bevindt  en  registers  6
+geeft aan waar de patroontabel van de  sprites  begint.  Het
+eerste addertje dat we tegen komen is dat Reg.5 niet  zomaar
+alle waardes mag hebben tussen 0 en 255. Feitelijk kan Reg.5
+maar 32 waardes hebben omdat  er  bij  andere  waardes  geen
+sprites op het scherm komen.
+
+Een beschrijving van de registers:
+
+Reg. 6
+bevat het  startadres  van  de  patroontabel  (vorm  van  de
+sprites) en kan liggen tussen 0 en  63.  Het  adres  kan  in
+BASIC berekend worden met PATADR = VDP(6)*2^11    Natuurlijk
+moet je rekening houden met het  feit  dat  het  VRAM  128kB
+groot is. Is VDP(6)&gt;31 dan zit je in de hoogste 64kB. In  ML
+gaat het zo (In A staat de waarde van R#6)
+
+    RLCA
+    RLCA
+    RLCA
+    RES 0,A
+    LD H,A  ; Het patroonstartadres staat in HL en als je in
+    LD L,0  ; de hoogste 64kB zit dan is de Cy hoog.
+    RET
+
+Reg. 11 en 5 (Opm: VDP(12)=Reg.11=R#11)
+bevatten samen een referentieadres  waaruit  het  startadres
+van de positietabel en de kleurtabel gehaald kan worden.
+In BASIC:  XYADR = VDP(12)*2^15+(VDP(5)-3)*128:' Positie
+          COLADR = VDP(12)*2^15+(vdp(5)-7)*128:' Kleurtabel
+Ook hier moet je weer op de hoogste 64kB passen. Hier kan je
+daarop testen door te kijken of VDP(12)&gt;1
+In ML: (In A en B staan de waardes van R#5 en R#11)
+
+    SUB 3          ; Trek 3 van A af als je het positieadres
+    RRCA           ; wilt hebben en trek er 7 vanaf als je
+    PUSH AF        ; het kleuradres wilt hebben.
+    AND &amp;H80
+    LD L,A
+    POP AF
+    AND &amp;H7F
+    LD H,A
+    LD A,B
+    RRCA
+    LD B,A
+    AND &amp;H80
+    OR H
+    LD H,A
+    LD A,B         ; In HL staat het betreffende startadres
+    RRCA           ; en de Cy geeft aan of je in de hoogste
+    RET            ; 64kB zit.
+
+Met deze informatie ben je nu in staat om  de  startadressen
+van de spritetabellen te berekenen, maar ben je nog niet  in
+staat om de VDP registers van een andere waarde te voorzien.
+Zoals vermeld kan reg. 5 niet zomaar  elke  waarde  krijgen,
+maar  de  waardes  die  dit  register  kan  krijgen  kan  je
+eenvoudig berekenen met de formule:
+
+VDP(5) = X OR 7
+
+Deze formule is getest op screen  5  t/m  8  en  klopt  daar
+altijd. De regel is gewoon dat bit 0 t/m 2 van Reg.5  altijd
+1 moeten zijn om sprites op het scherm te kunnen toveren.
+
+Reg.6 mag elke waarde hebben en het  komt  er  praktisch  op
+neer dat je in screen 5 en 6 om de 16 lijnen en in screen  7
+en 8 om de 8 lijnen een nieuwe patroontabel kunt beginnen.
+Vb: Screen 5, VDP(6)=31 ==&gt; Startlijn = 31*16 = 496
+                        ==&gt; Page 1, lijn 496 - 256 = 240
+
+Reg.11 kan de waardes 0 t/m 3 bevatten en elke  waarde  komt
+overeen met 32kB VRAM. In screen  5  en  6  kan  je  dus  de
+ingestelde page lezen door reg.11  te  lezen.  Dit  is  heel
+leuk, want nu kan je dus de spritetabellen op page 3  zetten
+terwijl je de sprites op page 0 zichtbaar maakt  zonder  dat
+die tabellen in de weg zitten.  Opm:  Je  kunt  beter  Reg.2
+lezen om er achter te komen welke page  is  ingesteld,  maar
+als je vanuit BASIC de schermen instelt dan levert dit  geen
+problemen op.
+
+Dit  was  het  voorlopig,  een  volgende  keer  zal  ik   de
+feitelijke invulling van de tabellen toelichten.
+
+                                           Alex van der Wal
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_24.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_26.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

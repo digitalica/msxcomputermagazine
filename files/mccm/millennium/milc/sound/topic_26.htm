@@ -1,0 +1,242 @@
+<html>
+
+<head>
+<title>MILC - Topic PSG Registers</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_25.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_27.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">PSG Registers</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+    PSG (Programable Sound Generator) AY-3-8910.
+    --------------------------------------------
+
+     0A0h            - Adres port.
+     0A1h            - Data Write port.
+     0A2h            - Data read port.
+
+    De PSG heeft 16 registers #00 tot #0F deze zijn voor het instellen van 
+    de juiste  geluid instellingen,  ook de  Joystick en de Cassette input 
+    worden door de PSG geregeld en zijn ook op de registers af telezen.
+
+     Registers #00 en #01:
+
+       7   6   5   4   3   2   1   0
+     +-------------------------------+
+     |    Channel A frequency LSB    | #00
+     +---+---+---+---+---+---+---+---+
+     | X | X | X | X |Ch. A Freq. MSB| #01
+     +---+---+---+---+---+---+---+---+
+
+    Met  deze twee  registers kan  de toon  hoogte van  het huidige kanaal 
+    ingestelt worden.  Voor kanaal  B Zijn dit de registers #02, #03. Voor 
+    kanaal C Zijn dit #04, #05.
+
+     Register #06:
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     | X | X | X |  Noice-Frequency  | #06
+     +---+---+---+---+---+---+---+---+
+
+    Bit 4  tot 0  voor het instellen van de ruis-frequency, deze geld voor 
+    elk kanaal waarbij het &quot;Noice&quot; bit 0 is.
+
+     Inhoud R6  Noice-frequency   Inhoud R6     Noice-frequency
+      1            111860 Hz         17              6580 Hz
+      2             55930 Hz         18              6214 Hz
+      3             37286 Hz         19              5887 Hz
+      4             27965 Hz         20              5593 Hz
+      5             22372 Hz         21              5326 Hz
+      6             18643 Hz         22              5084 Hz
+      7             15980 Hz         23              4863 Hz
+      8             13982 Hz         24              4660 Hz
+      9             12428 Hz         25              4474 Hz
+     10             11186 Hz         26              4302 Hz
+     11             10169 Hz         27              4142 Hz
+     12              9321 Hz         28              3995 Hz
+     13              8604 Hz         29              3857 Hz
+     14              7990 Hz         30              3728 Hz
+     15              7457 Hz         31              3608 Hz
+     16              6991 Hz
+
+     Register #07:
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |Bdr|Adr|CNC|BNC|ANC|CTN|BTN|ATN| #07
+     +---+---+---+---+---+---+---+---+
+
+     ANC/BNC/CNC:    Noice on channel A/B/C (Ruis)
+     ATN/BTN/CTN:    Tone  on channel A/B/C (Toon)
+
+    Dit  register &quot;Enables&quot;  of &quot;Disables&quot; de geluids en ruis kanalen A to 
+    C:  0=Enable,  1=Disable.  Voor  Port  A  en Port  B (Bdr/Adr)  kan de 
+    richting (Direction)  worden bepaald: 0=Input, 1=Output. Register moet 
+    altijd  10xxxxxx bevatten  anders is  er kans  op beschadinging van de 
+    PSG, als er bepaalde apparaten aan de in of outputs van de PSG hangen.
+
+     Register #08:
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---------------+
+     | X | X | X |MOD|CH. A Amplitude| #08
+     +---+---+---+---+---+---+---+---+
+
+    De 4 Amplitude bit bepaalen het volume van kanaal A ( 0 -15 ). De MODE 
+    bit  bepaald  of de  amplitude gelijk  blijft of  ge moduleerd  wordt. 
+    0=Fixed, 1=Modulated.  Als gekozen  wordt voor  modelatie dan  zal dit 
+    gebeuren volgens het &quot;Envelope Shape&quot; tabel ( #13), de snelheid van de 
+    modelatie  staat in  de &quot;Envelope  Frequency&quot; tabellen ( #11, #12) zal 
+    het volume  worden gemoduleerd.  Voor de kanalen B en C zullen voor de 
+    Amplitude de registers #9 en #10 worden gebruikt.
+
+     Register #11 en #12:
+
+       7   6   5   4   3   2   1   0
+     +-------------------------------+
+     |     Envelope Frequency LSB    | #11
+     +---+---+---+---+---+---+---+---+
+     |     Envelope Frequency MSB    | #12
+     +---+---+---+---+---+---+---+---+
+
+    De  Envelope Frequency  is de Frequentie waar op de Modulatie vorm (te 
+    selecteren met  Register #13)  afgespeeld wordt  bepaalt. De registers 
+    #11  en #12  vormen samen  een 16-bits getal van 0 tot 65535, Register 
+    #11 bevan  het Laagst Significante Byte en register #12 het Meest Sig&uacute; 
+    nificante  Byte. Een  hoge frequency wordt verkregen door laage inhoud 
+    van registers  #11 en #12. Een Lage frequency door een hoge inhoud van 
+    deze  registers. De  Frequency by 1 is 6991 Hz, van 65535 is deze 0.11 
+    Hz.
+
+     Register #13:
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---------------+
+     | X | X | X | X |Envelope Shape | #13
+     +---+---+---+---+---+---+---+---+
+
+    Dit Register  bevat de  code van de Modelatie vorm. Een code van 0-15, 
+    Sommige Code's bevatten de zelfde vormen.
+
+     S0,S1,S2,S3,S9          S4-S7,S15               S8
+
+     |    |\                 |     /|                |    |\ |\ |\ |\
+     |____| \______          |____/ |_____           |____| \| \| \|
+
+     S10                     S11                     S12
+                                _____
+     |    |\  /\  /          |    |\ |               |     /| /| /| /
+     |____| \/  \/           |____| \|               |____/ |/ |/ |/
+
+     S13                     S14
+                                  ____
+     |     /\  /\            |        /
+     |____/  \/  \/          |_______/
+
+
+     Register #14:
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |CsI|Kbd|TrB|TrA|Rig|Lef|Dow|Up | #14
+     +---+---+---+---+---+---+---+---+
+
+    Dit register  is voor  het lezen  van PSG Port A. De zes Joystick bits 
+    geven  de richting en de vuurknoppen aan. Voor deze bits gelt: 0=Inge&uacute; 
+    drukt, 1=Niet  ingedrukt. De  Keyboard Mode  bit (Kbd)  wordt niet ge&uacute; 
+    bruikt op Europesche machines, op Japansche computers is dit verbonden 
+    met  een Jumper  om het  Character set  te bepalen.  De Cassette Input 
+    (Csi) word Gebruikt voor het lezen van een signaal van de Cassette EAR 
+    output.
+
+     Register #15:
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |KLd|JSl|Pl2|Pl1| 1 | 1 | 1 | 1 | #14
+     +---+---+---+---+---+---+---+---+
+
+    Dit register  is voor  het Schrijven  naar PSG Port B. De vier laagste 
+    bits  zijn verbonden  via de TTL open-collector buffers met pin 6 en 7 
+    van elk  van de twee Joystick connectors. De twee Pulse bits (Pl2/Pl1) 
+    worden  gebruikt  om  een korte  positive puls  te genereren  naar een 
+    Paddle op Joystick-port 1 of 2. Elke paddle bevat een monostable timer 
+    die  de lengte  van de puls neemt. Pas als de timer is geTriggered kan 
+    de positie  van de  paddle bepaalt  worden door te tellen tot de Mono&uacute; 
+    stable  is uit  getelt. De  Joystick select bit bepaalt welke Joystick 
+    poort verbonden  is met  de PSG: 0=Connector 1, 1=Connector 2. De Kana 
+    LED  wordt niet gebruikt op europesche machines, op Japansche machines 
+    wordt het gebruikt om een Keyboard mode indicator aan te sturen.
+
+    Voorbeeld voor het instellen en lezen van PSG-register's:
+    We proberen  register #08  in testellen  (Amplitude van  kanaal A)  in 
+    machine taal zal dit zijn:
+
+     SETPSG: LD      A,B             ; Zet Register nummer in A
+             OUT     (0A0h),A        ; Register naar PSG port 0A0h
+             LD      A,C             ; Zet Data in A
+             OUT     (0A1h),A        ; Data naar PSG port 0A1h
+             RET                     ; Spring terug
+
+     ; Waarbij Z80 register -B- het nummer van het PSG register moet be-
+     ; vatten en Z80 register -C- de data
+
+    Dus:
+                ----
+                ----
+                LD      B,08h           ; Register #08
+                LD      C,00001110b     ; Amplitude (binair ) = 14
+                CALL    SETPSG          ; Start Routine &quot;SETPSG&quot;
+                ----
+                ----
+
+    Voor het lezen kunnen we het volgende proberen:
+
+     READPSG:   OUT     (0A0h),A        ; Register naar PSG port 0A0h
+                IN      (0A2h),A        ; Lees Data van PSG port 0A2h
+                RET                     ; Spring terug
+
+     ; Waarbij in Z80 register -A- het telezen register nummer moet gezet
+     ; worden, naar afloop zal de routine in Z80 register -A- de inhoud
+     ; van het gevraagde register zetten.
+
+    Dus:
+                ----
+                ----
+                LD      A,08h           ; Register #08
+                CALL    READPSG         ; Start Routine &quot;READPSG&quot;
+                -----
+                -----
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_25.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_27.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

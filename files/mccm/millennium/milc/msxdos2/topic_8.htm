@@ -1,0 +1,99 @@
+<html>
+
+<head>
+<title>MILC - Topic Screen Control Codes</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_7.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_9.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Screen Control Codes</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+4.   SCREEN CONTROL CODES
+=========================
+
+     Below is  a list  of all control codes and escape sequences which may be 
+used  when doing  character output by MSX-DOS character functions, BIOS calls 
+or writing  to the  device CON.  These are  all compatible with MSX-DOS 1 and 
+contain the VT-52 control codes.
+
+     The  screen is 24 lines of 2 to 80 characters. When a printing character 
+is displayed the cursor is moved to the next position and to the start of the 
+next line at the end of a line. If a character is written in the bottom right 
+position  then  the  screen  will  be  scrolled  to  allow the  cursor to  be 
+positioned at  the start  of the  next line.  The letters in escape sequences 
+must be in the correct case, the spaces are inserted for readability they are 
+not  part of  the sequence. Numbers (indicated by &lt;n&gt; or &lt;m&gt;) are included in 
+the sequence as a single byte usually with an offset of 20h added.
+
+Ctrl-G  07h = Bell.
+Ctrl-H  08h = Cursor left, wraps around to previous line, stop at top left of
+        screen.
+Ctrl-I  09h = Tab, overwrites with spaces up to next 8th column, wraps around
+        to start of next line, scrolls at bottom right of screen.
+Ctrl-J  0Ah = Line feed, scrolls if at bottom of screen.
+Ctrl-K  0Bh = Cursor home.
+Ctrl-L  0Ch = Clear screen and home cursor.
+Ctrl-M  0Dh = Carriage return.
+Ctrl-[  1Bh = ESC - see below for escape sequences.
+Ctrl-\  1Ch = Cursor right, wrap around to next line, stop at bottom right of
+        screen.
+Ctrl-]  1Dh =  Cursor left, wrap around to previous line, stop at top left of
+        screen. 
+Ctrl-^  1Eh = Cursor up, stop at top of screen.
+Ctrl-_  1Fh = Cursor down, stop at bottom of screen.
+        7Fh = Delete  character and move cursor left, wrap around to previous
+        line, stop at top of screen.
+
+Esc A       = Cursor up, stops at top of screen.
+Esc B       = Cursor down, stops at bottom of screen.
+Esc C       = Cursor right, stops at end of line.
+Esc D       = Cursor left, stops at start of line.
+Esc E       = Clear screen and home cursor.
+Esc H       = Cursor home.
+Esc J       = Erase to end of screen, don't move cursor.
+Esc j       = Clear screen and home cursor.
+Esc K       = Erase to end of line, don't move cursor.
+Esc L       = Insert  a line  above cursor  line, scroll rest of screen down.
+              Leave cursor at start of new blank line.
+Esc l       = Erase entire line, don't move cursor.
+Esc M       = Delete cursor  line, scrolling  rest of screen up. Leave cursor
+              at start of next line.
+Esc x 4     = Select block cursor.
+Esc x 5     = Cursor off.
+Esc Y &lt;n&gt;&lt;m&gt;= Position  cursor at  row &lt;n&gt;  column &lt;m&gt;. Top left of screen is
+              n=m=20h (ASCII space).
+Esc y 4     = Select underscore cursor.
+Esc y 5     = Cursor on.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_9.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

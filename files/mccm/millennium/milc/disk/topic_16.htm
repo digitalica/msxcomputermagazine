@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<title>MILC - Topic Info DriveController (zeer beknopt)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_15.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_17.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Info DriveController (zeer beknopt)</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+    Info DriveController (zeer beknopt)
+
+    7FF8  -  READ: STATUSREGISTER
+             WRIT: COMMAND-REGISTER
+
+    7FF9  -  TRACK REGISTER            (AANGEVEN WELKE TRACK/ READ/WRITE)
+
+    7FFA  -  TRACK SECTOR REGISTER     (AANGEVEN WELKE SECTOR/ READ/WRITE)
+
+    7FFB  -  DATA I/O &quot;POORT&quot;
+
+    7FFC  -  BIT 0 : SIDE (HEAD-CHOICE)
+
+    7FFD  -  DRIVE SELECT, MOTOR ON/OFF  128=DRIVE A AAN
+                                         129=DRIVE B AAN
+                                        &amp;H7F=ALLE DRIV.UIT (ALLEEN DIE
+                                             VAN DEZE CONTROLLER!)
+
+
+
+    7FF8 / READ  :   BIT
+                      7  NOT READY
+                      6  WRITE PROTECT
+                      5  HEADER LOADED
+                      4  SEEK ERROR
+                      3  CRC ERROR
+                      2  TRACK 0 SIGNAL
+                      1  INDEX PULSE
+                      0  BUSY
+
+
+    7FF8 / WRITE :   HIGH NIBBLE
+                      1 = SEEK (IO=TRACK)
+                      2 = STEP (LAST DIRECTION)
+                      3 =
+                      4 = STEP IN
+                      5 =
+                      6 = STEP OUT
+                      7 =
+                      8 = READ SECTOR   (MUST BE FORMATTED)
+                      9 =
+                      A = WRITE SECTOR  (MUST BE FORMATTED)
+                      B =
+                      C = READ ADDRESS
+                      D = FORCE INTERRUPT
+                      E = READ TRACK
+                      F = WRITE TRACK
+
+                     LOW NIBBLE : SPEED OF READING/WRITING
+
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_15.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_17.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

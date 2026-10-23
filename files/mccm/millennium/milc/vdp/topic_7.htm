@@ -1,0 +1,491 @@
+<html>
+
+<head>
+<title>MILC - Topic The videochip of the future: V9990</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_6.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_8.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">The videochip of the future: V9990</b><br>
+    <i>Stefan Boer</i>, 00-00-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+
+                       - THE VIDEOCHIP OF THE FUTURE -
+ 
+                                  V 9 9 9 0
+                                 ===========
+ 
+There have been no real new hardware developments for the MSX since the MSX 
+turbo R. But now the MSX-Hndlergemein- schaft from Switzerland are working on 
+the &quot;Graphics 9000&quot;, a 16-bit videocard for the MSX turbo R with the new V9990 
+by Yamaha. The &quot;Graphics 9000&quot; will be available in October or November 1994 
+for approximately US$ 290.
+ 
+ 
+                               EVALUATION BOARD
+ 
+Since the International MSX Fair in Tilburg on March 26th 1994 I'm the proud 
+owner of one of the 10 V9990 evaluation boards which are in Europe at the 
+moment. The evaluation board is a print (appr. 6&quot; x 6&quot;) with a lot of 
+electronic stuff I don't understand with in the middle the V9990 itself which 
+is square like the R800. The V9938 (MSX2 videochip) and V9958 (MSX2+) were 
+rectangular. The connections on the board include a connect for an interface 
+to the MSX turbo R and one for a scart lead.
+ 
+You can connect the board to a monitor or TV directly with a scart lead, so 
+the image of the V9990 goes directly to the monitor. This is a small 
+disadvantage if you have only one monitor like me, because this means you have 
+to switch the leads when you want to work on the V9990 after working on the 
+V9958 or vice versa. This problem will probably be solved with the Graphics 
+9000.
+ 
+You can connect a VGA monitor (640x400 or 640x480 in 16 colours) or even an 
+LCD to the V9990, but unfortunately I haven't been able to test this yet.
+ 
+ 
+                                 V9990 BASIC
+ 
+If you connect the V9990 to your turbo R and monitor and you switch the 
+computer on, the screen will remain blank at first. This is because the 
+operating system of the turbo R still uses the V9958. You have to execute a 
+V9990 program before you can see anything.
+ 
+Henrik Gilvad from Denmark modified the BASIC of the turbo R so it works with 
+the V9990. He also modified the KUN compiler (also known as XBASIC). The V9990 
+BASIC, BIOS and KUN are loaded into the DRAM (*) of the turbo R. The BASIC is 
+not completely compatible with the normal BASIC, it doesn't have to be and 
+it's not possible due to some hardware differences. But there aren't so many 
+differences so it's not hard at all to program something in the V9990 
+(KUN)BASIC.
+ 
+(*) Note: Because ROM is significantly slower then RAM on the turbo R, it has 
+the possibility to copy the ROMs to the upper 64 kB of the main RAM which is 
+called DRAM. The engine of the turbo R (S1990) makes it possible to use this 
+DRAM as &quot;ROM&quot;.
+ 
+An important difference between the V9938 and the V9990 is that the V9990 
+hasn't got a textmode. Henrik solved this problem by programming his own 
+textmode in the P2-mode of the V9990. It's a very fast 64-column textmode with 
+International character set, so the Japanese characters of the turbo R can't 
+bother you anymore.
+ 
+The V9990 BASIC supports the following screen modes:
+ 
+screen  remark
+ 
+0       64 column textmode
+1       will be 32 column textmode
+2       P1 mode (256 x 212 dualplane patternmode)
+3       P2 mode (512 x 212 patternmode)
+4       identical to SCREEN 2
+5..12   identical to MSX2/2+ except the sprites, only 2 sprites in
+        one colour are possible
+ 
+The V9990 supports a lot more screen modes, which can easily be selected by a 
+few VDP commands. For example, you can select the overscan mode by OUT &amp;H67,1. 
+In the overscan mode you can use the entire screen, including the borders! The 
+resolution is 384x240 in stead of 256x212 or 768x240 in stead of 512x212.
+ 
+The following graphical instructions are supported by the V9990 BASIC: 
+BLOAD,S, BSAVE,S, CIRCLE, COLOR, COPY, DRAW, KEY ON/OFF, LINE, LOCATE, PAINT, 
+POINT, PRESET, PSET, PRINT, PRINT USING, PRINT#, PUT SPRITE, SCREEN, SET 
+ADJUST, SET PAGE, SET SCROLL, VDP, VPEEK, VPOKE and WIDTH. Of course the 
+non-graphical instructions are not modified.
+ 
+ 
+                                 512 kB VRAM
+ 
+The V9990 has a lot of VRAM: 512 kB!!! This means that you have 16 pages in 
+SCREEN 5 and 6 and 8 pages in SCREEN 7..12. Doesn't something like SET PAGE 
+13,15 look great?!
+ 
+ 
+                               SPEEDY GONZALES
+ 
+The V9990 is extremely fast!!! For example, you can make a full screen smooth 
+scroll in SCREEN 5 with a BASIC program using COPY! The copy command of the 
+V9990 is 9 times faster than the &quot;high-speed&quot; copy command of the V9938! On 
+the V9938 you have to use a &quot;logical&quot; copy if you want to copy pixels in stead 
+of bytes or if you want to use logical operations. On the V9990 this isn't 
+necessary so those copies are 23 times faster!!! Note: In MSX-BASIC all copies 
+are treated as logical copies on the MSX2/2+/turbo R, so the COPY command in 
+BASIC is 23 times faster with the V9990 BASIC!
+ 
+ 
+                                  I/O SPEED
+ 
+The V9990 has faster commands but it also allows faster I/O! The V9938 can 
+hardly keep up with the Z80, so the R800 of the turbo R is slowed down when it 
+communicates with the V9958. This isn't necessary with the V9990, so you can 
+really use the speed of the R800.
+ 
+The evaluation board and Graphics 9000 use I/O addresses &amp;H60..&amp;H6F. These 
+ports are called P#0..P#F. P#0..P#7 are used for normal VDP operations, 
+P#8..P#B are for the kanji ROMs (not supported on Graphics 9000, but the turbo 
+R has its own kanji ROMs) and P#C..P#F are reserved for future use.
+ 
+ 
+                                  FLI-PLAYER
+ 
+On the International MSX Fair in Tilburg on April 3rd 1993 Anarchy from 
+Germany/Switzerland released their Ray Tracing demo. This demo has a lot of 
+beautiful ray-traced animations in SCREEN 8, which are real-time decrunched. 
+It looks nice but it's not smooth because the V9938 is too slow.
+ 
+Mi-Chi (a member of Anarchy) made a FLI-Player for the V9990. It works the 
+same, some of the animations were used in the Ray Tracing demo too. But on the 
+V9990 the animations are really SMOOTH!!! A fast harddisk (with SCSI interface 
+from Henrik Gilvad) is recommended because some of the .FLI files are 400 kB 
+and there is even a new .FLI player with files upto 2 MB. Unfortunately I 
+can't watch these large files because I haven't got enough RAM.
+ 
+ 
+                               DRAWING PROGRAMS
+ 
+The Graphics 9000 will be sold with two drawing programs. One for B1-mode, 
+256x212 with 64 colours out of a palette of 32768, and one for P2-mode, 
+512x212 with 16 colours out of a palette of 32768 colours. The B1-program 
+looks like DD-Graph and the P2-program will have a lot of options and used 
+pull down menus.
+ 
+ 
+                                    VIDEO
+ 
+The Graphics 9000 will be capable of super imposing, which makes it ideal for 
+videofreaks. Mi-Chi is working on a program for animations, wipes, etc. The 
+advantages of the Graphics 9000 compared to the Philips 8280 are:
+ 
+- the V9990 is much faster
+- on the 8280 you can't use the border, the V9990 has the overscan mode
+- the V9990 has better graphics (upto 512x424 with 32768 colours) for digis
+ 
+Digitizing is not possible yet with the V9990, but it will be possible and 
+that will be amazing because you can digitize in the 512x424 mode with 32768 
+colours!!! This means that you can't see the difference between the digi and 
+the original!
+ 
+One of the demodisk are two 512x424 YUV digis. These digis are really 
+brilliant, you can't see the difference with normal TV quality! YUV is a 
+system for encoding 19268 colours using only 8 bits per pixel similar to the 
+YJK system used in SCREEN 12 on the MSX2. It has the same disadvantage as YJK 
+(colour spill because 4 adjacent pixels have the same U and V values, only the 
+brightness (Y) can be different for each pixel), but you can hardly see it in 
+such a high resolution. You can imagine the quality of pictures with 32768 
+colours without colourspill!!!
+ 
+ 
+                                    GAMES
+ 
+I'm the programmer of UMAX, famous from our games Pumpkin Adventure and The 
+Witch's Revenge. It's very frustrating if you can't program what you want 
+because the possibilities and/or speed of the videochip. This happens a lot if 
+you program something for the MSX2! The number of characters moving on the 
+screen and the size of them is a problem, and a nice scrolling routine is even 
+worse.
+ 
+The V9990 has two modes ideal for games: P1 and P2. These are patternmodes, 
+the screen consists of patterns of 8x8 pixels each. The resolutions are 
+256x212 and 512x212. With these pattern modes it is much more easy to make 
+much nicer games for the V9990 than for the MSX2!
+ 
+ 
+                                  DUALPLANE
+ 
+The P1-mode is better known as the dualplane mode, because it has two screens 
+which can scroll independently! You see the back screen where the front screen 
+is transparent. It's very easy to make fantastic multi layer scrolls using 
+this dualplane mode! Each plane can have one of the 4 palettes of 16 colours 
+out of 32768.
+ 
+A very special feature of the P1-mode is a kind of hardware screensplit. You 
+can select a kind &quot;border&quot; in 64-pixel units. Above and on the left-hand side 
+of this border plane A is the front plane, and below and on the right-hand 
+side of this border plane B is the front plane.
+ 
+ 
+                                   PATTERNS
+ 
+Because the V9990 has so much VRAM it can store over 15000 patterns. The 
+format of the patterns is very nice, it's equal to a SCREEN 5 picture with 8x8 
+blocks. So it's very easy to use the patterns!
+ 
+Games for the MSX2 are often in SCREEN 5 and use 8x8 blocks. The screen 
+construction routine for such games is rather complicated, because for each 
+pattern you have to calculate at which coordinates it is in the VRAM, and it 
+has to be copied to the right position on the visible screen. This is slow and 
+difficult.
+ 
+On the V9990 it's both very simple and fast: just VPOKE the pattern number (16 
+bits) in the pattern nametable. Are you now beginning to understand what I 
+mean with &quot;it is much more easy to make much nicer games for the V9990 than 
+for the MSX2&quot;? But this is not all!
+ 
+ 
+                                   SPRITES
+ 
+In P1 and P2 modes you can use upto 125 (one hundred and twenty five!) 
+sprites, which is almost 4 times as much as the 32 sprites of the V9938. Upto 
+16 sprites can be displayed on a single horizontal line, so the times of 
+blinking sprites are over!
+ 
+But the main advantage of the sprites is that, just like the patterns, they 
+are SCREEN 5 graphics! So you can draw 16x16 sprites in DD-Graph and just load 
+that into the VRAM. Without any conversion you can use those 16x16 blocks as 
+sprites.
+ 
+On the MSX2 each horizontal line of a sprite can have only 1 colour, on the 
+V9990 all colours out of one of the four palettes of 16 colours out of 32768 
+can be used. It is possible to get multi-coloured sprites on the MSX2, but you 
+have to use 2 sprites for one &quot;object&quot; to get 3 colours on a horizontal line 
+so you can only have 16 of those 3-colour sprites!
+ 
+If you want the sprite to move behind a fence and still see the part of the 
+sprite not covered by the fence, that's very hard to do on the MSX2. But all 
+you need to do on the V9990 is putting the fence at the front plane and 
+setting one bit of the sprite attributes!
+ 
+Another advantage of the V9990 is that in the 512x212 P2-mode the spritepixels 
+have the same size as screenpixels. On the MSX2 one sprite pixel is two screen 
+pixels wide, and the x-coordinate can only be 0..255, on the V9990 the x- 
+coordinate can be 0..511.
+ 
+The B-modes haven't got sprites because they were not designed to use for 
+games. They do have two special 32x32 cursor sprites.
+ 
+ 
+                                   SOFTWARE
+ 
+The V9990 is ideal for games, business applications and video applications. 
+Mountainsoft from Switzerland are working on a game, there will be a V9990 
+version of the DTP program Aladin and a lot more software (including the 
+drawing and video programs I already mentioned) are being developed.
+ 
+Henrik made a program to watch pictures from a Photo CD using a CD-ROM drive 
+and V9990 and Mi-Chi made a very professional viewer for a lot of formats 
+including.gif, BMP and PCX. The.gif, BMP and PCX pictures look a lot better on 
+the V9990 than on the MSX2 because the V9990 can display more colours (32768) 
+at a high resolution (512x424).
+ 
+A lot of groups, including UMAX, have plans to make a game for the V9990.
+ 
+ 
+                                  INTERRUPTS
+ 
+These paragraph is interesting for programmers, if you don't know anything 
+about interrupts you'd better skip it.
+ 
+The V9990 can generate interrupts caused by the following events:
+ 
+1) Vertical blank (50/60 Hz)
+2) When displaying a certain line (line interrupt)
+3) When a command is finished
+4) When displaying at a certain HORIZONTAL position
+5) At the start of displaying EACH line
+ 
+The V9938 only supports 1 and 2. The advantage of 3 is clear. With 4 you can 
+make a &quot;vertical screensplit&quot;, which is not possible on the V9938 (not a 
+stable one) and 5 is very nice for &quot;waves&quot;.
+ 
+To see what caused the interrupt you have to read a status register on the 
+MSX2, on the V9990 you only have to read the interrupt flag port (P#6) which 
+is much faster.
+ 
+ 
+                                 PROGRAMMING
+ 
+Programming for the V9990 is more simple or at least as simple as programming 
+for the V9958. A lot of things take less IN/OUT instructions and so they take 
+less time and less bytes.
+ 
+I already mentioned the interrupt flag port, the V9990 also has a status port 
+with a lot of nice things like &quot;vertical non-display period&quot;, &quot;horizontal 
+non-display period&quot;, &quot;command being executed&quot;, etc. Reading from/writing to 
+the VRAM is more simple too, just compare the following routines to see what I 
+mean!
+ 
+; SetWriteV9938
+; In: CHL = VRAM address (17 bits)
+ 
+        LD      A,H
+        AND     #3F
+        OR      #40
+        EX      AF,AF'
+        LD      A,H
+        OR      C
+        RLCA
+        RLCA
+        OUT     (#99),A
+        LD      A,128+14
+        OUT     (#99),A
+        LD      A,L
+        OUT     (#99),A
+        EX      AF,AF'
+        OUT     (#99),A
+        RET
+ 
+; SetWriteV9990
+; In: EHL = VRAM address (19 bits)
+ 
+        LD      C,#64
+        XOR     A
+        OUT     (C),A
+        DEC     C
+        OUT     (C),L
+        OUT     (C),H
+        OUT     (C),E
+        RET
+ 
+ 
+                           RESOLUTIONS AND COLOURS
+ 
+The V9990 supports the following resolutions:
+ 
+mode    resolution      remark
+ 
+P1      256x212(424)    dualplane patternmode
+P2      512x212(424)    patternmode
+B1      256x212(424)
+B2      384x240(480)    overscan
+B3      512x212(424)
+B4      768x240(480)    overscan
+B5      640x400
+B6      640x480
+ 
+Interlaced vertical resolutions are shown in parentheses &quot;()&quot;. These 
+resolutions can be combined with the palette systems below, so a lot of 
+different types of screen modes are possible. Systems using 8 or 16 bits per 
+pixel are not possible for B4..B6, P1 and P2 only work with 4 bits per pixel.
+ 
+bits/
+pixel   colours         system
+ 
+16      32768           simultaneously (TrueColour)
+ 8         64           out of a palette of 32768
+          256           like SCREEN 8
+        19268           like SCREEN 12 (YJK)
+        19268           YUV
+ 4         16           out of a palette of 32768
+ 2          4           out of a palette of 32768
+ 
+ 
+                          DISPLAY SIZE VS IMAGE SIZE
+ 
+A very nice feature of the V9990 is the image size, which is much larger than 
+the actual display size most of the time, so you can only see a part of the 
+total &quot;image&quot; on your screen. Which part is determined by the scroll 
+registers, so you can scroll smoothly in all directions in all screen modes.
+ 
+The image size depends of the number of bits used per pixel. The following 
+table is valid for the bitmap modes (B1..B6).
+ 
+bits/pixel      resolutions
+ 
+2               256x8192, 512x4096, 1024x2048, 2048x1024
+4               256x4096, 512x2048, 1024x1024, 2048x 512
+8               256x2048, 512x1024, 1024x 512, 2048x 256
+16              256x1024, 512x 512, 1024x 256
+ 
+In the P1 mode there are two images of 64x64 patterns each (512x512 pixels), 
+the P2 mode has one image of 128x64 patterns (1024x512).
+ 
+If you use the B1 mode for a game you can put an entire level of the game into 
+the VRAM, because there is space for 16 screens if you use 16 colours. You 
+don't have to use blocks but you can just draw the entire level. Of course the 
+P1 and P2 modes are better for games because they have sprites.
+ 
+ 
+                                  INTERLACED
+ 
+The V9938 also had an interlaced possibility, but it wasn't used very often 
+because the odd lines of the picture have to be in one page and the even lines 
+in another. Because of this a picture has to be converted before it can be 
+shown in interlaced mode. Because of this animations are almost impossible.
+ 
+The interlaced mode of the V9990 is much nicer, because it just doubles the 
+display size of the picture. No conversions are necessary and animations are 
+just as easy as in a non interlaced mode.
+ 
+By the way, the V9990 has a undocumented mode with 16 colours and a horizontal 
+resolution of 1024. Together with the interlaced possibility the maximum 
+resolution a V9990 can show on a normal TV is 1024x424! I must admit the 
+quality isn't very high on my TV, but this should improve if you use a better 
+monitor.
+ 
+ 
+                                   FINALLY
+ 
+I didn't cover all the possibilities of the V9990, but I think it is more than 
+clear that this videochip offers revolutionary possibilities on an MSX.
+ 
+A lot of things that are not possible at all on a V9958 or only with a lot of 
+trouble, can be programmed for the V9990 in just a few lines of BASIC! You can 
+imagine what the possibilities are if you use machine code!
+ 
+I'm going to start with a V9990 programming course in both BASIC and ML as 
+soon as the Graphics 9000 is available.
+ 
+It's a pity the V9990 wasn't finished soon enough (autumn of 1991) to be used 
+in the MSX turbo R, which was released in the autumn of 1990. Most MSX users 
+have ancient hardware nowadays. The V9938 was developed in 1985, so it's 
+almost ten years old. On other systems it's very normal to upgrade your system 
+every few years.
+ 
+This has been possible on the MSX (MSX1 1983, MSX2 1985, MSX2+ 1988, MSX turbo 
+R 1990), and now it will be possible again to upgrade your system with a 
+Graphics 9000 and a Moonsound (16-bit soundcard with OPL4). I hope that a lot 
+of MSX users around the world will buy a Graphics 9000 and a Moonsound.
+ 
+Of course there isn't so much software at first, and because of this people 
+don't buy the Graphics 9000, there will be no more software for it, etc. We 
+have to break this vicious circle! Just buy a Graphics 9000 (and a turbo R if 
+you haven't got one yet), then the software will follow soon. I can assure you 
+a lot of groups who develop software can't wait to start programming for the 
+V9990!
+ 
+A lot of groups who are developing software for the MSX2 at the moment are not 
+challenged anymore, they made a few games and they want to move on. This is 
+not possible with the MSX2. If we don't upgrade our hardware they will start 
+developing software for other systems like the PC. Unfortunately a lot of 
+groups already made that decision. The only way to stop more groups to take 
+this bad step is to support the new Graphics 9000 and Moonsound.
+ 
+                                                                   Stefan Boer
+                                                               smboer@cs.vu.nl
+ 
+                         (c) Sunrise Foundation 1994
+ 
+                              Sunrise Foundation
+                                 P.O. Box 178
+                               1530 AD  Wormer
+                               The Netherlands
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

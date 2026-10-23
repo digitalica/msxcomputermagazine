@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>MCCM - Millennium updates</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Verdana,Arial,Helvetica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../../mccmlogo.gif"
+alt="MCCM logo" width="233" height="79"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" background="../cdback.gif" cellspacing="0" cellpadding="0"
+height="400">
+  <tr>
+    <td width="100%" valign="top" align="left"><font face="Verdana,Arial,Helvetica"><a
+    href="../updates.htm"><img src="../../buttons/bwupdates.gif" width="150" height="23"
+    alt="Updates" border="0"></a><img src="../../buttons/bleeg.gif" width="150" height="23"
+    alt="Leeg"><img src="../../buttons/bleeg.gif" width="150" height="23" alt="Leeg"><img
+    src="../../buttons/bleeg.gif" width="150" height="23" alt="Leeg"></font><p><font
+    face="Verdana,Arial,Helvetica"><strong>Probleem: romimages werken niet</strong></font></p>
+    <p><font face="Verdana,Arial,Helvetica">Het blijkt dat het starten van de fMSX emulator
+    soms met de verkeerde parameters gebeurt, namelijk altijd met die van een diskimage, ook
+    bij romimages. Hierdoor denkt fMSX dat er een diskimage gestart wordt in plaats van een
+    romimage.</font></p>
+    <p><font face="Verdana,Arial,Helvetica">Er zijn twee mogelijke oplossingen:</font><ol>
+      <li><font face="Verdana,Arial,Helvetica">Er wordt een fMSX voor romimages aangemaakt en een
+        fMSX voor diskimages:<br>
+        </font><ul>
+          <li><font face="Verdana,Arial,Helvetica">Ga naar 'Instellingen'.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik op de knop 'Toevoegen'.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ bij 'naam' de tekst 'fMSX (romimage)'</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ bij 'filename' de tekst
+            '\emulator\fmsx\fmsx-dos.exe' of open deze file via de knop '...' achter het veld (dit
+            voorkomt tikfouten).</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ bij 'parameters voor <strong>disk</strong>image'
+            de tekst '-video '.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik op de knop 'Ok'</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Selecteer de zojuist gemaakte emulator in het
+            rijtje emulators en klik op de knop 'Zet' achter 'standaardemulator voor romimages'.<br>
+            </font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik op de knop 'Toevoegen'.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ bij 'naam' de tekst 'fMSX (diskimage)'</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ bij 'filename' de tekst
+            '\emulator\fmsx\fmsx-dos.exe' of open deze file via de knop '...' achter het veld (dit
+            voorkomt tikfouten).</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ bij 'parameters voor <strong>disk</strong>image'
+            de tekst '-video -diska '.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik op de knop 'Ok'</font></li>
+        </ul>
+        <p><font face="Verdana,Arial,Helvetica">U heeft nu twee fMSX'en zodat u zowel rom- als
+        diskimages kunt gebruiken. U kunt nu eventueel de emulator 'fMSX (dos)' in het rijtje
+        wissen. Maak dan wel een andere emulator standaard, met behulp van de 'Zet' knoppen.</font></p>
+        <p><font face="Verdana,Arial,Helvetica">Mede dank aan L. Teunissen voor het idee van deze
+        mogelijkheid.</font></p>
+      </li>
+      <li><font face="Verdana,Arial,Helvetica">fMSX wordt gestart via fMSX QuickStart, waardoor de
+        parameter wel goed worden doorgegeven: </font><ul>
+          <li><font face="Verdana,Arial,Helvetica">Ga naar 'Instellingen'. </font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik bij 'emulator opties' op de knop 'Toevoegen'.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ in het veld 'naam' de tekst 'fMSX QuickStart'. </font></li>
+          <li><font face="Verdana,Arial,Helvetica">Typ in het veld 'Filename' de tekst
+            '\utils\pc\win32\fmsxqs\fmsxqs.exe' of open deze file via de knop '...' achter het veld
+            (dit voorkomt tikfouten). </font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik op de knop 'Ok' om deze nieuwe 'emulator' toe
+            te voegen.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik op de zojuist toegevoegde emulator in het
+            rijtje emulators.</font></li>
+          <li><font face="Verdana,Arial,Helvetica">Klik op de knop 'Zet' achter 'standaard emulator
+            voor romimages'. </font></li>
+        </ul>
+        <p><font face="Verdana,Arial,Helvetica">Wordt vanaf nu een romimage gestart, dan gebeurt
+        dit via het programma fMSX QuickStart, dat wel de juiste parameters doorgeeft. Wanneer
+        fMSX QuickStart voor het eerst gestart wordt dan wordt eerst om de locatie van fMSX
+        gevraagt. Deze is te vinden in de directory 'Emulator\fmsx' op de cdrom. Met fMSX
+        QuickStart kunt u fMSX geheel instellen naar eigen wens.</font></p>
+        <p><font face="Verdana,Arial,Helvetica"><strong>Noot: </strong>Met deze oplossing kunt u
+        fMSX zowel voor disk- als romimages gebruiken. Minpuntje is dat fMSX QuickStart telkens
+        vraagt of de gekozen file een disk- of romimage is. Hiervoor is een <a href="fmsxqs.zip">nieuwe
+        versie</a> beschikbaar op deze site. Zet deze file op uw harddisk en verander het veld
+        filename zodat de fmsxqs.exe op uw harddisk gebruikt wordt.<br>
+        <br>
+        <img src="update1-1.gif" width="419" height="302" alt="update1-1.gif (5774 bytes)"></font></p>
+      </li>
+    </ol>
+    <p><font face="Verdana,Arial,Helvetica">&nbsp;</font></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

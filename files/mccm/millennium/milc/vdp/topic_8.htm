@@ -1,0 +1,303 @@
+<html>
+
+<head>
+<title>MILC - Topic V9990 evaluation board. The first impression. </title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_7.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">V9990 evaluation board. The first impression. </b><br>
+    <i>Henrik Gilvad</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+(Overgenomen van Quasar 26)
+
+
+V9990 evaluation board. The first impression. 
+ 
+Written by Henrik Gilvad. 
+ 
+It  have been a while since I last wrote for the Quasar and the
+ reason is  not difficult  to explain.  I got a V9990
+evaluation  board  from MSX  Handler Gemeinshaft with an
+interface for MSX.  From now on there will be 2 kinds of MSX
+people, those who hate  the V9990  and those who love it. After
+this article you should  have no doubts about what group I
+belong to. 
+ 
+The first rumours: 
+I  first  heard  about  the  V9990  several years  ago, it  was
+ mentioned together  with a  new MSX computer which had a 16
+bit  28 MHz Risc CPU. The new videochip had up to 2048 dots in
+the X  direction  and 2048  in the  Y direction,  with 32k
+colours the  quality  would     beat  all  existing  hobby 
+systems.  Quite  a  mouthfull  of words  so we  didnt really
+believed it then, only  hoped. 
+ 
+The facts  of both  the 28  MHz and  the 2048/1024 dots was not
+ precisely  correct but  misunderstandings from people who
+could  not read  and understand the technical information. The
+machine  was  naturally    the  Turbo R,  all though  not as 
+fast as  the  rumour.  The V9990  DOES have up to 2048 in the X
+direction and  up to 2048 in the Y dir. but that is in the vram
+and NOT on the  screen. The  V9990 is  a very complex chip but
+it is incredible  simple      to program  and therefore the
+'thru-put' is much faster  than on  the know  MSX VDP's. 
+Furthermore the  V9990 is ALWAYS  ready  for the Turbo R,
+therefore it is possible to transfer up  to 520kbyte  or so 
+from the  Turbo R  internal RAM to the VRAM  with  OUT's. This 
+is nice  but the REAL power is internally of  the V9990,  the
+hardwarecommands  and other  features are  much  more  valuable
+than  even 2 or 4 higher CPU to VRAM access. (My  personal
+oppinion.) 
+ 
+I will      not write  about the  things that  you can  read in
+the  Application  Manual, get  that one from Arjan. I will
+bring you  here the test results and other things that I found
+out. 
+ 
+ 
+To see the strength of the V9990 I did some first tests. 
+ 
+The  following tests  have been  made in  a screen 7 compatible
+ mode. Optimized machinecode. 
+LMMV  LINE BOXFILL      Fill's about 3.183 Mbyte /sek in B1
+mode CMMK  KANJI to (X,Y)    Writes about 3.076 Mbyte /sek
+--!!-- LMMM  COPY (X,Y)  Transfers    2.248 Mbyte /sek 
+(Faster if sprites/cursor is disabled) 
+ 
+in P2 mode with the same commands: 
+LMMV  1.267 Mbyte 
+CMMK  1.047 Mbyte 
+LMMM    756 Kbyte 
+(Also faster with disabled sprites.) 
+ 
+I have      also tried to see how many Lines and Copy's the
+Turbo R  can give in M-Code with different size. (All in B1
+mode) 
+ 
+LINE -STEP(3,3)   26087 lines in 1 sek. 
+LINE -STEP(16,16)       20689 lines in 1 sek. 
+LINE -STEP(31,31)       15384 lines in 1 sek. 
+LINE (0,0)-(255,211)     4054 lines in 1 sek. 
+ 
+and COPY: 
+COPY step(15,15)   8696 times in 1 sek. 
+COPY step(31,31)   3141 times in 1 sek. 
+ 
+ 
+The  B1 mode is with only 2 sprites (called Cursors) with 32x32
+ pixels and multicolour. 
+The P2 and P1 modes have up to 125 sprites with 16x16 pixels in
+ multicolour. 16 per line. 
+ 
+Compared to  the V9958  then the  V9990 is  MUCH faster  in all
+ concepts.  The V9958  have 2  kinds of    COPY. One  with
+logical  operations (in    DOT units)  and one  without
+log.ops.  (In BYTE  units) The Byte copy is never faster than
+350 K/sek and the Dot  Copy  is only  pumping out  about
+100kbyte/sek.  The V9990 only  have 1      COPY and that is
+always with Logical operations between  the  Source and  the
+Destination. If the V9990 COPY is compared  with  the  V9958
+Dot  COPY then  it is    23 times  faster !  But  compared with
+the V9958  Byte COPY it is 'only' 9 times faster  in this
+command type. 
+ 
+So  was the V9958 so bad ?? The answer is no, the VRAM was bad.
+ The V9990 can only use what is known as REAL video-ram, that
+is  also called  DUAL PORT RAM. The problem has been that 1 ram
+had  to deliver data to both the picture (Which can not wait
+for its  information.)  and the  'blitter', that is not
+possible in very  high resolutions.  Actually the  V9958 can 
+only show  SCREEN 5  with  one  VRAM  bank, it  have to  have 2
+banks to  go up  to  resolutions as the Screen 7 and 8. On the
+IBM-PC VGA cards they  have NO 'blitter' and NO sprites. With
+these 2 things VGA would  never existed, with normal RAM. Most
+VGA cards have to split up  the  VRAM in  4 or  8 banks to get
+enough 'access time' just to  show the screen resolution *
+number of colours. 
+ 
+With the  new DUAL  PORT ram  then V9990  have 1  port for  the
+ Picture  and 1 port for 'blitter', sprites and CPU access.
+This  gives  the  possibility of  the high  speeds and  higher
+screen  resolutions in both dots and colours. 
+ 
+So, does V9990 have ANY MSX future ? 
+ 
+The first  3 days  or so  I did  not get much sleep, I was busy
+ converting  XBASIC and Turbo R BASIC from V9958 to V9990.
+After  about 1  week I  had most routines rewritten and they
+were both  faster and smaller ! I didnt belived it myself but
+this chip is  so  damn brilliant. Take a basic command like the
+&quot;COPY file to  (X,Y)&quot; it is hopeless in screen 8 and even worse
+in screen 6. 
+ 
+Each dot  have to  be read  from the  diskfile, masked      out
+and  written  to the  VDP, but before each dot the SUBROM first
+have  to set      and examine some status registers. ALL the
+work is done  by the CPU and not by the videoprocessor as it
+should be. There  are  4      different  COPY routines  in the 
+SUBROM, one  for each  screen      mode. The  V9990 have  a
+hardware  command that is much  simpler to use. Just read the
+data from the disk and write them  directly to  a VDP  port, it
+does the rest. The new routine is  really      much faster. 
+The V9990 will distribute the data to the  correct dots,  no
+masking  to be  done ! The V9990 command even  IGNORES  the
+last  bits in  the right side of the rectangle you  are copying
+to, for  those who dont know it then this is a MSX 
+speciallity. The V9990 fits the MSX to a fault not only in this
+ point but it also contains other commands fit for MSX BASIC
+and  BIOS. 
+ 
+Other  basic commands  that was getting much faster and smaller
+ was : PUT SPRITE, PAINT, PRINT #1, PUT KANJI. 
+Commands like LINE, PSET, POINT was not different in size. 
+ 
+The V9990  can simulate all MSX 2 and 2+ screen modes in matter
+ of  the DOTS.  The incompatibility starts with SPRITES and
+with  VDP registers. 
+ 
+The old  sprite system  was really  bad, take a look on the PUT
+ SPRITE      function in  the SUBROM  and you will understand
+what I  mean. To  make 1  PUT SPRITE command takes about 200
+VPEEKS and  VPOKES      and lots  of calculations. Sprites on
+the V9990 is very  simple and more powerfull at the same time. 
+ 
+Sprites  are  now defined  just as  normal bitmapped  graphics,
+ actually you  can use  normal graphic as spritedata. This
+makes  sprites much more usefull. 
+Sprites can have 1 of 4 palettes (1 palette have 16 colours) so
+ with sprites there can be up to 64 colours on the screen in
+the  'GAME MODES'. 
+Sprites  can move BEHIND the picture or between the 2 planes in
+ P1 mode, so the 2 planes can be huge sprites themselves. 
+ 
+Sprites on  the V9990  are NOT      vram compatible with the
+V9958,  that would be imposible. 
+ 
+VDP  registers are not compatible either, this was not possible
+ as there  have been  so many  improvements. If  programmers
+are  using  BASIC, XBASIC,  C or  Assembler with BIOS based
+routines  then there  should be no problems. But Assembler
+programs which  writes      to VDP      registers and  VRAM and
+not using the BIOS will  not work correctly. 
+ 
+The  MSX  standard does  not permit  anyone to  access the  vdp
+ registers directly. 
+The only legal and fast way to access the VRAM, bitmap graphics
+ area, is  by setting  up the  VRAM ADR. with a BIOS routine
+and  then writing vram data directly to the I/O port which is
+stored  in  ROM adr.  6-7. It is not allowed to use the VDP
+regs to set  up  the  adr.  If  this  is  done correctly  then
+the  V9990 is  compatible. 
+ 
+Now 2 examples. Ex1 is the wrong one, Ex2 is the right one. 
+ 
+Ex1: Write 255 bytes from RAM to VRAM 
+LD HL,#0000 
+LD A,L 
+OUT (#99),A 
+LD A,H 
+OR #40 
+OUT (#99),A 
+LD HL,#A000 
+LD B,255 
+LD C,#98 
+OTIR 
+RET 
+ 
+This ex.  will not  work on the V9990, it should have read like
+ this: 
+ 
+LD HL,#0000 
+CALL SetWr 
+LD HL,#A000 
+LD B,255 
+LD A,(#0006) 
+LD C,A 
+OTIR 
+RET 
+ 
+This  is smaller in memory and much nicer to look at. The speed
+ should not be a problem as the BLOCK transfer is the same. 
+ 
+ 
+The VRAM  problem is the SPRITE control since the bytes used in
+ VRAM  are located  differently and 2 of the 4 bytes are
+swapped  and 1 have different meaning. Not an easy one to
+solve. 
+ 
+The last problem is that the V9990 does not have SCREEN 0-3. In
+ the  V9990  BASIC  that  I now      have made  there is  a 64 
+char  textmode, it  also works  in DOS. Program written in
+BASIC with  no  'dirty' commands like 'VDP', 'BASE' and VPOKE
+to the sprite  area would all work. 
+Programs written  in XBASIC with the same limits will also work
+ in my V9990 XBASIC version, when its complete. 
+ 
+With  a few rules for software devellopers then future programs
+ can work both on V9990 and on V9958. But as long as there is
+no  MSX  with  ONLY  a  V9990  then  this  should  perhaps     
+not  be  nessesary. 
+ 
+The V9990  have some  modes not  mentioned in  the manual. They
+ are: 
+ 
+Normal monitor: 
+192 x 240 with 2-32k colours 
+1024 x 212 with 16 colours (not sharp picture) 
+ 
+VGA monitor: 
+320 x 480 with 2 - 32k colours. 
+160 x 480 --!!-- 
+ 
+ 
+Some people asked me to write about the Interlace on the V9990.
+The interlace is different from the one on the V9958. 1  page
+non-interlaced will be the upper half of the picture in 
+interlace  mode.   So  it  is  a  more    logically  and   
+usefull  interlace. (No converting needed !) 
+ 
+My  conclusion is  that the  V9990 is a very powerfull chip for
+ both Games  and more  Serious programs. Personally I dont
+think  that  there  will  be a  MSX with  just the  V9990 as 
+too many  programmers  have not been, and will not be,
+desciplined enough  to write  programs that  will work  on it. 
+The ideal  solution  would be both V9958 and V9990
+superimposed. However  I think that the V9990 are having too
+huge a potential  to be ignored, even a 3.5 MHz MSX will be
+able to gain from it. 
+ 
+To the      people who  are 100%  against V9990 I just want to
+ask:  When did You last use screen 1-4 ? 
+ MSX should not be standing at the 1985 level for 10 more years.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

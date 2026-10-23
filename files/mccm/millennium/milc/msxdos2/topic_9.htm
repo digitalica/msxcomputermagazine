@@ -1,0 +1,290 @@
+<html>
+
+<head>
+<title>MILC - Topic Transient Program Environment</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_8.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_10.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Transient Program Environment</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+2.   TRANSIENT PROGRAM ENVIRONMENT
+==================================
+
+     This  chapter describes  the environment in which transient programs are
+executed under  MSX-DOS, including  entry and  exit to the program and memory 
+usage.
+
+2.1   ENTRY FROM MSX-DOS
+
+     A  transient program  will be  loaded at address 0100h, the start of the
+TPA (Transient Program Area), and is CALLed by MSX-DOS with the stack pointer 
+set to  the end  of the TPA. If the stack pointer points to that location, as 
+much RAM as possible can be used as the stack. If it is undesirable, then the 
+transient program must set up its own stack in the TPA.
+     
+     The  contents of  the Z-80 registers when a transient program is entered 
+are undefined. The first 256 bytes of RAM starting at the address 0 will have 
+been set up with various parameters and code as described in section 2.3.
+
+     Interrupts  are enabled  when a  transient program is entered and should 
+generally be  left enabled.  MSX-DOS function  calls will generally re-enable 
+interrupts if the transient program has disabled them.
+
+2.2 RETURN TO MSX-DOS 
+
+     A  transient program  can terminate  itself in any of the following four 
+ways:
+
+     1. Returning, with the original stack pointer.
+     2. Jump to location 0000h.
+     3. MSX-DOS &quot;Program Terminate&quot; function call.
+     4. MSX-DOS &quot;Terminate with Error Code&quot; function call.
+
+     The  first  two of  these methods  are identical  as far  as MSX-DOS  is 
+concerned, and  are compatible  with CP/M  and MSX-DOS 1. The third method is 
+also  compatible  with  CP/M  and  MSX-DOS  1  and is  equivalent to  doing a 
+&quot;Terminate with Error Code&quot; function call with an error code of zero. 
+
+     The  new  &quot;Terminate  with Error  Code&quot; function  allows the  program to 
+return  an error  code to MSX-DOS, the first three terminating methods always 
+returning an  error code  of zero  (no error). All specially written programs 
+and  converted CP/M programs should use this new function, even for returning 
+an error code of zero.
+
+     Various  other events  outside the  control of a program can cause it to 
+terminate. For  example, typing  &quot;Ctrl-C&quot; or  &quot;CTRL-STOP&quot; at the keyboard, by 
+the  user selecting  &quot;Abort&quot; as  the response to an &quot;Abort/Retry/Ignore&quot; disk 
+error message  or by an error on the standard I/O channels. In these cases an 
+appropriate error code will be returned to MSX-DOS.
+
+     A  transient program  can define an &quot;abort routine&quot;. This will be called 
+to  treat  the abnormal  termination of  the program  appropriately when  the 
+program terminates  by a  &quot;Program Terminate&quot;  or &quot;Terminate with error code&quot; 
+function, or after an abort error (see above). How to define this routine and 
+for what may be used is described in the MSX-DOS Function Specification.
+
+2.3   PAGE ZERO USAGE
+
+     On entry,  various parameter  areas are set up for the transient program
+in  the first  256 bytes  of RAM.  The layout of this area is as below and is 
+compatible with MSX-DOS 1 and with CP/M apart from the area used for MSX slot 
+switching calls.
+
+       +------+------+------+------+------+------+------+------+
+ 0000h |    Reboot entry    |  Reserved   |   MSX-DOS entry    |
+       +------+------+------+------+------+------+------+------+
+ 0008h |  RST 08h not used         | RDSLT routine entry point |
+       +------+------+------+------+------+------+------+------+
+ 0010h |  RST 10h not used         | WRSLT routine entry point |
+       +------+------+------+------+------+------+------+------+
+ 0018h |  RST 18h not used         | CALSLT routine entry point|
+       +------+------+------+------+------+------+------+------+
+ 0020h |  RST 20h not used         | ENASLT routine entry point|
+       +------+------+------+------+------+------+------+------+
+ 0028h |  RST 28h not used         |          not used         |
+       +------+------+------+------+------+------+------+------+
+ 0030h | CALLF routine entry point |          not used         |
+       +------+------+------+------+------+------+------+------+
+ 0038h |  Interrupt vector  |                                  |
+       +------+------+------+                                  +
+ 0040h |                                                       |
+       +                                                       +
+ 0048h |         Used by secondary slot switching code         |
+       +                                                       +
+ 0050h |                                                       |
+       +                           +------+------+------+------+
+ 0058h |                           |                           |
+       +------+------+------+------+                           +
+ 0060h |         Unopened CP/M FCB for first parameter         |
+       +                           +------+------+------+------+
+ 0068h |                           |                           |
+       +------+------+------+------+                           +
+ 0070h |         Unopened CP/M FCB for second parameter        |
+       +                           +------+------+------+------+
+ 0078h |                           |    Space for end of FCB   |
+       +------+------+------+------+------+------+------+------+
+ 0080h |                                                       |
+   .   .                                                       .
+   .   .   Default Disk transfer address.  Initialized to      .
+   .   .   original command line parameters.                   .
+   .   .                                                       .
+ 00F8h |                                                       |
+       +------+------+------+------+------+------+------+------+
+
+     At address 0000h is a jump instruction which can be used for terminating
+the  transient program.  The destination  of this  jump can  also be  used to 
+locate the  BIOS jump  vector (see  section 2.4).  The low  byte of this jump 
+address will always be 03h for CP/M compatibility.
+
+     The two  reserved bytes  at addresses 0003h and 0004h are the IOBYTE and 
+current  drive/user in CP/M. Although MSX-DOS keeps the current drive byte up 
+to date  for CP/M compatibility, new programs are not recommended to use this 
+but  instead to  use the  &quot;Get current drive&quot; MSX-DOS function call. The user 
+number and  IOBYTE are not supported since I/O redirection is not done in the 
+same way as CP/M and there is no concept of user numbers.
+
+     At address 0005h is a jump instruction to the start of the resident part 
+of MSX-DOS which is used for making MSX-DOS calls. In addition the address of 
+this  jump defines  the top of the TPA which the program may use. The size of 
+the TPA depends on what cartridges are used on the MSX machine and the number 
+of them,  but is  typically 53K. The low byte of the destination of this jump 
+will  always be  06h for  CP/M compatibility,  and the  six bytes immediately 
+preceding it will contain the CP/M version number and a serial number.
+
+     Four  bytes  are  reserved  for the  user at  each Z80  restart location 
+(0008h-0028h), which  is sufficient for a jump. The bytes between the restart 
+locations however are used for the entry points to various MSX slot switching 
+routines.
+
+     The  whole  area  from  0038h to  005Bh is  used for  MSX interrupt  and 
+secondary slot  switching code, and must not be modified. Note that most CP/M 
+debuggers  (such as  ZSID and DDT) use address 38h as a breakpoint entry, and 
+these programs  will have  to be modified to use a different restart. RST 28h 
+is recommended.
+
+     The two FCBs set up at addresses 005Ch and 006Ch are valid unopened FCBs 
+containing the first two command line parameters interpreted as filenames. If 
+both  filenames  are  to be  used then  the second  one must  be copied  to a 
+separate  FCB elsewhere  in memory  because it  will be  overwritten when the 
+first one is opened. See section 3.6 for the format of FCBs.
+
+     The whole  of the  command line,  with the  initial command  removed, is 
+stored in the default disk transfer area at address 0080h, with a length byte 
+first  and  a  terminating null  (neither the  null nor  the length  byte are 
+included  in the  length). This  string will  have been upper-cased (when the 
+environment string  UPPER is ON) and will include any leading spaces typed to 
+ensure CP/M compatibility.
+
+     New  programs  for MSX-DOS  should not  use the  CP/M FCBs,  since other 
+MSX-DOS calls are available which are generally easier to use and which allow 
+programs  to  access directories  and handle  path names  (see section  3 for 
+details of these facilities).
+
+     Improved methods  are also  available for accessing the command line. An 
+environment  string called  &quot;PARAMETERS&quot; is set up which contains the command 
+line  not  upper-cased. Another  environment string  called &quot;PROGRAM&quot;  allows 
+programs to  find out  the drive, directory and filename from which they were 
+loaded.  See section  3.5 for  details of  these environment  strings and  of 
+environment strings in general.
+
+2.4   BIOS JUMP TABLE
+
+     The  jump at address 0000h will always jump to an address whose low byte 
+is 03h.  At this address will be another jump instruction which is the second 
+entry  in a  seventeen entry jump table. This corresponds exactly to the BIOS 
+jump table in CP/M 2.2.
+
+     The first eight entries in the table are for rebooting and for character 
+I/O. These  routines are implemented with the same specification as CP/M. The 
+remaining  jumps are  low level  disk related  functions in  CP/M and have no 
+equivalent in  MSX-DOS since  its filing  system is  totally different. These 
+routines  simply return without doing anything apart from corrupting the main 
+registers and returning an error where possible.
+
+     MSX-DOS switches to an internal stack while executing a BIOS call and so 
+only a small amount of space (8 bytes) is required on the user's stack.
+
+     Note that although the jump table is always on a 256 byte page boundary, 
+it is  not the &quot;correct&quot; distance above the top of the TPA (as defined by the 
+contents  of address  0006h) to  correspond with  CP/M 2.2.  This should  not 
+matter to  well behaved  CP/M programs  but it is rumoured that some programs 
+rely  on  the  size  of  the  BDOS  in  CP/M  2.2. These  programs will  need 
+modification.
+
+     The entries in the BIOS jump vector are as below:
+
+   xx00h - JMP  WBOOT     ;Warm boot
+   xx03h - JMP  WBOOT     ;Warm boot
+   xx06h - JMP  CONST     ;Console status
+   xx09h - JMP  CONIN     ;Console input
+   xx0Ch - JMP  CONOUT    ;Console output
+   xx0Fh - JMP  LIST      ;List output
+   xx12h - JMP  PUNCH     ;Punch (auxiliary) output
+   xx15h - JMP  READER    ;Reader (auxiliary) input
+   xx18h - JMP  RETURN    ;Home in CP/M
+   xx1Bh - JMP  RETURN    ;Select disk in CP/M 
+   xx1Eh - JMP  RETURN    ;Set track in CP/M
+   xx21h - JMP  RETURN    ;Set sector in CP/M
+   xx24h - JMP  RETURN    ;Set DMA address in CP/M
+   xx27h - JMP  RETURN    ;Read sector in CP/M
+   xx2Ah - JMP  RETURN    ;Write sector in CP/M
+   xx2Dh - JMP  LSTST     ;List status
+   xx30h - JMP  RETURN    ;Sector translate in CP/M
+
+2.5   RAM PAGING
+
+     When  a transient program is loaded, the mapper RAM slot will be enabled 
+in all  four pages and the four RAM segments which make up the basic 64k will 
+be paged in. There will be MSX BIOS ROM compatible slot handling entry points 
+available  in page-0  and various mapper support routines available in page-3 
+(see section 5 for specifications of these).
+
+     A  program may  do any slot switching and paging which it likes while it 
+is running  and need not restore either the slot selections or the RAM paging 
+before  it exits,  since COMMAND2.COM  will handle  this. A  program must  of 
+course  take  the usual  precautions with  the interrupt  and the  slot entry 
+points if  it alters  page-0, and must never alter page-3 (nothing is allowed 
+to do that!).
+
+     Pages 0,  1 and  2 can  contain any  slot when doing a function call and 
+will be preserved. Any parameters can be passed from the slot being selected, 
+except that environment strings and disk transfer areas must be in the mapper 
+RAM slot.
+
+     Any RAM  segments can  be selected  in pages  0, 1 and 2 when an MSX-DOS 
+function  call or  an MSX-DOS  BIOS function call is made, and also the stack 
+can  be  in  any  page. The  current paging  state will  be preserved  by all 
+function calls  even in  error conditions. Any disk transfers will be done to 
+the  RAM segments  which are paged in when the function call is made, even if 
+they are not the original TPA segments.
+
+     If  a transient  program wants  to use more RAM than the TPA then it can
+use the  mapper support routines (described in section 5) to obtain more RAM. 
+Before  using any  RAM other than the four TPA segments, the program must ask 
+the mapper  routines to allocate a new segment. This ensures that there is no 
+contention  with the  program trying to use a segment which is already in use 
+(by the  RAM disk  for example). The segments should normally be allocated as 
+&quot;user  segments&quot; since  these will  automatically be  freed when  the program 
+terminates. &quot;system segments&quot; should only be allocated if it is necessary for 
+them to remain in use after the transient program has terminated.
+
+     Having  allocated additional  segments, the program may page them in and
+use any  of the  mapper support  routines to access them. It will normally be 
+necessary  for a transient program to remember the segment numbers of the TPA 
+segments in  order to  page them  back in when they are required. The segment 
+numbers  will normally  be 0,  1, 2  and 3  but this  must NOT  be assumed by 
+transient programs,  they must  use the  &quot;GET_Pn&quot; mapper routines to find out 
+the segment numbers before paging anything else in.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_10.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

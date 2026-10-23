@@ -1,0 +1,612 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX Hooks</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX Hooks</b><br>
+    <i>Henk ?</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+    MSX-hooks.  [ Uit het 'MSX-handboek voor gevorderden' en
+                 'Machinetaal voor MSX-computers' ]
+    ------------------------------------------------------
+
+
+    Naast het werkgeheugen wordt er door het OS ook  geheugen  gereserceerd
+    voor de zgn. RAM-haken (Ram-hooks). Deze RAM-haken vormen een  uitbrei-
+    dings mogelijkheid voor MSX-BASIC en het OS.Ze worden zogezegd gebruikt
+    om nieuwe toepassingen aan de MSX 'vast te haken'.
+
+    Een RAM-Haak is een gebied van vijf bytes, gereserveerd voor  zeer  een
+    zeer korte machinetaalroutine die over het algemeen zal bestaan uit een
+    sprong naar een bepaald adres waar een afhandelingsroutine staat.  Elke
+    RAM-haak wordt aangeroepen op bepaalde momenten(verschillend per haak),
+    waarop het mogelijk is het OS te onderscheppen en bepaalde  zaken  zelf
+    anders te implementeren. Over het algemeen zal deze eigen implementatie
+    verzorgd zijn in een pagina in een andere gleuf(slot).  De  vijf  bytes
+    die per  haak  beschikbaar  zijn,  zijn  dan  net  voldoende  voor  een
+    intergleuf(interslot)-aanroep van de eigen routine via  de  OS-  ingang
+    CALLF(0030). Deze ingang kan namelijk aangeroepen worden door  een  RST
+    &amp;H30-instructie, gevolgd door een byte voor een gleuf(slot)-aan duiding
+    en twee bytes voor een geheugenadres(zie BIOS). Het laatste byte is dan
+    een RET-instructie.
+
+    Bij het initialiseren van het ram geheugen worden alle RAM-haken(hooks)
+    door het OS gevuld met vijf RET-instructies, zodat  het  aanroepen  van
+    een haak geen effect heeft. Als een bepaalde routine  in  een  bepaalde
+    ROM geimplementeerd is, kan de initialisatieroutine van  die  ROM  (zie
+    systeem-variabelen) de benodigde RAM-haken vullen meet een aanroep  van
+    CALLF die naar de implementatie verwijst.
+
+       aanroepende
+        routine                                 aanroepende
+      |         |    +0|---------------|       | routine    |
+      |         |   /  |    RST 30     |/------|------------|
+      |         |  / +1|---------------|       |            |
+      |         | /    |Slot aanduiding|       |            |
+    +0|---------|/   +2|---------------|       |            |
+      |Call haak|      |Adres in slot  |       |            |
+    +3|---------|\   +4|---------------|       |            |
+      |         | \    |    RET        |       |            |
+      |         |  \ +5|---------------|       |            |
+      |         |      |               |\------|------------|
+      |         |      |---------------|       |    RET     |
+
+                      Het gebruik van de RAM-haken(hooks).
+
+    Het systeem van gebruik van de RAM-haken is nog eens weergegeven in
+    de afbeelding hierboven.
+
+    Om een CALLF-interslot-aanroep te kunnen gebruiken, moet het slot van
+    bestemming bekend zijn. Voordat een RAM-haak kan worden ingevuld, moet
+    de ROM-initialisatieroutine weten in welke gleuf(slot) hij zich bevindt
+    De gleuf(slot) van bestemming is als byte gecodeerd, waarin de bits de
+    volgende bvetekenis hebben:
+
+    Bit 7           Gleuf(slot) is wel/niet uitgebreid.    1=wel
+    Bit 6-4         Ongebruikt.
+    Bit 3-2         Nummer secundaire gleuf(slot)          0-3
+    Bit 1-0         Nummer primaire gleuf(slot)            0-3
+
+    De volgende machinetaalroutine bepaalt de gleuf(slot) waarin hij zich
+    bevindt, en codeert deze informatie volgens bovenstaand patroon. Bij
+    het verlaten van deze routine staat de codering in het A-register.
+
+    RSLREG    EQU   &amp;H138            ;OS-ingang voor bepalen primaire slot.
+    EXPTBL    EQU   &amp;HFCC1           ;Tabel met informatie of de gleuf uit-
+                                      gebreid is.
+    B8000     EQU   1                ;Zet dit op 1 als de routine zich be-
+                                      vindt in het bereik 8000-BFFF
+              CALL RSLREG            ;Ingeschakelde primaire gleuven.
+              RRC                    ;Zoek juiste element op binnen
+              RRC                    ;de ingeschakelde gleuven.
+    IF        B8000                  ;Macro, wordt alleen geassembleerd
+              RRC                    ;als routine in het bereik 8000-BFFF.
+              RRC                    ;Neem in dat geval volgende elementen.
+    ENDIF
+
+             AND    &amp;HB11            ;Selecteer relevante deel
+             LD     C,A
+             LD     B,0
+             LD     HL,EXPTBL        ;Zoek element binnen EXPTLB op
+             ADD    HL,BC
+             OR     (HL)             ;Bit 7 hoog indien uitgebreid.
+             LD     C,A              ;Berg tijdelijk op
+             INC    HL
+             INC    HL
+             INC    HL
+             INC    HL
+             LD     A,(HL)           ;Huidige ingeschakelde secundair slot
+    IF       B8000                   ;Macro, geassembleerd als B8000=1
+             RRC                     ;Schuif juiste element in bit 2,3
+             RRC
+    ENDIF    AND    &amp;HB1100          ;Selecteer relevante deel
+             OR     C                ;Combineer met de reeds gevonden infor-
+                                      matie
+             RET                     ;Klaar
+
+    De RAM-haken zijn ruwweg in drie groepen in te delen:
+    -OS RAM-haken. Dit zijn de RAM-haken die vanuit het OS aangeroepen
+     worden.
+    -BASIC-uitbreiding RAM-haken. Dit zijn RAM-haken die horen bij een
+     BASIC sleutelwoord dat in standaard MSX-BASIC niet geimplementeerd is.
+     Met gebruik van deze haken kunnen deze sleutelwoorden benut worden in
+     de implementatie van DISK-BASIC.
+    -DISK BASIC aanroepen. Deze RAM-haken dienen enkel en alleen voor het
+     implementeren van DISK BASIC. De RAM-haken in deze categorie horen
+     echter niet speciaal bij een sleutelwoord, zoals de hierboven genoemde
+     haken.
+    -BASIC interpreter RAM-haken. Dit zijn haken die vanuit de BASIC inter-
+     preter aangeroepen worden. De momenten en de omstandigheden van de aan
+     roep zijn over het algemeen nogal obscuur, en deze haken zijn in feite
+     niet bruikbaar zonder grondige kennis van de interpreter.
+
+    Van alle RAM-haken wordt de indeling in een van deze groepen gemeld.
+    Van de OS RAM-haken is bovendien het moment van aanroep en het doel van
+    de haak gegeven. Van de BASIC uitbreidingshaken is vermeld bij welk
+    sleutelwoord ze horen. De BASIC interpreter-haken en DISK BASIC-haken
+    zijn over het algemeen verder niet gedocumenteerd.
+
+    FD9A      H.KEYI
+    Groep     OS
+    Aanroep:  aan het begin van de interrupt afhandeligsroutine, voordat
+              getest is of de interrupt van de VDP afkomstig is.
+    Doel   :  om anderen interrupts dan de VDP-interrupt te kunnen toelaten
+              bijvoorbeeld via een cartridge aansluiting. De RS232 maakt
+              hiervan gebruik. De routine moet zelf testen of de interrupt
+              van de juiste bron afkomstig is.
+
+
+    FD9F      H.TIMI
+    Groep     OS
+    Aanroep:  aan het begin van de interrupt-afhandelingsroutine, op het
+              moment dat vast staat dat de interrupt van de VDP afkomstig
+              is.
+    Doel   :  om de VDP-interrupt voor andere doeleinden te kunnen gebrui-
+              ken.
+
+
+    FDA4      H.CHPU
+    Groep     OS
+    Aanroep:  aan het begin van CHPUT(00A2), de routine die een teken op
+              het scherm zet.
+    Doel  :   om andere uitvoerapparaten dan het beeldscherm als stan-
+              daard uitvoer te kunnen gebruiken.
+
+
+    FDA9      H.DSPC
+    Groep     OS
+    Aanroep:  aan het begin van de routine die de cursor op het scherm
+              zichbaar maakt.
+    Doel   :  om andere uitvoerapparaten dan het beeldscherm als stan-
+              daard te kunnen gebruiken.
+
+
+    FDAE      H.ERAC
+    Groep     OS
+    Aanroep:  aan het begin van de routine die de cursor van het scherm
+              verwijdert.
+    Doel   :  om andere uitvoerapparaten dan het beeldscherm als stan-
+              daard uitvoer te kunnen gebruiken.
+
+
+    FDB3      H.DSPF
+    Groep     OS
+    Aanroep:  aan het begin van DSPFNK(00CF), de routine die de tekst
+              van de functietoetsen op het scherm zet.
+    Doel   :  om andere uitvoerapparaten dan het beeldscherm als stan-
+              daard te kunnen gebruiken.
+
+
+    FDB8      H.ERAF
+    Groep     OS
+    Aanroep:  aan het begin van ERAFNK(00CC), de routine die de tekst
+              van de functietoetsen van het scherm verwijdert.
+    Doel   :  om andere uitvoerapparaten dan het beeldscherm als stan
+              daard uitvoer te kunnen gebruiken.
+
+
+    FDBD      H.TOTE
+    Groep     OS
+    Aanroep:  aan het begin van TOTEXT(00D2), de routine die het scherm
+              geforceerd in een andere tekstmode zet.
+    Doel   :  om andere uitvoerapparaten dan het beeldscherm als stan-
+              daard te kunnen gebruiken.
+
+
+    FDC2      H.CHGE
+    Groep     OS
+    Aanroep:  aan het begin van CHGET(009F), de routine die een teken uit
+              de toetsenbordbuffer leest.
+    Doel   :  om andere invoerapparaten dan het toetsenbord als standaard
+              invoer te kunnen gebruiken.
+
+
+    FDC7      H.INIP
+    Groep     OS
+    Aanroep:  aan het begin van de OS-routine die bij initialisatie van een
+              tekst-modus de patroontabel vult met de patronen van de stan-
+              daard(ASCII-)tekens.
+    Doel   :  om andere tekens dan die in de ASCII-tabel als standaard te
+              gebruiken.
+
+
+    FDCC      H.KEYC
+    Groep     OS
+    Aanroep:  aan het begin van de routine die samengestelde toetsaanslagen
+              (de SHIFT-, CODE-,GRAPH en/of CTRL-toets samen met een andere
+              ontcijfert en er een ASCII-code bij zoekt, die in de toetsen-
+              bordbuffer wordt omgezet.
+    Doel   :  om andere toetsenbordconstructies mogelijk te maken.
+
+
+    FDD1      H.KYEA
+    Groep     OS
+    Aanroep:  aan het begin van de routine die enkelvoudige toetsaanslagen
+              verwerkt en er een ASCII-code aan toewijst die in de toetsen-
+              bordbuffer wordt gezet.
+
+
+    FDD6      H.NMI
+    Groep     OS
+    Aanroep:  vanaf ingang NMI (0066)
+    Doel   :  om het gebruik van NMI-interrupts mogelijk te maken.
+
+
+    FDDB      H.PINL
+    Groep     OS
+    Aanroep:  aan het begin van PINLIN(00AE), de routine die de versie van
+              de scherm-editor vertegenwoordigt die in directe programmeer
+              modus gebruikt wordt.
+    Doel  :   om een andere implementatie van de scherm-editor of een ander
+              standaard invoerapparaat mogelijk te maken.
+
+
+    FDE0     H.QINL
+    Groep    OS
+    Aanroep: aan het begin van QINLIN(00B4), de routine die na het afdruk-
+             ken van een vraagteken en een spatie de scherm-editor aan-
+             roept.
+    Doel   : om een andere implementatie van de scherm-editor of een ander
+             standaard invoerapparaat mogelijk te maken.
+
+
+    FDE5     H.INLI
+    Groep    OS
+    Aanroep: aan het begin van INLIN(00B1), de routine waarin de scherm-
+             editor geimplementeerd is.
+    Doel  :  om een andere implementatie van de scherm-editor of een ander
+             standaard invoerapparaat mogelijk te maken.
+
+
+    FDEA    H.ONGO
+    Groep   BASIC-interpreter
+
+
+    FDEF    H.DSKO
+    Groep   BASIC-sleutelwoord.
+    Doel  : Implementeren van de functie DSKO$
+
+    De volgende hooks zijn niet verder gedocumenteerd, vandaar dat alleen
+    het adres en de naam genoemd worden. Alle hooks vallen onder de groep
+    'BASIC-sleutelwoord' met als doel' het implementeren van functie/state-
+     ment'.
+
+    FDF4    H.SETS
+    Groep   BASIC-sleutelwoord.
+    Doel  : implementeren van het SET-statement.
+
+    FDF9    H.NAME (RENAME)
+    FDFE    H.KILL (KILL)
+    FE03    H.IPL  (Initial Program Load)
+    FE08    H.COPY (COPY)
+    FE0D    H.CMD  (CMD)
+    FE12    H.DSKF (Disk-Free, DSKF)
+    FE17    H.DSKI (Disk-input, DSKI$)
+    FE1C    H.ATTR (Attr$)
+    FE21    H.LSET (Left Set, LSET)
+    FE26    H.RSET (Right Set, RSET)
+    FE2B    H.FIEL (Field)
+    FE30    H.MKI$ (MaKe Integer, MKI$)
+    FE35    H.MKS$ (MaKe Single, MKS$)
+    FE3A    H.MKD$ (MaKe Double, MKD$)
+    FE3F    H.CVI  (ConVert Int., CVI)
+    FE44    H.CVS  (ConVert single, CVS)
+    FE49    H.CVD  (CoVert double, CVD)
+
+    FE4E    H.HGETP
+    Groep   DISK-BASIC-aanroep
+    Aanroep:bij het opzoeken van de waarde van PTRFIL(F864)
+
+
+    FE53    H.SETF
+    Groep   DISK-BASIC-aanroep
+    Aanroep:wanneer aan PTRFIL(F864) een nieuwe waarde wordt gegeven.
+
+
+    FE58    H.NOFO
+    Groep   DISK-BASIC-aanroep
+    Aanroep:bij een OPEN-statement zonder FOR-gedeelte.
+
+
+    FE5D    H.NULO
+    Groep   DISK-BASIC
+    Aanroep:bij een operatie via file-buffer 0.
+
+
+    FE62    H.NTFL
+    Groep   DISK-BASIC aanroep.
+    Aanroep:bij een operatie via een file-buffer met een ander nummer dan 0
+
+
+    FE67    H.MERG
+    Groep   DISK-BASIC aanroep.
+    Aanroep:bij het uitvoeren van een MERGE-statement
+
+
+    FE6C    H.SAVE
+    Groep   DISK BASIC aanroep
+    Aanroep:bij het uitvoeren van een SAVE-statement voor diskette.
+
+
+    FE71    H.BINS
+    Groep   DISK BASIC aanroep
+    Aanroep:bij het uitvoeren van een BSAVE-statement voor diskette.
+
+
+    FE76    H.BINL
+    Groep   DISK-BASIC aanroep
+    Aanroep:bij het uitvoeren van een BLOAD-statement voor diskette.
+
+
+    FE7B    H.FILE
+    Groep   DISK BASIC
+    Doel    het implementeren van het FILES-statement.
+
+
+    FE80    H.DGET
+    Groep   DISK BASIC aanroep
+
+
+    FE85    H.FILO
+    Groep   DISK BASIC aanroep
+
+
+    FE8A    H.INDS
+    Groep   DISK BASIC aanroep
+
+
+    FE8F    H.RSLF
+    Groep   DISK BASIC aanroep
+    Aanroep:voor het opnieuw selecteren van het vorige diskette station
+            voor diskette I/O
+
+
+    FE94    H.SAVD
+    Groep   DISK BASIC aanroep
+    Aanroep:voor het onthouden van het huidige geselecteerde diskette-
+            station.
+
+
+    FE99    H.LOC
+    Groep   BASIC sleutelwoord
+    Doel    om de functie LOC te implementeren
+
+
+    FE9E    H.LOF
+    Groep   BASIC sleutelwoord
+    Doel    om de functie LOF te implementeren.
+
+
+    FEA3    H.EOF
+    Groep   DISK BASIC aanroep
+    Aanroep:bij het uitvoeren van de functie EOF voor diskette.
+
+
+    FEA8    H.FPOS
+    Groep   BASIC sleutelwoord
+    Doel    om de functie FPOS te implementeren
+
+
+    FEAD    H.BAKU
+    Groep   DISK-BASIC aanroep
+
+
+    FEB2    H.PARD
+    Groep   BASIC interpreter.
+    Aanroep:bij het ontleden van een apparaatnaam in een fileaanduiding.
+
+
+    FEB7    H.NODE
+    Groep   BASIC interpreter
+    Aanroep:wanneer een file-aanduiding zonder apparaatnaam wordt aange-
+            troffen.
+
+
+    FEBC    H.POSD
+    Groep   DISK BASIC aanroep.
+
+
+    FEC1    H.DEVN
+    Groep   BASIC interpreter
+    Aanroep:bij het opzoeken van een apparaat met een bepaalde naam.
+
+
+    FEC6    H.GEND
+    Groep   BASIC interpreter
+
+
+    FECB    H.RUNC
+    Groep   BASIC interpreter
+    AAnroep:bij het terugzetten van variabele waarden tijdens het voor-
+            bereidende werk in een RUN-statement.
+
+
+    FED0    H.CLEA
+    Groep   BASIC interpreter
+    Aanroep:bij het uitvoeren van een CLEAR-statement.
+
+
+    FED5    H.LOPD
+    Groep   BASIC interpreter
+
+
+    FEDA    H.STKE
+    Groep   BASIC interpreter
+
+
+    FEDF    H.ISFL
+    Groep   OS
+    Aanroep:aan het bein van de routine ISFLIO(014A) waarin getest wordt
+            of er op dit moment file-I/O plaats vindt.
+    Doel    om nieuwe in en uitvoer apparaten te implementeren.
+
+
+    FEE4    H.OUTD
+    Groep   OS
+    Aanroep:aan het begin van de routine OUTDO(0018) die een teken weg-
+            schrijft naar scherm, printer of ander uitvoerapparaat.
+    Doel    om nieuwe uitvoerapparaten te implementeren.
+
+
+    Onderstaande hooks vallen alle onder de groep BASIC interpreter, tus-
+    ssen () is de aanroep vermeld voor zover bekend.
+
+    FEE9    H.CRDO
+    FEEE    H.DSKC
+    FEF3    H.DOGR (voor het uitvoeren van elke grafische actie.)
+    FEF8    H.PRGE (bij het beeindigen van een BASIC-programma.)
+    FEFD    H.ERRP
+    FF02    H.ERRF
+    FF07    H.READ
+    FF0C    H.MAIN
+    FF11    H.DIRD (bij het uitvoeren van een statement in directe modus.)
+    FF16    H.FINI
+    FF1B    H.FINE
+    FF20    H.CRUN (bij het coderen van een zojuist ingetypt BASIC-
+                    statement)
+    FF25    H.CRUS (bij het coderen van van een zojuist ingetypt BASIC-
+                    statement.)
+    FF2A    H.ISRE (wanneer een sleutelwoord is gevonden bij het coderen
+                    van een zojuist ingetypt BASIC-statement.)
+    FF2F    H.NTFN (wanneer een functie is gevonden bij het coderen van
+                    een zojuist ingetypt BASIC-statement.)
+    FF34    H.NOTR (wanneer een niet-sleutelwoord is gevonden bij het co-
+                    deren van een zojuist ingetypt BASIC-statement.)
+    FF39    H.SNGF (FOR)
+    FF3E    H.NEWS (nieuw statement verwerken op zelfde regel)
+    FF43    H.GONE (Signalering uitvoerpunt in statemanet verwerking)
+    FF48    H.CHRG (standaard CHGET)
+    FF4D    H.RETU (RETURN)
+    FF52    H.PRTF (PRINT)
+    FF57    H.COMP (PRINT, zoeken naar exclusieve tekens)
+    FF5C    H.FINP (PRINT, einde)
+    FF61    H.TRMN (invoer-error)
+    FF66    H.FRME (expressie-evaluatie)
+    FF6B    H.NTPL (expressie-evaluatie)
+    FF70    H.EVAL (factor-evaluatie)
+    FF75    H.OKNO (factor-evaluatie)
+    FF7A    H.FING (factor-evaluatie)
+    FF7F    H.ISMI (bij toewijzing van een waarde aan een substring bv.
+                    MID$)
+    FF84    H.WIDT (bij het uitvoeren van het WIDTH-statement)
+    FF89    H.LIST (bij het uitvoeren van een LIST-statement)
+    FF8E    H.BUFL (standaard BUFLIN)
+    FF93    H.FRQI (standaard FRQINT, integer-omrekening)
+    FF98    H.SCNE (omzetting van regelnummer naar adres)
+    FF9D    H.FRET (standaard FRETM)
+    FFA2    H.PTRG (standaard PRTGET)
+
+    FFA7    H.PHYD
+    Groep   OS
+    Aanroep:vanuit routine PHYDIO(0144), dier operaties moet uitvoeren
+            op opslagapparaten zoals een diskettestation.
+    Doel    om PHYDIO te implementeren.
+
+
+    FFAC    H.FORM
+    Groep   OS
+    Aanroep:vanuit de routine FORMAT(0147) die opslagapparaten zoals een
+            diskettestation moet initialiseren.
+    Doel    om FORMAT te implementeren.
+
+
+    FFB1    H.ERRO
+    Groep   BASIC-interpreter
+    Aanroep:vanuit de foutafhandelingsroutine.
+
+
+    FFB6    H.LPTO
+    Groep   OS
+    Aanroep:aan het begin van LPTOUT(00A5), de routine die een teken naar
+            de printer stuurt.
+    Doel    om speciale printers te kunnen aansturen (eventueel met ander-
+            soortige aansluitingen).
+
+
+    FFBB    H.LPTS
+    Groep   OS
+    Aanroep:aan het begin van LPTSTT(00A8), de routine die de instellingen
+            van de printer onderzoekt.
+    Doel    om speciale printers te kunnen aansturen(eventueel met ander-
+            soortige aansluitingen).
+
+
+    FCC0    H.SCRE
+    Groep   BASIC interpreter
+    Aanroep:bij het uitvoeren van een SCREEN-statement.
+
+
+    FCC5    H.PLAY
+    Groep   BASIC interpreter
+    Aanroep:bij het uitvoeren van het PLAY-statement.
+
+
+    FFCA    H.BEXT
+    Groep   OS
+    Doel    het installeren van apparaat-uitbreidingen die extra OS-
+            routines bevatten.
+
+    ---------------------------------------------------------------------
+
+    Interessante boeken en/of textfiles over het MSX-Systeem
+
+    MSX-Handboek voor gevorderden (Kluwer)
+    Machinetaal voor MSX-computers(Kluwer)
+    ROM-BIOS handbook             (Terminal Software)
+    (vertaling 'MSX-REDBOOK')
+    Sony technical databook       (Sony)
+    MSX-2 Zakboekje               (Stark)
+  * DISKVAR1.TXT (Disk Rom-Ram    (Ramon van der Winkel)
+  * DISKR&amp;R.TXT  (Disk Ram en Rom adressen)
+                                  (Albert Siersema en Peter Kelders)
+                                   = DISKVAR2.TXT
+
+    Verder kunt u de diverse tijdschriften erop naslaan die over hooks,
+    system work-area, BIOS en BASIC-interpreter geschreven hebben.
+
+    Gebruikte termen: Haak (Hook) &amp;HFD9A-&amp;HFFCA
+                      OS   (BIOS) &amp;H0000-&amp;3FFF
+                      BASIC interpreter &amp;H4000-&amp;H7FFF
+                      System-area &amp;HF380-&amp;HFD99
+
+    De vertaling 'HAAK' is zo uit het boek overgenomen en is dus geen ver-
+    taling van mijzelf. De samensteller van deze tekstfile draagt geen ver-
+    antwoordelijkheid voor verkeerd gebruik van het hierboven genoemde en
+    de daardoor eventueel ontstaande schade aan soft en/of hardware.
+
+    Groeten Henk, sysop Europoort-BBS.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

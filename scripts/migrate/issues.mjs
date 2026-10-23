@@ -37,9 +37,12 @@ export function localHref(href) {
 
 /** WebMSX launch link -> { machine, disk|files, run|brun, keys }. */
 export function parseWebmsx(href, warn) {
-  const u = new URL(href);
   const out = {};
-  for (const [key, value] of u.searchParams) {
+  // Not URLSearchParams: it turns "+" into a space, and file names contain "+".
+  const query = href.split('?')[1]?.split('#')[0] ?? '';
+  for (const pair of query.split('&').filter(Boolean)) {
+    const [key, raw = ''] = pair.split('=');
+    const value = decodeURIComponent(raw);
     const name = WEBMSX_PARAMS[key];
     if (!name) {
       warn(`unknown WebMSX parameter ${key}=${value}`);

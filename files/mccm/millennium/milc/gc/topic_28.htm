@@ -1,0 +1,329 @@
+<html>
+
+<head>
+<title>MILC - Topic Call commando's maken (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_27.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_29.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Call commando's maken (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MAAK UW EIGEN BASIC COMMANDO'S:
+
+       C A L L   C O M M A N D O ' S   M A K E N  (1)
+      ================================================
+
+Het CALL  commando  is  aan  MSX  Basic  toegevoegd  om  het
+mogelijk  te  maken  uw  eigen  commando's  of   toekomstige
+uitbreidingen te gebruiken.
+
+De syntax luidt:
+
+CALL &lt;naam uitbreidingsbevel&gt; [ (parameter,parameter ...) ]
+
+In plaats van CALL mag ook het onderstrepingsteken _  worden
+gebruikt.
+
+Kennis van machinetaal is vereist voor het  zelf  maken  van
+een CALL  commando.  Basic  programmeurs  kunnen  de  nieuwe
+commando's natuurlijk wel zonder problemen gebruiken in  hun
+eigen programma's.
+
+Voordat we ingaan op het maken van een CALL  commando  wordt
+er eerst enige achtergrondinformatie gegeven.
+
+
+                    UITBREIDINGSPAGINA'S
+
+Een pagina is een stuk geheugen (ROM of RAM) van 16  kB.  De
+pagina's zijn genummerd van 0 t/m 3.
+
+Page:    Adresbereik:
+0        &amp;H0000-&amp;H3FFF
+1        &amp;H4000-&amp;H7FFF
+2        &amp;H8000-&amp;HBFFF
+3        &amp;HC000-&amp;HFFFF
+
+De MSX computer heeft standaard pagina's met RAM, BIOS, Disk
+ROM en Basic ROM. Daar kunnen echter door de  fabrikant  (in
+ROM vorm) of door de gebruiker (in  het  RAM)  uitbreidings-
+pagina's aan worden toegevoegd.
+
+Een uitbreidingspagina  kan  een  machinetaalprogramma,  een
+apparaatuitbreiding, een  Basic-uitbreiding  of  een  Basic-
+programma bevatten. De informatie daarover is opgeslagen  in
+SLTATR. SLTATR is een gedeelte van  het  systeemgebied,  dat
+begint op adres &amp;HFCC9. Er  is  ‚‚n  byte  gereserveerd  per
+mogelijke pagina. Er zijn 4 primaire sloten mogelijk die elk
+4 secundaire sloten kunnen hebben. Elk slot bestaat weer uit
+4 pages, zodat SLTATR 4*4*4=64 bytes lang is.  De  bits  van
+deze bytes hebben de volgende betekenis:
+
+Bit 7    Basic programma (1=ja)
+Bit 6    apparaat uitbreiding (1=ja)
+Bit 5    statement uitbreiding (1=ja) (CALL commando)
+Bit 4-0  ongebruikt
+
+U kunt het adres dat bij een bepaalde pagina hoort berekenen
+met de volgende formule:
+
+ADRES = &amp;HFCC9 + 16 * primaire gleufnummer + 4 *  secundaire
+gleufnummer + paginanummer
+
+Voorbeeld: in uw computer zit het RAM in slot 3-2 en u heeft
+een statement uitbreiding in page 1 gemaakt. Het adres wordt
+dan:
+
+&amp;HFCC9 + 16 * 3 + 4 * 2 + 1 = &amp;HFD02
+
+Bit 5 staat voor een statement uitbreiding, dus de waarde 32
+(2^5) moet naar adres &amp;HFD02 worden geschreven: POKE &amp;HFD02,
+32.
+
+
+              ALGEMENE VORM UITBREIDINGSPAGINA
+
+De eerste 16 bytes van een uitbreidingspagina zijn als volgt
+opgebouwd:
+
+Offset:  Naam:               Bevat:
+------------------------------------------------------------
++0       ID                  &quot;AB&quot;
++2       INIT                beginadr initialisatie
++4       STATEMENT           beginadr statement uitbreiding
++6       DEVICE              beginadr apparaat uitbreiding
++8       TEXT                beginadr Basic programma
++10      -                   6 bytes gereserveerd
+------------------------------------------------------------
+
+Aan het begin van een pagina moeten de letters  &quot;AB&quot;  (ASCII
+&amp;H41  en  &amp;H42)  staan.  De  computer  herkent  daaraan   de
+uitbreidingspagina. Bij  een  RESET  zal  de  computer  zelf
+kijken wat er in de pagina's staat en SLTATR  overeenkomstig
+invullen. Als u een CALL commando wilt gebruiken zonder  een
+RESET, dan zult u zelf in  SLTART  moeten  POKEn.  Dat  komt
+verderop nog aan bod.
+
+
+                    STATEMENT UITBREIDING
+
+Wij  interesseren  ons   nu   alleen   voor   de   statement
+uitbreiding. Als er geen statement uitbreiding in de  pagina
+aanwezig is, moet STATEMENT gelijk zijn aan  &amp;H0000.  Alleen
+page 1 kan een statement  uitbreiding  bevatten.  Er  kunnen
+problemen  ontstaan  als  bij  andere  pagina's   het   veld
+STATEMENT is ingevuld.
+
+Het is overigens logisch dat  de  statement  uitbreiding  in
+page 1 moet staan. In page 0 staat de BIOS en in page 3  het
+systeemgebied, dus  die  moeten  ingeschakeld  blijven.  Het
+Basic programma staat in page 2 (als het een groot programma
+is tot in page 3), dus page 1 is de enige  mogelijkheid  die
+overblijft.
+
+Als  de computer  bij het  uitvoeren van een Basic programma 
+een CALL  commando tegenkomt, wordt de naam van het commando 
+(het  woord dat  achter CALL  staat) in PROCNM gezet. PROCNM 
+ligt  in  het  systeem  gebied,  vanaf  &amp;HFD89. Alle  kleine 
+letters worden  omgezet in hoofdletters en de komma's worden 
+eruit  gehaald  (probeert  u  maar  eens:  _F,O,R,M,A,T  het 
+werkt!).  De naam  mag 15  tekens lang  zijn. Achter de naam 
+wordt een  ASCII-teken 0 gezet. Daarna gaat de computer alle 
+pagina's  langs die volgens SLTATR een statement uitbreiding 
+bevatten.
+
+Als de computer bij STATEMENT een waarde vindt die  ongelijk
+is aan &amp;H0000, dan springt hij naar dat  adres  en  laat  de
+besturing verder aan  die  routine  over.  De  taak  van  de
+routine is nu om te controleren of het het juiste  statement
+is.
+
+HL wijst naar het eerste teken  na  de  naam  van  het  CALL
+statement in het tokenized  Basic.  Spaties  worden  daarbij
+niet meegeteld. Bij bijvoorbeeld CALL FORMAT  wijst  HL  dus
+naar de positie na de T van FORMAT.
+
+Als de routine ziet dat het de  juiste  naam  is,  moet  het
+statement  worden  uitgevoerd  en  moet  de  routine  worden
+verlaten met de carry gereset (gelijk aan 0  dus).  HL  moet
+naar het eerste teken na het commando wijzen (het einde  van
+de regel of een dubbele punt). Bij een CALL statement zonder
+parameters  is  dat  dus  de  oude  situatie   (bijvoorbeeld
+_FORMAT), bij _GENIC(10000) moet HL wijzen naar  de  positie
+achter het tweede haakje.
+
+Is het een ander commando,  dan  moet  de  routine  verlaten
+worden met de carry  geset  (hoog)  en  HL  onveranderd.  De
+andere registers mogen wel zijn veranderd.
+
+Deze  theorie  is  samengevat  in  een  machinetaal  source,
+geschreven door Erik Bos. Deze source bevind zich als  ASCII
+file op deze ClubGuide (onder de  naam  CALL.ASC)  en  wordt
+hieronder uitgebreid besproken. Ik heb  er  zoveel  mogelijk
+uitleg bij gezet.
+
+
+                      STANDAARD ROUTINE
+
+Deze routine kunt u gebruiken voor al uw CALL statements. De
+routine kan ‚‚n, maar ook twee of meer  routines  aansturen.
+Als al het RAM in ‚‚n slot zit (is meestal zo), dan  kunt  u
+maar ‚‚n blok CALL commando's tegelijk gebruiken. Er is  dan
+namelijk maar  ‚‚n  page  1  beschikbaar,  en  de  statement
+uitbreiding moet altijd in page  1  staan.  Met  behulp  van
+MemMan is het overigens  wel  mogelijk  om  meerdere  'CALL-
+blokken' aan te maken.
+
+De source wordt geassembleerd op  &amp;H9000.  De  initialisatie
+routine schrijft het hele zaakje netjes  naar  &amp;H4000  (page
+1). U kunt de routine dan ook het beste BSAVEn met als  exec
+adres het adres INIT. Als de routine bijvoorbeeld loopt  van
+&amp;H9000 tot &amp;H9500 en INIT begint op &amp;H9300,  dan  wordt  het
+BSAVE&quot;NAAM.BIN&quot;,&amp;H9000,&amp;H9500,&amp;H9300.  De  CALL   commando's
+worden dan ge‹nitialiseerd met BLOAD &quot;NAAM.BIN&quot;,R.
+
+------------------------------------------------------------
+
+; STANDAARD ROUTINE VOOR STATEMENT UITBREIDINGEN
+; Door Erik Bos
+
+BEGIN:  EQU  &amp;H9000          ;beginadres
+
+        ORG  BEGIN
+
+Omdat de routine geassembleerd en dus ook geBLOAD  wordt  op
+&amp;H9000, maar werkt op &amp;H4000, moet  dat  verschil  bij  alle
+absolute   adresseringen   worden    verrekend.    (Absolute
+adressering  betekent  dat  er  een  absoluut  adres   wordt
+gebruikt. Bijvoorbeeld  LD  A,(&amp;HFFFF)  of  JP  &amp;HD000.)  We
+gebruiken daarvoor het label OFFSET. Als u  bijvoorbeeld  in
+plaats van CALL SYNTAX+OFFSET gewoon  CALL  SYNTAX  neerzet,
+dan zal de computer naar een adres ergens  boven  de  &amp;H9000
+springen. De assembler heeft aan het label SYNTAX immers een
+waarde boven &amp;H9000  toegekend,  er  staat  ORG  &amp;H9000.  In
+werkelijkheid staat die subroutine na het verplaatsen ergens
+boven &amp;H4000. Dat verschil wordt  goedgemaakt  door  OFFSET.
+Als u dit niet doet gaat het mis zodra u iets in het  gebied
+vanaf &amp;H9000  veranderd,  bijvoorbeeld  door  er  een  Basic
+programma neer te zetten.
+
+OFFSET: EQU  &amp;H4000-BEGIN
+
+Vul de 16 eerste bytes van de uitbreidingspagina in.
+
+        DEFM &quot;AB&quot;
+        DEFW 0               ;geen initialisatie
+        DEFW CAL+OFFSET      ;begin statement uitbreiding
+        DEFW 0               ;geen device
+        DEFW 0               ;geen Basic
+        DEFW 0
+        DEFW 0
+        DEFW 0
+
+Hier springt de computer naartoe als hij een CALL  statement
+tegenkomt. De routine checkt of het ‚‚n van de statements is
+die in de TABEL staat.
+
+CAL:    PUSH HL              ;HL wijst naar teken na CALL
+        LD   DE,TABEL+OFFSET ;begin van de tabel
+C_1:    LD   HL,&amp;HFD89       ;PROCNM bevat naam
+        LD   A,(DE)          ;lengte van naam
+        AND  A               ;wis vlaggen
+        JR   Z,C_ERR         ;einde tabel als A=0
+        LD   B,A
+        INC  DE
+
+C_2:    LD   A,(DE)          ;vergelijk naam in tabel
+        CP   (HL)            ;met naam in PROCNM
+        JR   NZ,NEXT1        ;naar NEXT1 als verkeerde naam
+        INC  DE
+        INC  HL
+        DJNZ C_2
+
+Er moet ook nog worden  gecontroleerd  of  het  niet  verder
+gaat. Stel er staat CALL GENICS in het Basic  programma,  en
+GENIC in de tabel. Met alleen bovenstaande  routine  zou  de
+computer  GENICS  herkennen  als  GENIC.  Daarom  wordt   er
+gecontroleerd of er een 0 staat in PROCNM.
+
+        LD   A,(HL)
+        AND  A
+        JR   NZ,NEXT2        ;NEXT2 als commando langer is
+
+Lees het sprongadres en voer de routine uit. De routine moet
+zelf zorgen dat HL en de carry de juiste waarde  hebben  bij
+het verlaten van de routine.
+
+        EX   DE,HL           ;HL is plaats in tabel
+        LD   E,(HL)          ;low byte sprongadres
+        INC  HL
+        LD   D,(HL)          ;high byte sprongadres
+        EX   DE,HL
+        JP   (HL)            ;spring naar dat adres
+
+Er is een fout teken gevonden. Bereken de volgende plaats in
+de tabel. B bevat het aantal tekens van de naam dat nog niet
+is geweest, achter de naam staat  nog  het  sprongadres  van
+twee bytes. Vandaar dat BC nog met twee  bytes  extra  wordt
+verhoogd.
+
+NEXT1:  LD   C,B
+        LD   B,0             ;BC=B
+        INC  BC
+        INC  BC
+        EX   DE,HL
+        ADD  HL,BC
+        EX   DE,HL
+        JR   C_1             ;probeer het nog eens
+
+Het commando bleek langer te  zijn  (er  stond  nog  geen  0
+achter de  gezochte  naam  in  PROCNM),  ga  verder  met  de
+volgende in de TABEL.
+
+NEXT2:  INC  DE              ;sla het sprongadres
+        INC  DE              ;over
+        JR   C_1             ;probeer het nog eens
+
+Het commando is niet gevonden, keer terug met de C vlag hoog
+en HL onveranderd.
+
+C_ERR:  POP  HL
+        SCF
+        RET
+
+(Nvdr. Dit artikel was  te  groot  voor  de  layout  van  de
+ClubGuide. Het is daarom in twee stukken verdeeld.  Dit  was
+het eerste deel. Ga nu terug naar het menu en laad daar  het
+tweede deel in.)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_27.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_29.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

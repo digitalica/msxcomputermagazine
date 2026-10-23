@@ -1,0 +1,83 @@
+<html>
+
+<head>
+<title>MILC - Topic Beschrijving van FCB voor DISK-BASIC</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_3.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Beschrijving van FCB voor DISK-BASIC</b><br>
+    <i>CYBERNETICS</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+		      File Control Block voor Disk BASIC
+		     ====================================
+
+Disk-BASIC maakt, voor het correct verwerken van files op schijven, gebruik 
+van een aantal administratiegebieden in het RAM-geheugen. Deze administratie- 
+gebieden worden File Control Blocks genoemd, kortweg aangeduid met FCB.
+
+Voor iedere file die wordt geopend, wordt zo'n FCB aangelegd. Het bij een file 
+behorende FCB kan worden teruggevonden door gebruik te maken van de VARPTR- 
+functie.
+
+Indien een disk-file werd geopend met het volgende statement:
+
+	OPEN &quot;A:filenaam&quot; FOR OUTPUT AS #1
+
+dan zal de functie:
+
+	VARPTR(#1) 
+
+het startadres van het FCB opleveren. Dit FCB heeft de volgende lay-out:
+
+Displ.:    Veld:   Betekenis:
+==============================================================================
+&amp;H00	   MOD	   mode waarin de file werd geopend
+&amp;H01/02    FCA	   pointer naar het DOS-FCB
+&amp;H03	   LSA	   back-up teken
+&amp;H04	   DSK	   device-nummer
+&amp;H05	   SLB	   ?
+&amp;H06	   BPS	   positie binnen het data-buffer
+&amp;H07	   FLG	   flag-info
+&amp;H08	   OPS	   pseudo kop-positie
+&amp;H09/108   BUF	   data buffer (256 bytes)
+
+De data-buffer bevat de informatie die naar schijf moet worden geschreven of 
+die van schijf is gelezen.
+
+De pointer naar het DOS-FCB wijst naar een uitgebreider FCB waarin gegevens 
+zoals de filenaam, de plaats binnen de directory, de voor de file gebruikte 
+sectoren, de tijd en de datum, etc. kunnen worden gevonden. De layout van die 
+FCB wordt gegeven in het hoofdstuk waarin de BDOS-calls worden behandeld.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

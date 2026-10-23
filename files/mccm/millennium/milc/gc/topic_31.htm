@@ -1,0 +1,275 @@
+<html>
+
+<head>
+<title>MILC - Topic Disk cursus (2)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_30.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_32.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Disk cursus (2)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                      DISKCURSUS DEEL 2
+
+In dit deel van de  cursus  disk-gebruik  bespreken  we  een
+routine om uw eigen etiket te ontwerpen op de diskette. Nee,
+geen etiket-maker voor Dynamic Publisher, een routine die uw
+eigen kopregel in een hok plaatst en die U ziet  als  U  het
+files commando geeft, met  daaronder  de  files  die  op  de
+diskette staan. Zo kunt U uw diskettes nummeren, namen geven
+etc. Het staat in ieder geval erg netjes  en  professioneel.
+We proberen U zo wat meer inzicht te geven in de werking van
+de directory-sectoren en die van de BOOT-sector.
+
+Laten we eerst eens bekijken hoe we dit gaan doen. Op een PC
+is het maken van een disk-etiket niet moeilijk, daar kunt  U
+gewoon aangeven dat U een bepaald gedeelte in  de  directory
+als etiket wilt gebruiken. Op de MSX echter  moeten  we  wat
+omslachtiger te werk gaan. Het is mogelijk om, als we direct
+in  de  directory  sectoren  poken,  alle  ASCII  tekens  te
+gebruiken. Dat wil zeggen dat we ook kleine  letters  kunnen
+neer zetten etc., terwijl we, als we een file saven, slechts
+hoofdletters en een beperkt aantal tekens kunnen  gebruiken.
+Maar het geeft nog een andere mogelijkheid. De ASCII-codes 0
+t/m 31 zijn behalve tekens ook stuurcodes.
+
+Wat wil dat dan zeggen, vrij simpel. Voorbeeldje: Als je  in
+basic intypt &quot;print CHR$(7)&quot; krijg  je  een  beep.  chr$(13)
+geeft een return, chr$(8) geeft een Backspace  etc.  En  met
+name dit laatste is voor ons van belang. Als je het commando
+files geeft komen de files op het scherm met een punt tussen
+extensie en file-naam en een spatie tussen de  verschillende
+files, ter illustratie:
+
+FILE1   .EXT FILE2   .EXT
+
+Als U het files commando geeft in BASIC, krijgt  U  ongeveer
+het volgende resultaat,  als  er  tenminste  files  aanwezig
+zijn. Als we nu een etiket willen maken moeten er natuurlijk
+niet om de 12 tekens een spatie en een punt staan.  Dus  dan
+moeten de punten en spaties weg worden gewerkt.  Dan  is  de
+Backspace optie natuurlijk erg handig. Als het eerste  teken
+van de extensie (EXT),  Backspace  is  dan  wordt  het  punt
+gewist en gaat de cursor een positie naar  links.  Hetzelfde
+is mogelijk bij de spatie als we het  eerste  teken  van  de
+filenaam chr$(8)  maken,  dit  veroorzaakt  een  soortgelijk
+effect. Ook dit zullen we even duidelijk laten zien.
+
+Stel we willen de titel &quot;DISKETTE NUMMER ZES&quot; plaatsen in de
+eerste twee files.We gaan dan als volgt te werk:
+
+FILE1 : De filenaam wordt DISKETTE, dan volgt er als we  het
+        files  commmando  geven  een  punt.  Dit  kunnen  we
+        weghalen door CHR$(8) (Back-space) te  plaatsen  als
+        eerste teken van de extensie. Dan hebben  we  nog  2
+        posities  over  om  de  twee  volgende   tekens   te
+        plaatsen:&quot; N&quot;. Het komt er dan als volgt terecht  in
+        de directory sector:
+
+ FNAAM: 01:CHR$(&amp;H44)   &quot;D&quot;        07:CHR$(&amp;H54)   &quot;T&quot;
+        02:CHR$(&amp;H49)   &quot;I&quot;        08:CHR$(&amp;H45)   &quot;E&quot;
+        03:CHR$(&amp;H53)   &quot;S&quot;   EXT: 09:CHR$(&amp;H45)  Backspace
+        04:CHR$(&amp;H4B)   &quot;K&quot;        10:CHR$(&amp;H20)   &quot; &quot;
+        05:CHR$(&amp;H45)   &quot;E&quot;        11:CHR$(&amp;H4E)   &quot;N&quot;
+        06:CHR$(&amp;H54)   &quot;T&quot;
+
+        Voor  een  file  zijn  in  de  directory  32  tekens
+        gereserveerd, als we een etiket  maken  dan  is  het
+        natuurlijk  niet   nodig   om   de   rest   van   de
+        gereserveerde ruimte  te  vullen.  Immers,  de  file
+        hoeft niet geladen te worden.  Op  de  plek  van  de
+        datum, tijd, size enzovoort blijft gewoon nul staan.
+
+FILE2 : De filenaam wordt  een  backspace  (CHR$(8))  om  de
+        spatie  die  tussen  de  files  geplaatst  wordt  te
+        verwijderen. De daaropvolgende tekens zijn &quot;UMMER Z&quot;
+        , dan volgt er als we het files commando  geven  een
+        punt. Dit  kunnen  we  weer  weghalen  door  chr$(8)
+        (Backspace) als eerste  teken  van  de  extensie  te
+        plaatsen. Dan hebben we nog twee posities over om de
+        twee laatste tekens te plaatsen. Het  komt  dan  als
+        volgt terecht in de directory-sektor:
+
+ FNAAM: 33:CHR$(&amp;H08)   Backspace  39:CHR$(&amp;H41)   &quot; &quot;
+        34:CHR$(&amp;H55)   &quot;U&quot;        40:CHR$(&amp;H5A)   &quot;Z&quot;
+        35:CHR$(&amp;H4D)   &quot;M&quot;   EXT: 41:CHR$(&amp;H08)  Backspace
+        36:CHR$(&amp;H4D)   &quot;M&quot;        42:CHR$(&amp;H45)   &quot;E&quot;
+        37:CHR$(&amp;H45)   &quot;E&quot;        43:CHR$(&amp;H53)   &quot;S&quot;
+        38:CHR$(&amp;H52)   &quot;R&quot;
+
+        De getallen beginnen nu op 33 om dat dat het  gebied
+        is waarin de 2e file zich  in  de  directory  sector
+        bevindt, zoals we in deel een besproken hebben.
+
+Om toch nog maar even wat te herhalen:  Een  sector  bestaat
+uit 512 bytes, zo ook een directory sector.  Hierin  is  het
+grootste deel van de file gegevens opgenomen zoals naam,tijd
+enzovoort. Deze gegevens nemen per file 32 bytes in  beslag,
+er past dus 16 keer gegevens over een file in een  directory
+sector. De naam en extensie van de file staan op de  2e  tot
+en met de 12e byte. We beginnen in een sector te  tellen  op
+0, zodat bij de eerste file de naam staat op byte 1 t/m  11,
+bij de tweede file op byte 33 t/m 43 etc.
+
+Nog maar even voor de duidelijkheid: De  files  zoals  boven
+kunnen dus alleen maar rechtstreeks in  de  directory-sector
+worden gepoked. Disk-basic accepteert niet alle  ASCII-codes
+en dus kunnen tekens als chr$(8) (Backspace) niet in de file
+naam worden geplaatst. Files  die  voor  dit  doel  gebruikt
+worden, als etiket en dus niet om te laden, noemen  we  zgn.
+Dummy-files.
+
+Dan volgt nu het programma, dat natuurlijk ook  op  diskette
+staat, maar zo is het wat handiger om een en ander nader  te
+verklaren:
+
+80  REM INITIALISTIE
+90  REM
+100 REM SCREEN 0:WIDTH 80:KEY OFF:CLEAR 5000:CLS
+
+Om te zorgen dat er wat geheugen vrij is moeten we een clear
+geven, anders volgt er een OUT  OF  MEMORY  error.
+
+120 REM INPUT TEKST
+130 REM
+140 LOCATE 54,1:PRINT CHR$(219):LOCATE 0,0:LINE INPUT I$
+150 IF LEN(I$)&gt;54 THEN I$=LEFT$(I$,54) ELSE  S=27-LEN(I$)/2:
+    I$=SPACE$(S)+I$+SPACE$(S)
+
+REGEL 140: Er wordt eerst een vierkantje getekend, dit geeft
+aan hoelang de tekst mag zijn (54 tekens), vervolgens  wordt
+met line input de tekst ingelzezen die U intypt.
+
+REGEL 150: Er wordt gekeken of de tekst  langer  is  dan  54
+tekens. Zo ja, dan  worden  de  eerste  54  tekens  gebruikt
+(LEFT$). Zo nee, dan wordt de tekst gecentreerd.
+
+154 REM Etiket maken
+155 REM
+160 FOR I=1 TO 56:B$=B$+CHR$(220):C$=C$+CHR$(223):NEXT I
+165 D$=SPACE$(6)
+170 Q$=CHR$(32)+CHR$(9)+CHR$(219)+C$+CHR$(219)+D$+CHR$(9)+
+    CHR$(219)+CHR$(32)+I$+CHR$(32)+CHR$(219)+D$+CHR$(9)+
+    CHR$(9)+CHR$(219)+B$+CHR$(219)+D$
+180 A$=LEFT$(Q$,144):B$=MID$(Q$,145,LEN(Q$)-144):B$=B$+
+    SPACE$(143-LEN(B$))+CHR$(13)
+
+REGEL 160: De onder en bovenkant van  het  etiket  wordt  in
+elkaar gezet,waarbij C$ de onderkant is (een streep)  en  B$
+de bovenkant (een streep).
+
+REGEL 165: D$ wordt gedefinieerd als 6 spaties.
+
+REGEL 170: Hier wordt het hele etiket in een  string  gezet.
+We zullen het geheel even vertalen : Spatie, Tab,  Vierkant,
+bovenkant,  vierkant,  6  spaties,  Tab,  vierkant,  spatie,
+tekst,   spatie,   vierkant,   6    spaties,    Tab,    Tab,
+vierkant,onderkant,vierkant, 6  spaties.  Zo  zit  het  hele
+etiket in een string.
+
+REGEL 180: In A$ komen de eerste 144 tekens van het  etiket,
+dit past precies in een directory  sector.  In  B$  komt  de
+andere helft, aangevuld met spaties en een return om aan het
+begin van de regel uit te komen.
+
+200 REM CHECK OF ER NOG NIKS OP DE DISK STAAT EN OF DEZE
+        GEFORMATTEERD IS
+210 REM
+220 ON ERROR GOTO 250
+230 FILES&quot;A:&quot;
+240 END
+250 IF ERR&lt;&gt;53 THEN END
+
+Dit spreekt voor zich, als er niks op de disk staat en  deze
+is geformateerd (Fout is File not Found (53)) dan  gaat  het
+programma door anders  stopt  het.  Als  er  al  wat  op  de
+diskette zou staan, dan zouden de  eerste  32  files  gewist
+worden (de eerste 2 directory sectoren).
+
+270 REM ZET ETIKET IN EERSTE TWEE DIRECTORY SECTOREN
+280 REM
+290 I$=DSKI$ (1,0):Q=PEEK (&amp;HF351)+ 256 * PEEK (&amp;HF352)
+291 AF=PEEK (Q+16):SF=PEEK (Q+22)+ 256 * PEEK (Q+23)
+292 S1=AF * SF + 1:I$=DSKI$(1,S1):X=0
+300 FOR I=0 TO 15: POKE Q + (32*I),8
+301 FOR J=1 TO  7:  A=ASC ( MID$ (A$,J+(I*9),1) ): POKE
+    Q+J+(32*I),A: NEXT J
+302 POKE Q+8+(32*I),8
+303 FOR J=9 TO 10: A=ASC ( MID$ (A$,(J-1)+(I*9),1)): POKE
+    Q+J+(32*I),A: NEXT J
+304 NEXT I
+310 X=X+1: IF X=2 THEN DSKO$ 1,(S1+1):FILES:END  ELSE  DSKO$
+    1,S1: I$=DSKI$(1,S1+1): A$=B$: GOTO 300
+
+Een heel aantal commando's die we maar een  beetje  gespreid
+hebben over de regels.
+
+REGEL 290: Laad de BOOT-sektor, zet in Q het adres  waar  de
+           informatie uit de sektor in het geheugen staat.
+REGEL 291: Bepaal Aantal Fats en Aantal sektoren per FAT.
+REGEL 292: Bepaal eerste directory sektor en lees deze in.
+REGEL 300: Dit is een geheel tot regel 304,  hierin  gebeurt
+           het volgende:
+         - I is het nummer van de file die we beschrijven in
+           de directory sector.
+         - Er wordt vervolgens de  tekst  uitgelezen,  eerst
+           een Backspace gepoked (8)  dan  de  eerste  zeven
+           tekens, dan (inde extensie) weer  een  backspace,
+           en dan de laatste twee tekens.
+REGEL 310: Hier wordt gekeken of de tweede directory  sector
+           ( de files  17  t/m  32  )  nog  beschreven  moet
+           worden. Zo ja dan wordt de eerste  weggeschreven,
+           B$ wordt A$ (Het tweede deel van de tekst) en  de
+           routine begint opnieuw. Zo  niet,  dan  wordt  de
+           tweede  directory   sector   weggeschreven,   het
+           resultaat wordt getoond en het programma eindigt.
+
+Er valt natuurlijk veel te experimenteren met deze  routine,
+U kunt ook zelf de buitenkant van het etiket ontwerpen.  Ook
+is het mogelijk beeps tussen de tekst te plaatsen, dit geeft
+ook  wel  een  leuk  effect  (  Gebruik  hiervoor  chr$(7)).
+Natuurlijk geeft het alleen een goed effect in screen  0  op
+80 kolommen, probeer maar eens een aanpassing te maken  voor
+40 kolommen. Dit programma staat ook op deze Clubguide onder
+de naam ETIKET.MSX. Veel plezier met de routine  en  tot  de
+volgende keer, waarin we een routine bespreken om te  kijken
+op welke sectoren een file staat. Hierbij wordt ook  de  FAT
+nader toegelicht.
+
+Voor suggesties, vragen, opmerkingen of toevoegingen,
+
+Ronald Egas
+De Blauwe Wereld 53
+1398 EP Muiden
+Tel.02942-3813 ( s'avonds en in de weekends)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_30.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_32.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

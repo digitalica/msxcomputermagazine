@@ -1,0 +1,94 @@
+<html>
+
+<head>
+<title>MILC - Topic Het FCB</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_21.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_23.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Het FCB</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;Offset Size Contents           Normal FCB Fields
+;
+;            &Aring;---&atilde;
+; +0      1  &iexcl;Drv&iexcl; drive ID (before open: 0=default,1=A,etc; after: 0=A,1=B,etc.)
+;            ----_---------------------------&atilde;
+; +1      8  &iexcl;'F' 'I' 'L' 'E' 'N' 'A' 'M' 'E'&iexcl; Filename; 1 to 8 characters,
+;            ----_---_-------_---_---_---_---    left-justified, blank-padded
+; +9      3  &iexcl;'E' 'X' 'T'&iexcl;                     Extension; 0 to 3 characters,
+;            ----_-------                        left-justified, blank-padded
+;+0cH     2  &iexcl;CurBlk &iexcl;                         current block number
+;            ----_---&cent;
+;+0eH     2  &iexcl;RecSize&iexcl;                         logical record size (bytes)
+;            ----_-------\---&atilde;
+;+10H     4  &iexcl;file size      &iexcl;                 length of file (low word first)
+;            ------------_---
+;+14H     2  &iexcl; date  &iexcl;                         modified date in filetime format
+;            ----_---_-------------------------------&atilde;
+;+16H    0aH &iexcl;           DOS reserved area           &iexcl;
+;            ----_-------_---_---_---_---_---_---_---
+;+20H     2  &iexcl;CurRec &iexcl;           block-relative record number (0-7fH)
+;            ----_---_---\ - &atilde;
+;+21H     4  &iexcl;RandomRec  |   |   file-relative record number (for Random files)
+;            ---_---_---_ -   (the last byte is used only when rec_size &lt; 64)
+;25H         size of an Open FCB
+;
+;Notes:
+;&thorn; before opening a file, you need only supply the Drv field and the 11 bytes
+;  of the filename and extension (eg: db 0,'MYFILE  TXT') and leave room for
+;  DOS to fill in the other fields.
+;
+;  An 'Unopened' FCB is the first 12 bytes (Drv, Filename, Ext) plus enough
+;  room for the other fields.  An 'Open' FCB has had the other fields filled-
+;  in.  If the Drv field was 0, DOS sets it to the drive number of the current
+;  drive (0=A, 1=B, etc.)
+;
+;    Offset Size Contents           Extended FCB Fields
+;                &Aring;---&atilde;
+;     -7      1  &iexcl;ffH&iexcl;                       flag indicated extended FCB
+;                ----_-------------------&atilde;
+;     -6      5  &iexcl;   DOS reserved area   &iexcl;
+;                --------_---_---_---_---
+;     -1      1  &iexcl;   &iexcl;                       file attribute
+;                ----_ - - - --------&atilde;
+;     +0     25H &iexcl; Normal FCB Fields &iexcl;       the rest is the same as above
+;                ---_ - - - _---_---
+;
+;Notes:
+;&thorn; all functions which will accept an FCB will also accept an Extended FCB.
+;  The address of the FCB is the same; if FCB-7 is 0ffH, an Extended FCB is
+;  assumed.
+;&thorn; use an Extended FCB if you want to specify the file attribute of a file that
+;  you are opening, creating, renaming, or searching via the FCB functions
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_21.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_23.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

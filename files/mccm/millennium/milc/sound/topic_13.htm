@@ -1,0 +1,143 @@
+<html>
+
+<head>
+<title>MILC - Topic SCC aansturen</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_12.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_14.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">SCC aansturen</b><br>
+    <i>Cobra-soft</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+                         Sound Custom Chip:
+
+Gemaakt door: Cobra-software Nederland........
+-------------------------------------------------------------------------------
+Zoals de meeste freaks al weten, bouwt Konami in de meeste nieuwe MEGAROMS
+zgn. SCC chips in. Om deze chip te besturen had je tot nu toe een Konami
+cartridge nodig, of een programma in ML. Nou ik heb een manier gevonden om hem
+gewoon onder BASIC te besturen.
+Op de verpakking van de Konami SCC cartridges staat:
+'New 8 voice polyphonic LSI Custom Sound Chip Mounted'
+Dat '8 voice' klopt niet 100%. Ze bedoelen eigenlijk: de 3 stemmen in de MSX
+computer + de 5 stemmen in de geluidschip. Dat weet bijna niemand, iedereen
+denkt dat de SCC chip 8 stemmen is......
+In dit textje laat ik even zien hoe je de geluidschip moet aansturen onder
+BASIC.
+
+Ok, hier komt eerst een lijst van te besturen kanalen:
+-------------------------------------------------------------------------------
+KANAAL:   |  OMSCHRIJVING:                 | BESTURING:
+-------------------------------------------------------------------------------
+ 1 t/m 3  |  Het vervormen van KANAAL 1-3  | Kan met ingebouwde MSX commando's
+    4     |  Het vervormen van KANAAL  4   | &amp;H9800-&amp;H981F, vervormings getal
+-------------------------------------------------------------------------------
+Wat voor kanaal voor kanaal 4 geldt, geldt ook voor alle andere kanalen....
+Maar dan: bv. kanaal 5= &amp;H9800+&amp;H1f tot &amp;H981F+&amp;H1f, dus om bij een volgend
+kanaal te komen moet je gewoon bij het vorige kanaal '&amp;H1F' optellen.
+Goed we gaan verder:
+
+ &amp;H9880       LSB frequentie kanaal 4
+ &amp;H9881       MSB frequentie kanaal 4
+ &amp;H9882       LSB frequentie kanaal 5
+ &amp;H9883       MSB frequentie kanaal 5
+En dit gaat zo door t/m kanaal 8.
+Je moet, om geen schade aan te richten in je computer, over pinnetje 15 een
+klein plakbandje doen:
+Je legt de SCC cartridge met het plaatje naar boven. Je telt van links af tot
+15, over dat pinnetje plak je dan een plakbandje.
+Dan kun je de computer gewoon uit doen en de cartridge in slot:1 doen en dan
+de computer weer aan, de cartridge zal nu niet meer opstarten.
+Nu is de SCC klaar om bestuurd te worden.
+Nu even een demo programma'tje wat 3 tonen te gehore brengt:
+
+10 IFPEEK(&amp;HF677)=128THENPOKE&amp;HF676,1:POKE&amp;HF677,&amp;HC0:POKE&amp;HC000,0:
+   RUN&quot;SLOT.BAS&quot;
+20 'Dit programma zorgt ervoor dat het juiste slot op pagina 2 zit.
+30 A$=BIN$(INP(&amp;HA8)):MID$(A$,4,1)=&quot;1&quot;:MID$(A$,3,1)=&quot;0&quot;:GOSUB60
+40                    MID$(A$,3,1)=&quot;1&quot;:GOSUB60:MID$(A$,4,1)=&quot;0&quot;:GOSUB60
+50 GOTO70
+60 OUT&amp;HA8,VAL(&quot;&amp;B&quot;+A$):POKE&amp;H9000,50:IFPEEK(&amp;H8000)=&amp;H41THENRETURNELSE
+   RETURN 50
+70 'Nu is het mogelijk om door op adres &amp;H8000 of &amp;H9000 een getal te poken,
+80 'en dan worden de 8Kb uit de cartridge van dat blok naar &amp;H8000 t/m &amp;H9FFF
+90 'gecopieerd. Nu de grote truuk: &amp;H8000 of &amp;H9000 = &amp;H3F, en de SCC is klaar
+100 'Nu de 3 tonen.
+110 POKE&amp;H9000,&amp;H3F:FORX=&amp;H9800TO&amp;H981F:POKEX,0:NEXT:'Schoonmaken kanaal:4
+120 POKE&amp;H988F,1   :'Alleen kanaal:4 aan
+130 POKE&amp;H988A,15  :'Volume kanaal:4 komt nu op maximum.
+140 POKE&amp;H98E0,0   :'Normaal geluid, veranderen en de toon veranderd.
+150 FORX=&amp;H9800TO&amp;H980F:POKEX,&amp;H70:NEXT:'PIEEEEEP
+160 POKE&amp;H9880,172:POKE&amp;H9881,1:'de C in het vierde octaaf.
+170 GOSUB220
+180 FORX=&amp;H9800TO&amp;H981FSTEP2:POKEX,&amp;H70:NEXT
+190 GOSUB220
+200 FORX=&amp;H9800TO&amp;H981FSTEP5:POKEX,&amp;H70:NEXT
+210 END
+220 PRINT&quot;Druk een toets voor de volgende toon.&quot;
+230 A$=INPUT$(1):RETURN
+
+Goed, dat was het. Dit programma laat 3 piepjes horen.
+Je kunt alleen maar de adressen: &amp;H9800 t/m &amp;H987F gebruiken als RAM, de rest
+gedracht zich helaas als ROM, en is alleen maar in ML te veranderen.
+Ga maar proberen, je kunt er schitterende muziek mee maken, wie maakt er een
+muziek programma voor de SCC?
+
+Ok, nu nog de noten enz.:
+
+Noot        G              G+                A              A+            B
+
+Octaaf:2    118/4          54/4              249/3         192/3        138/3
+Octaaf:3    59/2           27/2              253/1         224/1        197/1
+Octaaf:4    29/1           13/1              254/0         240/0        227/0
+Octaaf:5    143/0          135/0             127/0         120/0        113/0
+Octaaf:6    71/0           167/0             64/0          60/0         57/0
+
+Het getal voor de streep is het LSB, en het getal na de streep is het MSB.
+Door nu 2 SCC cartridges in de computer te steken, kun je 13 stemmen muziek
+programmeren!!!!!!!!!!!!!!! (10 van de cartridges, 3 van de computer)
+
+Je ziet, niet alleen SIGMA kan SCC programmeren!
+Maar ik vind ze wel het beste in SCC!!!!!!!!!!
+Als iemand van SIGMA dit leest, bel dan effe.
+
+Nog vragen???
+Bel 03456-656(na 18:00 a.u.b.)
+COBRA-BASE open:
+23:00-07:00, elke dag
+14:00-18:00, zondag
+Elke andere tijd, spraak.....
+
+Veel succes, als het gelukt is een muziekje te programmeren, wil ik dat ook wel
+graag zien(horen)!
+Tot modems.........
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_12.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_14.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

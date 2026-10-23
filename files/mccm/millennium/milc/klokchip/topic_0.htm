@@ -1,0 +1,352 @@
+<html>
+
+<head>
+<title>MILC - Topic De klokchip programmeren</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">De klokchip programmeren</b><br>
+    <i>Arjen Zeilemaker</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+De clockchip van de MSX2 computer
+---------------------------------
+
+De MSX2 computer is voorzien van de RP-5C01 klokchip (of
+compatible) met tijd en kalender functie. Bovendien bevat de chip
+een aantal geheugenplaatsen, die door de NiCad batterij constant
+van spanning worden voorzien. Deze geheugenplaatsen zijn
+uitermate geschikt om opstartgegevens in op te slaan.
+
+
+Algemene opbouw:
+----------------
+
+De chip heeft vier banken met ieder 13 geheugen plaatsen. Deze
+plaatsen zijn echter niet in 8 bits (zoals we gewend zijn)
+uitgevoerd, maar in 4 bits (z.g.n. nibbles).
+De chip is aan te spreken via de I/O poorten B4H en B5H. I/O
+poort B4H geeft de te lezen/schrijven nibble aan, terwijl via I/O
+poort B5H de data gelezen of geschreven kan worden.
+Zoals gezegd, heeft de chip de beschiking over 13 nibbles per
+bank. Dit zijn de nibbles 00H tot 0CH. De nibbles 0DH tot 0FH
+hebben speciale betekenis en kunnen onafhankelijk van de
+ingestelde bank beschreven worden.
+
+
+Programeer nibbles:
+-------------------
+
+De nibbles 0DH tot 0FH zijn speciale programeer nibbles. Ze
+kunnen in iedere bank beschreven worden.
+
+                   3  2   1  0
+nibble 0DH         R  A  B1 B0
+
+         R = Running, (1 = Klok loopt, 0 = Klok gepauseerd)
+              Dit bit staat normaal natuurlijk op 1, waardoor de
+              tijd en datum informatie constant wordt aangepast.
+              Echter bij het lezen of schrijven van tijd en datum
+              informatie is het belangrijk dat de gegevens even
+              niet veranderen. Door nu het bit voor het lezen of
+              schrijven te resetten, en na het lezen of schrijven
+              weer te zetten, kan dit probleem makkelijk worden
+              omzeild. Let er op dat het bit niet te lang op 0
+              staat, omdat er dan tijdsafwijkingen gaan onstaan.
+         A = Alarm, (1 = Alarm mode aan,0 = Alarm mode uit)
+              Dit bit wordt geset indien er een alarmtijd wordt
+              ingesteld. Indien de ingestelde alarmtijd/datum
+              gelijk wordt aan de huidige tijd/datum en het alarm
+              bit is 1, dan zal een speciale pin van de klokchip
+              actief worden. Als het bit echter 0 is, dan vindt
+              deze actie niet plaats.
+         B1 en B0 zijn de current bank selectors
+              De inhoud van deze bits bepalen welke bank actief
+              is. M.a.w. van welke bank de nibbles 00H tot 0CH
+              kunnen worden beschreven, dan wel gelezen.
+
+                   3  2  1  0
+Nibble 0EH         Y  D  M  S
+
+         Y is de snelle mode bit voor het jaar
+              Als het bit geset is, wordt om de 1/16384 seconde
+              het jaar opgehoogt. (En daarmee ook de schrikel-
+              jaar nibble). Als het bit gereset is, functioneerd
+              het jaar gewoon afhankelijk van de rest van de
+              datum.
+         D is de snelle mode bit voor de dag
+              Als het bit geset is, wordt om de 1/16384 seconde
+              het dagnr. opgehoogt. (En daarmee wordt ook de rest
+              van de datum versneld, afh. van dag).
+         M is de snelle mode bit voor de minuten
+              Als het bit geset is, wordt om de 1/16384 seconde
+              de minuten opgehoogt. (En daarmee wordt ook de rest
+              versneld). De seconden blijven normaal.
+         S is de snelle mode bit voor de seconden
+              Als het bit geset is, wordt om de 1/16384 seconde
+              de seconden opgehoogt.
+
+         OPM: In het speciale geval van M en S = 1 geldt de
+              versnelling niet meer voor de seconden en minuten,
+              die functioneren normaal!
+
+Nibble 0FH
+
+         Haven't got a idea
+
+
+Geheugen nibbles.
+-----------------
+
+Zoals reeds gezegd hebben de nibbles 00H tot 0CH een geheugen
+functie. Van de verschillende banken hebben de nibbles de
+volgende betekenis:
+
+Bank 00:
+
+nibble 0 en 1
+         Deze nibbles bevatten de seconde informatie van de
+         huidige tijd. Nibble 1 is de highnibble en nibble 0 is
+         de lownibble. Samengevoegt krijgen we een byte met de
+         seconden als BCD-getal. (min 00H en max 59H)
+nibble 2 en 3
+         Deze nibbles bevatten de minuten informatie van de
+         huidige tijd. Nibble 3 is de highnibble en nibble 2 is
+         de lownibble. Samengevoegt krijgen we een byte met de
+         minuten als BCD-getal. (min 00H en max 59H)
+nibble 4 en 5
+         Deze nibbles bevatten de uren informatie van de huidige
+         tijd. Nibble 5 is de highnibble en nibble 4 is de
+         lownibble. Samengevoegt krijgen we een byte met de uren
+         als BCD-getal. (min 00H en max 23H)
+nibble 6
+         Deze nibble bevat het dagnr. in de week van de huidige
+         datum. Helaas wordt deze functie van de klokchip niet
+         gebruikt bij de MSX2-computer (onbegrijpelijk). Het
+         nibble is min 00H en max 06H. (0 = Zondag)
+nibble 7 en 8
+         Deze nibbles bevatten de dagnr. informatie van de
+         huidige datum. Nibble 8 is de highnibble en nibble 7 is
+         de lownibble. Samengevoegt krijgen we een byte met het
+         dagnr. als BCD-getal. (min 01H en max (afh. maand) 31H)
+nibble 9 en A
+         Deze nibbles bevatten de maandnr. informatie van de
+         huidige datum. Nibble A is de highnibble en nibble 9 is
+         de lownibble. Samengevoegt krijgen we een byte met het
+         maandnr. als BCD-getal. (min 01H en max 12H)
+nibble B en C
+         Deze nibbles bevatten het jaar tov 1980 van de huidige
+         datum. Nibble C is de highnibble en nibble B is de
+         lownibble. Samengevoegt krijgen we een byte met het jaar
+         tov 1980 als BCD-getal. (min 00H en max 99H)
+
+Bank 01
+
+nibble 0 en 1
+         Deze nibbles heben geen geheugenfunctie, en kunnen dus
+         niet beschreven worden.
+nibble 2 en 3
+         Deze nibbles bevatten de minuten informatie van de alarm
+         tijd. Nibble 3 is de highnibble en nibble 2 is de
+         lownibble. Samengevoegt krijgen we een byte met de
+         minuten als BCD-getal. (min 00H en max 59H)
+nibble 4 en 5
+         Deze nibbles bevatten de uren informatie van de alarm
+         tijd. Nibble 5 is de highnibble en nibble 4 is de
+         lownibble. Samengevoegt krijgen we een byte met de uren
+         als BCD-getal. (min 00H en max 23H)
+nibble 6
+         Deze nibble bevat het dagnr. in de week van de alarm
+         datum. Helaas wordt deze functie van de klokchip niet
+         gebruikt bij de MSX2-computer (onbegrijpelijk). Het
+         nibble is min 00H en max 06H. (0 = Zondag)
+nibble 7 en 8
+         Deze nibbles bevatten de dagnr. informatie van de alarm
+         datum. Nibble 8 is de highnibble en nibble 7 is de
+         lownibble. Samengevoegt krijgen we een byte met het
+         dagnr. als BCD-getal. (min 01H en max (afh. maand) 31H)
+nibble 9
+         Deze nibble heeft geen geheugenfunctie.
+nibble A
+         Haven't got a clue.
+nibble B
+         Deze nibble bevat het schrikkeljaar offset. offset 00H
+         betekend een schrikeljaar en dan heeft februari dus 29
+         dagen. De offset is min 00H en max 03H.
+nibble C
+         Deze nibble heeft geen geheugenfunctie.
+
+Bank 02
+
+nibble 0
+         Deze nibble bevat altijd 0AH. Is dit niet het geval,
+         dan zal de MSX2 subrom geheugenbanken 2 en 3 instaleren
+         met standaardwaarden. Nibble 0 heeft dus een soort
+         checkfunctie. Als de stroom van de chip zou uitvallen,
+         dan zal nibble 0 leeg worden (=00H).
+nibble 1
+         Deze nibble bevat de pixel verplaatsing in X-richting,
+         zoals die bij het opstarten van de computer naar de VDP
+         moet worden geschreven. Standaard is de verplaatsing 0,
+         echter door het SETADJUST commando kan het gewijzigt
+         worden. LET OP: een negatieve waarde wordt als twee
+         complement opgeslagen, dus -1 = 16-1 = 15.
+nibble 2
+         Deze nibble bevat de pixel verplaatsing in Y-richting,
+         zoals die bij het opstarten van de computer naar de VDP
+         moet worden geschreven. Zie verder nibble 1.
+nibble 3
+         Deze nibble bevat de screenmode instellingen, zoals die
+         bij het opstarten worden ingesteld. Bit 0
+         bevat de textmode (0 = SCREEN 0 en 1 = SCREEN 1),
+         terwijl bit 1 bepaald of de interlacing aan (1) dan wel
+         uit (Bit = 0) staat. Standaard geldt SCREEN 0 en
+         interlacing uit.
+nibble 4 en 5
+         Deze beide nibbles vormen samen een byte (nibble 4 is
+         de lownibble), die de schermbreedte van de textmode
+         bevat, zoals die bij het opstarten moet worden
+         ingesteld. Standaard geldt een schermbreedte van 37.
+         LET OP: als de schermbreedte bij een ingesteld
+         textscherm 0, 0 of groter dan 80 is, dan worden banken
+         2 en 3 opnieuw geinstaleerd. Dit zelfde gebeurt als de
+         ingestelde textmode 1 is, en de schermbreedte is 0 of
+         groter dan 32.
+nibble 6
+         Deze nibble bevat de voorgrondkleur van het textscherm,
+         zoals die bij het opstarten moet worden ingesteld.
+         Standaard is de kleur 15 (wit).
+nibble 7
+         Deze nibble bevat de achtergrondkleur van het
+         textscherm, zoals die bij het opstarten moet worden
+         ingesteld. Standaard is de kleur 4 (donker blauw).
+nibble 8
+         Deze nibble bevat de randkleur van het textscherm,
+         zoals die bij het opstarten moet worden ingesteld.
+         Standaard is de kleur 4 (donker blauw).
+nibble 9
+         Deze nibble bevat diverse instellingen, zoals die bij
+         het opstarten worden ingesteld. Bit 0 geeft aan
+         of de funktietoetsen niet (Bit= 0), dan wel wel
+         zichtbaar zijn. Bit 1 geeft aan of de toetsklick niet
+         aan is (Bit= 0), danwel wel aan is. Bit 3 geeft aan of
+         er wel een MSX-printer (Bit= 0), danwel geen MSX-
+         printer is aangesloten. Bit 2 tenslotte geeft aan of de
+         standaard cassette snelheid 1200 baud (Bit= 0), danwel
+         2400 baud is. Standaard gelden de volgende
+         instellingen: Funktietoetsen aan, Toetsklick aan, MSX-
+         printer en 1200 baud cassettesnelheid.
+nibble A
+         Deze nibble bevat de beep instellingen, zoals die
+         gelden bij de uitvoering van het BEEP commando. Bit 1
+         en 0 geven het volume van de BEEP aan. 00B is zeer
+         zacht, en 11B is zeer hard. Bit 3 en 2 geven de melodie
+         aan.
+         Standaard geldt: volume 01B en melodie 00B.
+nibble B
+         Deze nibble weet ik nog niet
+         Bit 1 en 0 bevatten de kleurcode bij het opstartscherm.
+         Standaard geldt dat de kleurcode 0 is.
+nibble C
+         Haven't got a clue
+
+Bank 03
+
+         nibble 0 Deze nibble geeft aan voor welk doel bank 3
+         wordt gebruikt. Als het nibble 00H is, dan is er sprake
+         van een TITLE. Is het nibble 01H, dan kan er sprake zijn
+         van een PASSWORD. Als het nibble 02H is, dan is er een
+         PROMPT ingesteld. Standaard is echter een lege TITLE
+         ingesteld.
+TITLE:
+         De nibbles 1 t/m C bevatten de TITLE string. Er moeten
+         telkens twee nibbles bij elkaar worden genomen, waardoor
+         een byte ontstaat met een ASCII code. Dus nibble 1 met
+         nibble 2 vormen het eerste byte enz. (volgens het
+         lownibble,highnibble systeem). Het einde van de string
+         wordt gevormd door een 00H byte of door het einde van
+         bank 3. De TITLE string kan dus maximaal 6 karakters
+         lang zijn.
+         OPM. Als de TITLE string precies 6 karakters lang is,
+         dan wordt na het tonen van de TITLE string eerst op een
+         toets gewacht.
+PROMPT:
+         De nibbles 1 t/m C bevatten de PROMPT string. De nibbles
+         heben precies dezelfde opbouw als bij de TITLE string,
+         alleen vormen ze nu de PROMPT string. Als er geen PROMPT
+         is ingesteld, dan wordt de standaard PROMPT genomen
+         (&quot;Ok&quot;).
+
+PASSWORD:
+         De nibbles 1 t/m 3 hebben een speciale waarde, zodat er
+         door een stroomstoring niet toevallig een PASSWORD
+         instelling kan onstaan. Nibble 1 moet 01H, nibble 2 02H
+         en nibble 3 03H bevatten voor een geldig PASSWORD. De
+         nibbles 4 t/m 7 bevatten het PASSWORD in een gecodeerde
+         vorm. nibble 8 heeft een speciale betekenis. Is het
+         nibble ongelijk aan 00H , dan wordt er via I/O poort 7FH
+         een &quot;password gelezen&quot; (16 bits) en wordt vergeleken met
+         de inhoud van nibbles 9 t/m C. Zijn deze waarden niet
+         gelijk, dan komt de computer in een eindeloze lus
+         terecht en start hij niet op.
+
+
+De klokchip beschrijven of lezen:
+---------------------------------
+
+Het schrijven  en lezen via de I/O poorten is echter niet conform de
+MSX-regels en het is daarom beter om I/O met de chip over  te laten aan de
+daarvoor bestemde BIOS-routines. Het lezen  van een nibble gaat via de
+BIOS routine REDCLK (01F5H) in het MSX2 subrom:
+
+Input:  C = klokadres met bit 5 en 4 als banknummer
+                      met bit 3 t/m 0 als nibblenummer
+Output: A = gelezen data (bit 3 t/m 0)
+Change: F
+
+Het schrijven  van  een  nibble gaat via de BIOS  routine  WRTCLK
+(01F9H) in het MSX2 subrom:
+
+Input:  C = klokadres met bit 5 en 4 als banknummer
+                      met bit 3 t/m 0 als nibblenummer
+        A = te schrijven data (bit 3 t/m 0)
+Output: -
+Change: F
+
+
+Informatie verzamelt en samengesteld door:
+ Arjen Zeilemaker
+ Woldweg 195
+ 9606 PD Kropswolde
+ 05980-22794 (Spraak)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

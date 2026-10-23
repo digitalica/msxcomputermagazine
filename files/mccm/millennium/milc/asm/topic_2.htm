@@ -1,0 +1,231 @@
+<html>
+
+<head>
+<title>MILC - Topic Standaard routines voor call commando's</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_3.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Standaard routines voor call commando's</b><br>
+    <i>Erik Bos</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+; STANDAARD ROUTINE VOOR CALL COMMANDO'S
+; Door Erik Bos
+; Voorzien van uitleg door Stefan Boer
+
+BEGIN:  EQU   &amp;H9000          ;beginadres
+
+        ORG   BEGIN
+
+OFFSET: EQU   &amp;H4000-BEGIN    ;omrekenwaarde
+
+        DEFM  &quot;AB&quot;
+        DEFW  0               ;geen initialisatie
+        DEFW  CAL+OFFSET      ;begin statement uitbreiding
+        DEFW  0               ;geen device
+        DEFW  0               ;geen Basic
+        DEFW  0
+        DEFW  0
+        DEFW  0
+
+CAL:    PUSH  HL              ;HL wijst naar teken na CALL
+        LD    DE,TABEL+OFFSET ;begin van de tabel
+C_1:    LD    HL,&amp;HFD89       ;PROCNM bevat naam
+        LD    A,(DE)          ;lengte van naam
+        AND   A               ;wis vlaggen
+        JR    Z,C_ERR         ;einde tabel als A=0
+        LD    B,A
+        INC   DE
+
+C_2:    LD    A,(DE)          ;vergelijk naam in tabel
+        CP    (HL)            ;met naam in PROCNM
+        JR    NZ,NEXT1        ;naar NEXT1 als verkeerde naam
+        INC   DE
+        INC   HL
+        DJNZ  C_2
+
+        LD    A,(HL)
+        AND   A
+        JR    NZ,NEXT2
+
+        EX    DE,HL           ;HL is plaats in tabel
+        LD    E,(HL)          ;low byte sprongadres
+        INC   HL
+        LD    D,(HL)          ;high byte sprongadres
+        EX    DE,HL
+        JP    (HL)            ;spring naar dat adres
+
+NEXT1:  LD    C,B
+        LD    B,0             ;BC=B
+        INC   BC
+        INC   BC
+        EX    DE,HL
+        ADD   HL,BC
+        EX    DE,HL
+        JR    C_1             ;probeer het nog eens
+
+NEXT2:  INC   DE              ;sla het sprongadres
+        INC   DE              ;over
+        JR    C_1             ;probeer het nog eens
+
+C_ERR:  POP   HL
+        SCF
+        RET
+
+INIT:   LD    A,(&amp;HF342)      ;plaats RAM page 1
+        LD    H,&amp;H40          ;PAGE 1
+        CALL  &amp;H24            ;BIOS routine ENASLT
+        LD    HL,&amp;H9000
+        LD    DE,&amp;H4000
+        LD    BC,&amp;H4000
+        LDIR                  ;verplaats naar page 1
+        XOR   A               ;slot 0-0 MSX1 BASIC
+        LD    H,&amp;H40          ;PAGE 1
+        CALL  &amp;H24            ;ENASLT
+
+        LD    HL,&amp;HFCCA       ;&amp;HFCC9 + pagenummer (=1)
+        LD    BC,&amp;H10
+        LD    A,(&amp;HF342)      ;plaats RAM page 1
+        AND   &amp;B00000011      ;primaire gleuf
+CLUS1:  JR    Z,CNEXT
+        ADD   HL,BC           ;tel primair*16 erbij op
+        DEC   A
+        JR    CLUS1
+CNEXT:  LD    BC,4
+        LD    A,(&amp;HF342)      ;plaats RAM page 1
+        AND   A               ;wis vlaggen
+        JP    P,CEINDE        ;is er wel secundair slot
+        AND   &amp;B00001100      ;secundaire gleuf * 4
+        RRCA                  ;secundaire gleuf * 2
+        RRCA                  ;secundaire gleuf
+CLUS2:  JR    Z,CEINDE
+        ADD   HL,BC           ;tel secundair*4 erbij op
+        DEC   A
+        JR    CLUS2
+CEINDE: LD    (HL),&amp;H20       ;zet bit 5 aan
+        RET                   ;einde initialisatie
+
+ILLEGA: LD    IX,&amp;H475A       ;Illegal function call error
+        JP    &amp;H0159          ;routine van Basic-ROM
+
+SYNTAX: LD    IX,&amp;H4055       ;Syntax error routine van
+        JP    &amp;H0159          ;Basic-ROM aanroepen
+
+R_BYTE: LD    IX,&amp;H521C       ;Lees een byte van getokenized
+        JP    &amp;H0159          ;Basic, resultaat in A
+
+R_WORD: LD    IX,&amp;H6F0B       ;Lees een word van getokenized
+        JP    &amp;H0159          ;Basic, resultaat in DE
+
+TABEL:  DEFB  6               ;lengte CALL commando
+        DEFM  &quot;TESTJE&quot;        ;de naam
+        DEFW  TESTJE+OFFSET   ;het adres
+
+        DEFB  4
+        DEFM  &quot;DSKI&quot;
+        DEFW  DSKI+OFFSET
+
+        DEFB  0               ;afsluiten
+
+TESTJE: LD    HL,TEXT+OFFSET  ;begin tekst
+T_1:    LD    A,(HL)          ;ASCII teken
+        AND   A
+        JR    Z,T_2           ;klaar als 0
+
+        CALL  &amp;HA2            ;teken naar scherm
+        INC   HL
+        JR    T_1             ;volgende teken
+
+T_2:    POP   HL              ;HL is pointer naar tokenized Basic achter cmd
+        XOR   A               ;wis carry
+        RET
+
+TEXT:   DEFM  &quot;GENIC&quot;,0
+
+DSKI:   POP   HL              ;HL is pointer naar tokenized Basic achter cmd
+        LD    A,(HL)
+        CP    &quot;(&quot;
+        JP    NZ,SYNTAX+OFFSET ;syntax error als geen haakje
+        INC   HL
+
+        CALL  R_BYTE+OFFSET   ;lees drivenummer
+        LD    (DRIVE+OFFSET),A
+
+        LD    A,(HL)
+        CP    &quot;,&quot;
+        JP    NZ,SYNTAX+OFFSET ;syntax error als geen komma
+        INC   HL
+
+        CALL  R_WORD+OFFSET   ;lees start sector
+        LD    (SECTOR+OFFSET),DE
+
+        LD    A,(HL)
+        CP    &quot;,&quot;
+        JP    NZ,SYNTAX+OFFSET ;syntax error als geen komma
+        INC   HL
+
+        CALL  R_BYTE+OFFSET   ;lees aantal sectoren
+        LD    (COUNT+OFFSET),A
+        AND   A               ;wis vlaggen
+        JP    Z,ILLEGA+OFFSET ;Illegal function call als 0 sectoren
+
+        LD    A,(HL)
+        CP    &quot;,&quot;
+        JP    NZ,SYNTAX+OFFSET ;syntax error als geen komma
+        INC   HL
+
+        CALL  R_WORD+OFFSET   ;lees adres
+
+        LD    A,(HL)
+        CP    &quot;)&quot;
+        JP    NZ,SYNTAX+OFFSET ;syntax error als geen haakje
+        INC   HL
+        PUSH  HL              ;bewaar pointer achter commando
+
+        LD    C,&amp;H1A          ;BDOS call SETDMA
+        CALL  &amp;HF37D          ;stel adres in op DE
+
+        LD    DE,(SECTOR+OFFSET)
+        LD    HL,(DRIVE+OFFSET)
+        LD    C,&amp;H2F          ;BDOS call Absolute Disk Read
+        CALL  &amp;HF37D          ;lees H sectoren van drive L, begin met sect DE
+
+        POP   HL              ;pointer achter commando
+        XOR   A               ;wis carry
+        RET
+
+DRIVE:  DEFB  0
+COUNT:  DEFB  0
+SECTOR: DEFW  0
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

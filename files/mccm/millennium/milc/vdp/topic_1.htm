@@ -1,0 +1,217 @@
+<html>
+
+<head>
+<title>MILC - Topic Overzicht van VDP registers</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Overzicht van VDP registers</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                   *** De MSX2 ViDeo-Processor ***
+
+ Alle VDP registers op een rijtje met daaronder de betekenis.
+
+
+ VDP()  reg |  7  |  6  |  5   |  4   | 3    |  2   |  1   |  0
+ -----------+-----+-----+------+------+------+------+------+--------
+     0   0  |  0  | DG  | IE0  | IE1  | M5   | M4   | M3   |  D
+     1   1  |  0  | BLK | IE2  | M1   | M2   | 0    | SZ   | MAG
+     2   2  |  0  | A16 | A15  | A14  | A13  | A12  | A11  | A10
+     3   3  | B13 | B12 | B11  | B10  | B9   | B8   | B7   | B6
+     4   4  |  0  |  0  | C16  | C15  | C14  | C13  | C12  | C11
+     5   5  | D14 | D13 | D12  | D11  | D10  | D9   | D8   | D7
+     6   6  |  0  |  0  | E16  | E15  | E14  | E13  | E12  | E11
+     7   7  | TC3 | TC2 | TC1  | TC0  | BDC3 | BDC2 | BDC1 | BDC0
+     9   8  | MSE | LCS | TP   | CBD  | VRS1 | VRS0 | SPD  | B/W
+    10   9  | LN  |  0  | SYM1 | SYM0 | IL   | E/O  | NTSC | DCD
+    11   10 |  0  |  0  |  0   |  0   |  0   | B16  | B15  | B14
+    12   11 |  0  |  0  |  0   |  0   |  0   |  0   | D16  | D15
+    13   12 | C3  | C2  | C1   | C0   | BC3  | BC2  | BC1  | BC0
+    14   13 | ON3 | ON2 | ON1  | ON0  | OF3  | OF2  | OF1  | OF0
+    15   14 |  0  |  0  |  0   |  0   |  0   | F16  | F15  | F14
+    16   15 |  0  |  0  |  0   |  0   | RS3  | RS2  | RS1  | RS0
+    17   16 |  0  |  0  |  0   |  0   | C3   | C2   | C1   | C0
+    18   17 | S/I |  0  | RC5  | RC4  | RC3  | RC2  | RC1  | RC0
+    19   18 | dV3 | dV2 | dV1  | dV0  | dH3  | dH2  | dH1  | dH0
+    20   19 | IL7 | IL6 | IL5  | IL4  | IL3  | IL2  | IL1  | IL0
+    21   20 |  0  |  0  | CBX5 | CBX4 | CBX3 | CBX2 | CBX1 | CBX0
+    22   21 |  0  |  0  | CBY5 | CBY4 | CBY3 | CBY2 | CBY1 | CBY0
+    23   22 |  0  |  0  | CBZ5 | CBZ4 | CBZ3 | CBZ2 | CBZ1 | CBZ0
+    24   23 | LS7 | LS6 | LS5  | LS4  | LS3  | LS2  | LS1  | LS0
+    32   33 | SX7 | SX6 | SX5  | SX4  | SX3  | SX2  |  SX1 | SX0
+    33   34 |  0  |  0  |  0   |  0   |  0   |  0   |   0  | SX8
+    34   35 | SY7 | SY6 | SY5  | SY4  | SY3  | SY2  |  SY1 | SY0
+    35   36 |  0  |  0  |  0   |  0   |  0   |  0   |  SY9 | SY8
+    36   37 | DX7 | DX6 | DX5  | DX4  | DX3  | DX2  |  DX1 | DX0
+    37   38 |  0  |  0  |  0   |  0   |  0   |  0   |   0  | DX8
+    38   39 | DY7 | DY6 | DY5  | DY4  | DY3  | DY2  |  DY1 | DY0
+    39   40 |  0  |  0  |  0   |  0   |  0   |  0   |  DY9 | DY8
+    40   41 | NX7 | NX6 | NX5  | NX4  | NX3  | NX2  |  NX1 | NX0
+    41   42 |  0  |  0  |  0   |  0   |  0   |  0   |  NX9 | NX8
+    42   43 | NY7 | NY6 | NY5  | NY4  | NY3  | NY2  |  NY1 | NY0
+    43   44 |  0  |  0  |  0   |  0   |  0   |  0   |  NY9 | NY8
+    44   45 |  C7 |  C6 |  C5  | C4   | C3   | C2   |  C1  | C0
+    45   46 |  0  |  0  |  0   |  0   | DIRY | DIRX | (N)EQ| MAJ/MIN
+    46   47 | CM3 | CM2 | CM1  | CM0  | LO3  | LO2  |  LO1 | LO0 
+
+ - Status registers
+
+    VDP() reg |  7  |  6  |  5  |  4  |  3  |  2  |  1  | 0
+  ------------+-----+-----+-----+-----+-----+-----+-----+-----
+      8    0  |  F  | SD  |  C  | S4  | S3  | S2  | S1  | S0   *)
+     -1    1  | FL  | LPS | I4  | I3  | I2  | I1  | I0  | FH
+     -2    2  | TR  | VR  | HR  | BD  |  0  |  0  | E/O | CE
+     -3    3  | X7  | X6  | X5  | X4  | X3  | X2  | X1  | X0
+     -4    4  |  0  |  0  |  0  |  0  |  0  |  0  | X9  | X8
+     -5    5  | Y7  | Y6  | Y5  | Y4  | Y3  | Y2  | Y1  | Y0
+     -6    6  |  0  |  0  |  0  |  0  |  0  |  0  | Y9  | Y8
+     -7    7  | C7  | C6  | C5  | C4  | C3  | C2  | C1  | C0
+     -8    8  | BX7 | BX6 | BX5 | BX4 | BX3 | BX2 | BX1 | BX0
+     -9    9  |  0  |  0  |  0  |  0  |  0  | 0   | BX9 | BX8
+
+ Betekenis:
+ -----------
+ A16/A10 - Scherminfo Tabel
+ B16/B6  - Kleur Tabel
+ BC3/0   - Back Color
+ BCD3/0  - Back Drop Color
+ BD      - Border Detected
+ BLK     - Enable/Disable Display
+           Het scherm aan of uit zetten
+ BX9/0   - Border X-coordinaat van spritebotsing
+ C       - Botsing tussen sprites gedetecteerd (1=botsing)
+ C       - kleur register
+ C16/C11 - Matrix Tabel
+ C3/0    - Color
+ C3/0    - Color code
+ C7/0    - Kleurencode gelezen kleurregister
+ CBD     - Color Bus Direction
+           0=Output(normaal), 1=Input(Digitaliseren)
+ CBX5/0  - Color Burst value of phase 0
+ CBY5/0  - Color Burst value of phase 1/3
+ CBZ5/0  - Color Burst valeu of phase 2/3
+ CE      - Command Executing status (0=klaar)
+ CM      - commando
+ D       - External VDP-input
+ D16/D7  - Spriteinfo Tabel
+ DCD     - Dot Clock Direction
+ DG      - Digitize
+           0=Normaal, 1=Digitaliseer mode
+ dH3/0   - delta Horizontal adjust
+ dV3/0   - delta Vertical adjust
+ DX      - destination X-coordinaat
+ DY      - destination Y-coordinaat
+ E16/E11 - Sprite patroon Tabel
+ E/O     - Even/Odd Display
+ E/O     - Even or Odd field status (0=even, 1=oneven pagina afgebeeld)
+ F       - Vertical Retrace Interrupt
+           Bij een interrupt wordt hier gekeken of het van de VDP kwam
+           (0=Nee, 1=Ja) zoniet dan wordt naar de NMI-routine gesprongen
+ F16/F14 - Video RAM access
+ FH      - Horizontal Retrace Interrupt
+ FL      - Muis of lichtpen schakelaar status
+ HR      - Horizontal Retrace timing
+ I4/0    - Videochip LSI-nummer (Identicatie 1-V9938 2-V9958)
+ IE0     - Vertical Retrace Interrupt Enable
+ IE1     - Horizontal Retrace Interrupt Enable
+ IE2     - Light pen/mouse Interrupt Enable
+ IL      - Interlace mode (uitleg over interlace volgt later)
+ IL7/0   - vertical line number of Line Interrupt
+ LCS     - Light pen/coincidence select (1=light pen)
+ LO      - logische operatie
+ LPS     - Tweede muis of lichtpen schakelaar status
+ LS7/0   - horizontal line start Video RAM
+ M5/1    - M5 M4 M3 M2 M1 Screen
+            0  0  0  0  0    1
+            0  0  0  0  1    0 ( 40 koloms)
+            0  0  0  1  0    3
+            0  0  1  0  0    2
+            0  1  0  0  0    4
+            0  1  0  0  1    0 ( 80 koloms)
+            0  1  1  0  0    5
+            1  0  0  0  0    6
+            1  0  1  0  0    7
+            1  1  1  0  0    8
+           Screen 10,11 en 12 zijn verbouwde screen 8. 
+ MAG     - Magnify Sprites
+           0=Normaal, 1=2* zo groot
+ MSE     - Light pen/mous (1=mouse)
+ NTSC    - TV mode select(0=NTSC (Japan), 1=PAL (Europa))
+           De interne interrupt is in europa 50 Hz, door NTSC nul te
+           maken, wordt het beeldscherm 60 * per seconde naar het
+           beeldscherm gestuurd, ook zal de muziek anders gaan klinken
+           (PLAY). De z80 processor wordt niet sneller, zoals onterecht
+           een keer is geschreven in een blad!
+ NX      - number X-dots
+ NY      - number Y-dots
+ OF3/0   - Blink Off(1/5 seconde)
+ ON3/0   - Blink On (1/5 seconde)
+ RC5/0   - Register nummer van Controlregister
+           Hier kan een register nummer worden opgeslagen:
+           Met indirecte toegangs poort (#0007)+3 kan er naar het
+           register geschreven worden dat RC5/0 aanwijst, als er
+           geschreven is wordt aan de hand van S/I wel of niet opgehoogd
+           Dit is handig om achter elkaar een aantal registers van
+           waarde te veranderen.
+ RS3/0   - Register nummer van Statusregister
+ S4/0    - Nummer van de vijfde cq. negende sprite
+ S/I     - 0=Automatisch ophogen van RC5/0, 1=Niet ophogen
+ SD      - Vijfde cq. negende sprite gedetecteerd (1=teveel sprites)
+ SPD     - Sprite Disable (Sprites: 0=normaal, 1=geen sprites op scherm)
+ SYM1/0  - Synchronisation mode (Voor digitaliseren en mixen)
+           SYM1 SYM0 mode
+            0    0 Intern
+            0    1 Mix
+            1    0 Extern (Digitize)
+            1    1 none
+ SX      - source X-coordinaat    
+ SY      - source Y-coordinaat
+ SZ      - Sprite Size
+           0=8*8 Sprites, 1=16*16 Sprites
+ TC3/0   - Text Color
+ TP      - Transparant mode
+           0=Kleur 0 is transparant, 1=Kleur 0 niet transparant
+ TR      - Transfer met CPU data ready
+ VR      - Vertical Retrace timing
+ VRS1/0  - Video RAM Select
+            VRS1 VRS0  KB
+              0    0  1*16
+              0    1  4*16
+              1    0  1*64
+              1    1  64 High speed
+ X9/0    - X-coordinaat spritebotsing, muis of lichtpen
+ Y9/0    - Y-coordinaat spritebotsing, muis of lichtpen
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

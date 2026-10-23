@@ -1,0 +1,245 @@
+<html>
+
+<head>
+<title>MILC - Topic Mogelijkheden van de Z800 family</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_7.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_9.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Mogelijkheden van de Z800 family</b><br>
+    <i>Eric Esselink</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+
+Mogelijkheden van de Z800 family :
+
+- Enhanced Z80 instruction set that maintains object-code compability with
+  Z80 micrprocessor.
+- On-chip paged Memory Management Unit (MMU)   [1]
+- Large memory address space: up to 16M bytes.
+- On-chip, high-speed local or cache memory.   [2]
+- High performance 16-bit Z-BUS interface or 8-bit Z80 compatible bus
+  interface.
+- Four on-chip 16-bit counter/timers.
+- Four on-chip DMA channels.
+- On-chip full duplex UART.
+- On-chip clock oscillator.
+- 10-25 MHz. CPU processor clock.
+- 64K I/O adresses			       [3]
+- 10-bit refresh controller to refresh 1M bit dynamic memory's    
+- 4 processoren types : Z8108, Z8116, Z8208 en Z8216
+  Z8070 CO-PROCESSOR !!! (voor rekenkundige taken!!!).
+
+Opmerkingen :
+-------------
+
+[1] The Z800 microprocessors have an on-chip Memory Management Unit (MMU)
+    that enables the microprocessors to address up to 16M bytes.
+    In addition to enabling the address space to be expanded, the MMU 
+    performs other memory management functions previously handled by 
+    dedicated off-chip memeory management devices.
+
+[2] There are 256 bytes of on-chip memory present on all members of the Z800 
+    family. This memory can be configured as a high-speed cache or as a fixed 
+    address local memory. When configured as a chache, the memory can be 
+    programmed to be instruction only, data only, or both data and 
+    instruction.
+
+[1] I/O address space has been expanded by the addition of an I/O page 
+    register used to select pages of I/O addresses. The 8-bit I/O page 
+    register can select one of 256 possible pages of I/O addresses to be 
+    active at one time, allowing a total of 64K I/O addresses to be accessed.
+    
+
+Samengevat :
+
+       |   Package	Data bus	   On-chip		Common
+       | no. of pins  interface (bits)	peripherals	       features
+-----------------------------------------------------------------------------
+Z8108  |     40 	    8	 |   Four  16-bit  counter  |  Memory manager
+       |			 |   -timers(internal only) |  chache memory
+---------------------------------|			    | 
+Z8116  |     40 	    16	 |			    | refresh-address
+       |			 |			    |	 generator
+-------------------------------------------------------------
+Z8208  |     64 	    8	 | Four 16-bit counter-     | clock oscillator
+       |			 | timers (one internal only|
+---------------------------------| Four DMA-channels	    |
+Z8216  |     64 	    16	 | One asynchronous serial  |
+       |			 | port 		    |
+-----------------------------------------------------------------------------
+
+
+Mogelijkheden van de Z8108 (=zilog's 1ste Z800) :
+
+- 8 bit
+- freq. : 6 - 25 Mhz.
+- 16 bit arithmetic capabality
+- 40 pins (in de dil uitvoering)
+- 8 address/data lijnen
+- 11 address lijnen
+- on-chip oscillator
+- programmable dynamic memory refreshing
+- expanded i/o adressing
+- less stringent memory timing requirements
+- at speed of 6 MHz =&gt; memory should be 250 ns.!!!
+- programmable daisy-chain interrupt
+- Z80 programs can be simply moved unchanged to the Z8108
+- present registers :
+  - dual 8-byte register banks : A-L an A'-L',
+				 two 16 bit index register IX, IY and
+				 and a dual 16-bit stack pointer and program  
+				 counter.
+    One stack pointer is dedicated to system programs (including interrupts 
+    and traps !!!), the other to user programs. The Z8108 has in addition a 
+    master status register that contains a number of flags to indicate the 
+    processor's current status. Also included are an interrupt and trap 
+    -vector table and I/O page registers (WAUW !!!).
+
+Programs on the Z8108 will be excuted in either the system or the user mode.
+System programs have access to all registers and instructions, but user 
+programs are denied access certain of these resources in order to provide a 
+more secure enviroment-for example, one in which programs can be reserved in
+protected memory. The user mode is regarded as a subset of the Z80 
+instruction set, because some Z80 instructions such as halt are privileged in 
+the Z8108 and can only be executed when the unit is in system mode.
+Z80 programs will operate completely and correctly on a Z8108 since the 
+processor assumes the system mode on power-up or reset.
+The Z8108's added instructions include some formalizations of undocumented 
+Z80 instructions (such as accessing the index registers one byte at a time), 
+in order to make the entire register set more orthogonal. Four new addressing 
+modes increase the flexibility of the existing instructions and make code 
+generation for high-level languages much easier. In addition, the Z8108 has a
+Test and Set instruction to provide synchronization for multiple processors,
+and both 8-bit and 16-bit multplication and division instructions to 
+increase througput in computation-intensive applications.
+
+The on-chip oscillator-clock generator of the Z8108 simplifies system design 
+by eliminating the need for an external MOS clock generator-driver. A crystal 
+can be connected directly to the processor, or an external TTL-compatible 
+clock signal can be provided. From this signal, the processor generates an 
+internal clock, its frequency being one-half that of the input.
+
+The Z8108 has a 512-Kbyte physical address space. The 19-bits of physical 
+address are produced by 12 or 13 bits from the logical adress and 6 or 7 bits 
+from the page descriptor registers.
+
+Simple Z80 programs running on a Z8108 need not worry about memory 
+management, since the Z8108 pwoers up in pass-through modem, which means that 
+the logical address is passed directly to the physical address lines without 
+translations.
+
+The three interrupt service modes of the Z80 have been expanded in the Z8108 
+by addition of a fourth mode and by addition of internal interrupts or traps 
+using this mechanism. The four interrupts are modes 0 to 3, with 0, 1, and 2 
+operating in the same way as in the Z80. Mode 3 uses the interrupt and trap 
+vector table to point to an array of new program status values.
+
+Following power-up or a reset, the Z8108 will behave like a Z80 (or an 8080).
+This means that memory management is disabled, the system/user flag is set to 
+system, the system stack pointer is enabled, the I/O page register is 
+cleared, and the interrupt response is set to mode 0. All the Z80's 
+instructions run identically on the Z8108. The Z8108, however, operates two 
+to eight times faster !!!.
+
+Met het volgende programmaatje kun je bepalen of de Z80 mode aanstaat, of dat
+de Z800 mode is geactiveerd! (of zo om te bepalen of de R800 een Z800 
+familie-lid is !!!).
+
+;This instruction sequence expolits the difference.In one opcode between the 
+;Z80 and the Z800 family to allow a user program to decide which processor 
+;its running on.  The flags are set thus :
+;
+; inputs - none
+; outputs - sign flag set according to CPU:
+;	      S = 1 (M) if Z80
+;	      S = 0 (P) if Z800
+; uses - A and F only.
+;
+; The key instruction is in the one undefined shift group on the Z80 that
+; actually performs a &quot;logical shift left and insert 1&quot; operation,
+; with the same flag operation as the other shift/rotate instructions.
+; This has been replaced on the Z800 with the Test and Set instruction that
+; test the sign of the operand, setting the sign flag accordingly, then 
+; setting the operand to all 1's. Thus with the proper choice of operand
+; value, the sign flag resulting from instruction becomes a Z80/Z800 flag.
+;
+	LD	A,40H	    ;This is the proper operand.
+	DEFB	OCBH,037    ;This is the key instruction.
+			    ;A Z80 wil change the operand to 81H (shift left
+			    ; ,insert 1) setting the sign flag on the result.
+			    ;A Z800 will test the orignal sign (0) and clear
+			    ;the sign flag,then set A to all 1's
+	JP	M,Z80	    ;Now test the flag and jump.
+	   or
+	JP	P,Z800			 
+	
+
+U zult begrijpen dat bovenstaande belangrijk is, immers als het programmaatje 
+werkt op een Turbo-R dan is bewezen dat de R800 een famlie lid is van de
+Z800.
+Er zijn goede redenen om aan te nemen dat de R800 een Z800 is, en wel om de 
+volgende redenen: - De R800 kan gewoon Z80 instructies aan.
+		  - De R800 kan &quot;omschakelen&quot; naar Turbo-R.
+		  - De R800 kan maximaal 512K bytes aan (direct)
+		  - Wel vreemd is dat de R800 op 28,6 Mhz. draait,want 
+		    volgens de zilog boeken kan de Z800 maximaal 25 Mhz. aan.
+		    (tenzij gewoon wat boven het maximum gaan zitten, net 
+		     zoals met de 7 Mhz. kaart voor de 6Mhz. Z80B).
+		  - Ook het aantal pennen is wat aan de hoge kant (100, 
+		    terwijl dat er 40 of 64 hadden moeten zijn), maar dat 
+		    kan verklaard worden door het feit dat er andere IC 
+		    (PCM?) bij de Z800 zijn gevoegd (dan heb je ook meer 
+		    pennen nodig).
+
+Maar al met al blijft het spekuleren totdat iemand met een Turbo-R mijn
+programmaatje heeft uitgeprobeerd, dan weten we zeker van wel of niet.
+Volgens Zilog (de fabrikant van de Z800 familie) heeft de Z8216 de kracht van 
+een mini-computer!
+Mocht het trouwens zo zijn, dat de R800 GEEN Z800 is dan valt er over na te
+denken om de Z80 te vervangen door een Z8108, immers via een kleine board kun 
+je dan direct de Z8108 in de voet van de Z80 steken.Waarna je wel even een
+maximum snelheid van 25 MHz. ter beschikking staat (of de ram-ic dat ook 
+uithouden is de vraag, maar het kan in ieder geval). Ook ben je niet meer
+afhankelijk van de klok van de video-porcessor, want de klok-generator heeft
+de Z8108 al aan boord (net zoals een hoop andere dingen).
+
+Ik hoop iedereen hier een beetje informatie te hebben gegeven (of een idee
+om een MSX-2(+) om te bouwen naar een Turbo-R(of MSX-3, want zo mag je het 
+wel noemen)).
+
+Groetjes, 
+
+
+
+	    Eric Esselink,	Chief Engineer -A.T.S-
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_9.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

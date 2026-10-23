@@ -1,0 +1,302 @@
+<html>
+
+<head>
+<title>MILC - Topic Call cartridge</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_26.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_28.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Call cartridge</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MACHINETAAL:
+
+                C A L L   C A R T R I D G E
+               =============================
+
+De nu volgende tekst is ook te vinden op de BBS-waterland en 
+is  geschreven  door  Ramon  van der  Winkel die  GENIC toe- 
+stemming heeft gegeven voor deze publicatie. 
+
+Aan de publicatie van dit artikel hebben meegewerkt:
+
+Ramon van der Winkel  (De schrijver van het artikel)
+Rudy Oppers           (De man van de modem)
+Alex van der Wal      (Initiatiefnemer &amp; editor)
+
+Deze tekstfile  legt uit  hoe een software-cartridge gemaakt 
+kan  worden, die  met CALL aan te roepen is. De software zal 
+in  Z80-machinetaal  geschreven  moeten  worden, het  kunnen 
+programmeren in  deze taal  is dus een voorwaarde. Verder is 
+enige  kennis van  de slot  structuur van  de MSX van belang 
+(pagina's, sloten etc). 
+
+Als de computer opgestart of gereset wordt, wordt als eerste 
+de  MSX-BIOS-ROM  aangeroepen.  Deze  zal het  hele geheugen 
+opzetten,  zodat  er  BASIC  programma's gerunt  kunnen gaan 
+worden. 
+
+Als een van de laatste acties kijkt de BIOS-ROM of er in een 
+van de  sloten een externe-ROM zit. Deze is voor de BIOS-ROM 
+herkenbaar,  omdat de  eerste twee  bytes van de externe rom 
+een 65 en een 66 zijn, de ascii codes voor een A en een B. 
+
+Komt de  BIOS-ROM deze  codes tegen,  dan wordt er een tabel 
+achter die twee codes verwacht, die op de volgende manier is 
+opgebouwd: 
+
+   +0 &quot;A&quot;
+   +1 &quot;B&quot;
+   +2 INITIALISE Address LSB
+   +3 INITIALISE Address MSB
+   +4 STATEMENT Address LSB
+   +5 STATEMENT Address MSB
+   +6 DEVICE Address LSB
+   +7 DEVICE Address MSB
+   +8 BASIC TEXT Address LSB
+   +9 BASIC TEXT Address MSB
+   +A\
+   .  \
+   .   +- Gereserveerd, meestal 0
+   .  /
+   +F/
+
+Voor  ons zijn voorlopig alleen de adressen +0 tot en met +5 
+van belang,  de andere adressen worden gebruikt voor de uit- 
+breiding  van de  DEVICES (COM:,  CAS:, A:, etc) en de BASIC 
+(een BASIC programma in de ROM). 
+
+Het startadres  van deze  cartridge is  4000h of 8000h, voor 
+adres  0000 zijn  andere afspraken,  adres C000h  is niet te 
+gebruiken, omdat  de rom  daar zijn systeem variabelen heeft 
+staan  en we  die pagina  dus niet  weg kunnen schakelen. De 
+diskrom bijvoorbeeld  staat vanaf  adres 4000h,  laten we er 
+voor  het gemak maar even vanuit gaan, dat wij ons programma 
+daar ook neer gaan zetten. 
+
+De  ROM was  dus aan  het opstarten,  en vond   de cartridge 
+indentificatiecodes A  en B. Nu gaat de ROM het adres van +2 
+en  +3 ophalen,  en springt daar, als het niet 0000 is, naar 
+toe. Dit  adres wordt  dus na  de reset van de computer een- 
+malig aangeroepen. Ons programma kan daar dus een stukje van 
+zichzelf  initialiseren in  het geheugen  (als dat  mogelijk 
+mocht zijn).  De diskrom, om daar maar weer eens naar toe te 
+gaan, zet hier de koppen van de drives in de uitgangspositie 
+en  initialiseert een  aantal buffers  en systeem variabelen 
+van adres 0F37Fh en lager (naar C200H toe dus). 
+
+Daarna kijkt de ROM naar de andere adressen. Als op +4 en +5 
+een adres  staat, dan  wordt in een special tabel gesigneerd 
+dat ons programma een CALL uitbreiding ondersteund. Zo wordt 
+ook  voor de  DEVICE en  de BASIC  TEXT een bit gezet in die 
+speciale tabel.  De tabel staat vanaf adres 0FCC9h en is als 
+volgt opgebouwd: 
+
+Per  slot worden  16 bytes  bijgehouden, per  secundair slot 
+binnen dat  slot 4 bytes (4 secundair slot keer 4 bytes = 16 
+bytes).  Per secundair  slot wordt  weer per pagina een byte 
+bijgehouden (4  pagina's keer  1 byte  = 4 bytes). Willen we 
+dus  de informatie over de pagina van de diskrom en zit deze 
+in pagina  1 (4000h..7FFFh)  in slot 3-2, dan bepalen we het 
+adres in de tabel met de volgende formule: 
+
+0FCC9h + Primair slot nummer * 16 + secundair slot nummer *4 
++ pagina nummer 
+
+Hier is dat dus 0FCC9h+3*16+2*4+1 = 0FCC9h+57 = 0FD02h. Hier 
+staat  dus een  byte met  de speciale  informatie omtrend de 
+diskrom. De byte is weer als volgt opgebouwd: 
+
+ Bit7 = 1: BASIC TEXT handler gevonden
+ Bit6 = 1: DEVICE handler gevonden.
+ Bit5 = 1: CALL handler gevonden.
+
+Op het  moment dat er dus een CALL &lt;tekst&gt; uitgevoerd wordt, 
+worden  alle pagina's  in de  sloten, waarvan Bit5 geSET is, 
+aangeroepen. Hoe de software dan weer in elkaar moet zitten, 
+leg ik nu uit. 
+
+Stel, op  adres 4000h+4  en +5  staat de  waarde 4010h,  dan 
+begint ons programma dus vanaf adres 4010h. 
+
+Op  het moment  dat onze  routine door  de rom  wordt aange- 
+roepen, staat  vanaf adres  0FD89h de &lt;tekst&gt; die achter het 
+CALL  statement was opgegeven. Alleen het eerste woord staat 
+hier  dus.  De  &lt;tekst&gt;  wordt  door  een  0  afgesloten, is 
+maximaal 15  tekens lang en is al helemaal omgezet in hoofd- 
+letters.  Tekens  als  een komma  zijn er  al tussenuit  ge- 
+filterd.  (Probeer  het  maar  eens:  CALL  S,Y,S,T,E,M  dit 
+werkt!). 
+
+Verder  bevat register  HL de  pointer naar  de rest  van de 
+tekstregel, vervolgt  achter de  &lt;tekst&gt; van de call. Als we 
+bijvoorbeeld  CALL  TEST  (&quot;Ramon&quot;,0) willen  doorgeven, dan 
+staat  de tekst  TEST vanaf adres 0FD89h, gevolgt door een 0 
+en staat register HL op de spatie achter de tekst TEST. 
+
+Als we  de tekst  op adres  0FD89h getest hebben en hij komt 
+overeen  met wat wij ervan dachten (TEST dus), dan roepen we 
+onze eigen routines aan, die de rest afhandelen. LET WEL OP: 
+Geen registers veranderen, zeker HL niet. 
+
+Als we  daarna terugkeren, zorgen we ervoor, dat we de Carry 
+flag geRESET hebben. Op die manier weet de ROM, dat de tekst 
+door ons behandeld is en dat er niet verder geprobeert hoeft 
+te worden, door de diskrom bijvoorbeeld. 
+
+Bevalt  de tekst  ons echter  niet, er  is bijvoorbeeld TETS 
+ingetypt,  dan  zetten we  de Carry  flag en  we keren  weer 
+terug. De rom ziet dan dat de Carry flag gezet is en hij zal 
+het in  de andere  pagina's met  een call-handler  bit in de 
+speciale  tabel gezet,  gaan proberen.  Als er geen pagina's 
+meer zijn, wordt er de foutmelding 'Syntax error' gegeven. 
+
+Houdt verder in de gaten dat de stack door de eigen routines 
+niet verknald  wordt. Van te voren even opslaan en dan in de 
+eigen (RAM) pagina zetten, zorgt voor een veilige terugkeer. 
+
+
+Nu  zitten we nog met een probleem: Als wij een eigen stukje 
+software hebben  geladen vanaf adres 4000h, met de cartridge 
+header erboven, hoe vertellen we dan aan de ROM, dat wij een 
+call-handler  ondersteunen, zonder dat we de computer hoeven 
+te resetten, om de rom het zelf te laten ondervinden? 
+
+Heel eenvoudig. We bepalen ons eigen slot-id (het primair en 
+secundaire slot waar we inzitten) en we berekenen de positie 
+van de  onze pagina  in de  speciale tabel en we zetten daar 
+Bit5, de rom weet dan dat wij een call-handler ondersteunen. 
+
+
+Ik laat het hier voorlopig even bij, hieronder staan nog een 
+paar handige routines en een voorbeeld van een kant en klaar 
+programma  met  een  cartridge  header  en  een  installatie 
+programma dat Bit5 zet. 
+
+Op  de DEVICE  en BASIC  TEXT handler wil ik niet verder in- 
+gaan, omdat het dan nog moeilijker wordt en de meeste mensen 
+hier al moeite genoeg mee zullen hebben.
+
+Veel sucses !!
+
+                                    Ramon van der Winkel
+                                    Wouter Sluislaan 12
+                                    1461 AC Zuidoostbeemster
+
+Via  BBS Waterland  (02990-40202/45740): Post  aan RAMON VAN 
+DER WINKEL, bord MSX.
+
+
+De voorbeeld programma's:
+
+              ORG 04000H
+;
+CARTHEAD      DEFB &quot;AB&quot;
+              DEFW 0           ;Geen INITIALISE handler
+              DEFW CALHAN      ;CALL handler
+              DEFS $4010-$     ;De rest vullen met 00
+;
+CALHAN        PUSH HL          ;Store tekstpointer
+              LD DE,_STATEM    ;Onze tekst
+              LD HL,0FD89H     ;De &lt;tekst&gt;
+CALHAN_LUS    LD A,(DE)        ;Ons teken
+              CP (HL)          ;Vergelijk
+              JR NZ,CALHAN_BAD ;Niet hetzelfde, return met
+              INC HL           ;met Carry set
+              INC DE
+              AND A            ;Einde (00) ?
+              JR NZ,CALHAN_LUS ;Nog niet bereikt
+              CALL ENTRY       ;Onze eigen routine aanroepen
+              SUB A            ;Reset carry
+              JR CALHAN_EXIT
+;
+CALHAN_BAD    SCF              ;Tekst niet herkend
+CALHAN_EXIT   POP HL           ;Restore tekstpointer
+              RET
+;
+_STATEM       DEFB &quot;TEST&quot;,0
+;
+ENTRY         ;Hier komt je eigen routine te staan
+              RET
+;
+
+Opm: Er kunnen natuurlijk ook meerdere vergelijkingen
+     gedaan worden, op meerdere teksten, het hoeft niet bij
+     maar een vergelijking te blijven! (vergelijk diskrom:
+     CALL SYSTEM en CALL FORMAT).
+
+De routine om het callhandler bit in de special tabel te
+setten.
+
+
+SETCALLBIT    CALL GETOWNID   ;Je eigen slotID ophalen
+              PUSH AF
+              AND %00000011   ;Primaire slot
+              SLA A           ;*2
+              SLA A           ;*4
+              SLA A           ;*8
+              SLA A           ;*16
+              LD C,A
+              POP AF
+              AND %00001100   ;Secundair slot (al *4)
+              OR C
+              INC A           ;Pagina 1
+              LD C,A
+              LD B,0
+              LD HL,0FCC9H    ;Speciale tabel
+              ADD HL,BC       ;+ Offset
+              SET 5,(HL)      ;Call handler bit
+              RET
+;
+GETOWNID      DI
+              IN A,(0A8H)
+              SRL A
+              SRL A
+              AND 3           ;Primaire slot van
+              LD C,A          ;onze pagina
+              LD B,0
+              LD HL,0FCC1H
+              ADD HL,BC       ;Naar de 'expanded' tabel
+              OR (HL)         ;Bit7=0 -&gt; Geen sec slots
+              RET P           ;Niet dus
+              LD C,A
+              INC HL
+              INC HL          ;Ga nu naar de tabel met de
+              INC HL          ;actieve secundaire slot
+              INC HL          ;setting van iedere pagina
+              LD A,(HL)
+              AND %00001100   ;Van pagina 1
+              OR C            ;En het primaire slot erbij
+              RET
+;
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_26.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_28.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<html>
+
+<head>
+<title>MILC - Topic Konami SCC chip</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_22.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_24.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Konami SCC chip</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Konami SCC chip
+---------------
+
+Konami megaroms hebben pagina's van 8 Kb.
+Er zijn dus altijd 4 paginas in het bereik van de Z80.
+Een pagina kan worden geschakeld door op &amp;Hx000 een getal van 0 t/m 3F te
+poken. Op pagina 1 kan bijv. een van de &amp;H3F blokken van 8 Kb. worden
+ingeschakeld door op adres &amp;H4000 of &amp;H5000 (maakt niet uit welke van de 2)
+het nummer van het geheugenblok te poken.
+Pagina 2 gebruikt &amp;H6000 en &amp;H7000, etc.
+
+    &Aring;--------&atilde; - adres 4000
+    &iexcl; pag. 1 &iexcl;
+    &iexcl;        &iexcl; - adres 6000
+    &iexcl; pag. 2 &iexcl;
+    &iexcl;        &iexcl; - adres 8000
+    &iexcl; pag. 3 &iexcl;
+    &iexcl;        &iexcl; - adres A000
+    &iexcl; pag. 4 &iexcl;
+    -------- - adres C000
+
+Nu het belangrijkste:
+in blok &amp;H3F staat de SCC memory-mapped I/O. De memory-mapped I/O
+bevindt zich (t.o.v. het begin van de pagina) op adres &amp;H1800 t/m &amp;H18FF.
+Voorlopig hoeven we de pagina-schakel registers (&amp;H4000,&amp;H5000,etc) niet
+te implementeren, dus is het voldoende om slot 1 en 2 te vullen met
+4 keer 8Kb pagina's met memory-mapped I/O:
+
+!! De adressen 1800-187F (de samples) werken als &quot;RAM&quot;, ze zijn uit te lezen.
+De rest geeft altijd 0FFh terug.
+
+!!de rest v/d pagina's AND: als er 16 pagina's zijn betekend een POKE9000,16
+  een POKE 9000,0
+
+memory-mapped I/O
+tabelwaarde:
+ 3 (&amp;H20 keer)     1800-181F       :sample kanaal 1
+ 4     &quot;           1820-183F       :sample kanaal 2
+ 5     &quot;           1840-185F       :sample kanaal 3
+ 6     &quot;           1860-187F       :sample kanaal 4 en 5
+ 7                 1880            :LSB frequentie kanaal 1
+ 8                 1881            :MSB frequentie kanaal 1
+ 9                 1882            :LSB frequentie kanaal 2
+ A                 1883            :MSB frequentie kanaal 2
+ B                 1884            :LSB frequentie kanaal 3
+ C                 1885            :MSB frequentie kanaal 3
+ D                 1886            :LSB frequentie kanaal 4
+ E                 1887            :MSB frequentie kanaal 4
+ F                 1888            :LSB frequentie kanaal 5
+ 10                1889            :MSB frequentie kanaal 5
+ 11                188A            :volume kanaal 1
+ 12                188B            :volume kanaal 2
+ 13                188C            :volume kanaal 3
+ 14                188D            :volume kanaal 4
+ 15                188E            :volume kanaal 5
+ 16                188F            :channel control
+
+Dus deze memory-mapped I/O zit dan in slot 1 en in slot 2
+op de volgende plaatsen:
+  &amp;H5800-&amp;H588F
+  &amp;H7800-&amp;H788F
+  &amp;H9800-&amp;H988F
+  &amp;HB800-&amp;HB88F
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_22.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_24.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

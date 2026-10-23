@@ -1,0 +1,320 @@
+<html>
+
+<head>
+<title>MILC - Topic Call commando's maken (2)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_2.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Call commando's maken (2)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+VERVOLG VAN HET CALL ARTIKEL:
+
+       C A L L   C O M M A N D O ' S   M A K E N   (2)
+      =================================================
+
+(Nvdr. Dit artikel  was  te  lang  voor  de  layout  van  de
+ClubGuide. Het is daarom in twee stukken  verdeeld.  In  het
+eerste deel waren we ergens midden in  de  standaard  source
+blijven steken daar pakken we nu de draad weer op.)
+
+
+                  VERVOLG STANDAARDROUTINE
+
+De routine INIT moet worden aangeroepen  om  het  blok  CALL
+statements naar de juiste plaats te copi‰ren  en  om  SLTATR
+dienovereenkomstig in te stellen. Het blok moet in  het  RAM
+op page 1 worden gezet. Op adres &amp;HF341 t/m &amp;HF344 staat  de
+plaats van het RAM voor page 0 t/m 3. De plaats voor het RAM
+van page 1 staat dus op &amp;HF342. Dat is op de volgende manier
+gecodeerd:
+
+Bit: 7   6   5   4   3   2   1   0
+     U   -   -   -   S1  S0  P1  P0
+
+U: Slot wel (1) of niet (0) uitgebreid met secundaire sloten
+S0-S1: Nummer van secundair slot (0-3)
+P0-P1: Nummer van primair slot (0-3)
+
+De routine ENASLT  selecteert  een  bepaald  slot  voor  een
+bepaalde pagina. HL moet een adres bevatten in die pagina, A
+geeft aan om welke gleuf het gaat (codering zie boven).
+
+INIT:   LD   A,(&amp;HF342)      ;plaats RAM page 1
+        LD   H,&amp;H40          ;page 1
+        CALL &amp;H24            ;BIOS routine ENASLT
+        LD   HL,&amp;H9000       ;bronadres routine
+        LD   DE,&amp;H4000       ;begin van page 1
+        LD   BC,&amp;H4000       ;1 page = 16 kB = &amp;H4000 bytes
+        LDIR                 ;verplaats naar page 1
+        XOR  A               ;herstel slot 0-0 (MSX1 Basic)
+        LD   H,&amp;H40          ;page 1
+        CALL &amp;H24            ;ENASLT
+
+Bereken juiste adres in SLTATR en zet daar de waarde 32.
+
+        LD   HL,&amp;HFCCA       ;&amp;HFCC9 + pagenummer (=1)
+        LD   BC,&amp;H10
+        LD   A,(&amp;HF342)      ;plaats RAM page 1
+        AND  &amp;B00000011      ;primaire gleuf
+CLUS1:  JR   Z,CNEXT
+        ADD  HL,BC           ;tel primair*16 erbij op
+        DEC  A
+        JR   CLUS1
+CNEXT:  LD   BC,4
+        LD   A,(&amp;HF342)      ;plaats RAM page 1
+        AND  A               ;wis vlaggen
+        JP   P,CEINDE        ;is er wel een secundair slot
+        AND  &amp;B00001100      ;secundaire slot * 4
+        RRCA                 ;secundaire slot * 2
+        RRCA                 ;secundaire slot
+CLUS2:  JR   Z,CEINDE
+        ADD  HL,BC           ;tel secundair*4 erbij op
+        DEC  A
+        JR   CLUS2
+CEINDE: LD   (HL),&amp;H20       ;zet bit 5 aan
+        RET                  ;einde initialisatie
+
+Met JP P,CEINDE wordt gekeken of bit 7 gelijk is aan 0.  Bit
+7 wordt gebruikt om aan te geven of het getal positief is of
+negatief. Als het negatief is, dan is  bit  7  hoog.  Bit  7
+geeft in dit geval aan of er een secundair slot is of  niet.
+JP P betekent spring als positief, dus als bit 7  gelijk  is
+aan 0.
+
+Let op: alhoewel het hier om een absolute  adressering  gaat
+moet er toch niet JP P,CEINDE+OFFSET staan! De initialisatie
+routine wordt immers gewoon ergens vanaf &amp;H9000  uitgevoerd,
+waardoor de  OFFSET  moet  worden  weggelaten.  Bij  een  JP
+P,CEINDE+OFFSET zou de computer naar page 1  springen,  waar
+dan MSX1 Basic geschakeld zit. Dit natuurlijk met  onbekende
+gevolgen...
+
+Het aanroepen van een aantal ROM routines die u  vaak  nodig
+hebt, wordt door het volgende gedeelte geregeld. De  routine
+CALBAS (adres &amp;H159) roept een Basic  routine  uit  het  ROM
+aan. Het adres moet in IX staan.
+
+De routines ILLEGA en SYNTAX spreken voor zich.  Met  R_BYTE
+en R_WORD kunt  u  de  getalswaarden  die  achter  het  CALL
+statement tussen haakjes staan uitlezen. Een word is een  16
+bits getal, tussen -32768 en +32767.
+
+Voorbeeld: u heeft een routine geschreven om het CAPS lampje
+aan en uit te zetten. Syntax: _CAPS(getal).  Als  het  getal
+gelijk is aan 1 gaat  het  lampje  aan.  U  moet  dan  eerst
+controleren op het haakje, en daarna met  R_BYTE  het  getal
+uitlezen. Vervolgens controleren op haakje sluiten.
+
+ILLEGA: LD   IX,&amp;H475A       ;Illegal function call error
+        JP   &amp;H159           ;routine van Basic-ROM
+
+SYNTAX: LD   IX,&amp;H4055       ;Syntax error routine van
+        JP   &amp;H159           ;Basic-ROM aanroepen
+
+R_BYTE: LD   IX,&amp;H521C       ;Lees een byte van getokenized
+        JP   &amp;H159           ;Basic, resultaat in A
+
+R_WORD: LD   IX,&amp;H6F0B       ;Lees een word van getokenized
+        JP   &amp;H159           ;Basic, resultaat in DE
+
+Nu volgt de tabel. Daarin moet achtereenvolgens de naam,  de
+lengte van de naam en het sprongadres staan. De  tabel  moet
+worden afgesloten door een 0. Er staan nu  twee  voorbeelden
+in.
+
+TABEL:  DEFB 6               ;lengte CALL commando
+        DEFM &quot;TESTJE&quot;        ;de naam
+        DEFW TESTJE+OFFSET   ;het adres
+
+        DEFB 4
+        DEFM &quot;DSKI&quot;
+        DEFW DSKI+OFFSET
+
+        DEFB 0               ;afsluiten
+
+Als voorbeeld nu de source van twee CALL commando's, _TESTJE
+en _DSKI(drive,sektor,aantal,adres). _TESTJE  zet  de  tekst
+GENIC op het scherm, _DSKI(d,s,a,ad) leest sektoren  in  van
+diskette.
+
+TESTJE: LD   HL,TEXT+OFFSET  ;begin tekst
+T_1:    LD   A,(HL)          ;ASCII teken
+        AND  A
+        JR   Z,T_2           ;klaar als 0
+
+        CALL &amp;HA2            ;teken naar scherm
+        INC  HL
+        JR   T_1             ;volgende teken
+
+T_2:    POP  HL              ;HL is pointer naar tokenized
+                             ;Basic achter commando
+        XOR  A               ;wis carry
+        RET
+
+TEXT:   DEFM &quot;GENIC&quot;,0
+
+Bij de DSKI routine wordt  gebruik  gemaakt  van  zogenaamde
+BDOS calls. Ik kom daar  uitgebreid  op  terug  in  de  disk
+cursus.
+
+DSKI:   POP  HL              ;HL is pointer achter tokenized
+                             ;Basic achter commando
+        LD   A,(HL)
+        CP   &quot;(&quot;
+        JP   NZ,SYNTAX+OFFSET ;syntax error als geen haakje
+        INC  HL
+
+        CALL R_BYTE+OFFSET   ;lees drivenummer
+        LD   (DRIVE+OFFSET),A
+
+        LD   A,(HL)
+        CP   &quot;,&quot;
+        JP   NZ,SYNTAX+OFFSET ;syntax error als geen komma
+        INC  HL
+
+        CALL R_WORD+OFFSET   ;lees start sector
+        LD   (SECTOR+OFFSET),DE
+
+        LD   A,(HL)
+        CP   &quot;,&quot;
+        JP   NZ,SYNTAX+OFFSET ;syntax error als geen komma
+        INC  HL
+
+        CALL R_BYTE+OFFSET   ;lees aantal sectoren
+        LD   (COUNT+OFFSET),A
+        AND  A               ;wis vlaggen
+        JR   Z,ILLEGA+OFFSET ;Illegal function call als
+                             ;0 sektoren
+
+        LD   A,(HL)
+        CP   &quot;,&quot;
+        JP   NZ,SYNTAX+OFFSET ;syntax error als geen komma
+        INC  HL
+
+        CALL R_WORD+OFFSET   ;lees adres
+
+        LD   A,(HL)
+        CP   &quot;)&quot;
+        JP   NZ,SYNTAX+OFFSET ;syntax error als geen haakje
+        INC  HL
+        PUSH HL              ;bewaar pointer achter commando
+
+        LD   C,&amp;H1A          ;BDOS call SETDMA
+        CALL &amp;HF37D          ;stel adres in op DE
+
+        LD   DE,(SECTOR+OFFSET)
+        LD   HL,(DRIVE+OFFSET)
+        LD   C,&amp;H2F          ;BDOS call Absolute Disk Read
+        CALL &amp;HF37D          ;lees H sectoren van drive
+                             ;nummer L, beginnende met
+                             ;sector DE
+
+        POP  HL              ;pointer achter commando
+        XOR  A               ;wis carry
+        RET
+
+DRIVE:  DEFB 0
+COUNT:  DEFB 0
+SECTOR: DEFW 0
+
+------------------------------------------------------------
+
+Deze routine staat op de ClubGuide onder de naam CALL.BIN. U
+kunt hem laden met  BLOAD&quot;CALL.BIN&quot;,R.  De  commando's  CALL
+TESTJE en CALL DSKI(drive,sector,aantal,adres)  werken  dan.
+In het softwaremenu vindt u het programma CALL.ART, dat  ook
+gebruikt kan worden om CALL.BIN te laden.
+
+
+                      ZELF AAN DE SLAG
+
+U  kunt  deze  routine  gebruiken  om  zelf  uw  eigen  CALL
+commando's te maken. Ga daarbij als volgt te werk.
+
+-  Schrijf  een  machinetaalroutine  die  u  door  een  CALL
+commando wilt laten aanroepen.  U  mag  daarin  de  routines
+ILLEGA, SYNTAX, R_BYTE en R_WORD gebruiken. Zorg dat bij het
+verlaten van de routine HL wijst  naar  de  positie  na  het
+commando en dat de C vlag gewist is. Denk er verder  om  dat
+de stack niet verandert ten opzichte van de situatie voordat
+uw routine werd aangeroepen.
+- Zet de standaardroutine erbij en zet het  commando  in  de
+tabel. De standaardroutine zorgt ervoor dat  er  alleen  bij
+het  juiste  CALL  commando  naar  uw  routine  zal   worden
+gesprongen.
+- Let erop dat het totale blok CALL  commando's  nooit  meer
+kan zijn dan 16 kB.
+- U mag de BIOS routines in page 0 en het systeem gebied  in
+page 3 natuurlijk ook gebruiken.
+- Vergeet niet steeds bij elke absolute adressering  +OFFSET
+erbij te zetten.
+
+
+                          OPDRACHT
+
+Maak nu zelf  de  commando's  _RAMVRAM(bron,doel,lengte)  en
+_VRAMRAM(bron,doel,lengte). Deze commando's verplaatsen  een
+stuk geheugen van  het  RAM  naar  het  VRAM  of  omgekeerd.
+_RAMVRAM  kopieert  van  RAM  naar  VRAM.  U  kunt   daarbij
+natuurlijk gebruik maken van de BIOS routines:
+
+LDIRMV &amp;H0059 Kopieert VRAM naar RAM. HL=bron, DE=doel,
+              BC=lengte.
+LDIRVM &amp;H005C Kopieert RAM naar VRAM. HL=bron, DE=doel,
+              BC=lengte.
+
+Op de volgende ClubGuide komt de oplossing.
+
+Ik hoop dat u nu zelf in staat bent om  CALL  commando's  te
+maken en de opdracht uit te voeren. Als u  nog  vragen  hebt
+kunt u  een  briefje  schrijven  of  mij  even  bellen.  Ook
+suggesties of zelfgemaakte CALL commando's  zijn  van  harte
+welkom.  De  mooiste  commando's  zullen  zeker  met   naam-
+vermelding op de ClubGuide worden geplaatst.
+
+    Dus stuur uw programma's, vragen of suggesties naar:
+
+                       Stichting GENIC
+                     T.a.v. Stefan Boer
+                         Postbus 258
+                       8470 AE Wolvega
+
+U kunt ook bellen, telefoon 02982-1039 ('s avonds en in  het
+weekend.)
+
+                        Veel succes!
+
+                                                Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

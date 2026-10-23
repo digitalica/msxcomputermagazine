@@ -1,0 +1,686 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-DOS 2.20 functions [3/5]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_3.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-DOS 2.20 functions [3/5]</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+  3.40   SET/RESET VERIFY FLAG (2EH)
+
+     Parameters:    C = 2EH (_VERIFY)
+                    E =  0 to disable verify
+                      &lt;&gt; 0 to enable verify  
+     Results:       None
+
+   This function  simply enables  or disables  automatic verification  of all 
+writes.  It  defaults  to off  when MSX-DOS  is started  up. Enabling  verify 
+improves  system reliability  but also slows down write operations. Note that 
+this function  depends on  the disk  driver and  the verification will not be 
+done if the driver does not support it.
+
+  3.41   ABSOLUTE SECTOR READ (2FH)
+
+     Parameters:    C = 2FH (_RDABS)
+                   DE = Sector number
+                    L = Drive number (0=A: etc.)
+                    H = Number of sectors to read
+     Results:       A = Error code (0=&gt; no error)
+
+   This function  reads sectors  directly from  the disk without interpreting 
+them  as files.  The disk  must be  a valid  DOS disk in order for the sector 
+number to  be translated  into a  physical position  on the disk. The sectors 
+will  be read  to the  current disk  transfer address. Any disk error will be 
+reported by the system in the usual way.
+
+  3.42   ABSOLUTE SECTOR WRITE (30H)
+
+     Parameters:    C = 30H (_WRABS)
+                   DE = Sector number
+                    L = Drive number (0=A: etc.)
+                    H = Number of sectors to write
+     Results:       A = Error code
+
+   This  function writes  sectors directly  to the  disk without interpreting 
+them as  files. The  disk must  be a  valid DOS  disk in order for the sector 
+number  to be  translated into  a physical  position on the disk. The sectors 
+will be  written from  the current disk transfer address. Any disk errors are 
+reported by the system in the usual way.
+
+  3.43   GET DISK PARAMETERS (31H)
+
+     Parameters:    C = 31H (_DPARM)
+                   DE = Pointer to 32 byte buffer
+                    L = Drive number (0=default, 1=A: etc.)
+     Results:       A = Error code
+                   DE = Preserved
+
+   This functions  returns a  series of  parameters relating to the format of 
+the  disk in  the specified  drive, to the buffer allocated within the user's 
+program. It  is useful  for programs  which are  going to  do absolute sector 
+reads  and writes,  in order  for them  to be  able to interpret the absolute 
+sector numbers. The parameters returned contain some redundant information in 
+order to  provide parameters which are most useful to transient programs. The 
+format of the returned parameter block is:
+
+     DE+0      - Physical drive number (1=A: etc)
+     DE+1,2    - Sector size (always 512 currently)
+     DE+3      - Sectors per cluster (non-zero power of 2)
+     DE+4,5    - Number of reserved sectors (usually 1)
+     DE+6      - Number of copies of the FAT (usually 2)
+     DE+7,8    - Number of root directory entries
+     DE+9,10   - Total number of logical sectors
+     DE+11     - Media descriptor byte
+     DE+12     - Number of sectors per FAT
+     DE+13..14 - First root directory sector number
+     DE+15..16 - First data sector number
+     DE+17..18 - Maximum cluster number
+     DE+19     - Dirty disk flag
+     DE+20..23 - Volume id. (-1 =&gt; no volume id.)
+     DE+24..31 - Reserved (currently always zero)  
+
+   The dirty  disk flag  indicates whether  in the disk there is a file which 
+can  be recovered  by UNDEL  command. It is reset when the file allocation is 
+done.
+
+  3.44   FIND FIRST ENTRY (40H)
+
+     Parameters:    C = 40H (_FFIRST) 
+                   DE = Drive/path/file ASCIIZ string
+                                or fileinfo block pointer
+                        HL = filename ASCIIZ string (only if
+                                DE = fileinfo pointer)
+                         B = Search attributes
+                   IX = Pointer to new fileinfo block
+     Results:       A = Error
+                 (IX) = Filled in with matching entry 
+
+   The &quot;drive/path&quot; portion of the string, or the fileinfo block, specifies a 
+directory which  is to  be searched.  A &quot;.IATTR&quot;  error will be returned if a 
+fileinfo  block which  specifies a  file is passed. The &quot;file&quot; portion of the 
+string, or  the filename  ASCIIZ string in HL, determines what filenames will 
+be matched. If no match is found then a &quot;.NOFIL&quot; error is returned, otherwise 
+the  fileinfo block  pointed to  by IX  is filled  in with the details of the 
+matching entry.
+
+   The filename  may contain  ambiguous filename  characters (&quot;?&quot;  or &quot;*&quot;) in 
+which case the first matching entry will be returned. If the filename is null 
+(either  the ASCIIZ  string pointed  to by DE is null or ends in a &quot;\&quot; or the 
+filename string  pointed to  by HL  is null),  then this function will behave 
+exactly as if the filename was &quot;*.*&quot; so any name will match.
+
+   The  attributes byte  in register  B specifies  what type of entry will be 
+matched. If  it is zero then only non-hidden, non-system files will be found. 
+If  the directory,  hidden or  system bits in register B are set then entries 
+with these  attributes will  be matched  as well  as ordinary files. The read 
+only and archive bits of register B are ignored.
+
+   If the  volume name bit of register B is set then the search is exclusive, 
+only  the volume  label entry  will be  found. In this case also the fileinfo 
+block  and  filename or  the drive/path/file  string are  ignored apart  from 
+specifying the drive. This means that the volume name will always be found in 
+the root directory if it exists whether or not it matches the filename given.
+
+   If DE  points to  a fileinfo  block, then  if desired, IX can point to the 
+same  fileinfo block.  In this  case when  a match  is found the new fileinfo 
+block will overwrite the old one.
+
+  3.45   FIND NEXT ENTRY (41H)
+
+     Parameters:    C = 41H (_FNEXT) 
+                        IX = Pointer to fileinfo block from
+                             previous find first function. 
+     Results:       A = Error
+                 (IX) = Filled in with next matching entry 
+
+   This function  should only  be used  after a  &quot;find first  entry&quot; function 
+call.  It  searches  the  directory  for the  next match  to the  (presumably 
+ambiguous)  filename which was given to the &quot;find first entry&quot; function call. 
+If there  are no  more matching  entries then  a &quot;.NOFIL&quot;  error is returned, 
+otherwise  the fileinfo block is filled in with the information about the new 
+matching entry.
+
+  3.46   FIND NEW ENTRY (42H)
+
+     Parameters:    C = 42H (_FNEW) 
+                        DE = Drive/path/file ASCIIZ string
+                                or fileinfo block pointer
+                        HL = filename ASCIIZ string (only if
+                                DE = fileinfo pointer)
+                         B = b0..b6 = Required attributes
+                             b7 = Create new flag
+                   IX = Pointer to new fileinfo block
+                         containing template filename
+     Results:       A = Error
+                 (IX) = Filled in with new entry 
+
+   This function is very similar to the &quot;find first entry&quot; function described 
+above. The  parameters in  HL and  DE are  used in  exactly the  same way  to 
+specify  a  directory  entry.  However  instead  of  searching  the  selected 
+directory  for an entry which matches the specified name, a new entry will be 
+created with this name. The fileinfo block pointed to by IX will be filled in 
+with information  about the  new entry  just as  if it  had been found with a 
+&quot;find first entry&quot; call.
+
+   If there  are any  ambiguous characters (&quot;?&quot; or &quot;*&quot;) in the filename, then 
+they will be replaced by the appropriate character from a &quot;template filename&quot; 
+in  the filename  position of the new fileinfo block pointed to by IX. If the 
+result is  still ambiguous,  or otherwise  illegal, then  a &quot;.IFNM&quot;  error is 
+returned. This is useful for copy operations which do an automatic rename.
+
+   Like  &quot;find first entry&quot;, if the filename is null, then it will be treated 
+exactly as  if it  was &quot;*.*&quot;.  For this function that means that the template 
+filename will be used as the new filename to create.
+
+   A  &quot;.DRFUL&quot;  error  will  be  returned if  there is  no room  in the  root 
+directory, and a &quot;.DKFUL&quot; if a sub-directory must be extended and the disk is 
+already full.
+
+   The  attribute byte  passed in  register B  is the attribute which the new
+entry will be given. If the volume name bit is set then a volume name will be 
+created in  the root  directory. If  the directory  bit is set then the entry 
+created  will be  for a  sub-directory, otherwise  it will be for a file. The 
+system, hidden  and read  only bits may be set for a file, and the hidden bit 
+for a sub-directory. A file will always be created with the archive attribute 
+bit set.
+
+   A file  will be  created as  zero length with the current date and time. A 
+sub-directory will have a single cluster allocated to it and the &quot;.&quot; and &quot;..&quot; 
+entries will be initialized appropriately.
+
+   If there is already an entry with the specified name in the directory then 
+the action depends on the &quot;create new&quot; flag (bit-7 of register B) and also on 
+the type  of the entry. If the &quot;create new&quot; flag is set then a &quot;.FILEX&quot; error 
+will  always be returned. Setting this flag thereforeensures that an existing 
+file will not be deleted.
+
+   If  an entry  already exists and the &quot;create new&quot; flag is not set then the 
+type of  the existing  entry is  examined to see whether it can be deleted to 
+make  room for the new file. An error will be returned if the entry is a read 
+only file  (&quot;.FILRO&quot; error), a system file (&quot;.SYSX&quot; error) or a sub-directory 
+(&quot;.DIRX&quot; error) or there is a file handle already open to this file (&quot;.FOPEN&quot; 
+error). If we are trying to create a sub-directory then even an ordinary file 
+will not be deleted (&quot;.FILEX&quot; error).
+
+   For  all  of  these  error  codes (&quot;.FILEX&quot;,  &quot;.FILRO&quot;, &quot;.SYSX&quot;,  &quot;.DIRX&quot;, 
+&quot;.FOPEN&quot;),  the  fileinfo  block will  be filed  in with  the details  of the 
+already  existing entry  and this fileinfo block may be used exactly as if it 
+had been returned from a &quot;find first&quot; function.
+
+  3.47   OPEN FILE HANDLE (43H)
+
+     Parameters:    C = 43H (_OPEN) 
+                   DE = Drive/path/file ASCIIZ string
+                            or fileinfo block pointer
+                    A = Open mode. b0 set =&gt; no write
+                                   b1 set =&gt; no read
+                                   b2 set =&gt; inheritable   
+                                   b3..b7   -  must be clear
+     Results:       A = Error
+                    B = New file handle  
+
+   The  drive/path/file string or the fileinfo block should normally refer to 
+a file  rather than  a sub-directory  or volume  name. If it is a volume name 
+then a &quot;.IATTR&quot; error will be returned. If it is a sub-directory then &quot;.DIRX&quot; 
+error will be returned.
+
+   Assuming that a file is specified then it will be opened ready for reading 
+and/or writing (depending on the open mode in A) and a new file handle for it 
+will  be returned in register B. The lowest available file handle number will 
+be used and an error will result if there are no spare file handles (&quot;.NHAND&quot; 
+error), or insufficient memory (&quot;.NORAM&quot; error).
+
+   If the  &quot;no read&quot; bit of register A is set then reads from the file handle 
+will  be  rejected  and if  the &quot;no  write&quot; bit  is set  then writes  will be 
+rejected,  in both  cases with an &quot;.ACCV&quot; error. Writes will also be rejected 
+if  the  file is  read only  (&quot;.FILRO&quot; error).  If the  &quot;inheritable&quot; bit  of 
+register A  is set  then the  file handle  will be inherited by a new process 
+created by the &quot;fork&quot; function call (see function 60h).
+
+   If a  device file  handle is opened by giving a filename which matches one 
+of  the built in devices (for example &quot;CON&quot; or &quot;NUL&quot;), then it will always be 
+opened initially in ASCII mode. The IOCTL function (function 4Bh) can be used 
+to change  this to  binary mode  but great care must be taken in reading from 
+devices in binary mode because there is no end of file condition.
+
+  3.48   CREATE FILE HANDLE (44H)
+
+     Parameters:    C = 44H (_CREATE) 
+                   DE = Drive/path/file ASCIIZ string
+                    A = Open mode. b0 set =&gt; no write
+                                   b1 set =&gt; no read
+                                   b2 set =&gt; inheritable   
+                                 b3..b7   -  must be clear
+                    B = b0..b6 = Required attributes
+                            b7 = Create new flag
+     Results:       A = Error
+                    B = New file handle  
+
+   A file  or sub-directory,  as specified  by the  attributes in register B, 
+will  be  created  with  the  name  and  in  the  directory specified  by the 
+drive/path/file  string. A &quot;.IATTR&quot; error is returned if register B specifies 
+a volume name.
+
+   An error  will be returned if the file or sub-directory cannot be created. 
+The  error conditions  in this  case are the same as for the &quot;find new entry&quot; 
+function (function  42h) with  the main  error codes being &quot;.FILEX&quot;, &quot;.DIRX&quot;, 
+&quot;.SYSX&quot;,  &quot;.FILRO&quot;,  &quot;.FOPEN&quot;,  &quot;.DRFUL&quot; and  &quot;.DKFUL&quot;. Like  the &quot;find  new&quot; 
+function,  if the  &quot;create new&quot;  flag (bit-7  of register  B) is  set then an 
+existing file will not be deleted and will always return a &quot;.FILEX&quot; error.
+
+   If the  attributes byte  specifies a sub-directory then the hidden bit may 
+also  be set to create a hidden sub-directory. For a file, the hidden, system 
+or  read  only  bits  may  be  set  to  create  a  file with  the appropriate 
+attributes. An  invalid attributes  bits will  simply be ignored. A file will 
+always be created with the archive attribute bit set.
+
+   A  file  will  automatically  be opened  just as  for the  &quot;open&quot; function 
+described above,  and a  file handle  returned in register B. The &quot;open mode&quot; 
+parameter  is  interpreted  in the  same way  as for  the &quot;open&quot;  function. A 
+sub-directory  will not be opened (because this is meaningless) so register B 
+will be returned as 0FFh which can never be a valid file handle.
+
+  3.49   CLOSE FILE HANDLE (45H)
+
+     Parameters:    C = 45H (_CLOSE) 
+                    B = File handle
+     Results:       A = Error
+
+   This  function  releases  the  specified file  handle for  re-use. If  the 
+associated file  has been written to then its directory entry will be updated 
+with  a new  date and  time, the  archive attributes bit will be set, and any 
+buffered data  will be  flushed to  disk. Any  subsequent attempt to use this 
+file  handle will return an error. If there are any other copies of this file 
+handle, created by &quot;duplicate file handle&quot; or &quot;fork&quot;, then these other copies 
+may still be used. 
+
+  3.50   ENSURE FILE HANDLE (46H)
+
+     Parameters:    C = 46H (_ENSURE) 
+                    B = File handle
+     Results:       A = Error
+
+   If  the file  associated with the file handle has been written to then its
+directory  entry  will  be  updated with  a new  date and  time, the  archive 
+attributes bit  will be  set, and  any buffered data will be flushed to disk. 
+The file handle is not released and so it can still be used for accessing the 
+file, and the current file pointer setting will not be altered.
+
+  3.51   DUPLICATE FILE HANDLE (47H)
+
+     Parameters:    C = 47H (_DUP) 
+                    B = File handle
+     Results:       A = Error
+                    B = New file handle
+
+   This  function creates  a copy  of the  specified file  handle. The lowest
+available  file  handle  number  will  always  be used  and a  &quot;.NHAND&quot; error 
+returned if  there are  none available. The new file handle will refer to the 
+same  file as the original and either one may be used. If the file pointer of 
+one handle  is moved,  the other  one will also be moved. If either handle is 
+closed the other one may still be used.
+
+   Note that  because duplicate file handles created by this function are not 
+&quot;separately  opened&quot;, they  do not  count as  separate file  handles for  the 
+purposes of  generating &quot;.FOPEN&quot; errors. So for example a &quot;DUP&quot;ed file handle 
+may  be renamed  (function 53h) or have its attributes changed (function 55h) 
+and the  effect will  apply to  both file handles. Note in particular that if 
+one  copy of  a &quot;DUP&quot;ed  file handle  is deleted (function 54h) then the file 
+really will be deleted and the other file handle, although still open, can no 
+longer be  used safely.  If it  is used  (other than being closed, ensured or 
+deleted) then an &quot;.FDEL&quot; error will be returned. 
+
+  3.52   READ FROM FILE HANDLE (48H)
+
+     Parameters:    C = 48H (_READ) 
+                    B = File handle
+                   DE = Buffer address
+                   HL = Number of bytes to read  
+     Results:       A = Error
+                   HL = Number of bytes actually read
+
+   The  specified number  of bytes are read from the file at the current file
+pointer position  and copied  to the buffer address specified in register DE. 
+The file pointer is then updated to the next sequential byte. A &quot;.ACCV&quot; error 
+will  be returned if the file handle was opened with the &quot;no read&quot; access bit 
+set.
+
+   The number of bytes read may be less than the number requested for various 
+reasons, and  the number  read will be returned in register HL if there is no 
+error.  In general  if less  is read  than requested  then this should not be 
+treated as  an error  condition but  another read  should be done to read the 
+next portion, until a &quot;.EOF&quot; error is returned. An &quot;.EOF&quot; error will never be 
+returned  for a partial read, only for a read which reads zero bytes. Reading 
+files in  this way  ensures that device file handles will work correctly (see 
+below).
+
+   For disk  files the number of bytes read will only be less than the number 
+requested  if the  end of  the file is reached and in this case the next read 
+operation will  read zero bytes and will return an &quot;.EOF&quot; error. When reading 
+from a device file handle (for example the standard file handles 0 to 4), the 
+behaviour  depends on  the particular device, and on whether it is being read 
+in ASCII  or binary  mode (see  function 4Bh below). The &quot;CON&quot; device will be 
+described  as an  example because  it is  the most  commonly used device, but 
+other devices behave similarly.
+
+   When reading from the &quot;CON&quot; device in binary mode, characters will be read 
+from the keyboard, without any interpretation and without being echoed to the 
+screen or  printer. The  exact number  of characters requested will always be 
+read and there is no end of file condition. Because of the lack of any end of 
+file indication, great care must be taken when reading from devices in binary 
+mode.
+
+   A  read function  call to the &quot;CON&quot; device in ASCII mode (the default mode
+and that  which normally  applies to  the standard  input channel), will only 
+read  one line  of input.  The input line will be read from the keyboard with 
+the normal  line editing  facilities available to the user, and the character 
+typed  will be  echoed to the screen and to the printer if Ctrl-P is enabled. 
+Special control  characters &quot;Ctrl-P&quot;, &quot;Ctrl-N&quot;, &quot;Ctrl-S&quot; and &quot;Ctrl-C&quot; will be 
+tested  for and  will be  treated exactly  as for the console status function 
+0Bh.
+
+   When  the user types a carriage return the line will be copied to the read 
+buffer, terminated  with a  CR-LF sequence  and the read function will return 
+with  an appropriate  byte count.  The next  read will start another buffered 
+line input  operation. If  the number of bytes requested in the read was less 
+than the length of the line input then as many character as requested will be 
+returned,  and the  next read  function call will return immediately with the 
+next portion of the line until it has all been read.
+
+   If the  user types a line which starts with a &quot;Ctrl-Z&quot; character then this
+will be interpreted as indicating end of file. The line will be discarded and 
+the  read function  call will  read zero  bytes and return an &quot;.EOF&quot; error. A 
+subsequent read after this will be back to normal and will start another line 
+input. The end of file condition is thus not permanent.
+
+  3.53   WRITE TO FILE HANDLE (49H)
+
+     Parameters:    C = 49H (_WRITE) 
+                    B = File handle
+                   DE = Buffer address
+                   HL = Number of bytes to write
+     Results:       A = Error
+                   HL = Number of bytes actually written
+
+   This function is very similar to the &quot;read&quot; function above (function 48h).
+The number  of bytes  specified will  be written  to the current file pointer 
+position  in the file, and the file pointer will be adjusted to point to just 
+after the  last byte  written. If  the file  was opened  with the  &quot;no write&quot; 
+access bit set then a &quot;.ACCV&quot; error will be returned, and if the file is read 
+only then a &quot;.FILRO&quot; error will be returned.
+
+   If the  write goes  beyond the  current end  of file then the file will be 
+extended  as necessary.  If the file pointer is already beyond the end of the 
+file then  disk space  will be  allocated to  fill the  gap and  will not  be 
+initialized.  If there  is insufficient disk space then a &quot;.DKFUL&quot; error will 
+be returned  and no  data will be written, even if there was room for some of 
+the data.
+
+   The number of bytes written can usually be ignored since it will either be 
+zero  if an  error is returned or it will be equal to the number requested if 
+the write  was successful. It is very much more efficient to write files in a 
+few  large blocks  rather than many small ones, so programs should always try 
+to write in as large blocks as possible.
+
+   This function sets a &quot;modified&quot; bit for the file handle which ensures that 
+when the  file handle  is closed or ensured, either explicitly or implicitly, 
+the  directory entry  will be  updated with the new date, time and allocation 
+information. Also  the archive bit will be set to indicate that this file has 
+been modified since it was last archived.
+
+   Writing  to device  file handles is not a complicated as reading from them 
+because there  are no  end of  file conditions  or line input to worry about. 
+There  are some differences between ASCII and binary mode when writing to the 
+&quot;CON&quot; device, in that a console status check is done in ASCII mode only. Also 
+printer echo if enabled will only be done in ASCII mode.
+
+  3.54   MOVE FILE HANDLE POINTER (4AH)
+
+     Parameters:    C = 4AH (_SEEK) 
+                    B = File handle
+                    A = Method code
+                DE:HL = Signed offset
+     Results:       A = Error
+                DE:HL = New file pointer 
+
+   The file pointer associated with the specified file handle will be altered
+according to  the method  code and offset, and the new pointer value returned 
+in DE:HL. The method code specifies where the signed offset is relative to as 
+follows:
+
+     A=0  Relative to the beginning of the file
+     A=1  Relative to the current position
+     A=2  Relative to the end of the file.
+
+   Note  that an  offset of  zero with an method code of 1 will simply return 
+the current  pointer value,  and with a method code of 2 will return the size 
+of  the file.  No end  of file  check is  done so  it is  quite possible (and 
+sometimes useful)  to set  the file  pointer beyond  the end  of the file. If 
+there  are any  copies of  this file  handle created  by the  &quot;duplicate file 
+handle&quot; function  (function 47h)  or the  &quot;fork&quot; function (function 60h) then 
+their file pointer will also be changed. 
+
+   The file  pointer only  has any  real meaning  on disk  files since random 
+access is possible. On device files the file pointer is updated appropriately 
+when  any read  or write  is done,  and can  be examined  or altered  by this 
+function.  However  changing will  have no  effect and  examining it  is very 
+unlikely to be useful.
+
+  3.55   I/O CONTROL FOR DEVICES (4BH)
+
+     Parameters:    C = 4BH (_IOCTL) 
+                    B = File handle
+                    A = Sub-function code
+                        00H =&gt; get file handle status
+                        01H =&gt; set ASCII/binary mode
+                        02H =&gt; test input ready
+                        03H =&gt; test output ready
+                        04H =&gt; find screen size
+                   DE = Other parameters
+     Results:       A = Error
+                   DE = Other results
+
+   This function  allows various  aspects of  file handles to be examined and
+altered.  In particular  it can  be used  to determine  whether a file handle 
+refers to  a disk file or a device. This is useful for programs which want to 
+behave differently for disk files and device I/O.
+
+   This function  is passed  the file handle in register B and a sub-function 
+code  in register  A which specifies one of various different operations. Any 
+other  parameters  required  by  the  particular  sub-function are  passed in 
+register DE and results are returned in register DE. If the sub-function code 
+is invalid then a &quot;.ISBFN&quot; error will be returned.
+
+   If A=0 then the operation is &quot;get file handle status&quot;. This returns a word 
+of flags  which give various information about the file handle. The format of 
+this  word is  different for  device file  handles and disk file handles, and 
+bit-7 specifies which it is. The format of the word is as follows:
+
+For devices:    DE -     b0  set  =&gt; console input device
+                         b1  set  =&gt; console output device
+                     b2..b4  reserved
+                         b5  set  =&gt; ASCII mode
+                             clear=&gt; binary mode
+                         b6  set  =&gt; end of file
+                         b7  always set (=&gt; device)
+                    b8..b15  reserved 
+
+For disk files: DE - b0..b5  drive number (0=A: etc)
+                         b6  set  =&gt; end of file
+                         b7  always clear (=&gt; disk file)
+                    b8..b15  reserved 
+
+   Note  that the end of file flag is the same for devices as for disk files.
+For devices  it will  be set  if the previous attempt to read from the device 
+produced  a &quot;.EOF&quot; error and will be cleared by the next read. For disk files 
+it is worked out by comparing the file pointer with the file size.
+
+   If  A=1 then the operation is a &quot;set ASCII/binary mode&quot;. This operation is 
+only allowed  for device file handles. An ASCII/binary flag must be passed in 
+bit-5  of  register  E  (exactly  where it  is returned  by &quot;get  file handle 
+status&quot;).  This is  set for  ASCII mode  and clear for binary mode. All other 
+bits of register DE are ignored.
+
+   If A=2  or 3  then the  operation is  &quot;test input  ready&quot; or  &quot;test output 
+ready&quot;  respectively. In both cases a flag is returned in register E which is 
+FFh if  the file  handle is  ready for  a character and 00h if not. The exact 
+meaning  of &quot;ready  for a character&quot; depends on the device. Disk file handles 
+are always  ready for  output, and are always ready for input unless the file 
+pointer is at the end of file. The &quot;CON&quot; device checks the keyboard status to 
+determine whether it is ready for input or not.
+
+   If A=4  the the  operation is  &quot;get screen size&quot;. This returns the logical 
+screen size for the file handle with the number of rows in register D and the 
+number  of columns  in register  E. For  devices with no screen size (such as 
+disk  files)  both  D  and  E  will be  zero. Zero  for either  result should 
+therefore be interpreted as &quot;unlimited&quot;. For example this function is used by 
+the &quot;DIR  /W&quot; command to decide how many files to print per line, and a value 
+of zero for register E is defaulted to 80.
+
+  3.56   TEST FILE HANDLE (4CH)
+
+     Parameters:    C = 4CH (_HTEST)
+                    B = File handle
+                   DE = Drive/path/file ASCIIZ string
+                                 or fileinfo block pointer
+     Results:       A = Error
+                    B = 00H =&gt; not the same file
+                        FFH =&gt; same file
+
+   This  rather  specialist function  is passed  a file  handle and  either a
+drive/path/file  string  or  a  fileinfo block  which identifies  a file.  It 
+determines if  the two  files are  actually the  same file and returns a flag 
+indicating  the result.  Note that  if the file handle is for a device rather 
+than a disk file then it will always return &quot;B=00h&quot; to indicate &quot;not the same 
+file&quot;.
+
+   This function allows the &quot;COPY&quot; command to detect certain error conditions 
+such as  copying file  onto themselves  and give  the user  informative error 
+messages.  It may  also be useful for other programs which need to do similar 
+tests.
+
+  3.57   DELETE FILE OR SUBDIRECTORY (4DH)
+
+     Parameters:    C = 4DH (_DELETE) 
+                   DE = Drive/path/file ASCIIZ string
+                                or fileinfo block pointer
+     Results:       A = Error
+
+   This function  deletes the object (file or sub-directory) specified by the 
+drive/path/file  string or the fileinfo block. Global filename characters are 
+not  allowed  so only  one file  or sub-directory  can be  deleted with  this 
+function. A  sub-directory can  only be  deleted if  it is  empty or an error 
+(&quot;.DIRNE&quot;) occurs if not). The &quot;.&quot; and &quot;..&quot; entries in a sub-directory cannot 
+be  deleted (&quot;.DOT&quot;  error) and neither can the root directory. A file cannot 
+be deleted  if there  is a  file handle open to it (.FOPEN error) or if it is 
+read only (.FILRO error).
+
+   If  it is  a file  then any  disk space  which was allocated to it will be 
+freed. If  the disk  is an MSX-DOS 2 disk then enough information is retained 
+on  the disk  to allow the &quot;UNDEL&quot; utility program do undelete the file. This 
+information is only retain ed until the next disk space allocation (usually a 
+write to  a file) is done on this disk. After making this function call, if a 
+fileinfo  block was passed then it must not be used again (other than passing 
+it to  a &quot;find  next entry&quot;  function) since  the file  to which it refers no 
+longer exists.
+
+   If a device name such as &quot;CON&quot; is specified then no error will be returned 
+but the device will not actually be deleted.
+
+  3.58   RENAME FILE OR SUBDIRECTORY (4EH)
+
+     Parameters:    C = 4EH (_RENAME) 
+                   DE = Drive/path/file ASCIIZ string
+                                or fileinfo block pointer
+                   HL = New filename ASCIIZ string 
+     Results:       A = Error
+
+   This function  renames the object (file or sub-directory) specified by the 
+drive/path/file string or the fileinfo block, with the new name in the string 
+pointed  to by HL. The new filename string must not contain a drive letter or 
+directory path  (&quot;.IFNM&quot; error if it does). If a device name such as &quot;CON&quot; is 
+specified  then no error will be returned but the device will not actually be 
+renamed.
+
+   Global filename  characters are not allowed in the drive/path/file string, 
+so  only one  object can be renamed by this function. However global filename 
+characters are  allowed in the new filename passed in HL and where they occur 
+the  existing filename  character will  be left unaltered. Checks are done to 
+avoid creating an illegal filename, for example a file called &quot;XYZ&quot; cannot be 
+renamed with  a new filename string of &quot;????A&quot; because the new filename would 
+be &quot;XYZ A&quot; which is illegal. In this case a &quot;.IFNM&quot; error will be returned.
+
+   If there is already an entry with the new filename then an error (&quot;.DUPF&quot;) 
+is returned  to avoid  creating duplicate filenames. The &quot;.&quot; and &quot;..&quot; entries 
+in a sub-directory cannot be renamed (&quot;.IDOT&quot; error) and neither can the root 
+directory (it has noname). A file cannot be renamed if there is a file handle 
+open to it (&quot;.FOPEN&quot; error) although a read only file can be renamed.
+
+   Note that  if DE pointed to a fileinfo block, this is not updated with the 
+new  name of  the file.  Therefore care  must be  taken in using the fileinfo 
+block after making this function call.
+
+  3.59   MOVE FILE OR SUBDIRECTORY (4FH)
+
+     Parameters:    C = 4FH (_MOVE) 
+                   DE = Drive/path/file ASCIIZ string
+                                or fileinfo block pointer
+                   HL = New path ASCIIZ string 
+     Results:       A = Error
+
+   This  function moves  the object  (file or sub-directory) specified by the 
+drive/path/file string  or the  fileinfo block, to the directory specified by 
+the  new path  string pointed to by HL. There must not be a drive name in the 
+new path  string. If  a device  name such as &quot;CON&quot; is specified then no error 
+will be returned but the device will not actually be moved.
+
+   Global filename  characters are  not allowed in any of the strings so only 
+one object (file or sub-directory) can be moved by this function, although if 
+a sub-directory is moved, all its descendants will be moved with it. If there 
+is  already an  entry of  the required  name in  the target  directory then a 
+&quot;.DUPF&quot; error  is returned  to prevent  creating duplicate filenames. The &quot;.&quot; 
+and &quot;..&quot; entries in a sub-directory cannot be moved (&quot;.DOT&quot; error) and also a 
+directory  cannot be  moved into  one of  its own descendants (&quot;.DIRE&quot; error) 
+since this  would create an isolated loop in the filing system. A file cannot 
+be moved if there is a file handle open to it (&quot;.FOPEN&quot; error).
+
+   Note  that if  a fileinfo  block is  passed to this function, the internal 
+information in  the fileinfo block is not updated to reflect the new location 
+of the file. This is necessary because otherwise the fileinfo block could not 
+be used for a subsequent &quot;find next&quot; function call. However it does mean that 
+the fileinfo block no longer refers to the moved file and so must not be used 
+for any operations on it such as &quot;rename&quot; or &quot;open&quot;.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

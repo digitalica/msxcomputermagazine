@@ -1,0 +1,137 @@
+<html>
+
+<head>
+<title>MILC - Topic Listing 2 van 'Met mathpack routines rekenen in ML'</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_3.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_5.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Listing 2 van 'Met mathpack routines rekenen in ML'</b><br>
+    <i>Jan vd Meer?</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;ASSEMBLERLISTING 2
+;------------------
+; Voorbeeld voor uitvoeren van een deling.
+;(Efficientere programmering is mogelijk, doch minder overzichtelijk)
+;De met &quot;***&quot; gemerkte subroutines staan op de abonnement disk.
+
+NEXT    NOP              ;Zie assemblerlisting 1
+DELING  LD   HL,STRING1  ;Opslagadres voor string 1 (deeltal)
+	CALL INPUT_$	 ;Intypen numerieke ascii-string		***
+        CALL LENGTE      ;Eventuele overtollige eindspaties verwijderen ***
+        CALL CHK_NUM     ;Syntax kontroleren, genereert foutmelding bij ***
+                         ; syntaxfout en zet dan C-vlag v&cent;&cent;r RET
+        JR   C,DELING    ;(String opnieuw intypen)
+	LD   A,#FF	 ;Markering 'basicrom aanschakelen'
+                         ;(Entry-adres routine &quot;FIN&quot; staat al in subroutine)
+	CALL DUBBEL	 ;Mathpack routine uitvoeren en converteren naar
+                         ; dubbele precisie indien resultaat 'n integer
+        LD   HL,RESULT1  ;Opslagadres voor resultaat
+	LD   A,(VALTYP)
+        LD   (HL),A      ;VALTYP opslaan
+        INC  HL          ;Doeladres
+        LD   DE,DAC      ;Bronadres (resultaat vertaling deler)
+        EX   DE,HL       ;Verwissel bron- en doeladres
+        LD   BC,#0008    ;Aantal bytes
+	LDIR		 ;Mathpack notatie opslaan
+DELIN_1 LD   HL,STRING1  ;Opslagadres voor string 1 (deler)
+	CALL INPUT_$	 ;Intypen numerieke ascii-string		***
+        CALL LENGTE      ;Eventuele overtollige eindspaties verwijderen ***
+        CALL CHK_NUM     ;Syntax kontroleren, genereert foutmelding bij ***
+                         ; syntaxfout en zet C-vlag v&cent;&cent;r RET
+        JR   C,DELIN_1   ;(String opnieuw intypen)
+        LD   HL,FIN      ;Entry-adres mathpackroutine &quot;FIN&quot;
+        LD   (ENTRY_A),HL; invullen in subroutine in page 3
+	LD   A,#FF	 ;Markering 'basicrom aanschakelen'
+	CALL DUBBEL	 ;Mathpack routine uitvoeren en converteren naar
+                         ; dubbele precisie indien resultaat 'n integer
+        LD   A,(DAC)     ;Haal 1e byte van resultaat (notatie deler)
+        OR   A           ;Is resultaat NUL ?
+	JR   NZ,DELIN_2  ;Nee
+	NOP		 ;Hier foutmelding programmeren,
+	JR DELIN_1	 ;die terugkeert naar &quot;DELIN_1&quot; voor nieuwe ingave
+DELIN_2 LD   HL,MAF      ;Entry-adres routine &quot;MAF&quot; (DAC ---&gt; ARG)
+        LD   (ENTRY_A),HL; invullen in subroutine in page 3
+	XOR  A		 ;Markering 'geen basicrom'
+        CALL #F55E       ;Mathpackroutine uitvoeren (deler van DAC naar ARG)
+        LD   A,#08       ;VALTYP, gewenst voor uitkomst (dubbele precisie)
+        LD   (VALTYP),A  ;Set VALTYP
+        LD   HL,RESULT1+1;Opslagadres van notatie deeltal (Bronadres)
+        LD   DE,DAC      ;Doeladres
+        LD   BC,#0008    ;Aantal bytes
+        LDIR             ;Notatie deeltal naar DAC kopi‰ren
+        LD   HL,DECDIV   ;Entry-adres voor mathpack 'deling'
+	LD   (ENTRY_A),HL; invullen in subroutine in page 3
+	XOR  A		 ;Markering 'geen basicrom'
+	CALL DUBBEL	 ;Mathpack routine uitvoeren en converteren naar
+                         ; dubbele precisie indien resultaat integer
+                         ;(Resultaat staat in DAC)
+
+;--&gt; Resultaat bewaren voor later gebruik
+
+DELIN_3 LD   HL,RESULT2  ;Opslagadres voor te bewaren resultaat
+        LD   A,(VALTYP)  ;Haal VALTYP op
+        LD   (HL),A      ;VALTYP-code opslaan
+        INC  HL          ;Doeladres
+	LD   DE,DAC	 ;Bronadres (resultaat deling)
+        EX   DE,HL       ;Verwissel bron- en doeladres
+        LD   BC,#0008    ;Aantal bytes
+	LDIR		 ;Mathpack notatie opslaan
+
+;--&gt; Resultaat vertalen naar afdrukbare string
+
+DELIN_4 LD   HL,FOUT     ;Entry-adres routine 'FOUT'
+        LD   (ENTRY_A),HL; invullen in subroutine in page 3
+        LD   A,#FF       ;Markering 'basicrom aanschakelen'
+        CALL #F55E       ;Mathpack routine uitvoeren, returns pointer
+                         ;naar afdrukbare string in HL
+        NOP              ;HIER KOMT TE PROGRAMMEREN ROUTINE OM AFDRUKBARE
+                         ;STRING (resultaat) NAAR SCHERM TE STUREN.
+        RST  0           ;Einde programma
+;----------------------------
+;MATHPACKFUNKTIE UITVOEREN
+;+ CONVERSIE DUBBELE PRECISIE
+;----------------------------
+DUBBEL  CALL #F55E       ;Mathpack subroutine in page 3 uitvoeren
+        LD   A,(VALTYP)  ;Haal type van resultaat op
+        CP   #02         ;Resultaat is integer ?
+        RET  NZ          ;Nee  (is enkele- of dubbele presisie)
+        LD   HL,FRCDBL   ;Call-adres voor routine &quot;FRCDBL&quot;
+        LD   (ENTRY_A),HL;  invullen in subroutine in page 3
+        LD   A,#FF       ;Markering 'basicrom aanschakelen'
+        CALL #F55E       ;Mathpack-notatie (in DAC) converteren
+                         ; naar dubbele precisie (resultaat in DAC)
+        RET
+;------------------------ EINDE LISTING 2 --------------------------
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

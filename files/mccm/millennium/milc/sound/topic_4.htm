@@ -1,0 +1,118 @@
+<html>
+
+<head>
+<title>MILC - Topic Muziekmodule: algemene info</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_3.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_5.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Muziekmodule: algemene info</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                       ------------------------------------
+                        -- PHILIPS NMS1205 MUZIEKMODULE --
+                         --------------------------------
+
+                          Met dank aan Peter Overbeek
+
+   SCHEMATISCH OVERZICHT MUZIEKMODULE:
+   ---------------------------------------------------------------------------
+
+
+              +-------------------------------------------------------+
+              | +-+microphone                                         |
+              | +++              +--------------+                     |
+              |  |      |\       |              |   +--------+        |
+     MICRO-   o--+-----&gt;| &gt;-+---&gt;+              +--&gt;+ 256 Kb |        |
+     PHONE IN |         |/  |    |   MSX AUDIO  +&lt;--+   RAM  |        |
+              |             |    |   =========  |   +--------+        |
+      LINE IN o--------&gt;----+    |              |                     |
+              |                  |    SOUND-    |   +--------+        |
+              |                  |              +--&gt;+ 13 bit | +-+    |
+             ++-+                |  PROCESSOR   |   |DAC 3014|_|/|__  |
+    EXTERNAL |::+---------------&gt;+              |   +--------+ +++ |  |
+    KEYBOARD |::|                | YAMAHA Y8950 |               |  |  |
+             |::+&lt;---------------+              +----------&gt;----+ +++ | -AUDIO-
+             |::|                |              +----------&gt;----+ | +&gt;o 'LEFT'
+             ++-+                |              |               | |++&gt;o 'RIGHT'
+              |                  +------+-------+               | +++ |
+              |   +--------+            |           +--------+ +++ |  |
+              |   | 256 Kb +&lt;-----------+----------&gt;+ 8 bit  |_|/|_|  |
+              |   | EPROM  +&lt;--+        |           |DAC 0800| +-+    |
+              |   +--------+   |        |           +--------+        |
+              |                |16bits  |           +--------+        | MIDI
+              |   +--------+   |        +----------&gt;+  ACIA  ++-OPTO&lt;-O -IN
+              |   | adres  +&lt;--+        |   +----+  |  midi- |+-----&gt;-O -THRU
+              |   | decoder|   |        |   |KLOK+-&gt;+ interf.+------&gt;-O -OUT
+              |   +-----+--+   |        |   +----+  +--------+        |
+              |         |CTRL  |ADRES   |8bits DATA                   |
+              +----++++++++++--+--------+--------------+++++++++++----+
+                   |||||||||| CARTRIDGE SLOT CONNECTOR |||||||||||
+                   +---------------------------------------------+
+
+
+   SOUNDPROCESSOR:
+   ---------------------------------------------------------------------------
+   De soundprocessor moet worden aangestuurd via de poorten &amp;HC0 en &amp;HC1:
+
+   OUT &amp;HC0 - kiest een register.
+   OUT &amp;HC1 - stelt de gekozen functie in of verstuurt klankgegevens (DATA)
+   INP(&amp;HC0)- leest de status van de soundprocessor
+              bit 0  ADPCM BUSY
+                     Dit bit staat op &quot;1&quot; tijdens ADPCM opname of weergave.
+              bit 1  niet in gebruik, staat altijd op &quot;1&quot;.
+              bit 2  niet in gebruik, staat altijd op &quot;1&quot;.
+              bit 3  BUFFER READY FLAG
+                     Deze vlag wordt gezet wanneer het datatransport via de
+                     bufferregisters klaar is. Dit is van toepassing op ADPCM
+                     opname en weergave via het RAM-geheugen van de computer en
+                     voor datatransport tussen computer-RAM en module-RAM.
+              bit 4  END OF SAMPLE FLAG
+                     Deze vlag wordt gezet aan het eind van ADPCM opname of
+                     weergave in het geheugen van de module en bij AD en DA
+                     conversie als de sampletijd verstreken is.
+              bit 5  TIMER-2 FLAG
+                     Deze vlag wordt gezet als timer-2 tot nul afgeteld is.
+              bit 6  TIMER-1 FLAG
+                     Deze vlag wordt gezet als timer-1 tot nul afgeteld is.
+              bit 7  INTERRUPT
+                     Dit bit wordt op 1 gezet als een van de vier hier-
+                     bovenstaande vlaggen gezet is. De microprocessor kan aan 
+                     dit bit zien dat de interrupt veroorzaakt werd door de 
+                     soundprocessor. Bij het programeren in BASIC kunnen we 
+                     echter geen gebruik maken van de vlaggen dus moeten we ze 
+                     via register 4 maskeren om te verhinderen dat ze een 
+                     interrupt veroorzaken.
+   INP(&amp;HC1)- leest gegevens zoals gedigitaliseerde spraak
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

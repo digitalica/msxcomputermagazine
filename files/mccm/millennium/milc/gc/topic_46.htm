@@ -1,0 +1,114 @@
+<html>
+
+<head>
+<title>MILC - Topic Screen-splitting (source)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_45.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_47.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Screen-splitting (source)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+        ORG   &amp;H9000
+;
+        JP    INTERR
+;
+;
+JUMPER: DEFB  255
+;
+;
+        DEFB  &quot;    (C)1990 Parallax - C.Cremers.    &quot;
+        DEFB  &quot;Screen split test-programma !!       &quot;
+;
+;
+INTERR:
+        DI                    ; GEEN ANDERE INTERRUPTS ERDOORHEEN.
+        LD    A,(JUMPER)
+        OR    A
+        JP    Z,LIJN          ; JUMPER ONGELIJK 0, DUS
+;                               DEZE INTERRUPT IS OP DE LIJN.
+ONDER:
+        XOR   A
+        LD    (JUMPER),A      ; DE VOLGENDE INTERRUPT IS WEL OP DE
+;                               LIJN
+        LD    A,100           ; ZET DE LIJN IN REGISTER #19
+        OUT   (&amp;H99),A
+        LD    A,19
+        OR    128
+        OUT   (&amp;H99),A
+;
+;-------Hier komen de VDP-registers van boven.
+;
+        LD    A,0             ; ZET VDP(24) OP 0.
+
+        OUT   (&amp;H99),A
+        LD    A,23            ; REGISTER #23
+        OR    128
+        OUT   (&amp;H99),A
+;
+;-------Einde veranderde VDP-registers van boven.
+;
+        LD    A,(&amp;HF3DF)      ; OUDE WAARDE VAN VDP(0)
+        OR    16              ; ZET [IE1] OP 1.
+        LD    (&amp;HF3DF),A
+        OUT   (&amp;H99),A
+        LD    A,128
+        OUT   (&amp;H99),A
+        RET                   ; SPRING TERUG
+;
+LIJN:
+;                               DEZE ROUTINE WORDT UITGEVOERD OP
+;                               LIJN 100 (IETS LAGER !)
+        LD    A,255
+        LD    (JUMPER),A
+        LD    A,(&amp;HF3DF)
+        RES   4,A             ; RESET [IE1]
+        LD    (&amp;HF3DF),A
+        OUT   (&amp;H99),A
+        LD    A,128
+        OUT   (&amp;H99),A
+;
+;-------De veranderde registers onder de lijn.
+;
+        LD    A,128           ; VDP(24)=128
+        OUT   (&amp;H99),A
+        LD    A,23            ; REGISTER #23
+        OR    128
+        OUT   (&amp;H99),A
+;
+;-------Einde veranderde registers onder de lijn.
+;
+        RET
+;
+;
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_45.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_47.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

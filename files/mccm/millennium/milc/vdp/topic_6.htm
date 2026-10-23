@@ -1,0 +1,367 @@
+<html>
+
+<head>
+<title>MILC - Topic De VDP mode-registers</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_5.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_7.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">De VDP mode-registers</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+CBCDXDe VDP mode-registersCbCdY
+
+&Aring;-----\-----\-------\-------\-------\-------\-------\-------\-------\-------&atilde;
+&iexcl; VDP &iexcl; reg &iexcl; bit 7 &iexcl; bit 6 &iexcl; bit 5 &iexcl; bit 4 &iexcl; bit 3 &iexcl; bit 2 &iexcl; bit 1 &iexcl; bit 0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   0 &iexcl;   0 &iexcl;   0   &iexcl;   DG  &iexcl;  IE0  &iexcl;  IE1	&iexcl;   M5  &iexcl;   M4  &iexcl;   M3  &iexcl; ----- &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   1 &iexcl;   1 &iexcl; ----- &iexcl; blank &iexcl;  IE2  &iexcl;   M1	&iexcl;   M2  &iexcl;   0   &iexcl;  size &iexcl;	MAG  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   9 &iexcl;   8 &iexcl; mouse &iexcl;  LCRS &iexcl;   TP  &iexcl;  CBD	&iexcl;  VRS1 &iexcl;  VRS0 &iexcl;  SPD  &iexcl;	B/W  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  10 &iexcl;   9 &iexcl;   LN  &iexcl;   0   &iexcl;  SYM1 &iexcl;  SYM0 &iexcl;   IL  &iexcl;  E/O  &iexcl;  NTSC &iexcl;	DCD  &iexcl;
+-----_-----_-------_-------_-------_-------_-------_-------_-------_-------
+
+DG	= digitize mode
+IE0	= vertical retrace interrupt enable
+IE1	= horizontal retrace interrupt enable
+IE2	= light pen or mouse interrupt enable
+MAG	= magnify of sprite patterns: 0=*1, 1=*2
+SIZE	= size of sprites: 0=8*8, 1=16*16
+BLANK	= enable (1) or disable (0) display
+B/W	= black and white mode, 32 gradations composite video output
+SPD	= sprite disable mode
+M1-M5	= define mode (zie tabel)
+MOUSE	= mouse or light pen mode: 0/1= light pen/mouse interface
+LCRS	= light pen registration/coincidence registration select:
+	  0/1= coincidence/light pen
+TP	= transparent mode: 0/1= pallette code 0 becomes/not transparent
+CBD	= colorbus direction: 0/1= output/input
+VRS0/1	= Video-RAM select
+SYM0/1	= synchronisation mode
+IL	= interlace mode: 0= non-interlace,1= interlace
+	  and generate complete interlace timing
+E/O	= even/odd: 0= normal display, 1=even/odd screen alternative display
+NTSC	= NTSC or PAL mode select: 0/1= NTSC(60Hz) / PAL(50Hz)
+DCD	= dot clock direction: 0/1= dot clock input/output mode
+
+&Aring;----\----\----\----\----\---------------&atilde;	  &Aring;-------\-----------------&atilde;
+&iexcl; M5 &iexcl; M4 &iexcl; M3 &iexcl; M2 &iexcl; M1 &iexcl; SCREEN	      &iexcl;	  &iexcl;  VRS  &iexcl;		 &iexcl;
+-----------------------------------------&cent;	  ----\---&cent;	RAM	 &iexcl;
+&iexcl;  0 &iexcl;	0 &iexcl;  0 &iexcl;  0 &iexcl;  0 &iexcl; SCREEN 1      &iexcl;	  &iexcl; 1 &iexcl; 0 &iexcl;		 &iexcl;
+-----------------------------------------&cent;	  --------------------------&cent;
+&iexcl;  0 &iexcl;	0 &iexcl;  0 &iexcl;  0 &iexcl;  1 &iexcl; SCREEN 0 (40) &iexcl;	  &iexcl; 0 &iexcl; 0 &iexcl;      1x16Kb	 &iexcl;
+-----------------------------------------&cent;	  --------------------------&cent;
+&iexcl;  0 &iexcl;	0 &iexcl;  0 &iexcl;  1 &iexcl;  0 &iexcl; SCREEN 3      &iexcl;	  &iexcl; 0 &iexcl; 1 &iexcl;      4x16Kb	 &iexcl;
+-----------------------------------------&cent;	  --------------------------&cent;
+&iexcl;  0 &iexcl;	0 &iexcl;  1 &iexcl;  0 &iexcl;  0 &iexcl; SCREEN 2      &iexcl;	  &iexcl; 1 &iexcl; 0 &iexcl;      1x64Kb	 &iexcl;
+-----------------------------------------&cent;	  --------------------------&cent;
+&iexcl;  0 &iexcl;	1 &iexcl;  0 &iexcl;  0 &iexcl;  0 &iexcl; SCREEN 4      &iexcl;	  &iexcl; 1 &iexcl; 1 &iexcl; 64Kb high speed &iexcl;
+-----------------------------------------&cent;	  ---_---_-----------------
+&iexcl;  0 &iexcl;	1 &iexcl;  0 &iexcl;  0 &iexcl;  1 &iexcl; SCREEN 0 (80) &iexcl;
+-----------------------------------------&cent;	  &Aring;-------\------------------&atilde;
+&iexcl;  0 &iexcl;	1 &iexcl;  1 &iexcl;  0 &iexcl;  0 &iexcl; SCREEN 5      &iexcl;	  &iexcl;  SYM  &iexcl;		  &iexcl;
+-----------------------------------------&cent;	  ----\---&cent; application mode &iexcl;
+&iexcl;  1 &iexcl;	0 &iexcl;  0 &iexcl;  0 &iexcl;  0 &iexcl; SCREEN 6      &iexcl;	  &iexcl; 0 &iexcl; 1 &iexcl;		  &iexcl;
+-----------------------------------------&cent;	  ---------------------------&cent;
+&iexcl;  1 &iexcl;	0 &iexcl;  0 &iexcl;  0 &iexcl;  0 &iexcl; SCREEN 7      &iexcl;	  &iexcl; 0 &iexcl; 0 &iexcl;     internal	  &iexcl;
+-----------------------------------------&cent;	  ---------------------------&cent;
+&iexcl;  1 &iexcl;	1 &iexcl;  1 &iexcl;  0 &iexcl;  0 &iexcl; SCREEN 8      &iexcl;	  &iexcl; 0 &iexcl; 1 &iexcl;      mixing	  &iexcl;
+----_----_----_----_----_---------------	  ---------------------------&cent;
+					  &iexcl; 1 &iexcl; 0 &iexcl; ext video or dig &iexcl;
+&Aring;-----\-----\----------\--------------------&atilde; ---------------------------&cent;
+&iexcl; CBD &iexcl;  DG &iexcl; colorbus &iexcl;	  application	&iexcl; &iexcl; 1 &iexcl; 1 &iexcl;	none	  &iexcl;
+--------------------------------------------&cent; ---_---_------------------
+&iexcl;  0  &iexcl;  0  &iexcl;  output  &iexcl; external encoder &amp; &iexcl;
+&iexcl;     &iexcl;     &iexcl;	      &iexcl;	external pallette &iexcl;
+--------------------------------------------&cent;
+&iexcl;  1  &iexcl;  0  &iexcl;  input   &iexcl;	    mouse	&iexcl;
+--------------------------------------------&cent;
+&iexcl;  0  &iexcl;  1  &iexcl;  input!  &iexcl;	  digitizing	&iexcl;
+--------------------------------------------&cent;
+&iexcl;  1  &iexcl;  1  &iexcl;  input   &iexcl;	  digitizing	&iexcl;
+-----_-----_----------_--------------------
+
+
+
+
+
+
+
+
+
+
+
+
+CBCDXDe VDP adres-registersCbCdY
+
+&Aring;-----\-----\-------\-------\-------\-------\-------\-------\-------\-------&atilde;
+&iexcl; VDP &iexcl; reg &iexcl; bit 7 &iexcl; bit 6 &iexcl; bit 5 &iexcl; bit 4 &iexcl; bit 3 &iexcl; bit 2 &iexcl; bit 1 &iexcl; bit 0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   2 &iexcl;   2 &iexcl;   0   &iexcl;  A16  &iexcl;  A15  &iexcl;  A14	&iexcl;  A13  &iexcl;  A12  &iexcl;  A11  &iexcl;	A10  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   3 &iexcl;   3 &iexcl;  B13  &iexcl;  B12  &iexcl;  B11  &iexcl;  B10	&iexcl;   B9  &iexcl;   B8  &iexcl;   B7  &iexcl;	 B6  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  11 &iexcl;  10 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;  B16  &iexcl;  B15  &iexcl;	B14  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   4 &iexcl;   4 &iexcl;   0   &iexcl;   0   &iexcl;  C16  &iexcl;  C15	&iexcl;  C14  &iexcl;  C13  &iexcl;  C12  &iexcl;	C11  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   5 &iexcl;   5 &iexcl;  D14  &iexcl;  D13  &iexcl;  D12  &iexcl;  D11	&iexcl;  D10  &iexcl;   D9  &iexcl;   D8  &iexcl;	 D7  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  12 &iexcl;  11 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;  D16  &iexcl;	D15  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   6 &iexcl;   6 &iexcl;   0   &iexcl;   0   &iexcl;  E16  &iexcl;  E15	&iexcl;  E14  &iexcl;  E13  &iexcl;  E12  &iexcl;	E11  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  15 &iexcl;  14 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;  F16  &iexcl;  F15  &iexcl;	F14  &iexcl;
+-----_-----_-------_-------_-------_-------_-------_-------_-------_-------
+
+A16-A10 = name table (SCHERM-TABEL) bar/1024 (zie *)
+B16-B6	= color table (KLEUR-TABEL) bar/64
+C16-C11 = pattern-generator table (MATRIX-TABEL)/2048
+D16-D7	= sprite attribute table (TRANSPARANT-TABEL)/128
+E16-E11 = sprite pattern generator table (SPRITES-TABEL)/2048
+F16-F14 = Video RAM acces bar
+
+* SCREEN 0(80): A16-A12 = name table address/1024. A11 has
+no meaning and A10 = offset/1024 for second 1024 bytes of screen.
+
+
+CBCDXDe VDP tekstcontrole-registersCbCdY
+
+&Aring;-----\-----\-------\-------\-------\-------\-------\-------\-------\-------&atilde;
+&iexcl; VDP &iexcl; reg &iexcl; bit 7 &iexcl; bit 6 &iexcl; bit 5 &iexcl; bit 4 &iexcl; bit 3 &iexcl; bit 2 &iexcl; bit 1 &iexcl; bit 0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   7 &iexcl;   7 &iexcl;  TC3  &iexcl;  TC2  &iexcl;  TC1  &iexcl;  TC0	&iexcl;  BCD3 &iexcl;  BCD2 &iexcl;  BCD1 &iexcl;	BCD0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  13 &iexcl;  12 &iexcl;   C3  &iexcl;   C2  &iexcl;   C1  &iexcl;   C0	&iexcl;  BC3  &iexcl;  BC2  &iexcl;  BC1  &iexcl;	BC0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  14 &iexcl;  13 &iexcl;  ON3  &iexcl;  ON2  &iexcl;  0N1  &iexcl;  ON0	&iexcl;  OF3  &iexcl;  OF2  &iexcl;  OF1  &iexcl;	OF0  &iexcl;
+-----_-----_-------_-------_-------_-------_-------_-------_-------_-------
+
+TC3-TC0   = text color
+BCD3-BCD0 = back drop color
+C3-C0	  = text color		  \
+BC3-BC0   = back color		   \ CUSCREEN 0(80)Cu
+ON3-ON0   = blink period/5 sec ON	   /
+OF3-OF0   = blink period/5 sec OFF   /
+
+
+CBCDXPointers en controle-registersCbCdY
+
+&Aring;-----\-----\-------\-------\-------\-------\-------\-------\-------\-------&atilde;
+&iexcl; VDP &iexcl; reg &iexcl; bit 7 &iexcl; bit 6 &iexcl; bit 5 &iexcl; bit 4 &iexcl; bit 3 &iexcl; bit 2 &iexcl; bit 1 &iexcl; bit 0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  16 &iexcl;  15 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;  RS3  &iexcl;  RS2  &iexcl;  RS1  &iexcl;	RS0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  17 &iexcl;  16 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   C3  &iexcl;   C2  &iexcl;   C1  &iexcl;	 C0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  18 &iexcl;  17 &iexcl;   0   &iexcl;   0   &iexcl;  RS5  &iexcl;  RS4	&iexcl;  RS3  &iexcl;  RS2  &iexcl;  RS1  &iexcl;	RS0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  19 &iexcl;  18 &iexcl;  ŽV3  &iexcl;  ŽV2  &iexcl;  ŽV1  &iexcl;  ŽV0	&iexcl;  ŽH3  &iexcl;  ŽH2  &iexcl;  ŽH1  &iexcl;	ŽH0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  20 &iexcl;  19 &iexcl;  IL7  &iexcl;  IL6  &iexcl;  IL5  &iexcl;  IL4	&iexcl;  IL3  &iexcl;  IL2  &iexcl;  IL1  &iexcl;	IL0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  21 &iexcl;  20 &iexcl;   0   &iexcl;   0   &iexcl;  CBX5 &iexcl;  CBX4 &iexcl;  CBX3 &iexcl;  CBX2 &iexcl;  CBX1 &iexcl;	CBX0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  22 &iexcl;  21 &iexcl;   0   &iexcl;   0   &iexcl;  CBY5 &iexcl;  CBY4 &iexcl;  CBY3 &iexcl;  CBY2 &iexcl;  CBY1 &iexcl;	CBY0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  23 &iexcl;  22 &iexcl;   0   &iexcl;   0   &iexcl;  CBZ5 &iexcl;  CBZ4 &iexcl;  CBZ3 &iexcl;  CBZ2 &iexcl;  CBZ1 &iexcl;	CBZ0 &iexcl;
+-----_-----_-------_-------_-------_-------_-------_-------_-------_-------
+
+RS3-RS0   = register-number of status-register
+C3-C0	  = relative palette address
+RS5-RS0   = register-number of control-register
+ŽV3-ŽV0   = vertical display adjust value
+ŽH3-ŽH0   = horizontal display adjust value
+IL7-IL0   = vertical line number of line interrupt
+CBX5-CBX0 = color burst value of phase 0
+CBY5-CBY0 = color burst value of phase 1/3
+CBZ5-CBZ0 = color burst value of phase 2/3
+
+CBCDXDe VDP programma-registersCbCdY
+
+&Aring;-----\-----\-------\-------\-------\-------\-------\-------\-------\-------&atilde;
+&iexcl; VDP &iexcl; reg &iexcl; bit 7 &iexcl; bit 6 &iexcl; bit 5 &iexcl; bit 4 &iexcl; bit 3 &iexcl; bit 2 &iexcl; bit 1 &iexcl; bit 0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  33 &iexcl;  32 &iexcl;  SX7  &iexcl;  SX6  &iexcl;  SX5  &iexcl;  SX4	&iexcl;  SX3  &iexcl;  SX2  &iexcl;  SX1  &iexcl;	SX0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  34 &iexcl;  33 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;   0   &iexcl;	SX8  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  35 &iexcl;  34 &iexcl;  SY7  &iexcl;  SY6  &iexcl;  SY5  &iexcl;  SY4	&iexcl;  SY3  &iexcl;  SY2  &iexcl;  SY1  &iexcl;	SY0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  36 &iexcl;  35 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;   0   &iexcl;	SY8  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  37 &iexcl;  36 &iexcl;  DX7  &iexcl;  DX6  &iexcl;  DX5  &iexcl;  DX4	&iexcl;  DX3  &iexcl;  DX2  &iexcl;  DX1  &iexcl;	DX0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  38 &iexcl;  37 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;   0   &iexcl;	DX8  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  39 &iexcl;  38 &iexcl;  DY7  &iexcl;  DY6  &iexcl;  DY5  &iexcl;  DY4	&iexcl;  DY3  &iexcl;  DY2  &iexcl;  DY1  &iexcl;	DY0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  40 &iexcl;  39 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;   0   &iexcl;	DY8  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  41 &iexcl;  40 &iexcl;  NX7  &iexcl;  NX6  &iexcl;  NX5  &iexcl;  NX4	&iexcl;  NX3  &iexcl;  NX2  &iexcl;  NX1  &iexcl;	NX0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  42 &iexcl;  41 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;  NX9  &iexcl;	NX8  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  43 &iexcl;  42 &iexcl;  NY7  &iexcl;  NY6  &iexcl;  NY5  &iexcl;  NY4	&iexcl;  NY3  &iexcl;  NY2  &iexcl;  NY1  &iexcl;	NY0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  44 &iexcl;  43 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;  NY9  &iexcl;	NY8  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  45 &iexcl;  44 &iexcl;  CH3  &iexcl;  CH2  &iexcl;  CH1  &iexcl;  CH0	&iexcl;  CL3  &iexcl;  CL2  &iexcl;  CL1  &iexcl;	CL0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  46 &iexcl;  45 &iexcl;   0   &iexcl;  MXC  &iexcl;  MXD  &iexcl;  MXS	&iexcl;  DIR  &iexcl;  DIR  &iexcl; EQ OR &iexcl;	MAJ  &iexcl;
+&iexcl;     &iexcl;     &iexcl;	   &iexcl;	  &iexcl;	 &iexcl;	&iexcl;   Y   &iexcl;   X   &iexcl;  NEQ  &iexcl;	MIN  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  47 &iexcl;  46 &iexcl;  CM3  &iexcl;  CM2  &iexcl;  CM1  &iexcl;  CM0	&iexcl;  LO3  &iexcl;  LO2  &iexcl;  LO1  &iexcl;	LO0  &iexcl;
+-----_-----_-------_-------_-------_-------_-------_-------_-------_-------
+
+SX8-SX0   = source X coordinate
+SY9-SY0   = source Y coordinate
+DX8-DX0   = destination X coordinate
+DY9-DY0   = destination Y coordinate
+NX9-NX0   = number of X dots
+NY9-NY0   = number of Y dots
+CH3-CH0   = \ CUcolorcode of color-register writeCu
+CL3-CL0   = /
+MAJ/MIN   = 0 -&gt; X ax is major direction
+	    1 -&gt; Y ax is major direction
+EQ OR NEQ = equal or not equal detect (1=NEQ)
+DIR X	  = direction of X coordinate
+DIR Y	  = direction of Y coordinate
+MXS	  = source becomes external memory
+MXD	  = destination becomes external memory
+MXC	  = CPU-access becomes external memory
+CM3-CM0   = command
+LO3-LO0   = logical operation
+
+NB: deze registers zijn WRITE ONLY
+
+VDP-commando's
+
+&Aring;----------\---------\---------------\------\--------------&atilde;
+&iexcl; MNEMONIC &iexcl; CM3-CM0 &iexcl;   direction   &iexcl; unit &iexcl;  operation   &iexcl;
+-----------------------------------------------------------&cent;
+&iexcl;   HMMC   &iexcl;   1111  &iexcl;  CPU to VRAM  &iexcl; byte &iexcl;    perform   &iexcl;
+&iexcl;   HMCM   &iexcl;   1110  &iexcl;  VRAM to CPU  &iexcl; byte &iexcl;       a      &iexcl;
+&iexcl;   HMMM   &iexcl;   1101  &iexcl; VRAM to VRAM  &iexcl; byte &iexcl;  high speed  &iexcl;
+&iexcl;   HMMV   &iexcl;   1100  &iexcl;  VDP to VRAM  &iexcl; byte &iexcl;     move     &iexcl;
+&iexcl;	   &iexcl;	    &iexcl;		  &iexcl;	&iexcl;	      &iexcl;
+&iexcl;   LMMC   &iexcl;   1011  &iexcl;  CPU to VRAM  &iexcl;  dot &iexcl;    perform   &iexcl;
+&iexcl;   LMCM   &iexcl;   1010  &iexcl;  VRAM to CPU  &iexcl;  dot &iexcl;       a      &iexcl;
+&iexcl;   LMMM   &iexcl;   1001  &iexcl; VRAM to VRAM  &iexcl;  dot &iexcl;    logical   &iexcl;
+&iexcl;   LMMV   &iexcl;   1000  &iexcl;  VDP to VRAM  &iexcl;  dot &iexcl;     move     &iexcl;
+&iexcl;	   &iexcl;	    &iexcl;		  &iexcl;	&iexcl;	      &iexcl;
+&iexcl;   LINE   &iexcl;   0111  &iexcl;  VDP to VRAM  &iexcl;  dot &iexcl;     line     &iexcl;
+&iexcl;   SRCH   &iexcl;   0110  &iexcl;  VRAM to VDP  &iexcl;  dot &iexcl;    search    &iexcl;
+&iexcl;   PSET   &iexcl;   0101  &iexcl;  VDP to VRAM  &iexcl;  dot &iexcl;     pset     &iexcl;
+&iexcl;   PINT   &iexcl;   0100  &iexcl;  VRAM to VDP  &iexcl;  dot &iexcl;    point     &iexcl;
+&iexcl;	   &iexcl;	    &iexcl;		  &iexcl;	&iexcl;	      &iexcl;
+&iexcl;   NOP    &iexcl;   rest  &iexcl;	   -	  &iexcl;   -	&iexcl; no operation &iexcl;
+----------_---------_---------------_------_--------------
+
+
+
+
+
+Logical operations
+
+&Aring;----------\---------\---------------------------------------&atilde;
+&iexcl; MNEMONIC &iexcl; LO3-LO0 &iexcl;		 operation	        &iexcl;
+-------------------------------------------------------------&cent;
+&iexcl;    IMP   &iexcl;  0000   &iexcl; SC         -&gt;DC  &Aring;-------------------&atilde;&iexcl;
+&iexcl;    AND   &iexcl;  0001   &iexcl; SC AND DC  -&gt;DC  &iexcl; SC = source color &iexcl;&iexcl;
+&iexcl;	   &iexcl;	    &iexcl;		     &iexcl; DC = destination  &iexcl;&iexcl;
+&iexcl;    OR    &iexcl;  0010   &iexcl; SC OR  DC  -&gt;DC  &iexcl;	   color        &iexcl;&iexcl;
+&iexcl;    EOR   &iexcl;  0011   &iexcl; SC XOR DC  -&gt;DC  -------------------&iexcl;
+&iexcl;    NOT   &iexcl;  0100   &iexcl; SC         -&gt;DC		        &iexcl;
+&iexcl;	   &iexcl;	    &iexcl;				        &iexcl;
+&iexcl;   TIMP   &iexcl;  1000   &iexcl; IF SC=0 AND TP=0 THEN DC-&gt;DC ELSE IMP &iexcl;
+&iexcl;   TAND   &iexcl;  1001   &iexcl; IF SC=0 AND TP=0 THEN DC-&gt;DC ELSE AND &iexcl;
+&iexcl;    TOR   &iexcl;  1010   &iexcl; IF SC=0 AND TP=0 THEN DC-&gt;DC ELSE OR  &iexcl;
+&iexcl;   TEOR   &iexcl;  1011   &iexcl; IF SC=0 AND TP=0 THEN DC-&gt;ELSE EOR    &iexcl;
+&iexcl;   TNOT   &iexcl;  1100   &iexcl; IF SC=0 AND TP=0 THEN DC-&gt;ELSE NOT    &iexcl;
+&iexcl;	   &iexcl;	    &iexcl;				        &iexcl;
+&iexcl;     -    &iexcl;  rest   &iexcl; ilegal			        &iexcl;
+----------_---------_---------------------------------------
+
+CBCDXDe VDP status-registersCbCdY
+
+&Aring;-----\-----\-------\-------\-------\-------\-------\-------\-------\-------&atilde;
+&iexcl; VDP &iexcl; reg &iexcl; bit 7 &iexcl; bit 6 &iexcl; bit 5 &iexcl; bit 4 &iexcl; bit 3 &iexcl; bit 2 &iexcl; bit 1 &iexcl; bit 0 &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;   8 &iexcl;   0 &iexcl;   F   &iexcl;   SD  &iexcl;   C	 &iexcl;   S4	&iexcl;   S3  &iexcl;   S2  &iexcl;   S1  &iexcl;	 S0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -1 &iexcl;   1 &iexcl;   FL  &iexcl;  LPS  &iexcl;   I4  &iexcl;   I3	&iexcl;   I2  &iexcl;   I1  &iexcl;   I0  &iexcl;	 FH  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -2 &iexcl;   2 &iexcl;   TR  &iexcl;   VR  &iexcl;   HR  &iexcl;   BD	&iexcl;   0   &iexcl;   0   &iexcl;  E/O  &iexcl;	 CE  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -3 &iexcl;   3 &iexcl;   X7  &iexcl;   X6  &iexcl;   X5  &iexcl;   X4	&iexcl;   X3  &iexcl;   X2  &iexcl;   X1  &iexcl;	 X0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -4 &iexcl;   4 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;   X9  &iexcl;	 X9  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -5 &iexcl;   5 &iexcl;   Y7  &iexcl;   Y6  &iexcl;   Y5  &iexcl;   Y4	&iexcl;   Y3  &iexcl;   Y2  &iexcl;   Y1  &iexcl;	 Y0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -6 &iexcl;   6 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;   Y9  &iexcl;	 Y8  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -7 &iexcl;   7 &iexcl;   C7  &iexcl;   C6  &iexcl;   C5  &iexcl;   C4	&iexcl;   C3  &iexcl;   C2  &iexcl;   C1  &iexcl;	 C0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -8 &iexcl;   8 &iexcl;  BX7  &iexcl;  BX6  &iexcl;  BX5  &iexcl;  BX4	&iexcl;  BX3  &iexcl;  BX2  &iexcl;  BX1  &iexcl;	BX0  &iexcl;
+----------------------------------------------------------------------------&cent;
+&iexcl;  -9 &iexcl;   9 &iexcl;   0   &iexcl;   0   &iexcl;   0	 &iexcl;   0	&iexcl;   0   &iexcl;   0   &iexcl;  BX9  &iexcl;	BX8  &iexcl;
+-----_-----_-------_-------_-------_-------_-------_-------_-------_-------
+
+F	= interrupt flag of vertical retrace. This flag will be reset
+	  by the SR0 read operation
+SD	= 5CSthCs/9CSthCs sprite delected flag
+C	= sprite coincidence flag
+S4-S0	= 5CSthCs/9CSthCs sprite number
+FL	= interrupt flag of light pen or mouse switch status
+CDS	= light pen switch status or status flag of the second
+	  mouse switch
+FH	= interrupt flag horizontal retrace FL, LPS and FH will
+	  be reset by the SR1 read operation
+HR	= horizontal retrace timing
+VR	= vertical retrace timing
+CE	= command executing status (0=ready)
+BD	= border detect
+E/O	= even or odd field status
+I4-I0	= LSI version number
+TR	= transfer ready (data transfer with CPU)
+X9-X0	= X-coordinate	     \  sprite coincidence location
+Y9-Y0	= Y-coordinate	      &gt; or light pen coordinate or
+BX9-BY0 = border X-coordinate  /  mouse coordinates.
+C7-C0	= color code of color register read
+
+NB: deze registers zijn READ ONLY
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_5.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_7.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

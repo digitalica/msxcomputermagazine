@@ -1,0 +1,150 @@
+<html>
+
+<head>
+<title>MILC - Topic Blinkmode scherm 0</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_0.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Blinkmode scherm 0</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+                                 SCREEN 0 - Blink mode
+
+U heeft ze vast wel eens gezien: van die menu's waarbij je d.m.v. het bewegen 
+van een gekleurde balk de gewenste filenaam moest kiezen. Dit is natuurlijk 
+stukken beter dan het intypen van een filenaam. De routines die voor 
+zo'n menu gebruikt worden zal ik in dit artikel proberen uit te leggen.
+
+In SCREEN 0 is het mogelijk om bij iedere positie op het scherm op te geven 
+of het de normale schermkleuren of de alternatieve kleuren krijgt. Hieruit 
+volgt dat alleen de waarden 0 (normale kleur) en 1 (alternatieve kleur) 
+opgeslagen hoeven te worden (binair). Aangezien een byte uit 8 bits bestaat 
+kunnen dus in 1 byte de toestand van 8 posities tegelijk opgeslagen worden. 
+De tabel waarin deze toestanden worden bijgehouden is de KLEUR-tabel. Deze 
+tabel staat in het videoRAM en begint meestal op adres 2048 (dit adres staat 
+in BASE(1)). Het aantal posities op het scherm is (normaal gesproken)
+80*24=1920 posities, dus de tabel is 1920 / 8 = 240 bytes lang. Voordat we 
+met de alternatieve kleuren kunnen gaan spelen moeten we eerst wat dingen 
+instellen. met VDP(13) kunnen we de alternatieve kleuren instellen. Dit gaat 
+als volgt:
+
+VDP(13)=16 x voorgrondkleur + achtergrondkleur.
+
+Willen we dus zwarte letters op een witte achtergrond dan zeggen we 
+VDP(13)=31 of nog eenvoudiger VDP(13)=&amp;H1F de het eerste getal is dan de 
+voorgrondkleur (1) en het tweede getal de achtergrondkleur (&amp;HF = 15). Met 
+VDP(14)=&amp;HF0 kunnen we dan de alternatieve kleuren zichtbaar maken. Het getal 
+&amp;HF0 wil zeggen dat de alternatieve kleuren altijd aan (&amp;HF.) en nooit uit 
+(&amp;H.0) staan. Je kan de alternatieve kleuren namelijk ook laten knipperen. 
+Voordat we deze VDP-registers in gaan stellen moeten we nog wat doen, 
+namelijk het scherm schoonmaken. Er staat nu nog allemaal rotzooi (type maar 
+eens VDP(14)=&amp;HF0 in). Dit schoonmaken doen we met: 
+
+FOR T=BASE(1) TO BASE(1)+239: VPOKE T,0: NEXT T
+
+Nu kunnen we eindelijk gaan VPOKEn. Dit VPOKEn gaat zoals gezegd met 8 
+posities tegelijk. type nu maar eens VPOKE BASE(1),255 (VERGEET DE VDP NIET 
+IN TE STELLEN!). U ziet dan een balk van 8 posities in de linkerbovenhoek van 
+het scherm verschijnen. Dit komt doordat het binaire patroon van 255 11111111 
+is (te vinden door: PRINT BIN$(255) ). Willen we een ander patroon hebben dan 
+maken we eerst het binaire patroon, bv.: 00101000 en dan zoeken we er de 
+decimale waarde bij (of we laten het in binair, net wat u wilt). Het VPOKEn 
+gaat dan volgens: VPOKE BASE(1)+10*REGEL+KOLOM,WAARDE. Een voorbeeld: We
+willen in kolom 3 van regel 5 het patroon 00011110 zetten. Dat wordt dan:
+VPOKE BASE(1)+10*5+3,&amp;B00011110 
+Wat algemenere formules om een enkele positie op het scherm te zetten zijn 
+de volgende: KOLOM=X\8,  WAARDE=2^(7-(X MOD 8)). In een voorbeeldprogramma:
+
+10 SCREEN 0: COLOR 15,4,4: KEYOFF: CLS
+20 COLOR=(4,1,2,3): COLOR=(3,7,7,0): COLOR=(2,5,0,0)
+30 FOR I=BASE(1) TO BASE(1)+239: VPOKE I,0: NEXT I
+40 VDP(14)=&amp;HF0: VDP(13)=&amp;H32
+50 ' -- hoofdprogramma --
+60 X=10: Y=2: GOSUB 100: END
+70 ' -- zet blokje --
+80 XX=X\8: WA=X MOD 8: WA=2^(7-WA)
+90 VPOKE BASE(1)+10*Y+XX,WA: RETURN
+
+Op deze manier is het dus mogelijk om in SCREEN 0 toch nog 4 kleuren te 
+gebruiken. Ik wens u veel succes met programmeren en ik hoop nu nooit
+meer een INPUT-statement te zien om een file te kiezen. Tenslotte nog een 
+handig diskmenu waarvan u het scherm zelf mag maken. Succes!
+
+                                                        Arjan Steenbergen
+
+10 ' -- DISKMENU --   (C)1992 BY ARSOFT
+20 SCREEN 0: WIDTH 80: KEY OFF: CLS: DIM X(5,2)
+30 COLOR 15,4,4: COLOR=(4,1,2,3): COLOR=(2,4,0,0): COLOR=(3,7,7,0)
+40 PRINT STRING$(79,&quot;=&quot;)
+50 TT$=&quot;D I S K M E N U&quot;: LOCATE 40-LEN(TT$)/2,1: PRINT TT$
+60 PRINT STRING$(79,&quot;=&quot;)
+70 EX$=&quot;*&quot;: Y=3: GOSUB 130 ' kies file
+80 E$=RIGHT$(FI$,3)
+90 IF E$=&quot;BAS&quot; OR E$=&quot;LDR&quot; THEN RUN FI$
+100 IF E$=&quot;BIN&quot; THEN BLOAD FI$,R
+110 IF E$=&quot;COM&quot; OR E$=&quot;BAT&quot; THEN LOCATE 0,MY+2:PRINT&quot;Deze file moet vanuit
+MSX-DOS opgestart worden!&quot;: END
+120 LOCATE 0,MY+2: PRINT&quot;Dit soort files kan ik niet laden...&lt;toets&gt;&quot;;:A$=
+INPUT$(1): CLS: GOTO 40
+130 ' -- file kiezen
+140 FOR I=BASE(1) TO BASE(1)+239: VPOKE I,0: NEXT I
+150 VDP(14)=&amp;HF0: VDP(13)=&amp;H32: XX=0: YY=Y: YO=YY: XO=XX
+160 FOR I=0 TO 5: READ S(I): FOR J=0 TO 2: READ X(I,J): NEXT J,I
+170 DATA 0,127,248,0, 1,3,255,192, 3,31,254,0
+180 DATA 5,255,240,0, 6,7,255,128, 8,63,252,0
+190 POKE &amp;HF3B0,78: LOCATE 0,Y: FILES &quot;*.&quot;+EX$: MY=CSRLIN: POKE &amp;HF3B0,80
+200 FOR I=0 TO 2: VPOKE BASE(1)+10*YY+S(XX)+I,X(XX,I): NEXT I
+210 ST=STICK(0): IF ST=0 THEN GOTO 260
+220 IF ST=1 THEN YY=YY-1: GOSUB 270
+230 IF ST=3 THEN XX=XX+1: GOSUB 270
+240 IF ST=5 THEN YY=YY+1: GOSUB 270
+250 IF ST=7 THEN XX=XX-1: GOSUB 270
+260 IF STRIG(0)=0 THEN GOTO 210 ELSE VDP(14)=0: GOSUB 330: RETURN
+270 IF YY&lt;Y THEN YY=Y: RETURN ELSE IF YY&gt;MY THEN YY=MY: RETURN
+280 IF XX&lt;0 THEN XX=0: RETURN ELSE IF XX&gt;5  THEN XX=5 : RETURN
+290 IF VPEEK(80*YY+(XX*13+1))=32 THEN YY=YO: XX=XO: RETURN
+300 FOR I=0 TO 2: VPOKE BASE(1)+10*YO+S(XO)+I,0: NEXT I
+310 FOR I=0 TO 2: VPOKE BASE(1)+10*YY+S(XX)+I,X(XX,I): NEXT I
+320 YO=YY: XO=XX: RETURN
+330 ' -- filenaam inlezen
+340 AD=80*YY+(XX*13+1): FI$=&quot;&quot;
+350 FOR I=0 TO 11: FI$=FI$+CHR$(VPEEK(AD+I)): NEXT I
+360 RETURN
+
+                 =============================================
+                            Dit artikel is afkomstig
+                   uit het clubblad van MSX Club Drechtsteden
+                       tegenwoordig genaamd: MCD Magazine
+                 =============================================
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_0.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

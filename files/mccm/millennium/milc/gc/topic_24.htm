@@ -1,0 +1,231 @@
+<html>
+
+<head>
+<title>MILC - Topic Case in MT</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_23.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_25.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Case in MT</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+VOOR DE MACHINETAALPROGRAMMEURS:
+
+                 E E N   C A S E   I N   M T
+                =============================
+
+Deze tekst gaat  over  het  programmeren  van  een  CASE  in
+machinetaal. Enige kennis over de Z80-machinetaal is vereist
+om deze tekst goed te kunnen begrijpen.
+
+Iedereen heeft het wel eens, je maakt een menuutje of gewoon
+een Ja/Nee vraag, dan moet je je programma toch netjes op de
+invoer laten reageren, zonder al te veel  vergelijkingen  en
+jumps. Bij twee of drie mogelijkheden is  het  nog  redelijk
+eenvoudig en netjes te maken, maar worden het er  meer,  dan
+loopt menig programmeur al gauw op de klippen. Niet omdat ze
+het niet kunnen programmeren, maar omdat het een  chaos  van
+jumps en vergelijkingen wordt.
+
+Even een voorbeeld, we laten een programma  reageren  op  de
+vraag of er ge'exit' moet worden. De vraag kan met  J  en  N
+worden beantwoord. Ook de j en de n dus. We gaan  ervan  uit
+dat de tekst al op het scherm staat en  dat  er  alleen  nog
+maar op de  invoer  hoeft  te  worden  gewacht.  De  routine
+READKEY wacht op een toets en geeft deze terug  in  register
+A.
+
+Methode1:
+
+VRAAG         CALL READKEY
+              CP &quot;J&quot;
+              JR Z,JA
+              CP &quot;j&quot;
+              JR Z,JA
+              CP &quot;N&quot;
+              JR Z,NEE
+              CP &quot;n&quot;
+              JR Z,NEE
+              JR VRAAG
+
+JA            LD HL,0
+              RET
+
+NEE           LD HL,-1
+              RET
+
+Dit is toch wel  de  meest  'smerige'  methode  die  ik  kon
+bedenken. Het is dat ik  JR  opdrachten  in  plaats  van  JP
+opdachten heb gebruik, anders was het nog 'viezer'.
+
+Maar waarom is het nu vies? Ten eerste omdat er veel te veel
+vergelijkingen en jumps in  staan.  4  Vergelijkingen  en  5
+jumps is echt te veel. Ten tweede omdat het te veel  opcodes
+inneemt.
+
+We nemen nog een voorbeeld, iets netter dit keer:
+
+VRAAG         CALL READKEY
+              LD HL,0
+              CP &quot;J&quot;
+              RET Z
+              CP &quot;j&quot;
+              RET Z
+              LD HL,-1
+              CP &quot;N&quot;
+              RET Z
+              CP &quot;n&quot;
+              RET Z
+              JR LUS
+
+Maar toch nog steeds te lang. We hebben van de  5  jumps  nu
+wel  1  jump  gemaakt,  maar  er   zitten   nog   steeds   4
+vergelijkingen. We gaan de routine nog een keer  verkleinen.
+Stel we moeten de routine veranderen van J en N naar Y en N,
+dan moeten we 2 vergelijkingen veranderen, dus we  gaan  een
+'UPCASE' inbouwen, die van kleine letters hoofletters maakt:
+
+VRAAG         CALL READKEY
+              AND A
+              JR M,VRAAG
+              RES 5,A
+              LD HL,0
+              CP &quot;J&quot;
+              RET Z
+              CP &quot;N&quot;
+              JR NZ,VRAAG
+              DEC HL
+              RET
+
+De AND A instructie kijkt niet alleen of A nul is, maar  zet
+ook  de  M  vlag  als  a  een  negatief  getal  is  in   het
+twee-complement, oftewel als bit 7 geset is. Als bit 7 geset
+is, dan is A dus groten dan 127. Die tekens hebben we zo wie
+zo niet nodig, dus dan springen we weer naar de lus. De rest
+spreekt voor zich. Merk op dat de instructie DEC  HL  alleen
+maar wordt gebruikt als er op de [N]  wordt  gedrukt,  omdat
+hij niet in de lus is opgenomen.
+
+Nog een routine, waarbij er  uit  A,  B  of  C  gekozen  kan
+worden. Let op de eenmalige vergelijking!
+
+VRAAG         CALL READKEY
+              LD HL,0
+              SUB &quot;A&quot;
+              RET Z
+              INC HL
+              DEC A
+              RET Z
+              DEC A
+              JR NZ,VRAAG
+              INC HL
+              RET
+
+Als laatste wil ik nog een multiple case behandelen. Hierbij
+is mogelijk om oneindig veel 'aansluitingen' te maken en die
+heel eenvoudig uit te breiden. Deze methode vreet  wat  meer
+bytes als hij maar een of twee keer gebruikt wordt, maar als
+hij meerdere keren  aangeroepen  wordt,  door  verschillende
+menuutjes en er zijn veel mogelijkheden vanuit de menuutjes,
+dan is deze routine zeer bruikbaar.
+
+De menuopties moeten met een DEFB voor de toets en een  DEFW
+voor het adres worden gedefineerd. Register IX moet  bij  de
+aanroep naar de tabel met de codes wijzen. De tabel moet met
+een 0 (DEFB 0) worden afgesloten.
+
+TERUGKEYS is er alleen om uit de  lus  te  kunnen  naar  een
+hoger menu. De labels OPTIE1, OPTIE2 en OPTIE3  zijn  zomaar
+namen.
+
+MENULUS       CALL READKEY
+              CALL TERUGKEYS
+              RET Z
+              LD IX,_MENUKEYS
+              CALL KEYHAN
+              JR MENULUS
+
+TERUGKEYS     CP 27
+              RET Z
+              CP 13
+              RET Z
+              CP &quot; &quot;
+              RET
+
+_MENUKEYS     DEFB &quot;A&quot;
+              DEFW OPTIE1
+
+              DEFB &quot;E&quot;
+              DEFW OPTIE2
+
+              DEFB &quot;Q&quot;-&quot;@&quot;   ;CTRL-Q
+              DEFW OPTIE3
+
+              DEFB 0
+
+KEYHAN        LD C,A
+KEYHAN_LUS    LD A,(IX+0)
+              LD L,(IX+1)
+              LD H,(IX+2)
+              CP C
+              JR Z,KEYHAN_EXEC
+              INC IX
+              INC IX
+              INC IX
+              AND A
+              JR NZ,KEYHAN_LUS
+              RET
+
+KEYHAN_EXEC   JP (HL)
+
+
+Veel sucses met  het  versnellen  /  verfraaien  van  jullie
+programma's,
+
+                                       Ramon van der Winkel
+
+Via BBS Waterland (02990-40202/45740): Post  aan  RAMON  VAN
+DER WINKEL, bord MSX.
+
+
+
+Nvdr. Deze  tekst is ook te vinden op de BBS Waterland en is 
+geschreven  door Ramon  van der Winkel die GENIC toestemming 
+heeft gegeven voor deze publicatie.
+
+Aan de publicatie van dit artikel hebben meegewerkt:
+
+Ramon van der Winkel  (De schrijver van het artikel)
+Rudy Oppers           (De man van de modem)
+Alex van der Wal      (Initiatiefnemer)
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_23.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_25.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

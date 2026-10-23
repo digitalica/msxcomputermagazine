@@ -1,0 +1,127 @@
+<html>
+
+<head>
+<title>MILC - Topic Wave routine</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Wave routine</b><br>
+    <i>TBM</i>, 00-00-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;===============================================================================
+; WAVE routine, niet op een hook...
+;
+; (c) 1994 by TBM, TECHNO CREW
+;
+        ORG   &amp;HC000
+
+ST:     LD    A,5             ; screen 5
+        CALL  &amp;H5F
+
+        LD    A,63            ; page 2
+        OUT   (&amp;H99),A        ;
+        LD    A,2 OR 128
+        OUT   (&amp;H99),A
+
+MAIN:   EI                    ; 2 int's wachten
+;       HALT                  ; haal rem teken weg voor een leuk effect
+        HALT
+
+        DI                    ; no breaks
+        LD    A,2             ; status reg. #2
+        OUT   (&amp;H99),A
+        LD    A,15 OR 128
+        OUT   (&amp;H99),A
+
+        LD    A,18 OR 128     ; register 18 (vdp(19)) instellen op &amp;H9B
+        OUT   (&amp;H99),A
+        LD    A,17 OR 128
+        OUT   (&amp;H99),A
+
+        LD    HL,(POINTR)     ; zet pointer goed
+        LD    A,(HL)
+        CP    -1
+        JR    NZ,VERDER
+
+        LD    HL,DATA
+VERDER: INC   HL
+        LD    (POINTR),HL
+
+CHK_VR: IN    A,(&amp;H99)        ; check op Vertical interrupt
+        AND   &amp;H40
+        JR    NZ,CHK_VR
+
+        LD    B,127           ; aantal lijnen
+
+LOOP:   IN    A,(&amp;H99)        ; check op Horizontal interrupt
+        AND   &amp;H20
+        JR    Z,LOOP
+
+        LD    A,(HL)          ; zorg dat de pointer goed staat
+        CP    -1
+        JR    NZ,VERDE2
+        LD    HL,DATA
+
+VERDE2: LD    A,(HL)          ; reg #18=wave data
+        OUT   (&amp;H9B),A
+
+        INC   HL              ; verhoog teller
+        DJNZ  LOOP            ; herhaal tot aantal lijnen 0 is
+
+        XOR   A               ; zet status reg #0 (noodzakelijk)
+        OUT   (&amp;H99),A
+        LD    A,15 OR 128
+        OUT   (&amp;H99),A
+
+        LD    A,0             ; reg #18=0 (leuk effect als dit weg is...)
+        OUT   (&amp;H9B),A
+
+        IN    A,(&amp;HAA)        ; check op spatie...
+        AND   &amp;HF0
+        OR    8
+        OUT   (&amp;HAA),A
+        IN    A,(&amp;HA9)
+        AND   1
+        JR    NZ,MAIN         ; nee, gelukkig herhaal wave
+
+        XOR   A               ; screen 0
+        JP    &amp;H5F
+
+POINTR: DW    DATA            ; pointer
+
+DATA:   DB    7,5,3,2,2,1,1,1,0,0,0,0 ; wave data
+        DB    1,1,1,2,2,3,5,7 ; laatste en eerste gelijk !!!
+
+        DB    -1              ; einde
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

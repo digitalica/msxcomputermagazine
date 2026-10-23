@@ -1,0 +1,65 @@
+; Example MIDI program for GT which can be run under MSXDOS(2)
+; Written by Alex Wulms for MCCM
+; 26-9-1995
+
+UARTsend:	equ	0e8h	; 8251 data send
+UARTrecv:	equ	0e8h	; 8251 data receive
+UARTcmd:	equ	0e9h	; 8251 command/mode register
+UARTstat:	equ	0e9h	; 8251 status register
+
+tm_int:		equ	0eah	; timer interrupt flag off
+
+timer0:		equ	0ech	; 8253 counter 0 dataport
+timer1:		equ	0edh	; 8253 counter 1 dataport
+timer2:		equ	0eeh	; 8253 counter 2 dataport
+tm_cmd:		equ	0efh	; 8253 command
+
+		di
+		in	a,(0aah)
+		and	0f0h
+		or	7
+		out	(0aah),a	; select row 7 of keyboard
+
+		ld	a,00010110b	; set timer 0 to
+		out	(tm_cmd),a	; generate a square wave
+		ld	a,8		; set a frequency
+		out	(tm_cmd),a	; of 200 kHz
+
+		ld	hl,UARTdata
+		ld	b,6
+initUART:	ld	a,(hl)		; initialize UART for
+		out	(UARTcmd),a	; MIDI data communication
+		inc	hl
+		call	waitUART
+		djnz	initUART
+		in	a,(UARTrecv)	; reset outstanding flags
+
+main:		in	a,(UARTstat)
+		and	2		; check RxRDY
+		call	nz,midithrough	; data waiting
+		in	a,(0a9h)	; read keyboard
+		bit	2,a		; check ESC key
+		jr	nz,main		; not pressed
+
+		xor	a
+		out	(UARTcmd),a	; set MIDI off
+		ret			; thats all
+
+waitUART:	in	a,(0e6h)	; wait 4 micro seconds
+		ld	c,a		; between two UART operations
+waitUART2:	in	a,(0e6h)
+		sub	c
+		jr	z,waitUART2
+		ret
+
+midithrough:	in	a,(UARTrecv)
+		ld	b,a		; B = midi IN data
+midithr2:	in	a,(UARTstat)
+		and	1		; check TxRDY
+		jr	z,midithr2	; UART not ready
+		ld	a,b
+		out	(UARTsend),a	; write to MIDI out
+		ret
+
+UARTdata:	db	0,0,0,64,78,5
+		db	0,0,0,64,78,5

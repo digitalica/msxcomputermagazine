@@ -1,0 +1,198 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX Intern (2)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_11.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_13.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX Intern (2)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MSX-INTERN(2):
+
+            D E   G E H E U G E N I N D E L I N G
+           =======================================
+
+De belangrijkste verbinding in de MSX is die tussen  de  CPU
+via de geheugenbeheerder naar het geheugen. Of het nu RAM of
+ROM  is  maakt  niet  uit,  het  systeem  is  hetzelfde.  De
+communicatie tussen de CPU  en  het  geheugen  gaat  via  16
+adreslijnen.  Wanneer  er  data  moet  worden  verzonden  of
+opgehaald uit het geheugen, dan geeft de CPU door middel van
+deze    lijnen    aan    welk    geheugenadres    hij    wil
+beschrijven/uitlezen. Het maximum aan  geheugenplaatsen  die
+de CPU dus kan 'adresseren' zijn 65536 plaatsen, dat  is  64
+kB.
+
+Omdat men bij het ontwerpen van de MSX al  voorzag  dat  dit
+niet voldoende zou zijn, hebben ze bij  alle  MSX  computers
+tussen de CPU en het geheugen een geheugenschakelchip  gezet
+die de 64 kB van  de  microprocessor  opdeelt  in  4  delen,
+pagina's genaamd. Deze pagina's zijn als volgt genummerd:
+
+                Geheugenadressen
+                  &amp;H0000-&amp;H3FFF  -  Pagina 0
+                  &amp;H4000-&amp;H7FFF  -  Pagina 1
+                  &amp;H8000-&amp;HBFFF  -  Pagina 2
+                  &amp;HC000-&amp;HFFFF  -  Pagina 3
+
+Deze controllerchip  heeft  4  afdelingen  (sloten  genoemd)
+waaraan 64 kB geheugen per slot kan  worden  gekoppeld.  Het
+door de CPU werkelijk  aanspreekbare  geheugen  kan  nu  uit
+pagina's bestaan uit verschillende sloten. Bv pagina  0  uit
+slot 0 en pagina 1 uit slot 3. Dit wil zeggen dat als de CPU
+een adres aanspreekt dat ligt in pagina 0 (zie  boven),  dan
+sluist  de  controllerchip  bij   wijze   van   spreken   de
+adreslijnen door naar slot 0, maar wanneer de CPU een  adres
+in pagina 1 probeert  te  lezen/schrijven  dan  worden  zijn
+adreslijnen doorverbonden met het geheugen in  slot  1.  Dit
+geheel geeft al een maximaal geheugen van 4 x 64 kB = 256 kB
+geheugen.
+
+Nu ontwierp men de slot indeling zo, dat  elk  slot  van  de
+geheugencontroller  (ook  wel  primair  slot   genoemd)   in
+principe ook nog kon worden onderverdeeld in  4  sub-sloten.
+In de meeste  MSX2's  is  primair  slot  3  op  deze  manier
+onderverdeeld.
+
+In principe kan op deze  manier  in  het  totaal  64x4x4=  1
+Megabyte aan geheugen  worden  beheerd.  Dit  is  echter  in
+verkoop-modellen niet haalbaar. Want over het algemeen  zijn
+slot 1 en 2 cartridgesloten en heeft slot 0 geen  subsloten.
+Voor RAM gebruik is het nog erger. Want op pagina 0 moet  de
+BIOS  meestal  aanwezig  blijven  (tenzij  je   zo'n   goede
+programmeur bent dat je geen BIOS nodig hebt), op  pagina  1
+moet de interpreter zitten (onder Basic)  en  pagina  3  mag
+niet zomaar worden verwisseld  in  verband  met  de  systeem
+variabelen, dus kunnen de RAM  pagina's  die  in  de  andere
+(sub-)sloten zitten niet (makkelijk)  worden  gebruikt.  Een
+rekensommetje maakt duidelijk dat er dan nog  ongeveer  zo'n
+16+(16x1x4)= 80 kB voor RAM onder Basic  overblijft.  In  de
+MSX2 is dit  probleem  echter  opgelost  doormiddel  van  de
+Memory  Mapper  (een  uitzondering   als   de   Sony   F500P
+daargelaten), waarover de volgende keer meer.
+
+
+Voorbeeld van een geheugenopbouw van een MSX2 computer:
+
+            PHILIPS MSX2 VG8235 GEHEUGEN INDELING
+
+             SLOT0   SLOT1   SLOT2   SLOT3
+                                      3-0  3-1  3-2  3-3
+
+Pagina 0     (ROM)     C       C     (ROM) ---  RAM  ---
+                       A       A
+Pagina 1     (ROM)     R       R      ---  ---  RAM (ROM)
+                       T       T
+Pagina 2      ---      R       R      ---  ---  RAM  ---
+                       I       I
+Pagina 3      ---      D       D      ---  ---  RAM  ---
+                       G       G
+                       E       E
+
+(Meestal staat in een van de bij aankoop bijgeleverde boek-
+jes de preciese slotindeling van uw computer.)
+
+
+               DE SELECTERING VAN HET GEHEUGEN
+
+Nu we weten wat sloten zijn wordt het tijd  om  ze  zelf  te
+kunnen  selecteren.  De  primaire  slotselectie  kan  worden
+gemaakt door via een poort &amp;HA8 de gewenste combinatie  naar
+de  geheugencontroller  te  sturen.  (Dit  is  dus  niet  de
+memorymapper !!) Deze selectie moet in de vorm van een  byte
+worden verstuurd. De byte die via deze poort verzonden  moet
+worden krijg je zo:
+
+          PRINT   &amp;B 00 00 00 00
+                 /     \  \  \  \
+                /       \  \  \  Slotnummer van pagina 0
+               /         \  \  Slotnummer van pagina 1
+   Binair getal           \  Slotnummer van pagina 2
+                           Slotnummer van pagina 3
+
+Dus de opdrachten :   LD    A,&amp;B11110000
+                      OUT   (&amp;HA8),A
+zullen pagina 0 en 1 uit slot 0 en de pagina's  2  &amp;  3  uit
+slot 3 selecteren.
+
+De secundaire slotselectie gaat niet via een poort maar  via
+het geheugenadres &amp;HFFFF van het uitgebreidde slot. De  byte
+die daar moet worden geschreven kan op dezelfde wijze worden
+verkregen.
+
+          PRINT   &amp;B 00 00 00 00
+                 /     \  \  \  \
+                /       \  \  \  Sec.Slotnummer van pagina 0
+               /         \  \  Sec.Slotnummer van pagina 1
+   Binair getal           \  Sec.Slotnummer van pagina 2
+                           Sec.Slotnummer van pagina 3
+
+Het uitlezen van de secundaire slotindeling geeft echter wat
+problemen. Het getal dat door PRINT PEEK(&amp;HFFFF) verkregen
+wordt, moet namelijk eerst ge‹nverteerd worden.
+
+Vb.   Het uitgelezen getal &amp;H44  = &amp;B01010101
+      wordt                          ||||||||
+                                   &amp;B10101010 = &amp;HAA
+
+Wat dus aangeeft dat in het primaire slot met subsloten alle
+pagina's uit subslot 2 geselecteerd zijn.
+
+In MT kan je dus de werkelijke subslotenindeling  verkrijgen
+met :
+                  LD  A,(&amp;HFFFF)  ; Haal subslotindeling op
+                  CPL             ; Inverteert de Accu
+
+
+
+                           DE BIOS
+
+Het lezen en schrijven  van  de  primaire  slotindeling  kan
+echter ook met de BIOS routines. (Aan de BIOS zal  ik  later
+nog een aflevering wijden.) Dit zou problemen voorkomen  als
+men een MSX zou uitbrengen waarbij bijvoorbeeld de  primaire
+slotindeling zou worden geregeld over poortnr &amp;HA9, waardoor
+dus de programma's die de slotindeling  direct  via  poortnr
+&amp;HA8 regelen ineens niet meer zouden werken. Dit  specifieke
+poortnr is echter al zo 'ingeburgerd' dat een  MSX-fabrikant
+zich eerst twee keer van een flatgebouw zou storten alvorens
+dit poortnr te veranderen.
+
+Dit voor zover deze keer. De  volgende  keer  zal  ik  zoals
+gezegd  de  volgende  stap  in  het   geheugenbeheer   nader
+toelichten, De MemoryMapper dus.
+
+                                                 M.Spoor
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_11.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_13.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

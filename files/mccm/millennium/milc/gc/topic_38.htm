@@ -1,0 +1,196 @@
+<html>
+
+<head>
+<title>MILC - Topic MML-Basic tempo</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_37.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_39.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MML-Basic tempo</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+MSX-MUSIC:
+
+               M M L - B A S I C   T E M P O
+              ===============================
+
+                         INLEIDING
+
+MML staat  voor Music Macro Language, dit wordt gebruikt bij 
+het  PLAY#2 commando.  Zo'n Macro  Language is eigenlijk een 
+aparte taal binnen de taal BASIC. Een ander voorbeeld is het 
+DRAW commando.
+
+Natuurlijk  kun  je ook  ‚‚n van  de vele  muziekprogramma's 
+gebruiken om  muziek te  programmeren, maar de MML BASIC zit 
+standaard  bij MSX-MUSIC  ingebouwd, dus  waarom zou  je dat 
+niet  gebruiken?  Voor  voorbeelden  verwijs ik  je naar  de 
+FM-PAC Public Domain Music Library op deze ClubGuide.
+
+
+               WAAR GAAT HET NU EIGENLIJK OM
+
+In MML  BASIC wordt het tempo waarin het muziekstuk gespeeld 
+gaat worden opgegeven middels het Tn commando, waarbij n een 
+getal tussen 32 en 255 is.
+
+Dit  zou het  aantal kwartnoten per minuut moeten zijn. Maar 
+door  het  gebruiken van  verschillende interruptfrequenties 
+gaat dat mis, waardoor een muziekstuk te snel loopt op 60 Hz 
+als het voor 50 Hz is gemaakt of andersom.
+
+Als dit  het enige  probleem zou  zijn, dan zou de oplossing 
+heel simpel zijn, maar helaas is dat niet zo.
+
+
+               JAPANSE EN EUROPESE COMPUTERS
+
+De  MML  BASIC (of  die nu  in een  cartridge zit  of in  de 
+computer zelf)  kijkt in  het ROM  of de computer gemaakt is 
+voor  50 Hz  of voor  60 Hz.  Aan de  hand daarvan wordt het 
+tempo z&cent; berekend, dat het op die interruptfrequentie klopt. 
+Op een  Japanse computer  klopt het tempo dus op 60 Hz en op 
+een Europese computer op 50 Hz.
+
+Hieruit  blijkt dat  T120 op 50 Hz niet altijd hetzelfde is! 
+Op  een   Europese  computer  is  dat  namelijk  netjes  120 
+kwartnoten  per minuut, maar op een Japanse computer slechts 
+100.
+
+Omgekeerd kun  je zeggen  dat T120  op 60  Hz op een Japanse 
+computer 120 kwartnoten per minuut geeft, en op een Europese 
+computer  144!  T120  kan  dus  drie  verschillende  tempo's 
+opleveren.
+
+
+                     SIMPELE OPLOSSING
+
+De  simpelste oplossing is natuurlijk om gewoon de interrupt 
+frequentie niet te veranderen, dan gaat alles vanzelf goed.
+ 
+Maar wij  Nederlanders zijn  eigenwijs, want  als we de kans 
+krijgen  zetten we  de computer  meestal op 60 Hz. Dit heeft 
+tot gevolg  dat uit Japan afkomstige BASIC muziekjes te snel 
+gaan  klinken op  een Europese  computer, en dat Nederlandse 
+BASIC  muziekjes  (als  ze  tenminste  niet  op een  Japanse 
+computer zijn  gemaakt), te  langzaam klinken op een Japanse 
+computer.
+
+
+                   WATERDICHTE OPLOSSING
+
+Natuurlijk  is er ook een waterdichte oplossing te bedenken. 
+Op adres  &amp;H002B van  de MSX-BIOS worden een aantal gegevens 
+opgeslagen. E‚n daarvan is de interruptfrequentie. Dit wordt 
+aangegeven door bit 7, 0=60 Hz of 1=50 Hz.
+
+Verder  maken we  er gebruik  van dat  in VDP register 9 (in 
+BASIC VDP(10))  de huidige  interruptfrequentie is  terug te 
+vinden.  Het is  nu de  bedoeling om  aan het  begin van een 
+BASIC muziekje  een standaard gedeelte te zetten, dat er als 
+volgt uitziet:
+
+10 T=140
+20 R=PEEK(&amp;H2B)OR128
+30 RF=60+10*(R=128)
+40 H=VDP(10)AND2
+50 HF=60+10*(R=2)
+60 T=T*RF/HF
+
+In regel 10 staat het gewenste aantal kwartnoten per minuut. 
+Regel 20 t/m 60 bereken het tempo dat met PLAY#2 moet worden 
+opgegeven om dit tempo ook inderdaad te bereiken.
+
+20 R=PEEK(&amp;H2B)OR128
+30 RF=60+10*(R=128)
+
+In regel  20 wordt  bit 7  van adres  &amp;H002B opgeslagen in R 
+(van  ROM). In regel 30 wordt de interruptfrequentie via een 
+truukje met  boelaanse operatoren  berekend. De  uitdrukking 
+(R=128)  is gelijk aan -1 als dat inderdaad zo is, anders 0. 
+Ik zal laten zien dat het werkt:
+
+Bit 7 = 1 -&gt; 50 Hz -&gt; R=128 -&gt; 60 + 10 * -1 = 50
+Bit 7 = 0 -&gt; 60 Hz -&gt; R=  0 -&gt; 60 + 10 *  0 = 60
+
+RF staat voor overigens voor ROM Frequentie.
+
+40 H=VDP(10)AND2
+50 HF=60+10*(R=2)
+
+Regel 40 en 50 werken precies zo. In H (van huidig) wordt de 
+waarde van  bit 1 van R#9 opgeslagen. In regel 50 wordt weer 
+hetzelfde  truukje toegepast.  Alleen is  het nu  2 ipv 128, 
+omdat het bit 1 is ipv bit 7.
+
+60 T=T*RF/HF
+
+Het eigenlijke  tempo wordt  in regel  60 berekend.  Je kunt 
+meteen  al zien  dat het  klopt als  de ROM frequentie en de 
+huidige frequentie aan elkaar gelijk zijn, want dan is RF/HF 
+natuurlijk gelijk aan 1.
+
+Is dit niet zo, dan wordt de correctie automatisch verkregen 
+door deze berekening. Dit gaan we weer na met een voorbeeld:
+
+T120 op een 50 Hz computer in 60 Hz stand: 120*50/60 = 100
+Dit klopt inderdaad, anders zou het tempo te snel zijn.
+
+T120 op een 60 Hz computer in 50 Hz stand: 120*60/50 = 144
+Dit klopt inderdaad, anders zou het tempo te langzaam zijn.
+
+
+                      HOE TE GEBRUIKEN
+
+Je  kunt   deze  regels  natuurlijk  eenvoudig  vooraan  het 
+programma  zetten. Er is nog een klein probleempje: hoe geef 
+je het tempo in een PLAY#2 commando? Dat gaat als volgt:
+
+PLAY#2,&quot;T=T;&quot;,&quot;T=T;&quot;,...
+
+Als  er  meerdere  keren  van tempo  wordt veranderd  in een 
+programma, dan zou je de berekening in een subroutine kunnen 
+zetten.
+
+Veel succes!
+
+                                                Stefan Boer
+
+
+
+
+
+
+
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_37.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_39.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

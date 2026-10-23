@@ -1,0 +1,278 @@
+<html>
+
+<head>
+<title>MILC - Topic Screen splitting</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_16.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_18.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Screen splitting</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                      Screen Splitting
+
+
+Screen splitting. Velen zullen zich hierbij niets, maar  dan
+ook niets kunnen voorstellen. De term is puur  verzonnen,dus
+ik kan u wat dat betreft  geruststellen.  Dit  is  eigenlijk
+alleen maar kost voor de betere machinetaal-freaks onder u.
+
+Screen  splitting  is  een  bepaalde  truuk  met  de   MSX-2
+Video-processor om meerdere aparte schermen onder elkaar  te
+simuleren.  Het  principe  is  alleen  in   machinetaal   te
+construeren,maar kan vanuit basic gebruikt worden.
+
+Je  kunt  het  voor  de  meest  simpele  dingen   gebruiken,
+bijvoorbeeld: je wilt een bepaald logo het scherm  in  laten
+stuiteren, maar als je dan vdp(24) gebruikt,  verschijnt  er
+allemaal rommel onder in het beeld, want het  video-geheugen
+onder lijn 212 (of 192) wordt gebruikt voor de sprites.  Met
+zo'n screen split kun je dan  bijvoorbeeld  onder  lijn  100
+scherm pagina 1 schakelen, met vdp(24) op 0 gezet,  waardoor
+dit gedeelte niet meestuitert. Of nog beter,  je  zet  onder
+lijn 100 het scherm uit, zodat dit altijd zwart  is.  Screen
+splitting is mogelijk op iedere  scherm-modus,  en  je  kunt
+voor ieder split-blok alle VDP-registers anders instellen.
+
+
+                         De theorie
+
+Zoals bekend  verondersteld  mag  worden  genereert  de  MSX
+standaard een interrupt van 50  Hz.  (Japanse  modellen:  60
+Hz.) Dat houdt dus in, dat de computer 50 keer  per  seconde
+naar adres 0038H in de ROM springt bij  het  opstarten.  Hoe
+komt dit nu? Dit verschijnsel wordt gegenereerd door de VDP,
+die, steeds als hij een scherm heeft 'doorgeseind'  naar  uw
+monitor of TV, een signaal doorgeeft aan de Z80, die op zijn
+beurt dan weer zorgt voor de interrupt.
+
+De VDP is er op gebouwd om ook een signaal af te  geven  als
+hij bij een bepaalde lijn is, en dit principe hebben  we  nu
+net nodig.
+
+  VDP registers 0 en 1:
+
+      Bit -   7   6   5   4   3   2   1   0
+   -----------------------------------------
+   REG #0 -   0  DG  IE2 IE1 M5  M4  M3   0
+   -----------------------------------------
+   REG #1 -   0  BL  IE0 M1  M2   0  SI  MAG
+   -----------------------------------------
+
+Als je de computer aanzet, en PRINT VDP(1) intypt,  dan  zul
+je  zien,  dat  [IE0]  altijd  1  is.  Als  je  dan   intypt
+VDP(1)=VDP(1) AND &amp;B11011111, zul je zien  dat  de  computer
+geen toetsen meer uitleest. Dit bit, [IE0],  geeft  namelijk
+aan  dat  de  computer  steeds  onderaan  het   scherm   een
+'interrupt' moet genereren.
+
+Het bit [IE1] is heel handig bij  de  screensplit.  Als  dit
+gezet is, zal de computer steeds bij lijn X  (Dit  staat  in
+register #19) ook een interrupt generen.
+
+De computer geeft nu dus een interrupt bij lijn X, in plaats
+van onderaan het scherm. Als we nu op iedere  interrupt  die
+lijn in register  #19  met  bijvoorbeeld  20  verhogen,  dan
+krijgen we zo'n interrupt om de 20 lijnen.
+
+De interrupt komt dan meer als 50 keer per seconde voor. Dus
+als er nog muziek moet komen op diezelfde  routine,  let  er
+dan wel op, dat die alleen aangeroepen wordt op bijvoorbeeld
+lijn 100, want anders loopt je muziek op zo'n  slordige  100
+Hz (als je 1 interrupt er bij maakt !) en dat is wel wat erg
+veel van het goede.
+
+Als er nou bij de eerste interrupt (bij lijn 100)  VDP(24)=0
+wordt ingegeven, en onderaan in het scherm VDP(24)=128,  dan
+krijg je boven in het beeld dus  een  gedeelte  normaal,  en
+onderin het beeld is het plaatje verschoven.
+
+ !! Dit principe kun je gebruiken met alle VDP-registers !!
+
+
+     Hoe weet ik nou of die interrupt van de VDP komt?
+
+In het voorbeeld gaan we er gewoon van uit dat de interrupts
+alleen  van  de  VDP  komen.  Maar  we  kunnen  uit  de  VDP
+status-registers halen of die interrupt van de VDP komt,  en
+of hij van de lijn interrupt komt of niet.
+Daar ga ik hier niet op  in,  wat  dit  uitlezen  is  in  de
+praktijk meestal niet nodig. Alleen zul je  merken  dat  bij
+het voorbeeld de screen split 'trilt' bij de  scheiding.  De
+meeste japans spellen kennen dit verschijnsel ook, maar  het
+kan verholpen worden m.b.v de status-registers.
+
+
+                        De praktijk.
+
+                Een voorbeeld - source code.
+
+We gaan dit voorbeeld eens uitvoeren:
+
+(DEZE ROUTINE MOET AANGEROEPEN WORDEN OP ADRES &amp;HFD9A)
+DUS:   &amp;HFD9A:   JP INTERR
+
+;
+;
+;
+JUMPER: DEFB 255
+;
+INTERR:
+        DI              ; GEEN ANDERE INTERRUPTS ERDOORHEEN.
+        LD A,(JUMPER)
+        OR A
+        JP Z,LIJN       ; JUMPER ONGELIJK 0, DUS
+                        ; DEZE INTERRUPT IS OP DE LIJN.
+ONDER:
+        XOR A
+        LD (JUMPER),A   ; DE VOLGENDE INTERRUPT IS WEL OP DE
+                        ; LIJN
+        LD A,100        ; ZET DE LIJN IN REGISTER #19
+        OUT (&amp;H99),A
+        LD A,19
+        OR 128
+        OUT (&amp;H99),A
+;
+;-------Hier komen de VDP-registers van boven.
+;
+        LD A,0          ; ZET VDP(24) OP 0.
+
+        OUT (&amp;H99),A
+        LD A,23         ; REGISTER #23
+        OR 128
+        OUT (&amp;H99),A
+;
+;-------Einde veranderde VDP-registers van boven.
+;
+        LD A,(&amp;HF3DF)   ; OUDE WAARDE VAN VDP(0)
+        OR 16           ; ZET [IE1] OP 1.
+        LD (&amp;HF3DF),A
+        OUT (&amp;H99),A
+        LD A,128
+        OUT (&amp;H99),A
+        RET             ; SPRING TERUG
+;
+LIJN:
+                        ; DEZE ROUTINE WORDT UITGEVOERD OP
+                        ; LIJN 100 (IETS LAGER !)
+        LD A,255
+        LD (JUMPER),A
+        LD A,(&amp;HF3DF)
+        RES 4,A         ; RESET [IE1]
+        LD (&amp;HF3DF),A
+        OUT (&amp;H99),A
+        LD A,128
+        OUT (&amp;H99),A
+;
+;-------De veranderde registers onder de lijn.
+;
+        LD A,128        ; VDP(24)=128
+        OUT (&amp;H99),A
+        LD A,23         ; REGISTER #23
+        OR 128
+        OUT (&amp;H99),A
+;
+;-------Einde veranderde registers onder de lijn.
+;
+        RET
+;
+;
+;
+
+
+Dit programma staat ook op  deze  Clubguide  onder  de  naam
+&quot;SPLIT.BIN&quot;. Deze file begint op adres &amp;H9000.
+
+Het resultaat komt alleen ten goede op een plaatje,dus:
+
+10 REM    &quot;SPLIT.ART&quot;
+20 REM  -door C.Cremers-
+30 REM
+40 SCREEN 5 : REM  bijvoorbeeld screen 5.
+50 BLOAD &quot;plaatje.extensie&quot;,S
+60 COLOR = RESTORE : REM  niet bij screen 8
+70 BLOAD &quot;SPLIT.BIN&quot;
+80 POKE &amp;HFD9A,&amp;HC9
+90 POKE &amp;HFD9B,0:POKE&amp;HFD9C,&amp;H90 : REM POKE ADRES
+100 POKE &amp;HFD9A,&amp;HC3 : REM ZET DE INTERRUPT AAN.
+110 ON STOP GOSUB 130 : REM STOP ON
+120 GOTO 120
+130 POKE &amp;HFD9A,&amp;HC9 : REM CTRL-STOP
+140 VDP(0)=VDP(0)AND&amp;HEF : REM EVENTUEEL BIT [IE1] UITZETTEN
+150 VDP(24)=0 : REM VDP(24) TERUG OP 0 !!
+160 END
+
+Nou, in principe moet je nu in staat zijn  zelf  een  screen
+split te  construeren.  Experimenteren  kan  tot  verassende
+effecten leiden!
+
+Ideeen :
+        - Meerdere screen-splits na elkaar zijn mogelijk,
+          maar daarvoor is een andere routine nodig.
+            Dan moet dus, op een screen-split, een nieuwe
+          lijn naar register #19 geschreven worden, en de
+          volgende interrupt moet goed afgevangen worden.
+        - Met VDP(24) kun je bereiken, (zie voorbeeld)
+          dat hetzelfde gedeelte van een plaatje 2 keer op
+          het scherm verschijnt. Zo kun je een scroll bijv.
+          boven in het beeld laten lopen, en onder in het
+          beeld diezelfde scroll een sinus-beweging laten
+          maken, zonder veel moeite voor de VDP !
+        - Let erop, dat, registers die je boven in het beeld
+          verandert, ook weer terugzet na die lijn.
+        - Het palet is ook een VDP-operatie. Twee of meer
+          verschillende paletten op het beeld zijn heel goed
+          mogelijk. Let wel op, dat de overgang niet
+          zichtbaar is, want dit oogt niet echt afgewerkt.
+          (Bijv. door een zwart balkje van een paar lijnen
+          hoog, of een kleur die in beide paletten aanwezig
+          is.
+
+Voor vragen, opmerkingen, suggesties of toevoegingen:
+
+         Cas &quot;Parallax&quot; Cremers
+         v.Oldenbarnevelt straat 37
+         6181 BC Elsloo (LB)
+
+         Tel.: 04490-74593 (Ma-Vr van 19:00 tot 22:00)
+
+------------------------------------------------------------
+N.B. Voor eventuele  routines  die  gebruik  maken  van  het
+screen-split principe houdt de redaktie van  Clubguide  zich
+van harte aanbevolen. Stuur uw inzending naar:
+
+Ronald Egas
+De Blauwe Wereld 53
+1398 EP Muiden                               Tel. 02942-3813
+------------------------------------------------------------
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_16.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_18.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

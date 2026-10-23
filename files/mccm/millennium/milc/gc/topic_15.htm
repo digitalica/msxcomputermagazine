@@ -1,0 +1,186 @@
+<html>
+
+<head>
+<title>MILC - Topic Cursus ML voor MSX (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_14.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_16.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Cursus ML voor MSX (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+
+   - Met toestemming overgenomen van Future Magazine #8 -
+
+
+          C U R S U S   M L   V O O R   M S X  (1)
+         ==========================================
+
+Ofwel   een  cursus  machinetaal  voor  beginners.  Bij  het 
+programmeren van  machinetaal programma's  is het  eigenlijk 
+een must om te werken met een zogenaamd assembler programma.
+
+Een  assembler stelt  u in  staat om in de assembler taal te 
+programmeren, waardoor het voor u een stuk makkelijker wordt 
+om een programma in machinetaal te schrijven.
+
+Deze cursus  is bedoeld om mensen die weinig van machinetaal 
+afweten  de beginselen van deze taal bij te brengen. In deze 
+cursus willen we de volgende dingen opnemen
+
+- Een uitvoerige uitleg van de microprocessor, de Z80
+
+- De  3  belangrijkste  talstelsels,  Binair, Decimaal  en 
+  Hexadecimaal
+
+- Een  bespreking  van het  grootste gedeelte  van de  Z80 
+  instruktieset.
+
+- Alle registers en indexregisters van de Z80
+
+- het Vlag register
+
+- Een overzicht van de geheugenindeling van de MSX(2)
+
+- Een bespreking van de MSX2 videochip, de V9938
+
+- En  tenslotte  een  compleet  overzicht  van  alle  MSX2 
+  ROM-BIOS routines (inclusief het SUB-ROM).
+
+
+                    WAAROM MACHINETAAL?
+
+Het  antwoord  hierop  is  vrij  simpel.  BASIC programmeurs 
+zullen vaak te kampen hebben met de traagheid van deze taal. 
+Dit is  ook niet  zo verwonderlijk want de BASIC interpreter 
+vertaalt  eerst elke  regel naar  ML voordat  hij die  regel 
+uitvoert.
+
+Dit vertalen  neemt erg  veel tijd  in beslag. Daarom zul je 
+ook  niet zo snel een database of iets dergelijks geschreven 
+in  BASIC  tegenkomen. In  machinetaal gaat  alles een  stuk 
+sneller (soms wel een factor 50) want de computer hoeft niet 
+eerst  alles  te gaan  vertalen naar  machinetaal, want  dat 
+heeft de assembler immers al gedaan.
+
+Een ander  nadeel van  BASIC is dat je niet het onderste uit 
+de   computer  kunt  halen,  omdat  er  gewoon  niet  genoeg 
+instructies voor  aanwezig zijn.  In machinetaal  kun je wel 
+het onderste uit de computer halen, want je spreekt de chips 
+rechtstreeks aan.
+
+Het oogt natuurlijk ook veel professioneler om een programma 
+in machinetaal  te schrijven. Al deze redenen zijn voldoende 
+om in machinetaal te programmeren in plaats van BASIC. Er is 
+slechts   ÇÇn   echt   voordeel  dat   BASIC  heeft   t.o.v. 
+machinetaal,  en dat is de moeilijkheidsgraad. Een programma 
+schrijven  in  BASIC  is  gemakkelijker  dan  een  programma 
+schrijven in machinetaal.
+
+
+                      WELKE ASSEMBLER?
+
+Er  zijn  veel verschillende  assemblers verschenen  door de 
+jaren   heen   die   nogal   verschillen   in   functies  en 
+gebruiksvriendelijkheid. Waar  u op moet letten bij de keuze 
+van  een assembler  is de  snelheid van  het assembleren, de 
+flexibiliteit  van   de  assembler,   en  of   er  ook   een 
+dis-assembler bij zit.
+
+De beste assemblers zijn DEVPAC 80 van Hisoft en WB-ASS2 van 
+Green. Ook is er ZAS, voor die mensen die niet aan de andere 
+assemblers  kunnen  komen.  Deze  assembler  is  een  beetje 
+langzaam,  maar wäl  public domain, in tegenstelling tot die 
+andere twee. ZAS staat in MCM nummer 38.
+
+
+                   DE Z80 MICROPROCESSOR
+
+De microprocessor van de MSX is de Z80A processor. De Z80 is 
+een 8/16 bits processor. Dat wil zeggen dat hij 8 of 16 bits 
+registers heeft  en een  8 bits  brede databus.  Zonder deze 
+processor kan de computer zijn werk niet doen, dit maakt ook 
+dat deze chip de belangrijkste is van de computer.
+
+De  Z van  Z80 komt  van Zilog Inc. De 80 is een erfenis van 
+een Intel  voorloper, de  8080, een veel gebruikte processor 
+in  PC's. De  Z80 is  eenvoudig te programmeren en heeft ook 
+niet zo'n grote instruktieset.
+
+
+                        TALSTELSELS
+
+Zoals u  waarschijnlijk reeds  weet, is  uw MSX  computer in 
+staat  om  met  verschillende  talstelsels  te  werken.  Het 
+stelsel  wat we  normaal altijd  gebruiken is het zogenaamde 
+tientallig stelsel, ook wel het decimale stelsel genoemd.
+
+Daarnaast   zijn   er  ook   nog  twee   andere  belangrijke 
+talstelsels, zoals  het Hexadecimale en het Binaire stelsel. 
+Ook  is er  nog het  Octale stelsel, maar daar wordt bij MSX 
+bijna geen gebruik gemaakt.
+
+De computer  zelf gebruikt alleen het binaire stelsel. Als u 
+in  BASIC  programmeert  worden  alle  instrukties  door  de 
+interpreter omgezet naar binaire codes, die voor de computer 
+begrijpelijk zijn.
+
+Dit  binaire stelsel is echter voor mensen niet eenvoudig te 
+begrijpen, want  een binair  getal bestaat  uit acht cijfers 
+die  0 of  1 kunnen  zijn. Bv.  00001001. Dit is voor mensen 
+moeilijk te  begrijpen. Niemand  kan in ÇÇn oogopslag zeggen 
+dat 00001001 hetzelfde is als het getal 9.
+
+Hiervoor  is het Hexadecimale stelsel ontworpen. Dit stelsel 
+is  voor  mensen iets  gemakkelijker te  begrijpen. Bij  het 
+Hexadecimale  getallensysteem   maken  we  gebruik  van  het 
+grondtal 16 (0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F).
+
+In  BASIC  moeten  de  Hexadecimale  getallen vooraf  gegaan 
+worden door &quot;&amp;H&quot;. Bij het gebruik van een assembler wordt er 
+meestal  ook &quot;&amp;H&quot;  gebruikt, of  er wordt  een H  achter het 
+hexadecimale getal  gezet. Soms  gebruikt men ook # voor het 
+getal, maar dit komt minder vaak voor.
+
+Vb. FFH , &amp;HFF, #FF (255 Decimaaal, 11111111 Binair).
+
+Maar  bij de  meeste assemblers kunt u ook gebruik maken van 
+het gewone  Decimale stelsel.  Hier hoeft dan ook geen teken 
+aan vooraf te gaan.
+
+De volgende aflevering zal de registers en een stukje van de 
+instruktieset van de Z80 behandelen. Dit komt dus, als alles 
+mee zit op Sunrise Magazine #1 (jippie!).
+
+                                                Jelle Bosma
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_14.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_16.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

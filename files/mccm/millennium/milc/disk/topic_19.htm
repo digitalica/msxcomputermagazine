@@ -1,0 +1,294 @@
+<html>
+
+<head>
+<title>MILC - Topic Sliding into bdos [6/6]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_18.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_20.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Sliding into bdos [6/6]</b><br>
+    <i>M.J.Karas</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+DETERMINE LOGGED DISK: Function 25.
+
+     An  applications program can determine which disk  drive  is 
+the  currently  logged  or  default drive  through  use  of  this 
+function.  The BDOS will return in the (A) register the number of 
+the currently selected drive according to the table given above.
+
+     The program segment below shows a sequence of BDOS interface 
+code  that first determines if drive B:  is selected,  and if not 
+then does a BDOS call to change it.
+
+;SELECT AND POLL LOGGED DISK DRIVE EXAMPLE
+;
+SELECT  EQU     0EH             ; FUNCTION 14
+ASKDRV  EQU     19H             ; FUNCTION 25
+BDOS    EQU     0005H           ; SYSTEM ENTRY POINT
+
+        ORG     0100H           ; PROG START
+        LD      C,ASKDRV        ; FIND OUT IF B: IS SELECTED
+        CALL    BDOS
+        CP      'B'-'A'
+        RET     Z               ; DONT SELECT IF ALREADY
+                                ; ..LOGGED
+        LD      E,'B'-'A'       ; SET TO LOG AND SELECT B:
+        LD      C,SELECT
+        CALL    BDOS
+        RET                     ; FINISHED WITH ANOTHER PROG
+;
+        END
+
+
+DRIVE STATUS SET AND RESET: Functions 28 &amp; 37.
+
+     Drive  status  may  be  individually  controlled  by   these 
+functions.  Operation 28 allows a the currently selected drive to 
+be write protected (set to read/only). The process is simply:
+
+WPDSK     EQU       01CH
+BDOS      EQU       0005H
+          LD        C,WPDSK        ;WRITE PROTECT DISK
+          CALL      BDOS
+
+The  write  protect status of a specific disk may be  removed  by 
+function  37  which  deactivates the directories  of  each  drive 
+specified  at  call  time.  Each drive by  default  then  becomes 
+read/write  again but requires reactivation through  reselection. 
+The  reset drive vector is a 16-bit value passed to the BDOS with 
+a  &quot;1&quot;  bit  in  each  bit position  for  a  drive  that  equires 
+resetting.  The  most  significant  bit of  the  16  bit  quanity 
+corresponds  to  drive  P:  and the LSB to  drive  A:.  The  code 
+sequence to reset drive B: would be:
+
+RESDSK    EQU       025H
+BDOS      EQU       0005H
+          LD        C,RESDSK                 ;FUNCTION CODE
+          LD        DE,0000$0000$0000$0010B  ;DRIVE B: BIT SET
+          CALL      BDOS
+
+GET DRIVE LOGIN AND READ?ONLY VECTORS: Function 24 &amp; 29.
+
+     The  BDOS keeps track of all drives that have been  selected 
+since  the last boot or disk reset functions.  These  drives  are 
+considered   in  a  online  status  in  that  the  system   knows 
+immediately  what  the space allocation map of the drive  is  and 
+whether  the  drive is in read/only status or  not.  Function  24 
+allows  the  application program to determine what subset of  the 
+current  drive complement are in this online logged  status.  The 
+vector returned in the (HL) register pair is a bit map like above 
+where a &quot;1&quot; bit means the drive is active.  The most  significant 
+bit of the 16-bit number corresponds to drive P:.  The code below 
+fetches the vector and saves it in a local data area.
+
+;LOGIN VECTOR EXAMPLE
+;
+LOGIN   EQU     018H            ; FUNCTION 24
+BDOS    EQU     0005H           ; SYSTEM ENTRY POINT
+
+        ORG     0100H
+        LD      C,LOGIN         ; FUNCTION
+        CALL    BDOS
+        LD      (LOCLOG),HL     ; SAVE VECTOR HERE
+        RET                     ; TO CCP
+;
+LOCLOG:
+        DEFS    2
+        END
+
+     In  a similar manner the BDOS allows determination of  which 
+drives are in the write protected read/only status.  A &quot;1&quot; bit in 
+the  returned  vector indicates read/only status for  a  specific 
+drive. The code here shows how to fetch it.
+
+;READ/ONLY VECTOR EXAMPLE
+;
+ROVEC   EQU     01DH            ; FUNCTION 29
+BDOS    EQU     0005H           ; SYSTEM ENTRY POINT
+
+        ORG     0100H
+        LD      C,ROVEC         ; FUNCTION
+        CALL    BDOS
+        LD      (LOCROV),HL     ; SAVE VECTOR HERE
+        RET                     ; TO CCP
+;
+LOCROV:
+        DEFS    2
+        END
+
+GET ALLOCATION VECTOR AND DISK PARM POINTER: Function 27 &amp; 31.
+
+     Two  more  miscellaneous disk drive interface functions  are 
+provided  that  permit several special types of functions  to  be 
+performed.  The first, function 27 returns an address in the (HL) 
+registers that points to a bit string in memory that  corresponds 
+to the data block allocation map of the currently selected drive. 
+The  map  contains  one  bits  in each  position  where  a  block 
+allocated, starting with the MSB of the forst byte in the string. 
+The  length of the bit string depends upon the total capacity  of 
+the  drive  in  allocatable  blocks.   Function  31  permits   an 
+application  to  determine the characteristics of  the  currently 
+selected drive. The BDOS returns an address in the (HL) registers 
+that  points  to  a table of 33 bytes that describe  the  current 
+drive.  Data  in  the  table  includes such  data  as  number  of 
+possible  directory entries on the disk,  number  of  allocatable 
+blocks on the disk, and, indirectly, the size of each disk block. 
+The  program  below  is  a comprehensive  example  of  how  these 
+functions  can be used to determine the remaining space left on a 
+the selected drive. The program stores the available space of the 
+drive specified in the first byte of the default FCB into  memory 
+location &quot;KPDISK&quot; and then exits to the CCP. The reader can adapt 
+the code as desired.
+
+;
+;CP/M BDOS INTERFACE EQUATES
+;
+BASE    EQU     0000H           ;BASE OF CP/M SYSTEM
+LOGDRIV	EQU	0004H+BASE	;LOCATION OF CURRENTLY LOGGED DRIVE
+BDOS	EQU	0005H+BASE	;THE BDOS I/O VECTOR
+SLCTDSK	EQU	14		;SELECT DISK DRIVE
+GALVEC	EQU	27		;GET ADDRESS ALLOCATION VECTOR
+GDSKP	EQU	31		;GET ADDRESS OF DISK PARAMETER TABLE
+;
+;
+	ORG	0100H
+;
+;
+;PROGRAM TO FETCH REMAINING DISK SPACE IN KBYTES
+;
+SPCGET:
+        LD      A,(LOGDRIV)     ; GET CURRENTLY LOGGED DRIVE AND SAVE
+        AND     0FH             ; STRIP OUT USER NUMBER
+        LD      (SAVDRIV),A     ; SAVE CODE
+;
+        LD      A,(FCB)         ; CHECK IF SAME AS SELECT
+        DEC     A               ; ADJUST FCB DRIVE TO MATCH SELECT DRIVE
+        LD      E,A             ; ..SELECT IN BDOS
+        LD      C,SLCTDSK       ; SELECT DISK FUNCTION
+        CALL    BDOS
+;
+        LD      C,GDSKP         ; FIND ADDRESS OF DISK PARAMETER HEADER
+        CALL    BDOS
+        LD      BC,0002H        ; INDEX TO BLOCK SHIFT FACTOR
+        ADD     HL,BC
+        LD      B,(HL)          ; (B) = BYTE BLOCK SHIFT FACTOR
+        INC     HL
+        INC     HL
+        INC     HL
+        LD      E,(HL)          ; (DE) = WORD DISK BLOCK COUNT
+        INC     HL
+        LD      D,(HL)
+        INC     DE
+;
+        LD      A,B             ; ADJUST SHIFT FOR KBYTE SIZE
+        SUB     03H
+        LD      HL,0001H        ; CALCULATE BLOCK SIZE
+SPCCAL:
+        OR      A               ; KNOW KBYTES PER BLOCK?
+        JP      Z,SPCKNW
+        ADD     HL,HL           ; DOUBLE # SECTORS PER TRACK
+        DEC     A               ; DECREMENT BLOCK SHIFT
+        JP      SPCCAL
+;
+SPCKNW:
+        LD      C,L             ; (BC)=KBYTES PER BLOCK
+        LD      B,H
+        LD      HL,0            ; INITIALIZE KPDISK
+        LD      (KPDISK),HL
+        PUSH    BC              ; SAVE KBYTES/BLOCK
+        PUSH    DE              ; SAVE NUMBER OF BLOCKS
+        LD      C,GALVEC        ; NOW POINT TO THE ALLOCATION VECTOR
+        CALL    BDOS            ; (HL)=ALLOCATION VECTOR ADDRESS
+        POP     DE
+        POP     BC
+;
+        LD      (ALLSAVE),HL    ; SAVE ALLOCATION POINTER
+        LD      H,1             ; SET MINIMUM START BIT COUNT
+;
+UALLOC:
+        DEC     H               ; DEC BIT COUNT
+        JP      NZ,STACT        ; STILL ACTIVE BYTE
+;       
+        LD      HL,(ALLSAVE)    ; GET POINTER
+        LD      A,(HL)
+        INC     HL
+        LD      (ALLSAVE),HL    ; SAVE NEW POINTER
+        LD      H,08H           ; SET BIT COUNTER TO MAX
+;
+STACT:
+        RLCA                    ; GET ALLOCATION BIT TO CARRY
+        JP      C,ALLOC         ; DONT COUNT ALLOCATED BLOCKS
+        PUSH    HL
+        LD      HL,(KPDISK)     ; GET KBYTES LEFT COUNT
+        ADD     HL,BC           ; ADD IN ONE MORE BLOCK COUNT
+        LD      (KPDISK),HL
+        POP     HL
+;
+ALLOC:
+        DEC     DE              ; DEC TOTAL BLOCK COUNT
+        LD      L,A
+        LD      A,D
+        OR      E               ; ALL BLOCKS SCANNED YET
+        LD      A,L             ; RESTORE ALLOC BIT PATTERN
+        JP      NZ,UALLOC       ; MORE TO COUNT
+;
+        LD      A,(SAVDRIV)     ; RETURN DISK SELECT TO PREVIOUS
+        LD      E,A             ; ..SELECT IN BDOS
+        LD      C,SLCTDSK       ; SELECT DISK FUNCTION
+        CALL    BDOS
+        RET                     ; BACK TO THE CCP
+;
+;
+;PROGRAM DATA STORAGE ALLOCATIONS
+;
+BLKSIZ:
+        DEFS    2               ; STORAGE FOR ALLOCATION BLOCK SIZE
+ALLSAVE:
+        DEFS    2               ; STORAGE FOR ALLOCATION PNT SAVE
+SAVDRIV:
+        DEFS    1               ; SAVE CURRENT DISK SELECT DURING RELOG
+KPDISK:
+        DEFS    2               ; STORAGE FOR KBYTES PER DRIVE LEFT
+;
+        END
+   
+
+     The  next part in this series will present the the CP/M file 
+system as viewed from the BDOS interface aspect. The FILE CONTROL 
+BLOCK  (FCB)  will be presented.  In addition the  procedures  to 
+prepare files for I/O and then the actual I/O procedures will  be 
+presented.  The  series  will  round out to a conclusion  with  a 
+comprehensive programming example that presents a sequential file 
+I/O  set  of subroutines that permit character by  character  I/O 
+with a file to be done.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_18.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_20.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

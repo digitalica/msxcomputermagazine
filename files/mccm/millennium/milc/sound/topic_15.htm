@@ -1,0 +1,154 @@
+<html>
+
+<head>
+<title>MILC - Topic Info over MoonBlaster songs</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_14.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_16.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Info over MoonBlaster songs</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Hier is eindelijk wat meer informatie over de MoonBlaster songs.
+Het is vast nog lang niet compleet, maar het is erg veel werk om alles
+precies te gaan opschrijven. Veel weet je waarschijnlijk toch al of is
+makkelijk terug te vinden in de playroutine. Zoniet, dan vraag je het
+maar via de BBS of een brief. Gerichte vragen zijn makkelijker te be-
+antwoorden dan 'geef eens een omschrijving van het formaat'.
+
+Ik heb 2 sources meegegeven. Een van de cruncher en een van de decruncher.
+Ik heb de sources niet uitgetest, maar ze komen bijna letterlijk uit MB,
+dus ze zouden wel moeten werken.
+Bekijk deze goed en het commentaar erbij. De ongecrunchte opslag is nl
+iets anders dan alleen het decrunchen van het gecrunchte formaat.
+Er worden wat instellingen op een ander adres gezet en bij het gecrunchte
+formaat wordt van ieder pattern het start-geheugenadres neergezet. Dit is
+gedaan om de muziek relocatable te houden.
+
+Onderstaande tabel is zoals de instellingen staan volgens het ongecrunchte
+formaat, dus zoals in MB zelf.
+
+xpos	equ 08000h	;-&gt;in song maar 200 lang!
+xleng	equ xpos+200	;-&gt;last position
+xuser1	equ xleng+1	;-&gt;usercode #1
+xmmvoc	equ xuser1+2	;-&gt;module instrumenten
+xmmsti	equ xmmvoc+16*9	;-&gt;instrumenten module
+xpasti	equ xmmsti+16	;-&gt;instrumenten/volumes pac
+xstpr	equ xpasti+32	;-&gt;stereo-instellingen
+xtempo	equ xstpr+10	;-&gt;begintempo
+xsust	equ xtempo+1	;-&gt;modulation depth
+xnaam	equ xsust+1	;-&gt;songnaam
+xchip	equ xnaam+40	;-&gt;voorkeurchip
+xbegvm	equ xchip+1	;-&gt;begininstrumenten module
+xbegvp	equ xbegvm+9	;-&gt;begininstrumenten pac
+xorgp1	equ xbegvp+9	;-&gt;data van softwarevoices pac
+xorgnr	equ xorgp1+6*8	;-&gt;nummers van software voices
+xsmpkt	equ xorgnr+6	;-&gt;samplekitnaam
+xdrblk	equ xsmpkt+8	;-&gt;drumblokken pac
+xdrvol	equ xdrblk+15	;-&gt;volumes drum pac
+xdrfrq	equ xdrvol+3	;-&gt;frequenties drum pac
+xuser2	equ xdrfrq+3*6	;-&gt;usercode#2 (=1 op met andere codering)
+xrever	equ xuser2+2	;-&gt;reverb instellingen
+xloop           equ xrever+9            ;-&gt;loop position
+
+Toelichting:
+xpos	: gewoon pattern nummers
+xmmvoc	: per selected voice 9 bytes
+xmmsti	: nummers van selected voices in de voicelijst
+xpasti	: per selected voice 2 bytes, 1e voor instrument
+	  2e voor volume: bij softwareinst. 1e byte 15 + nr softw. ins.
+xstpr	: 0 = audio, 1 = music, 2 - stereo
+xtempo	: begintempo
+xsust	: bit 0-1 modulation depth, bit 5 6/9 kanaals music
+xbegvm	: nummers startinstrumenten module
+xbegvp	: nummers startinstrumenten pac
+xorgp1	: per software instrument 8 bytes
+xorgnr	: nummer softwarevoices in voicelijst
+xdrblk	: per byte bit 0-4 combinatie FM-drumnummers bit 5-7 vormen
+	  getal 0-7 voor nummer PSG-drum
+xloop	: gewoon positionnummer waarnaar geloopt moet worden, 255 is
+	  loop OFF
+
+
+Met behulp van bovenstaande kun je zelf wel uitvinden hoe deze in de gecrunchte
+song zijn opgeslagen.
+
+Dan de songdata opslag:
+
+Step = 13 bytes
+Byte 1-9 = voor kanaal 1-9
+Byte 10: freq. samples
+Byte 11: volume samples
+Byte 12: linkernibble samplenr. rechternibble FM-drumnummer
+byte 13: command kanaal
+
+Kanalen:
+
+0	: Empty event
+1   t/m 96	: Note event
+97	: Off event
+98  t/m 113	: Instrumentwissel
+114 t/m 176	: Volumewissel
+177 t/m 179	: Stereo instelling wissel
+180 t/m 198	: Linken van noten
+
+Waarde	: 180 is |L-9| en 188 is |L-1|
+	  189 is |L+0|
+	  190 is |L+1| en 198 is |L+8|
+
+199 t/m 217	: Pitch bending
+
+Waarde	: 199 is |P-9| en 206 is |P-1|
+	  207 is |P+0|
+	  208 is |P+1| en 217 is |P+9|
+
+218 t/m 223	: Brightness wissel (omlaag)
+
+Waarde	: 218 is |X-6| en 223 is |X-1|
+	  231 is |X+1| en 236 is |X+6|
+
+224 t/m 230	: Detune wissel
+231 t/m 236	: Brightness wissel (omhoog)
+237	: Sustain event
+238	: Modulation
+
+
+
+Command
+-------
+
+1  - 23	: tempo
+24	: end of pattern
+25 - 27	; status bytes
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_14.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_16.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

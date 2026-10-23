@@ -1,0 +1,172 @@
+<html>
+
+<head>
+<title>MILC - Topic FAC Soundtracker Pro formaat</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_3.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">FAC Soundtracker Pro formaat</b><br>
+    <i>FAC/BTW</i>, 19-03-92</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                     FAC SOUNDTRACKER PRO FORMAAT
+                       (C)1990,1991,1992 FAC/TBW
+
+datum: 19-3-1992
+
+De opbouw van het FST PRO formaat is gelijk aan dat van FST 2.0, de 
+MIDI-installatie data na #BF00 is er bij gekomen.
+
+start : $8000 / eind : $BFFF
+music data  : #8000-#BEFF
+overige data: #BF00-#BFFF
+
+kode functie     opmerkingen    
+---------------------------------------------------------------
+0       no event
+1-61    note nummer (1=C1, 13=C2, 25=C3, 37=C4, 49=C5, 61=C6)
+62      n.g.
+63      n.g.
+64      off waarde
+65      detune +
+66      detune -
+67-76   pitch bend + (67=0, 68=1 ... 76=9)
+77-86   pitch bend - (77=0, 78=1 ... 86=9)
+87      fase on  (nog niet gebruikt)
+88      fase off (nog niet gebruikt)
+89-112  tempo change (89=T1, 90=T2 ... 112=T24)
+113-124 n.g.
+125-127 gebruikt door crunch routine (nog niet gebruikt)
+128-191 volume change (128=V0, 129=V1 ... 191=V63)
+192-255 brightness change (192=X0, 193=X1 ... 255=X63)
+
+opmerking: n.g. = niet gebruikt
+
+7 6 5 4 3 2 1 0
+---------------
+0 0 0 0 0 0 0 0 : no event
+0 0 x x x x x x : note on
+0 1 0 0 0 0 0 0 : note off
+0 1 x x x x x x : effecten
+1 0 x x x x x x : volume change
+1 1 x x x x x x : brightness change
+        
+adres   lengte  functie
+-----------------------------------------------------------------------------
+#BF00   99      klankdata MSX Audio (9*11)
+#BF63    9      klanknummers MSX Audio
+#BF6C    8      original data MSX Music
+#BF74    6      intrument nummer (b7-4) + volume (b3-0) MSX Music
+#BF7A    8      MIDI drum id, 1 t/m 8 (zie opm. II)
+#BF82    2      speed (aantal interrupt wachttijden. (60Hz) byte 2=0)
+#BF84    8      filenaam drumkit (ascii)
+#BF8C    1      herkenningscode FST PRO file (1 = FST1, 2 = FST2, 3 = FSTPRO)
+#BF8D    1      original nummer MSX Music
+#BF8E    1      user ID       
+#BF8F    9      MIDI Registernummer (9*1)
+#BF98    9      MIDI id byte (9*1, zie opm. I)
+#BFA1    5      MIDI transpose data (4&&laquo; * 4 bits, zie opm. III)
+#BFA6   40-5    naam muziek nummer (ascii)
+#BFC9    5      MIDI velocity data (1e 5 kanalen, zie opm. IV) 
+#BFCE    1      sustain MSX Audio (alleen b7,6)
+#BFCF   40-5    naam schrijver
+#BFF2    5      MIDI velocity data (2e 4 kanalen, zie opm. IV)
+#BFF7    1      geschreven voor: MSX Audio/MSX Music (0=music, &lt;&gt;0=audio)
+#BFF8    1      aantal tracks (lengte muziek stuk)
+#BFF9    7      MIDI drum id, 9 t/m 15 (zie opm. II)
+
+
+Opmerking I:
+------------
+
+De  MIDI id's  worden opgeslagen  in 9 bytes. Hierin staat vermeld staat welk 
+MIDI kanaal  gebruikt wordt  en of  de module  aan/uit staat. Het dataformaat 
+ziet er alsvolgt uit:
+
+b 7 6 5 4 3 2 1 0
+  | | | +-+-+-+-+- MIDI channel (0..16)
+  | | +----------- Play module (1 = yes, 0 = no)
+  | +------------- not used
+  +--------------- not used
+
+Opmerking II:
+-------------
+
+De  MIDI  drum id's  worden opgeslagen in 15 bytes, verdeeld in 2 stukken. De 
+eerste  8 bytes  vanaf adres #BF7A, de laatste 7 bytes vanaf adres #BFF9. Het 
+dataformaat ziet er alsvolgt uit:
+
+b 7 6 5 4 3 2 1 0 
+  | +-+-+-+-+-+-+- MIDI drumnummer
+  +--------------- Play drum (1 = yes, 0 = no)
+
+
+Opmerking III:
+--------------
+
+De  MIDI transpose  data wordt  opgeslagen in  5 bytes,  ieder verdeelt  in 2 
+helften.  In  iedere  helft  van  ‚‚n  zo'n byte  staan voor  2 channels  een 
+transpose code  aangegeven. Het laatste byte (5e byte) wordt dus maar voor de 
+helft gebruikt:
+
+       +------+------+
+#BFA1  | ch 1 | ch 2 |
+       +------+------+
+#BFA2  | ch 3 | ch 4 |
+       +------+------+
+#BFA3  | ch 5 | ch 6 |
+       +------+------+
+#BFA4  | ch 7 | ch 8 |
+       +------+------+
+#BFA5  | ch 9 | n.g. |
+       +------+------+
+
+E‚n  channel kan dus maar 4 bits transpose informatie bevatten, daarom kunnen 
+er  maar  een bepaald  aantal waarden  opgeslagen worden:  deze waarden  zijn 
+alsvolgt gecodeerd:
+
+in file:    |  0|  1|  2|  3|  4|  5|  6|  7|  8|  9| 10| 11| 12| 13| 14| 15|
+------------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+transpose:  |  0|-24|-12| -7| -5| -3| -2|  2|  3|  4|  5|  7|  9| 10| 12| 24|
+
+
+Opmerking IV
+------------
+
+De velocity data wordt gesplits opgeslagen in 2 gedeeltes: ‚‚ntje vanaf adres 
+#BFC9, en de ander vanaf adres #BFF2. (Opm. :het allerlaatste byte blijft dus 
+ongebruikt) In  de bytes  staat gewoon rechtstreeks de velocity data van de 9 
+kanalen  (dus 9x  7 bits,  bit 7  steeds niet  gebruikt -&gt; velocity loopt van 
+0-128 !)
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

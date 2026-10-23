@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<title>MILC - Topic Muisaansturing in BASIC</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Muisaansturing in BASIC</b><br>
+    <i>Arsoft</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Hoe de muis in BASIC te gebruiken:
+----------------------------------
+
+We kunnen de muis uitlezen met behulp van de commando's PAD en STRIG. Met PAD
+lezen we de bewegingen van de muis en met strig kijken we naar de muisknoppen.
+
+Een voorbeeld programma:
+
+10 SCREEN 5: COLOR 15,0,0: CLS
+20 SPRITE$(1)=STRING$(3,16)+CHR$(238)+STRING$(3,16)+CHR$(0)
+30 P=PAD(12): X=X+PAD(13): Y=Y+PAD(14)
+40 IF X&gt;255 THEN X=255 ELSE IF X&lt;0 THEN X=0
+50 IF Y&gt;211 THEN Y=211 ELSE IF Y&lt;0 THEN Y=0
+60 PUTSPRITE 1,(X-4,Y-4)
+70 IF STRIG(1) THEN LINE(XO,YO)-(X,Y),15: XO=X: YO=Y: ELSE XO=X: YO=Y
+80 IF STRIG(3) THEN END
+90 GOTO 30
+
+Uitleg:
+10 initialiseren van het scherm en de kleuren
+20 een sprite definieeren
+30 muis uitlezen
+   we lezen eerst PAD(12) om aan te geven dat we de muis gaan uitlezen.
+   deze geeft altijd -1 maar moet altijd worden opgevraagd.
+   met PAD(13) wordt de verandering in de X-richting opgevraagd.
+   met PAD(14) wordt de verandering in de Y-richting opgevraagd.
+40 controleren of nieuwe x-coordinaat wel binnen het scherm valt
+50 controleren of nieuwe y-coordinaat wel binnen het scherm valt
+60 sprite op het scherm plaatsen
+70 controleren of het op de linker muisknop is gedrukt (STRIG(1)).
+80 controleren of het op de rechter muisknop is gedrukt (STRIG(3)).
+90 terug naar de hoofdlus
+
+Overzichtje:
+
+Muis in joystickpoort A
+PAD (12)  - voor het uitlezen van de muis
+PAD (13)  - voor het uitlezen van de verandering in de x-richting
+PAD (14)  - voor het uitlezen van de verandering in de y-richting
+STRIG (1) - linker muisknop
+STRIG (3) - rechter muisknop
+
+Muis in joystickpoort B
+PAD (16)  - voor het uitlezen van de muis
+PAD (17)  - voor het uitlezen van de verandering in de x-richting
+PAD (18)  - voor het uitlezen van de verandering in de y-richting
+STRIG (2) - linker muisknop
+STRIG (4) - rechter muisknop
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

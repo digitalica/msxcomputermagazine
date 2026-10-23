@@ -1,0 +1,942 @@
+<html>
+
+<head>
+<title>MILC - Topic PCX formaat</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_3.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="index.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">PCX formaat</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+PCX formaat
+
+Op verzoek van Robbert Wethmar zet ik hierbij
+mijn kennis van het PCX file formaat op papier.
+
+Dit verhaal bevat de volgende onderdelen:
+
+1. Het ZSoft document wat het formaat beschrijft.
+2. Stuk Turbo Pascal code uit het CNVS programma wat PCX formaat
+   (monochroom en 256 kleuren) aanmaakt.
+3. Stuk Turbo Pascal code uit MSX12CNV wat PCX formaat
+   24 bits true color aanmaakt.
+
+1. ZSoft PCX formaat
+
+Het hierachter opgenomen verhaal is de door ZSoft (de bedenkers
+van het PCX formaat) geproduceerde beschrijving van het PCX formaat.
+Het is hier en daar wat te compact maar het verhaal klopt wel,
+en is bruikbaar voor de meest simpele monochrome PCX plaatjes
+tot true color 24 bits PCX formaat.
+
+
+     Introduction This booklet was  designed  to  aid  developers  and
+users  in  understanding the technical aspects of the .PCX file format
+and the use of FRIEZE.  Any comments, questions or  suggestions  about
+this booklet should be sent to:
+
+ZSoft Corporation
+Technical Services
+ATTN: Code Librarian
+450 Franklin Rd. Suite 100
+Marietta, GA  30067
+
+Image File (.PCX) Format
+
+     If you have technical questions on the format, please do not call
+technical  support.   If something is not clear leave a message on our
+BBS, Compuserve, or write us a letter at the above address.
+
+     The information in this section will be useful  if  you  want  to
+write  a  program to read or write PCX files (images).  If you want to
+write a special case program  for  one  particular  image  format  you
+should  be  able to produce something that runs twice as fast as &quot;Load
+from...&quot; in PC Paintbrush.  Image files used by PC Paintbrush  product
+family  and FRIEZE (those with a .PCX extension) begin with a 128 byte
+header.  Usually you can ignore this header, since  your  images  will
+all  have  the  same  resolution.   If  you  want to process different
+resolutions  or  colors,  you  will  need  to  interpret  the   header
+correctly.   The  remainder  of  the  image  file  consists of encoded
+graphic  data.   The  encoding  method  is  a  simple  byte   oriented
+run-length  technique.   We reserve the right to change this method to
+improve space efficiency.  When more than one color plane is stored in
+the  file,  each line of the image is stored by color plane (generally
+ordered red, green, blue, intensity), As shown below.
+
+Scan line 0:    RRR...
+                GGG...
+                BBB...
+                III...
+Scan line 1:    RRR...
+                GGG...
+                BBB...
+                III...
+(etc.)
+The encoding method is:
+FOR  each  byte,  X,  read from the file
+        IF the top two bits of X are  1's then
+                count = 6 lowest bits of X
+                data = next byte following X
+        ELSE
+                count = 1
+                data = X
+
+
+     Since the overhead this technique requires is, on average, 25% of
+the  non-repeating  data  and  is  at  least offset whenever bytes are
+repeated, the file storage  savings  are  usually  considerable.   The
+                                                                Page 2
+
+
+format  of  the  file header is shown on the next page.ZSoft .PCX FILE
+HEADER FORMAT
+
+Byte    item    size    Description/Comments
+0       manufacturer    1       Constant Flag = ZSoft .pcx
+1       Version 1       Version information
+                        0 = Version 2.5 of PC Paintbrush
+                        2 = Version 2.8 w/palette information
+                        3 = Version 2.8 w/o palette information
+                        4 = PC Paintbrush for Windows(Plus for Windows uses
+                            Ver 5)
+                        5 = Version 3.0 and &gt; of PC Paintbrush and PC 
+                            Paintbrush +, includes Publisher's Paintbrush 
+2       Encoding        1       1 = .PCX run length encoding
+3       Bits per pixel  1       Number of bits/pixel per plane
+4       Window  8       Picture Dimentions
+12      HDPI    2       Horizontal Resolution of image in DPI*
+14      VDPI    2       Vertical Resolution of image in DPI*
+16      Colormap        48 Color palette setting, see text
+64      Reserved        1
+65      NPlanes 1       Number of color planes
+66      Bytes per Line  2       Number of bytes per scan line
+68      Palette info    2       How to interpret palette- 1 = Color/BW,
+                                2 = Grayscale (ignored in PB IV/ IV +)
+70      Hscreensize     2       Horizontal screen size in Pels
+72      Vscreensize     2       Vertical screen size in Pels
+74      Filler  54      Blank to fill out 128 byte header.
+
+
+     NOTES:  All sizes are measured in BYTES.  All variables  of  SIZE
+are  integers.   *HDpi  and VDpi represent the Horizontal and Vertical
+resolutions which the image was created (either printer  or  scanner);
+ie.   an  image  which  was  scanned might have 300 and 300 in each of
+these fields.Decoding .PCX Files First, find the pixel  dimensions  of
+the image by calculating [XSIZE = Xmax - Xmin + 1] and [YSIZE = Ymax -
+Ymin + 1].  Then calculate how many bytes are  required  to  hold  one
+complete  uncompressed scan line:  TotalBytes = NPlanes * BytesPerLine
+Note that since there are always an integral number  of  bytes,  there
+will probably be unused data at the end of each scan line.  TotalBytes
+shows how much storage must be available to  decode  each  scan  line,
+including  any blank area on the right side of the image.  You can now
+begin decoding the first scan line - read the first byte of data  from
+the  file.  If the top two bits are set, the remaining six bits in the
+byte show how many times to duplicate the next byte in the  file.   If
+the  top two bits are not set, the first byte is the data itself, with
+a count of one.  Continue decoding the  rest  of  the  line.   Keep  a
+running  subtotal  of how many bytes are moved and duplicated into the
+output buffer.  When the subtotal equals TotalBytes, the scan line  is
+complete.   There  will  always be a decoding break at the end of each
+scan line.  But there will not be a decoding break at the end of  each
+plane  within  each scan line.  When the scan line is completed, there
+may be extra blank data at the end of each plane within the scan line.
+Use  the XSIZE and YSIZE values to find where the valid image data is.
+If the data is multi-plane, BytesPerLine shows where each  plane  ends
+within  the  scan  line.   Continue decoding the remainder of the scan
+                                                                Page 3
+
+
+lines.  There may be extra scan lines at the bottom of the  image,  to
+round to 8 or 16 scan lines.Palette Information Description EGA/VGA 16
+Color Palette Information The palette information is stored in one  of
+two  different formats.  In standard RGB format (IBM EGA, IBM VGA) the
+data is stored as 16 triples.  Each triple is a  3  byte  quantity  of
+Red,  Green,  Blue  values.   The  values can range from 0-255 so some
+interpretation into the base card format is necessary.  On an IBM EGA,
+for example, there are 4 possible levels of RGB for each color.  Since
+256/4 = 64, the following is a list of the settings and levels:
+
+Setting         Level
+0-63            0
+64-127          1
+128-192         2
+193-254         3
+
+
+     VGA 256 Color Palette Information ZSoft has  recently  added  the
+capability  to  store  palettes  containing more than 16 colors in the
+.PCX image file.  The 256 color palette is formatted and  treated  the
+same  as the 16 color palette, except that it is substantially longer.
+The palette (number of colors x 3 bytes in length) is appended to  the
+end  of  the .PCX file, and is preceded by a 12 decimal.  To determine
+the VGA BIOS palette, you need only divide  the  values  read  in  the
+palette  by  4.   To  access  a  256  color palette:  First, check the
+version number in the header, if it contains a 5 there is  a  palette.
+Second,  read  to  the  end of the file and count back 769 bytes.  The
+value you find should be a 12 decimal, showing the presence of  a  256
+color  palette.   CGA Color Palette Information For a standard IBM CGA
+board, the palette settings are a bit more complex.   Only  the  first
+byte  of  the triple is used.  The first triple has a valid first byte
+which represents the background color.  To find the  background,  take
+the  (unsigned)  byte value and divide by 16.  This will give a result
+between 0-15, hence the background color.  The  second  triple  has  a
+valid  first  byte,  which  represents  the  foreground  palette.   PC
+Paintbrush supports 8 possible CGA palettes, so  when  the  foreground
+setting  is  encoded  between 0 and 255, there are 8 ranges of numbers
+and the divisor is 32.  CGA Color Map
+
+Header Byte #16 
+Background color is determined in the upper four bits.
+Header Byte #19
+Only upper 3 bits are used, lower 5 bits are ignored.  The first three bits that are used are ordered C, P, I.  These bits are interpreted as follows:
+c: color burst enable - 0 = color; 1 = monochrome
+p: palette - 0 = yellow; 1 = white
+i: intensity - 0 = dim; 1 = bright
+
+
+     PC Paintbrush Bitmap Character Format NOTE:  This format  is  for
+PC  Paintbrush  (up  to  Vers  3.7) and PC Paintbrush Plus (up to Vers
+1.65) The bitmap character fonts are stored in a  particularly  simple
+format.   The  format  of  these  characters is as follows:  Header (2
+bytes)
+
+font width      db      0a0h + character width (in dots)
+                                                                Page 4
+
+
+font height     db      character height (in dots)
+Character Widths (256 bytes)
+char widths     db      256 dup(each char's width +1)
+Character Images
+(remainder of the file)
+
+
+     The characters are stored in ASCII order and as many as  256  may
+be provided.  Each character is left justified in the character block,
+all characters take up the same number of bytes.  Bytes are  organized
+as  N  strings,  where  each string is one scan line of the character.
+For example, each character in a 5x7 font requires 7  bytes.   A  9x14
+font uses 28 bytes per character (stored two bytes per scan line in 14
+sets of 2 byte packets).  Custom fonts may  be  any  size  up  to  the
+current maximum of 10K bytes allowed for a font file.
+
+     Sample  &quot;C&quot;  Routines  The  following  is  a  simple  set  of   C
+subroutines to read data from a .PCX file.
+
+/* This procedure reads one encoded block from the image file and stores a count and data byte. Result:
+0 = valid data stored
+EOF = out of data in file */
+encget(pbyt, pcnt, fid)
+int *pbyt;     /* where to place data */
+int *pcnt;     /* where to place count */
+FILE *fid;     /* image file handle */
+{
+int i;
+        *pcnt = 1;     /* safety play */
+        if(EOF    ==    (i    =    getc(fid))) return(EOF);
+        if(0xc0 == (0xc0 &amp; i))  
+                                {
+        *pcnt = 0x3f&amp;i;
+        if(EOF == (i=getc(fid)))
+                        return(EOF);
+        }
+        *pbyt = i;
+        return(0);
+        }
+
+/* Here's a program fragment using encget.   This reads an entire file and stores it in a (large) buffer, pointed to by the variable &quot;bufr&quot;. &quot;fp&quot; is
+the file pointer for the image */
+while (EOF != encget(&amp;chr, &amp;cnt, fp))
+                for (i = 0; i &lt; cnt; i++)
+                        *bufr++ = chr;
+
+
+     The following is a set of C subroutines to write data to  a  .PCX
+file.
+
+/* This subroutine encodes one scanline and writes it to a file */
+encLine(inBuff, inLen, fp)
+unsigned char *inBuff;  /* pointer to scanline data */
+int inLen;                      /* length of raw scanline in bytes */
+FILE *fp;                       /* file to be written to */
+                                                                Page 5
+
+
+{  /* returns number of bytes written into outBuff, 0 if failed */
+        unsigned char this, last;
+int srcIndex, i;
+register int total;
+register unsigned char runCount; /* max single runlength is 63 */
+total = 0;
+last = *(inBuff);               runCount = 1;
+
+for (srcIndex = 1; srcIndex &lt; inLen; srcIndex++) {
+        this = *(++inBuff);
+        if (this == last)       {
+                 runCount++;    /* it encodes */
+                if (runCount == 63)                             {
+                        if (!(i=encput(last, runCount, fp)))
+                                return(0);
+                        total += i;
+                        runCount = 0;
+                        }
+                }
+        else    {   /* this != last */
+                if (runCount)   {
+                        if (!(i=encput(last, runCount, fp)))
+                                return(0);
+                        total += i;
+                        }
+                last = this;
+                runCount = 1;
+                }
+        }       /* endloop */
+if (runCount)   {               /* finish up */
+        if (!(i=encput(last, runCount, fp)))
+                return(0);
+        return(total + i);
+        }
+return(total);
+}
+
+/* subroutine for writing an encoded byte pair 
+(or single byte  if it doesn't encode) to a file */
+encput(byt, cnt, fid) /* returns count of bytes written, 0 if err */
+unsigned char byt, cnt;
+FILE *fid;
+{
+if(cnt) {
+        if( (cnt==1) &amp;&amp; (0xc0 != (0xc0&amp;byt)) )                  {
+                if(EOF == putc((int)byt, fid))
+                        return(0); /* disk write error (probably full) */
+                return(1);
+                }
+        else    {
+                if(EOF == putc((int)0xC0 | cnt, fid))
+                        return(0);                                      /* disk write error */
+                if(EOF == putc((int)byt, fid))
+                        return(0);                                      /* disk write error */
+                return(2);
+                                                                Page 6
+
+
+                }
+        }
+return(0);
+}
+
+
+
+2. CNVS code om monochroom en 256 kleuren palette PCX file
+   aan te maken
+
+  { gebruik van deze code is toegestaan mits onder
+    vermelding in de documentatie van de bron:
+
+    Bevat code van H.J.C. Otten, 1992 }
+
+unit spcxcr ;
+
+ interface
+
+ {
+   Module  : SPCXCR
+
+   Author  : Hans Otten
+
+   Version : 1.3  9-feb-1991
+
+   Facility: Sixel/PCX/MSX routines
+
+   Purpose : output pixels to
+               - PCX file 1 plane 1 bit per pixel
+               - PCX file 1 plane 8 bit per pixel
+ }
+
+ uses
+
+  CNV ;
+
+
+  procedure Init_output_PCX(display_info : display_infotype ;
+                            parse_info : parse_infotype ;
+                            colormap : colormap_type) ;
+
+  procedure Close_output_PCX(colormap : colormap_type) ;
+
+  procedure Add_pixel_PCX(x,y,color : integer );
+
+
+implementation
+
+  uses
+
+    SOUTBUF ;
+
+
+  var
+
+    cdisplay_info : display_infotype ;
+
+    bits : integer ;                 { nr of bits per plane  }
+    nr_of_planes   : integer ;       { number of planes      }
+    bytes_per_line : integer ;       { bytes per line needed }
+    remap : array[0..max_color] of byte ;
+
+    repeat_count,
+    current_byte,
+    previous_row,
+    previous_byte,
+    inbit_count,
+    bit_count,
+    nr_of_bits : integer ;
+
+  procedure Init_output_PCX(display_info : display_infotype ;
+                            parse_info : parse_infotype ;
+                            colormap : colormap_type) ;
+
+    var
+
+      count,
+      color_count,
+      remap_count : integer ;
+      col,
+      row : integer ;
+
+
+    begin { main Init_output_PCX }
+
+      cdisplay_info := display_info ;
+      with cdisplay_info do
+        begin
+          row := end_view_row - start_view_row + 1 ;
+          col := end_view_col - start_view_col + 1 ;
+        end ;
+      with parse_info do
+        begin
+          if used_colors &lt;= 2        { monochrome }
+            then
+              begin
+                nr_of_planes :=  1 ;
+                bits := 1 ;
+              end
+          else                                  { VGA palette }
+            begin
+              nr_of_planes := 1 ;
+              bits := 8 ;
+            end ;
+
+          if bits = 1
+            then
+              begin
+                bytes_per_line := col div 8 ;
+                if (col mod 8) &gt; 0
+                  then
+                    inc(bytes_per_line)
+              end
+          else { bits = 8}
+            bytes_per_line := col ;
+
+          { write manufacturer }
+          pixel_write($0A) ;
+
+          { version nr }
+          pixel_write($05) ;
+
+          { encoding runlength }
+          pixel_write($01) ;
+
+          { write bits per pixel }
+          pixel_write(bits) ;
+
+          { write window sizes }
+          for count := 1 to 4 do               { low      }
+            pixel_write(0) ;
+          pixel_write((col - 1) mod 256) ; { high col }
+          pixel_write((col - 1) div 256) ;
+          pixel_write((row - 1) mod 256) ; { high row }
+          pixel_write((row - 1) div 256) ;
+
+          { dummy HDPI and VDPI }
+          pixel_write(col mod 256) ; { high col }
+          pixel_write(col div 256) ;
+          pixel_write(row mod 256) ; { high row }
+          pixel_write(row div 256) ;
+
+          { determine remap for EGA colormap }
+          remap_count := 0 ;
+          for count := 0 to max_color do
+            if colormap[count].used
+              then
+                begin
+                  remap[count] := remap_count ;
+                  inc(remap_count) ;
+                end  ;
+
+          { write colormap EGA }
+          if used_colors &lt;= 2
+            then
+              begin
+                for color_count := 0 to 1 do
+                  begin
+                    pixel_write(colormap[remap[color_count]].colors[c_red]) ;
+                    pixel_write(colormap[remap[color_count]].colors[c_green]) ;
+                    pixel_write(colormap[remap[color_count]].colors[c_blue]) ;
+                  end ;
+                for count := 0 to 41 do
+                  pixel_write(0) ;
+              end
+            else  { fill with zero's }
+              for count := 0 to 47 do
+                pixel_write(0) ;
+
+
+          { write nr of planes }
+          pixel_write(0) ;  { reserved }
+          pixel_write(nr_of_planes) ;
+
+          { write bytes per line }
+          pixel_write(bytes_per_line mod 256) ;
+          pixel_write(bytes_per_line div 256) ;
+
+          for count := 68 to 127 do
+          pixel_write(0) ;
+
+          { initialise packing }
+          bit_count := 0 ;
+          inbit_count := 0 ;
+          current_byte := 0 ;
+          previous_byte := 0 ;
+          repeat_count := 0 ;
+          previous_row := 1 ;
+          nr_of_bits := bytes_per_line * 8 ;
+        end ;
+
+
+    end ;
+
+  procedure dump_repeat ;
+
+    begin
+
+      if repeat_count &gt; 0
+        then
+          begin
+            if (repeat_count = 1) and ((previous_byte and $C0) &lt;&gt; $C0)
+              then
+                pixel_write(previous_byte)
+              else
+                begin
+                  pixel_write(repeat_count or $C0) ;
+                  pixel_write(previous_byte) ;
+                end ;
+          end ;
+      repeat_count := 0 ;
+
+    end ;
+
+  procedure Add_byte(b : byte) ;
+
+    begin
+
+      if b = previous_byte
+        then
+          begin
+            if (repeat_count = 63)
+              then
+                dump_repeat ;
+          end
+        else
+          dump_repeat ;
+      previous_byte := b ;
+      inc(repeat_count) ;
+
+    end ; { add_byte }
+
+  procedure add_bit(b : byte) ;
+
+    { add bit (b is 0 or 1) to current_byte }
+
+    begin
+
+      b := remap[b] ;
+      inc(bit_count) ;
+      if inbit_count = 8
+        then
+          begin
+            add_byte(current_byte) ;
+            current_byte := 0 ;
+            inbit_count := 0 ;
+          end ;
+      inc(inbit_count) ;
+      current_byte := (current_byte shl 1) or b ;
+
+    end ; { add_bit }
+
+  procedure Flush_Buffer ;
+
+    var
+
+      count : integer ;
+
+    begin
+
+      { see if we promised more bits then delivered }
+      if bits = 1
+        then
+          begin
+            for count := (bit_count) to nr_of_bits do
+              add_bit(0) ;
+            bit_count := 0 ;
+            inbit_count := 0 ;
+            current_byte := 0 ;
+          end ;
+      dump_repeat ;
+
+    end ; { Flush_buffer }
+
+
+  procedure Close_output_PCX(colormap : colormap_type) ;
+
+    var
+
+      count : integer ;
+
+    begin
+
+      flush_buffer ;
+      { write colormap if VGA map needed }
+      if bits = 8
+        then
+          pixel_write(12) ;
+          for count := 0 to max_color do
+            begin
+              pixel_write(colormap[count].colors[c_red]) ;
+              pixel_write(colormap[count].colors[c_green]) ;
+              pixel_write(colormap[count].colors[c_blue]) ;
+            end ;
+
+    end ; { Close_output_PCX }
+
+  procedure Add_pixel_PCX(x,y,color : integer) ;
+
+
+    {
+     add current pixel to PCX file
+    }
+
+
+      begin
+
+        { check if new scan line entered }
+        if y &gt; previous_row
+          then
+            begin
+              Flush_buffer ;
+              inc(previous_row) ;
+            end ;
+        { add pixel value to output buffer, PCX screen dependent }
+        if bits = 8
+          then
+            add_byte(color)
+          else
+            add_bit(color) ;
+
+      end ; { Add_PCX_pixel }
+
+  end. { unit SPCXCR }
+
+
+
+
+3. CNVS code om 24 bits true color PCX file
+   aan te maken
+
+
+  { gebruik van deze code is toegestaan mits onder
+    vermelding in de documentatie van de bron:
+
+    Bevat code van H.J.C. Otten, 1992 }
+
+  var
+
+    scr12_rgb : array[1..4] of byte ;
+
+    output_file,                { output PCX 24 bit file       }
+    picture_file  : file ;      { input MSX picture file       }
+
+    output_buffer : outbuffertype ;
+                               { output buffer                 }
+
+procedure OpenFiles ;
+
+
+procedure CloseFiles ;
+
+  begin
+
+    close(picture_file) ;
+    if outbufferpos &gt; 0
+      then
+        blockwrite(output_file,output_buffer,outbufferpos) ;
+    close(output_file) ;
+
+  end ; { CloseFiles }
+
+function GetByte : byte ;
+
+  {
+   returns next byte from input
+  }
+
+procedure ConvertPicture ;
+
+    var
+
+      ch : char;
+      count,
+      current_byte,
+      previous_byte,
+      repeat_count,
+      line_count, row_count : integer ;
+      R_plane,
+      G_plane,
+      B_plane  : array[1..256] of byte ;
+
+
+  procedure Init_PCX ;
+
+    var
+
+      count,
+      color_count,
+      remap_count : integer ;
+      col,
+      row : integer ;
+
+
+    begin { main Init_PCX }
+
+      { write manufacturer }
+      PutByte($0A) ;
+
+      { version nr }
+      PutByte($05) ;
+
+      { encoding runlength }
+      PutByte($01) ;
+
+      { write bits per pixel }
+      PutByte(8) ;
+
+      { write window sizes }
+      for count := 1 to 4 do               { low      }
+        PutByte(0) ;
+      PutByte(255) ; { high col }
+      PutByte(0) ;
+      PutByte(211) ; { high row }
+      PutByte(0) ;
+
+      { dummy HDPI and VDPI }
+      PutByte(0) ; { high col }
+      PutByte(0) ;
+      PutByte(0) ; { high row }
+      PutByte(0) ;
+
+      for count := 0 to 47 do
+        PutByte(0) ;
+
+      PutByte(0) ;  { reserved }
+      { write nr of planes }
+      PutByte(3) ;
+
+      { write bytes per line }
+      PutByte(00) ;
+      PutByte(1) ;
+      PutByte(1) ;
+
+      for count := 69 to 127 do
+        PutByte(0) ;
+
+      { initialise packing }
+      current_byte := 0 ;
+      previous_byte := 0 ;
+      repeat_count := 0 ;
+
+    end ; { Init_PCX }
+
+  procedure dump_repeat ;
+
+    begin
+
+      if repeat_count &gt; 0
+        then
+          begin
+            if (repeat_count = 1) and ((previous_byte and $C0) &lt;&gt; $C0)
+              then
+                PutByte(previous_byte)
+              else
+                begin
+                  PutByte(repeat_count or $C0) ;
+                  PutByte(previous_byte) ;
+                end ;
+          end ;
+      repeat_count := 0 ;
+
+    end ;
+
+  procedure Add_byte(b : byte) ;
+
+    begin
+
+      if b = previous_byte
+        then
+          begin
+            if (repeat_count = 63)
+              then
+                dump_repeat ;
+          end
+        else
+          dump_repeat ;
+      previous_byte := b ;
+      inc(repeat_count) ;
+
+    end ; { add_byte }
+
+  procedure GetRGB ;
+
+    { return from current quadruple rgb values
+      and fill in R,G,B arrays or display on screen }
+
+    var
+
+      r,g,b : integer ;
+      y : array[1..4] of integer ;
+      k, j,
+      bc  : integer ;
+      bk, bj     : boolean ;
+
+    procedure limit (var b : integer) ;
+
+      begin
+
+        if b &lt; 0
+          then
+            b := 0
+        else if b &gt; 31
+          then
+            b := 31 ;
+
+     end ;
+
+
+    begin
+
+      for bc := 1 to 4 do
+        y[bc] := GetByte ;
+      k  := (y[1] and 7) + ((y[2] and 3) shl 3) ;
+      j  := (y[3] and 7) + ((y[4] and 3) shl 3) ;
+      bk := ( (y[2] and 4) = 4 ) ;
+      bj := ( (y[4] and 4) = 4 ) ;
+
+      for bc := 1 to 4 do
+        begin
+          { make intensity range 0..31 }
+          y[bc] := y[bc] shr 3 ;
+          b := y[bc] + (y[bc] div 4) ;
+          g := y[bc] ;
+          r := y[bc] ;
+          if bk
+            then
+              begin
+                g := g - (k xor 31) ;
+                b := b + ((k xor 31) shr 2) ;
+              end
+            else
+              begin
+                g := g + k ;
+                b := b - (k shr 2 )
+              end ;
+
+           if bj
+             then
+               begin
+                 r := r  - (j xor 31) ;
+                 b := b + ((j xor 31) shr 1)
+               end
+             else
+               begin
+                 r := r + j ;
+                 b := b - (j shr 1)
+               end ;
+          limit(r) ;
+          limit(g) ;
+          limit(b) ;
+          { now we have rgb 0..31 }
+              { add to RGB array }
+              begin
+                R_plane[row_count* 4 - (4-bc)] := round(r * 255 / 31 ) ;
+                G_plane[row_count* 4 - (4-bc)] := round(g * 255 / 31 ) ;
+                B_plane[row_count* 4 - (4-bc)] := round(b * 255 / 31 ) ;
+              end ;
+        end ;
+
+    end ; { GetRGB }
+
+
+  begin
+
+    Init_PCX ;
+    end_line := 212 ;
+    for line_count := 1 to end_line do
+      begin
+        for row_count := 1 to 64 do
+          GetRGB ;
+              { dump RGB arrays }
+              for count := 1 to 256 do
+                Add_byte(R_plane[count]) ;
+              Dump_repeat ;
+              for count := 1 to 256 do
+                Add_byte(G_plane[count]) ;
+              Dump_repeat ;
+              for count := 1 to 256 do
+                Add_byte(B_plane[count]) ;
+              Dump_repeat ;
+            end ;
+      end ;
+
+    CloseFiles ;
+
+  end ;  { ConvertPicture }
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<html>
+
+<head>
+<title>MILC - Topic Softscroll in ML</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_44.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_46.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Softscroll in ML</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+                 SOFT-SCROLL IN MACHINETAAL
+
+Verbaast u zich ook altijd over die enorm mooie scrolls  die
+we de laatste tijd in vele demo's te zien krijgen?  Door  de
+vele  vragen  over  hoe  deze  scrolls  zelf  kunnen  worden
+ontworpen, hebben we besloten dit  eens  uit  de  doeken  te
+doen.  Voor  degenen  die   niet   in   machinetaal   kunnen
+programmeren maar toch wel  eens  een  mooie  scroll  willen
+demonstreren in een eigen (basic) demo, is de machinetaal zo
+geschreven dat iedereen deze  routine  kan  gebruiken.  Want
+helaas, om de uitleg te begrijpen is kennis van machine taal
+wel aanbevolen.
+
+
+                        DE INTERRUPT
+
+Om een perfecte scroll te krijgen is het  aanbevolen  om  de
+Machinetaal-routine  via  een  interrupt  aan   te   sturen.
+Aangezien de interrupt vrij constant wordt  aangeroepen  zal
+de scroll dan ook  vrij  constant  scrollen.  Zie  voor  een
+uitgebreide uitleg over de interrupt de cursus op  ClubGuide
+vier en vijf.
+
+De eigenlijke routine bestaat  alleen  maar  uit  een  COPY-
+instructie. Daar komen echter nog diverse tellers bij. Onder
+andere een om bij te houden welke (grafische) letter op  dat
+moment op het scherm wordt gezet.
+
+                       COPY-INSTRUCTIE
+
+Om een snelle scroll te krijgen  maken  we  gebruik  van  de
+snelste methode om een grafisch deel te  copi‰ren.  Namelijk
+direct via de OUT-poorten. Om deze instructies te  begrijpen
+verwijs ik u naar het artikel over het direct aansturen  van
+de VDP. Maar als u zich aan de juist volgorde van de routine
+houd kan er (haast) niks misgaan.
+
+Hieronder volgen  de  registers  die  gevuld  moeten  worden
+voordat een copy instructie werkt zo als hij moet werken.
+
+
+VDP  reg - bit: 7    6    5    4    3    2    1    0
+-----------------------------------------------------
+33   32  -     SX7  SX6  SX5  SX4  SX3  SX3  SX1  SX0
+34   33  -      0    0    0    0    0    0    0   SX8
+35   34  -     SY7  SY6  SY5  SY4  SY3  SY2  SY1  SY0
+36   35  -      0    0    0    0    0    0    0   SY8
+37   36  -     DX7  DX6  DX5  DX4  DX3  DX2  DX1  DX0
+38   37  -      0    0    0    0    0    0    0   DX8
+39   38  -     DY7  DY6  DY5  DY4  DY3  DY2  DY1  DY0
+40   39  -      0    0    0    0    0    0    0   DY8
+41   40  -     NX7  NX6  NX5  NX4  NX3  NX2  NX1  NX0
+42   41  -      0    0    0    0    0    0    0   NX8
+43   42  -     NY7  NY6  NY5  NY4  NY3  NY2  NY1  NY0
+44   43  -      0    0    0    0    0    0    0   NY8
+45   44  -     CH3  CH2  CH1  CH0  CL3  CL2  CL1  CL0
+46   45  -      0   MXC  MXD  MXS   Y    X   E/N  M/M
+47   46  -     CM3  CM2  CM1  CM0  LO3  LO2  LO1  LO0
+-----------------------------------------------------
+
+SX8-SX0        -Origineel X-coordinaat
+SY8-SY0        -Origineel Y-coordinaat
+DX8-DX0        -Beeld X-coordinaat
+DY8-DY0        -Beeld y-coordinaat
+NX8-NX0        -Aantal horizontale punten
+NY8-NY0        -Aantal verticale punten
+CH3-CH0        -Kleurcode
+CL3-CL0        -Kleurcode
+Y              -Richting Y-coordinaat
+X              -Richting X-coordinaat
+E/N            -Gelijk/Niet gelijk (0=gelijk)
+M/M            -Major-Minor (0=X-as is major richting
+                             1=Y-as is major richting)
+CM3-CM0        -Copy van? naar? (D0h is Vram to Vram)
+
+
+Inderdaad een hele waslijst, uitprinten  is  dan  ook  zeker
+aanbevolen. Maar waar hebben we  deze  informatie  eigenlijk
+voor nodig? Welnu, ten eerste moeten in deze registers de  X
+en de  Y  coordinaten  worden  gezet  van  het  te  copi‰ren
+gedeelte en de coordinaten van het punt waar het  blok  naar
+toe moet worden gecopieerd. Ook  belangrijk  is  het  aantal
+punten dat moet worden gecopieerd. We zullen  een  en  ander
+aan de hand van een voorbeeld proberen duidelijk te maken:
+
+
+                    EEN PRAKTIJKVOORBEELD
+
+De volgende assembler listing staat ook op de disk onder  de
+naam SCROLL.ASM (op te starten met SCROLL.MSX)
+
+ORG &amp;HC500             Begin op adres:&amp;HC500
+LD HL,&amp;HFD9F
+LD DE,&amp;HC50E
+LD BC,&amp;H0005
+LDIR                   Bewaar oude interrupt
+JP ZETINT
+NOP
+NOP                    Hier komt de oude interrupt
+NOP                   te staan
+NOP
+NOP
+ZETINT DI             Zet interrupts uit en
+LD HL,SCROLL          Zet nieuwe interrupt
+LD A,&amp;HCD             Zet nieuwe interrupt
+LD (&amp;HFD9F),A
+LD (&amp;HFDA0),HL
+LD A,&amp;HC9
+LD (&amp;HFDA2),A
+EI                    Zet interrupt weer aan
+RET                   Einde instellingen
+
+
+
+VDPRD LD A,02         VDP status lezer
+OUT (&amp;H99),A
+LD A,&amp;H8F               Dit hoeft u niet te
+OUT (&amp;H99),A            begrijpen.
+IN A,(&amp;H99)
+EX AF,AF'               (Zie voor uitleg VDP-cursus)
+XOR A
+OUT (&amp;H99),A
+LD A,&amp;H8F
+OUT (&amp;H99),A
+EX AF,AF'
+RET                   Keer terug.
+
+
+SCROLL DI             Geen andere interrups.
+LOOP1 CALL VDPRD
+RRA
+JR C,LOOP1
+CALL ZETRGS
+LD HL,&amp;HD000       Register waarden vanaf &amp;hD000
+LD C,&amp;H9B
+LD B,15               15 Registers vullen.
+OTIR                     Copieer (van page:1)
+LD A,(&amp;HD013)
+INC A                 verhoog teller *2
+INC A
+LD (&amp;HD013),A
+LD A,(&amp;HC5A6)         Letter opkomst teller.
+DEC A
+LD (&amp;HC5A6),A
+JP NZ,ZETFNT          Indien niet nul dan verder
+
+LD A,8                Zet teller op 8
+LD (&amp;HC5A6),A
+LD HL,(&amp;HC5A7)        Adres tekst teller.
+INC HL
+LD (&amp;HC5A79,HL
+LD A,(HL)
+CP 255
+JR NZ,XYZET
+LD HL,&amp;HE000          Tekst van af &amp;hE000 opnieuw
+LD (&amp;HD5A7),HL
+LD A,(HL)
+XYZET PUSH AF
+SLA A                 Bereken X-coordinaat page:1
+SLA A                   (coordinaat)
+SLA A
+SLA A
+LD (&amp;HD013),A
+POP AF
+AND &amp;HF0              Bereken Y-coordinaat page:1
+LD (&amp;HD015),A
+
+ZETFNT CALL VDPRD     Kijk of VDP klaar is
+RRA
+JR C,ZETFNT
+CALL ZETRGS           Zet registers om te copieren
+LD HL,&amp;HD014
+LD C,&amp;H9B
+LD B,15
+OTIR                  Copy nieuw stukje letter
+EI
+RET                   KLAAR!
+
+ZETRGS LD A,&amp;H20      Zet register om te copieren
+OUT (&amp;H99),A
+LD A,&amp;H91
+OUT (&amp;H99),A
+RET
+NOP                   opkomst teller
+NOP                   Adres waar de tekst te vinden
+NOP                   is.
+END
+
+Inderdaad, een hele listing voor een scrollroutine. Maar het
+loont de moeite want hiermee onstaat een mooie animatie. Het
+programma werkt als volgt:
+
+Allereerst word de oude interupt  bewaart  en  word  er  een
+nieuwe opgezet, die naar de scroll routine springt.
+
+VDPRD : leest de VDP en kijkt of deze klaar is met de  vorige
+        copy.
+
+SCROLL: dit is het eigenlijke gedeelte om  te  scrollen.  de
+        OTIR zorgt er voor dat de data vanaf &amp;hD000 naar  de
+        registers wordt geschreven.
+
+Het volgende deel onderzoekt welke letter er op  het  moment
+moet worden gecopieerd. Als de letter nog niet  helemaal  is
+gecopieerd dan wordt  het  volgende  karakter  ingelezen  en
+worden  de  X  en  Y-coordinaten  van  de  volgende   letter
+berekend. Vervolgens wordt een stuk letter van  twee  pixels
+breed gecopieerd.
+
+ZETRGS: Zorgt dat de VDP klaar staat om te copi‰ren.
+
+
+Met  deze  informatie  moet  u  in  staat  zijn  het  begrip
+soft-scroll te begrijpen. Om de routine te gebruiken moet er
+op  pagina  1  een  FONT  (letterset)  worden  gezet.   Deze
+letterset is precies zo opgebouwd als de  normale  letterset
+dus ieder karakter kan gebruikt  worden!  De  scroll  is  te
+laden vanuit de program-loader. Veel succes met de routine!
+
+R. v/d Meulen
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_44.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_46.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<html>
+
+<head>
+<title>MILC - Topic Mapper Support Routines</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_6.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_8.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Mapper Support Routines</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+5.   MAPPER SUPPORT ROUTINES
+============================
+
+     MSX-DOS 2  contains routines  to provide  support for the memory mapper. 
+This allows MSX application programs or MSX-DOS transient programs to utilize 
+more  than the  basic 64k of memory, without conflicting with the RAM disk or 
+any other system software.
+
+  5.1   MAPPER INITIALIZATION
+
+     When  the DOS  kernel is  initialized it checks that there is the memory 
+mapper in  the system,  and that  there is at least 128k of RAM available. If 
+the kernel has found at least one slot which contains 128k of the mapper RAM, 
+it  selects the  slot which  contains the  largest amount of RAM (or the slot 
+with the  smallest slot  number, if  there are two or more mapper slots which 
+have  the same  amount of  RAM) and makes that slot usable as the system RAM. 
+When there is not enough memory on the memory mapper, MSX-DOS 2 won't start.
+
+     Next  the kernel builds up a table of all the 16k RAM segments available
+to this  slot (primary  mapper slot).  The first  four segments (64k) for the 
+user  and the  two highest numbered segments are allocated to the system, one 
+for the  DOS kernel  code and  one for  the DOS  kernel workspace.  All other 
+segments  (at least two) are marked as free initially. Then the kernel builds 
+up the  similar tables for other RAM slots, if any. All of these segments are 
+marked as free initially.
+
+   5.2   MAPPER VARIABLES AND ROUTINES
+
+     The  mapper support  routines use some variables in the DOS system area. 
+These tables  may be  referred and  used by the user programs for the various 
+purposes, but must not be altered. The contents of the tables are as follows:
+
+address                 function
++0              Slot address of the mapper slot.
++1              Total  number of  16k RAM  segments. 1...255 (8...255 for the 
+                primary)
++2              Number of free 16k RAM segments.
++3              Number of  16k RAM segments allocated to the system (at least 
+                6 for the primay)
++4              Number of 16k RAM segments allocated to the user.
++5...+7         Unused. Always zero.
++8...           Entries  for other mapper slots. If there is none, +8 will be 
+                zero.
+
+     A program  uses the  mapper support code by calling various subroutines.
+These  are accessed  through a  jump table  which is  located in  the MSX-DOS 
+system area. The contents of the jump table are as follows:
+
+address entry name      function
++0H     ALL_SEG     Allocate a 16k segment.
++3H     FRE_SEG     Free a 16k segment.
++6H     RD_SEG      Read byte from address A:HL to A.
++9H     WR_SEG      Write byte from E to address A:HL.
++CH     CAL_SEG     Inter-segment call.  Address in IYh:IX
++FH     CALLS       Inter-segment  call.  Address  in  line  after  the  call 
+                    instruction.
++12H    PUT_PH      Put segment into page (HL).
++15H    GET_PH      Get current segment for page (HL)
++18H    PUT_P0      Put segment into page 0.
++1BH    GET_P0      Get current segment for page 0.
++1EH    PUT_P1      Put segment into page 1.
++21H    GET_P1      Get current segment for page 1.
++24H    PUT_P2      Put segment into page 2.
++27H    GET_P2      Get current segment for page 2.
++2AH    PUT_P3      Not supported  since page-3  must never  be changed. Acts 
+                    like a &quot;NOP&quot; if called.
++2DH    GET_P3      Get current segment for page 3.
+
+
+     A  program can  use the  extended BIOS  calls for  the mapper support to 
+obtain these addresses. The calls are provided because these addresses may be 
+changed in  the future  version, or to use mapper routines other than MSX-DOS 
+mapper support routines.
+
+     To use the extended BIOS, the program should test &quot;HOKVLD&quot; flag at FB20h 
+in  page-3. If  bit-0 (LSB)  is 0,  there is  no extended BIOS nor the mapper 
+support. Otherwise,  &quot;EXTBIO&quot; entry (see below) has been set up and it can be 
+called  with various  parameters. Note  that this test is unnecessary for the 
+applications which  are based on MSX-DOS (such as the program which is loaded 
+from the disk), and the program may proceed to the next step.
+
+     Next,  the  program  sets  the  device  number of  the extended  BIOS in 
+register D,  the function  number in  register E,  and required parameters in 
+other  registers, and  then calls  &quot;EXTBIO&quot; at FFCAh in page-3. In this case, 
+the stack  pointer must  be in  page-3. If there is the extended BIOS for the 
+specified  device number,  the contents  of the  registers AF,  BC and HL are 
+modified according  to the  function; otherwise, they are preserved. Register 
+DE  is  always  preserved.  Note  that  in  any  cases  the  contents  of the 
+alternative registers (AF', BC', DE' and HL') and the index registers (IX and 
+IY) are corrupted.
+
+The functions available in the mapper support extended BIOS are:
+
+* Get mapper variable table
+
+        Parameter:      A = 0
+                        D = 4 (device number of mapper support)
+                        E = 1
+        Result:         A = slot address of primary mapper
+                        DE = reserved
+                        HL = start address of mapper variable table
+
+* Get mapper support routine address
+
+        Parameter:      A = 0
+                        D = 4
+                        E = 2
+        Result:         A = total number of memory mapper segments
+                        B = slot number of primary mapper
+                        C = number of free segments of primary mapper
+                        DE = reserved
+                        HL = start address of jump table
+
+     In  these mapper support extended BIOS, register A is not required to be 
+zero. Note that, however, if there is no mapper support routine, the contents 
+of registers  will not  be modified,  and the value which is not zero will be 
+returned  in A  otherwise. Thus,  the existence of the mapper support routine 
+can be  determined by  setting zero  in A  at the  calling and  examining the 
+returned value of A.
+
+     The  slot address of the primary mapper returned by the extended BIOS is 
+the same  as the  current RAM  slot address  in page-3,  and, in the ordinary 
+environment  (DISK-BASIC and  MSX-DOS), the same RAM slot is also selected in 
+page-2. In MSX-DOS, this is also true in page-0 and page-1.
+
+
+   5.3   USING MAPPER ROUTINES
+
+     A program  can request  a 16k  RAM segment  at any  time by  calling the 
+&quot;ALL_SEG&quot;  routine.  This  either  returns  an  error  if there  are no  free 
+segments, or the segment number of a new segment which the program can use. A 
+program  must not  use any  segment which  it has  not explicitly  allocated, 
+except for the four segments which make up the basic 64k of RAM.
+
+     A  segment can  be allocated  either as  a user  segment or  as a system
+segment.  User   segments  will  be  automatically  freed  when  the  program 
+terminates,  whereas system segments are never freed unless the program frees 
+them explicitly. Normally, programs should allocate user segments.
+
+     RAM segments can be accessed by the &quot;RD_SEG&quot; and &quot;WR_SEG&quot; routines which 
+read  and  write  bytes  to  specified segments.  The routines  &quot;CAL_SEG&quot; and 
+&quot;CALLS&quot;  allow  inter-segment  calls  to  be  done  in much  the same  way as 
+inter-slot calls in the current MSX system.
+
+     Routines  are provided  to explicitly  page a segment in, or to find out
+which segment  is in  a particular page. There are routines in which the page 
+(0...3)  is specified  by the  top two bits of an address in HL (&quot;PUT_PH&quot; and 
+&quot;GET_PH&quot;).  And  there are  also specific  routines for  accessing each  page 
+(&quot;GET_Pn&quot; and &quot;PUT_Pn&quot;). These routines are very fast so a program should not 
+suffer in performance by using them.
+
+     Note that  page-3 should never be altered since this contains the mapper 
+support  routines and all the other system variables. Also great care must be 
+taken if  page-0 is  altered since  this contains  the interrupt and the slot 
+switching entry points. Pages 1 and 2 can be altered in any way.
+
+     None  of the  mapper support  routines will  disturb the  slot selection 
+mechanism at  all. For  example when  &quot;PUT_P1&quot; is  called, the  specified RAM 
+segment  will only  appear at  address 4000h...7FFFh  if the  mapper slot  is 
+selected in page-1. The &quot;RD_SEG&quot; and &quot;WR_SEG&quot; routines will always access the 
+RAM segment  regardless of  the current slot selection in the specified page, 
+but the mapper RAM slot must be selected in page-2.
+ 
+   5.4   ALLOCATING and FREEING SEGMENTS
+
+     The following  two routines  can be called to allocate or free segments. 
+All  registers apart  from AF  and BC are preserved. An error is indicated by 
+the carry  flag being set on return. The slot selection and RAM paging may be 
+in  any state  when these routines are called and both will be preserved. The 
+stack must  not be  in page-0  or page-2  when either  of these  routines are 
+called.
+
+     A  program must  not use  any segment (apart from the four which make up 
+the basic 64k) unless it has specifically allocated it, and must not continue 
+to use a segment after it has been freed. 
+
+     A segment  may be  allocated either  as a  user or a system segment. The 
+only  difference is  that user  segments will be automatically freed when the 
+program terminates  whereas system segments will not be. In general a program 
+should  allocate a  user segment  unless it  needs the data in the segment to 
+outlast  the  program itself.  User segments  are always  allocated from  the 
+lowest numbered  free segment  and system  segments from the highest numbered 
+one.
+
+     An error  from &quot;allocate  segment&quot; usually  indicates that  there are no
+free segments, although it can also mean that an invalid parameter was passed 
+in  register  A  and  B.  An  error  from &quot;free  segment&quot; indicates  that the 
+specified segment number does not exist or is already free.
+
+ALL_SEG - Parameters:   A=0 =&gt; allocate user segment
+                        A=1 =&gt; allocate system segment
+                        B=0 =&gt; allocate primary mapper
+                       B!=0 =&gt; allocate 
+                       FxxxSSPP slot address (primary mapper, if 0)
+                        xxx=000 allocate specified slot only
+                        xxx=001 allocate other slots than specified
+                        xxx=010 try  to allocate  specified slot  and, if  it 
+                                failed, try another slot (if any)
+                        xxx=011 try to  allocate other  slots than  specified 
+                                and, if it failed, try specified slot
+          Results:      Carry set   =&gt; no free segments
+                        Carry clear =&gt; segment allocated
+                                       A=new segment number
+                                       B=slot  address of  mapper slot  (0 if 
+                                         called as B=0)
+
+FRE_SEG - Parameters:   A=segment number to free
+                        B=0 primary mapper
+                        B!=0 mapper other than primary
+          Returns:      Carry set =&gt; error
+                        Carry clear =&gt; segment freed OK 
+
+   5.5   INTER-SEGMENT READ AND WRITE
+
+     The  following two routines can be called to read or write a single byte 
+from any  mapper RAM  segment. The  calling sequence  is very  similar to the 
+inter-slot  read  and  write routines  provided by  the MSX  system ROM.  All 
+registers  apart from AF are preserved and no checking is done to ensure that 
+the segment number is valid.
+
+     The  top two bits of the address are ignored and the data will be always 
+read or  written via page-2, since the segment number specifies a 16k segment 
+which could appear in any of the four pages. The data will be read or written 
+from  the correct  segment regardless of the current paging or slot selection 
+in page-0  or page-1,  but note  that the mapper RAM slot must be selected in 
+page-2 when either of these routines are called. This is so that the routines 
+do  not have to do any slot switching and so can be fast. Also the stack must 
+not be in page-2. These routines will return disabling interrupts.
+
+RD_SEG -  Parameters:   A = segment number to read from
+                       HL = address within this segment
+          Results:      A = value of byte at that address
+                        All other registers preserved 
+
+WR_SEG -  Parameters:   A = segment number to write to
+                       HL = address within this segment
+                        E = value to write 
+          Returns:      A = corrupted
+                        All other registers preserved 
+
+   5.6   INTER-SEGMENT CALLS
+
+     Two  routines  are  provided  for doing  inter-segment calls.  These are 
+modelled very closely on the two inter-slot call routines provided by the MSX 
+system ROM, and the specification of their usage is very similar.
+
+     No  check is  done that  the called segment actually exists so it is the 
+user's responsibility  to ensure  this. The called segment will be paged into 
+the  specified address  page, but  it is  the user's responsibility to ensure 
+that the mapper slot is enabled in this page, since neither of these routines 
+will alter  the slot  selection at  all. This  is to  ensure that they can be 
+fast.
+
+     The routine  cannot be  used to do an inter-segment call into page-3. If 
+this  is attempted then the specified address in page-3 will simply be called 
+without any  paging, since  page-3 must never be altered. Calling into page-0 
+must  be done  with some care because of the interrupt and other entry point. 
+Also care must be taken that the stack is not paged out by these calls.
+
+     These  routines,  unlike  inter-slot  calls,  do not  disable interrupts 
+before passing control to the called routine. So they return to the caller in 
+the  same state  as before,  unless the  interrupt flag  was modified  by the 
+called routine.
+
+     Parameters cannot  be passed  in registers  IX, IY, AF', BC', DE' or HL' 
+since  these are  used internally  in the  routine. These  registers will  be 
+corrupted by  the inter-segment  call and may also be corrupted by the called 
+routine. All other registers (AF, BC, DE and HL) will be passed intact to the 
+called routine and returned from it to the caller.
+
+CAL_SEG - Parameters: IY = segment number to be called
+                      IX = address to call
+                      AF, BC, DE, HL passed to called routine
+                      Other registers corrupted
+          Results:    AF, BC, DE, HL, IX and IY returned from called routine. 
+                      All others corrupted.
+
+CALLS -   Parameters: AF, BC, DE, HL passed to called routine
+                      Other registers corrupted
+          Calling sequence:   CALL  CALLS
+                              DB    SEGMENT
+                              DW    ADDRESS  
+          Results:    AF, BC, DE, HL, IX and IY returned from called routine. 
+                      All others corrupted.
+
+   5.7   DIRECT PAGING ROUTINES
+
+     The  following  routines  are  provided  to allow  programs to  directly 
+manipulate  the current  paging state  without having to access the hardware. 
+Using these routines ensures compatibility with any changes to the details of 
+the  hardware.  The  routines  are  very  fast  and  so using  them will  not 
+compromise the performance of programs.
+
+     Routines are  provided to directly read or write to any of the four page 
+registers.  No checking of the validity of the segment number is done so this 
+is the  user's responsibility. Note that the value written in the register is 
+also  written in  memory and,  if the  register value is requested, the value 
+stored in  memory will  be returned and the one in the register will never be 
+read  directly. This  is done  to avoid  errors from  hardware conflicts when 
+there are  two or more mapper registers in the system. The user should always 
+manipulate the memory mapper through these routines.
+
+     The &quot;GET&quot;  routines return  values from internal images of the registers 
+without  actually reading  the registers  themselves. This  ensures that if a 
+segment is  enabled by, for example, &quot;PUT_P1&quot; then a subsequent &quot;GET_P1&quot; call 
+will  return the  actual value.  Reading the  mapper register  may produce  a 
+different value because the top bits of the segment numbers are generally not 
+recorded.
+
+     Although  a &quot;PUT_P3&quot;  routine is provided, it is in fact a dummy routine 
+and will  not alter  the page-3 register. This is because the contents of the 
+page-3  register should never be altered. The &quot;GET_P3&quot; routine does behave as 
+expected to allow the user to determine what segment is in page-3.
+
+     Another  pair of  routines (&quot;GET_PH&quot; and &quot;PUT_PH&quot;) is provided which are 
+identical in  function except  that the page is specified by the top two bits 
+of register H. This is useful when register HL contains an address, and these 
+routines  do not  corrupt register  HL. &quot;PUT_PH&quot;  will never alter the page-3 
+register.
+
+PUT_Pn -  Parameters:   n = 0,1,2 or 3 to select page
+                        A = segment number
+          Results:      None
+                        All registers preserved 
+
+GET_Pn -  Parameters:   n = 0,1,2 or 3 to select page
+          Results:      A = segment number
+                        All other registers preserved 
+
+PUT_PH -  Parameters:   H = high byte of address
+                        A = segment number
+          Results:      None
+                        All registers preserved
+
+GET_PH -  Parameters:   H = high byte of address
+          Results:      A = segment number
+                        All other registers preserved 
+
+     Before  using these  direct paging routines to alter the paging state, a
+program should  first use the &quot;GET_Pn&quot; routines to determine the initial four 
+segments  for when  it needs to restore these. No program should assume fixed 
+values for  these initial  segments since they are likely to change in future 
+versions of the system.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_8.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

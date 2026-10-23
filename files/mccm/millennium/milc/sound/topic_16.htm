@@ -1,0 +1,479 @@
+<html>
+
+<head>
+<title>MILC - Topic SCC Facts</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_15.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_17.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">SCC Facts</b><br>
+    <i>NoXor</i>, 00-00-96</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+-----------------------------------------------------------------------------
+Subject : SCC
+Edited by : -NoXoR- , Cybernetic1996
+Source : MSX Magazine 9-1990 blz 66/67
+         MSX MIRC / Cobrasoftware Nederland
+         MSX MIRC / K.Weeniet
+         Digital KC
+Met dank aan : -Harri Meriuoko
+               -Arsoft
+-----------------------------------------------------------------------------
+
+De scc zit niet op een IO poort maar op een adres, net als gewoon geheugen.
+Door een waarde naar een bepaalde waarde op een bepaald adres te zetten wordt
+een register van de SCC ingesteld.
+De SCC werkt bijna hetzelfde als de PSG dus levert qua aansturing weinig
+problemen op.
+
+Inschakelen van de SCC.
+-----------------------
+
+Als eerste moet de SCC ingeschakeld worden in een van de pages van de Z80.
+Dit gebeurt met behulp van poort &amp;hA8. Deze IO-poort heeft niets met de SCC te
+maken maar bepaalt wat in welk slot ingeschakeld wordt.
+Deze IO-poort ziet er als volgt uit:
+
+        b7  b6  b5  b4  b3  b2  b1  b0
+        PAGE3   PAGE2   PAGE1   PAGE0
+
+De betekenis van de 2 bits die per page beschikbaar zijn : 00 = systeem
+                                                           01 = cart. slot 1
+                                                           10 = cart. slot 2
+                                                           11 = memmory mapper
+De standaard waarde na het opstarten van basic zal hoogst waarschijnlijk
+gelijk aan &amp;B11 11 00 00 zijn.
+Als we de SCC in slot 1 willen inschakelen in page2 (8000-bfff) dan moeten we
+&amp;HD0 (&amp;B11 01 00 00) naar poort &amp;HA8 schrijven.
+Zit de SCC in slot 2 dan moeten we &amp;hE0 (&amp;B11 10 00 00) naar poort &amp;HA8
+schrijven.
+Als we dit gedaan hebben zit de SCC in page 2 (8000-bfff).
+
+Vervolgens moeten we dit ook doorgeven aan de SCC.
+Dit kan door de waarde &amp;H3F op adres &amp;h9000 te schrijven.
+
+SCC REGISTERS
+-------------
+De SCC heeft 4 soorten instelbare functies:-WAVEFORM    (32 bytes)
+                                           -FREQUENTIE  (12 bits)
+                                           -VOLUME      ( 4 bits)
+                                           -KEYON       ( 5 bits)
+
+
+WAVEFORM
+--------
+Dit is de vorm van de golf die dient voor het voortbrengen van het geluid.
+De 32 bytes kunnen geheel naar eigen wens ingesteld worden.
+Als de SCC bytes 31 gepasseerd is, begint hij weer bij de data van positie 0.
+
+
+   7f |          -           ------
+      |        -   -       -
+      |      -      -    -
+    1 |     -         ---
+    0 ----------------------------|31
+   ff |   -
+      |  -
+      | -
+   80 |-
+
+0-&amp;h7f    = 0    tot 127
+&amp;H80-&amp;hff = -127 tot -1
+
+Als de SCC in page2 ingeschakeld staat, staat deze data op de volgende adressen
+
+kanaal 0   &amp;h9800-&amp;h981f
+kanaal 1   &amp;h9829-&amp;h983f
+kanaal 2   &amp;h9840-&amp;h985f
+kanaal 3+4 &amp;h9860-&amp;h987f
+
+Zoals je ziet heeft kanaal 4 geen eigen waveform, maar deze is gelijk aan die
+van kanaal3.
+
+Frequentie
+----------
+De frequentie van de SCC bestaat uit 12bits, die op dezelfde manier als de PSG
+wordt berekend.
+                             3579545
+Deze formule is : waarde = --------------
+                             (16*freq)
+De minimale waarde is echter 16 en de maximale waarde is 4095.
+
+De waardes voor de frequentie staan op de volgende adressen:
+           LSB (8bit)   MSB (4bit)
+kanaal 0    &amp;H9880        &amp;H9881
+kanaal 1    &amp;H9882        &amp;H9883
+kanaal 2    &amp;H9884        &amp;H9885
+kanaal 3    &amp;H9886        &amp;H9887
+kanaal 4    &amp;H9888        &amp;H9889
+
+VOLUME
+------
+Ook dit is weer hetzelfde als de PSG, een 4 bits waarde
+&amp;B0000 = zachtst
+&amp;B1111 = hardst
+
+De waardes voor de volume staan op de volgende adressen:
+
+kanaal 0 &amp;H988a
+kanaal 1 &amp;H988b
+kanaal 2 &amp;H988c
+kanaal 3 &amp;H988d
+kanaal 4 &amp;H988e
+
+
+KEYON
+-----
+Hiermee wordt het geluid van een kanaal aan of uit gezet.
+Dit zit voor alle kanalen in 1 byte dat er als volgt uit ziet:
+
+        b7    b6     b5     b4     b3      b2      b1      b0
+        X     X      X   kanaal4 kanaal3 kanaal2 kanaal1 kanaal0
+
+Deze byte staat op adres &amp;H988F
+
+
+BASIC/ASSEMBLY
+--------------
+Het is uiteraard mogelijk om de SCC te besturen vanuit basic.
+Wel moet eerst de pointer naar het begin van het basic-werkgeheugen
+opgeschoven worden naar c000 want we schakelen straks de SCC in in page 2
+(8000-bfff).
+Dit kan vrij simpel met de volgende commando's:
+
+POKE &amp;HF677,&amp;hc0:POKE &amp;HC000,0:NEW
+
+Nu staat het begin van het basic-werkgeheugen op adres &amp;HC000.
+
+We schakelen de SCC (die in slot 1 zit) als volgt in:
+
+OUT &amp;HA8,&amp;HD0:POKE &amp;H9000,&amp;H3F
+
+Nu is de SCC klaar voor gebruik.
+
+Om een zuivere sinus ten gehore te brengen kunnen we het volgende programma
+gebruiken:
+10 PI=4*ATN(1)                                                  ;BEREKEN PI
+20 FOR N=0 TO 31:POKE &amp;H9800+N,128+127*SIN(N*PI/16)XOR128:NEXT N;WAVEFORM
+30 POKE &amp;H988F,&amp;B00000001                                       ;KEYON
+40 POKE &amp;H988A,15                                               ;VOLUME
+50 POKE &amp;H9880,128:POKE &amp;H9881,1                                ;FREQUENTIE
+60 END
+
+Om de toon te stoppen moet je POKE &amp;H988F,0 intypen, dan zet je bit 0 van het
+KEYON'register' weer op 0 (=uit). Zet je er weer een 1 naar dan is de toon
+weer hoorbaar.
+
+Als laatste kwam ik ook hetvolgende basicprogramma &quot;toon.bas&quot; tegen dat 3
+tonen ten gehore brengt:
+
+10 IFPEEK(&amp;HF677)=128THENPOKE&amp;HF676,1:POKE&amp;HF677,&amp;HC0:POKE &amp;HC000,0:
+    RUN&quot;toon.BAS&quot;
+20 REM SCC detectie
+30 out&amp;Ha8,&amp;B11010000:GOSUB 60
+40 out&amp;HA8,&amp;B11100000:gosub 60
+50 print &quot;SCC Not Found&quot;:end
+60 OUT&amp;HA8,VAL(&quot;&amp;B&quot;+A$):POKE &amp;H9000,50:poke &amp;H9800,&amp;h41:IF PEEK(&amp;H9800)&lt;&gt;&amp;H41
+   THEN RETURN ELSE RETURN 70
+70 REM NU STAAT DE SCC INGESCHAKELD IN PAGE2
+80 POKE &amp;H9000,&amp;H3F:FORX=&amp;H9800TO&amp;H981F:POKEX,0:NEXT: REM MAAK KANAAL 0 SCHOON
+90 POKE &amp;H988F,1:                                     REM ZET KANAAL 0 AAN
+100 POKE &amp;H988A,15:                                   REM VOLUME = 15
+120 FORX=&amp;H9800 TO &amp;H981Fstep5:POKE X,&amp;H70:NEXT:           REM EERSTE TOON
+130 POKE &amp;H9880,172:POKE &amp;H9881,1:                    REM FEQUENTIE
+140 GOSUB 200
+150 FORX=&amp;H9800 TO &amp;H981FSTEP2:POKE X,&amp;H70:NEXT:      REM TWEEDE TOON
+160 GOSUB 200
+170 FORX=&amp;H9800 TO &amp;H981FSTEP1:POKE X,&amp;H70:NEXT:      REM DERDE TOON
+180 END
+190 PRINT&quot;DRUK OP EEN TOETS VOOR DE VOLGENDE TOON&quot;
+200 A$=INPUT$(1):RETURN
+
+De aansturing in assembly is niet zo ingewikkeld aangezien het gewoon een byte
+met een LD instructie naar een adres sturen is.
+Het is niet nodig om te wachten bij het schrijven naar de adressen dus
+bijvoorbeeld een WAVEFORM kan gewoon met een LDIR instructie naar de
+desbetreffende adressen worden verplaatst.
+
+ld  a,&amp;B11010000;scc in slot 1
+out (&amp;Ha8),a
+ld  a,&amp;H3f     ;
+ld  (&amp;H9000),a   ;init SCC in slot in. Staat nu in page2
+;
+ld  hl,&amp;Hc000 ;
+ld  de,&amp;h9800 ;
+ld  bc,&amp;H20   ;
+ldir          ; schrijf een waveform voor kanaal0 naar de SCC.
+
+DETECTIE
+----------------------------------------------------------------------------
+Er zijn een aantal manieren om de SCC te detecteren maar 1 werkt eigenlijk
+altijd perfect namelijk door een byte naar de waveform te schrijven en te
+kijken of je dezelfde byte weer terug krijgt. Krijg je iets anders terug dan
+zit de SCC dus niet in dat slot. Ik heb er een klein basic programma voor
+gemaakt.
+1 rem search.bas
+5  if peek(&amp;Hf677)&lt;&gt;&amp;Hc0 then poke &amp;hf677,&amp;hc0:poke&amp;Hc000,0:run&quot;search.bas&quot;
+10 out &amp;HA8,&amp;B11010000 :rem  in slot 1?
+20 poke &amp;h9000,&amp;H3f
+30 poke &amp;H9800,&amp;h5f    :rem  willekeurige waarde naar wavemem
+40 if peek(&amp;H9800)=&amp;H5f then s=1:goto 100
+50 out &amp;HA8,&amp;B11100000 :rem  in slot 2?
+60 poke &amp;H9000,&amp;H3f
+70 poke &amp;H9800,&amp;H5f    :rem  willekeurige waarde naar wavemem
+80 if peek(&amp;H9800)=&amp;H5f then s=2:goto 100
+90 cls:print&quot;SCC Not Found&quot;:goto 110
+100 cls:print&quot;SCC Found In Slot &quot;;s
+110 end
+
+NB Als willekeurige waarde kun je alles nemen behalve &amp;HFF, dat is de waarde
+die je terugkrijgt als de SCC niet aanwezig is. Maar het is theoretisch
+mogelijk dat er &amp;HFF in de wavemem staat dus kijken of er &amp;HFF staat om te
+concluderen dat de SCC er NIET is, zou theoretisch gezien wel eens fout
+kunnen gaan (maar de kans is heel klein).
+
+In machinetaal werkt het hetzelfde als basic dus ik neem aan dat men daar wel
+uit komt.
+
+ANDERE ADRESSEN
+-----------------------------------------------------------------------------
+Als je de SCC inschakelt zoals hierboven beschreven dan blijkt dat je zitten
+allen adressen tussen &amp;H9800 en &amp;H988f. Maar de SCC is ook aan te sturen op
+de adressen tussen : &amp;H9900-&amp;H998f
+                     &amp;H9a00-&amp;H9a8f
+                     &amp;H9b00-&amp;H9b8f
+                     &amp;H9c00-&amp;H9c8f
+                     &amp;H9d00-&amp;H9d8f
+                     &amp;H9e00-&amp;H9e8f
+                     &amp;H9f00-&amp;H9f8f
+De laatste 2 cijfers blijven gelijk. Heeft volgens mij geen betekenis maar is
+gewoon een technische bijkomstigheid maar het levert geen problemen op.
+
+WAVEMEM IS RAM
+--------------------------------------------------------------------------
+Zoals je misschien al gezien hebt bij de SCC detectie is het WAVEMEM gewoon
+een stukje RAM. De rest van de registers/adressen is niet terug te lezen.
+
+SNATCHER/SDSNATCHER SCC
+------------------------------------------------------------------------------
+De SCC die bij deze spellen gebruikt wordt wijkt af van de 'normale' SCC.
+Deze SCC heeft wel een waveform voor kanaal 4.
+Verder zit hij op een andere plaats in het geheugen.
+
+De registers zitten op de volgende adressen:
+waveform
+   o      &amp;hb800-&amp;hb81f
+   1      &amp;hb820-&amp;hb83f
+   2      &amp;hb840-&amp;hb85f
+   3      &amp;hb860-&amp;hb87f
+   4      &amp;hb880-&amp;hb89f   &lt;&lt;&lt;=== extra!
+frequentie
+           lsb   msb
+   0       &amp;hb8a0  &amp;hb8a1
+   1       &amp;hb8a2  &amp;hb8a3
+   2       &amp;hb8a4  &amp;hb8a5
+   3       &amp;hb8a6  &amp;hb8a7
+   4       &amp;hb8a8  &amp;hb8a9
+volume
+   0       &amp;hb8aa
+   1       &amp;hb8ab
+   2       &amp;hb8ac
+   3       &amp;hb8ad
+   4       &amp;hb8ae
+keyon
+   &amp;hb8af
+
+Om hem in te schakelen moet je hem eerst in page2 inschakelen mbv poort &amp;HA8
+(zie boven) en dan moet je op adres &amp;Hb000 de waare &amp;H80 neerzetten. Daarna is
+hij klaar voor gebruik. In gebruik lijkt hij verder geheel hetzelfde te zijn
+als de 'gewone' SCC.
+Verder schijnt het dat hij geheel compatibel is met de 'gewone' SCC,dwz als je
+hem aan zou sturen als een 'gewone' SCC dan zou hij zich ook gedragen als een
+gewone SCC. Ik heb een tijdje de SDSnatcher SCC gehad maar kan mij niet
+herinneren dat hij niet werkte met andere spellen. Helaas heb ik hem niet meer
+dus heb ik het nog niet kunnen testen.
+
+SCC Schakelaar
+------------------------------------------------------------------------------
+Alleen de (SD)snatcher SCC kan gewoon direct gebruikt worden. De rest van alle
+spellen zullen een kleine ingreep moeten ondergaan.
+
+Er zijn 2 mogelijkheden om de Konami spelen zo te wijzigen zodat we de SCC
+kunnen gebruiken:
+
+1. Slotselect onderbreken.
+   Als we zorgen dat dit signaal niet naar de cartridge gaat zal het spel niet
+   opgestart worden na een reset van de computer
+   Als we daarna het signaal wel weer naar de cartridge laten gaan dan kunnen
+   we de SCC gewoon gebruiken.
+   Het onderbreken van dit signaal kan met een schakelaar en een weerstand.
+   Het kost ongeveer HFL 2,50 dus daarvoor hoef je het niet te laten.
+
+    De inbouw van een schakelaar gaat als volgt:
+    a. haal de cartridge op. Dit is misschien nog wel het lastigste want hij
+       zit met een paar stevige clips dichtgeklikt.
+    b. Als we de cartridge open hebben gehaald en de cartridge connector naar
+       ons toe leggen en zorgen dat de bovenkant van de chips kunnen zien dan
+       is pen 4 de pen die meest rechts zit.
+       De eerste pen zal waarschijnlijk ontbreken dus in de meeste gevallen
+       is pen 4 het eerste aanwezige contact. Deze moet dus onderbroken worden.
+       Snij het print spoor een eindje van de connector door met een scherp
+       mesje. Schraap een beetje af de beschermende groene expoxy lag zodat
+       het geel/gouden spoor zichtbaar wordt. Nu kunnen we er 2 draadjes aan
+       solderen. Deze 2 draden moeten naar de schakelaar.
+       Verder moet er nog een weerstand aan dit lijntje bevestigd worden.
+       Dit is aan de kant van de schakelaar naar de chip. Het makkelijkste is
+       om de dit signaalspoor te volgen en uit te zoeken aan welke pen van
+       het chip het verbonden is, en vervolgens de weerstand aan het IC te
+       bevestigen. De ene kan van de weerstand moet dus aan het onderbroken
+       signaal en de andere kant aan de 5Volt.
+       De waarde van de weerstand moet tussen de 3,3k en 30kOhm zijn.
+    c. Nu moeten we nog alleen een gaatje in de platic behuizing maken en de
+       schakelaar daarin monteren.
+    d. Als we de cartridge weer dicht hebben gedaan kunnen we hem in de
+       computer doen. Als je de computer aan zet zal of het spel opstarten of
+       niet. Start het spel uit de cartridge op, gooi dan de schakelaar om en
+       als het goed is moet het dan niet opstarten. Voordat we een SCC demo of
+       een ander programma opstarten dsat de SCC gebruikt de schakelaar weer
+       omgooien dan is de SCC klaar voor gebruik.
+       Doet de computer niets, controleer dan de cartridge of alles wel zit
+       zoals het moet zitten.
+
+       Schematisch gezien is het heel simpel:
+
+
+
+                                       +5V
+                                        |
+                                        -
+                                       | | weerstand 3,3K - 10K
+                                        -
+                               ____     |
+             O-----------------O   O----------------O
+        pen 4 (SlotSelect)     kantelschakelaar     Naar IC
+
+
+2. Chip Select onderbreken
+
+    a. Haal de cartrdige open
+    b. Er zijn zover ik 2  soorten cartridges met een SCC aan boord,
+        -1Mb versie (heeft naast het hele grote IC een 28 pens IC)
+        -2Mb versie (heeft naast het hele grote IC een 32 pens IC)
+
+        Voor beide versies is het praktisch hetzelfde. Eerst zoeken we pen 8
+        op van het grote IC (NIET van de cartridge poort). Hieraan zit in de
+        meeste gevallen een kleine condensator (22pf). Als we dit spoortje
+        volgen komen we of bij pen 20 van het 28-pens-IC uit of bij pen 24
+        van het 32-pens-IC. Dit signaal activeert de ROM. Als we dit
+        onderbreken wordt de ROM niet geactiveerd en dus ook het spel niet
+        opgestart. Het veschil het met het slot select signaal onderbreken is
+        dat nu de SCC wel actief is. We hoeven dus de schakelaar niet steeds
+        om te schakelen (behalve als we natuurlijk het spel willen spelen).
+        We moeten dus nu weer dat spoor onder breken, de 2 draadjes naar de
+        schakelaar verbinden en ook weer een weerstand aanbrengen.
+
+        Schematisch gezien zit het dan als volgt:
+
+                                  +5V
+                                   |
+                 GND               -
+                  |               | | weerstand 3,3K - 10K
+      condensator =                -
+                  |      ---       |
+         O---------------O O-----------------------------O
+      pen8 grootste IC   Schakelaar                    pen 20 - 28 pens IC
+                                                       pen 24 - 32 pens IC
+
+
+     c. Als we nu de cartridge weer in elkaar zetten, in de computer steken en
+        aanzetten zal misschien het spel opstarten. Gooi dan de schakelaar om.
+        En reset de computer. Nu zal de SCC actief zijn maar het spel zal niet
+        opstarten.
+        Mocht een programma de SCC niet kunnen vinden (Slecht geprogrammeerd?)
+        dan zal je als nog de schakelaar even om moeten gooien maar in de
+        meeste gevallen is dat gelukkig niet nodig.
+
+NB.  De ingreep is niet moeilijk maar raadpleeg iemand met soldeer ervaring
+     als je niet helemaal zeker bent. Uiteraard is alles voor eigen risico en
+     is de auteur van dit artikel niet aansprakelijk.
+
+Zemina
+---------------------------------------------------------------------------
+Een Koreaans bedrijf genaamd Zemina heeft destijds ook een aantal spellen van
+konami met SCC uitgebracht. Ook deze zouden in theorie gewoon moeten werken.
+Ik heb ze nog nooit gezien maar de geruchten gaan dat je technisch iets
+anders in elkaar zitten, men zou niet het IC gebruiken dat Konami wel gebruikt.
+ Het slotselect-signaal onderbreken moet in iedergeval geen probleem opleveren.
+
+----------------------------------------------------------------------------
+Interview:
+
+KONAMI heeft ooit eens een interview gegeven mbt de SCC. Het meeste in dit
+artikel is gezeur maar als enige intressante dingen werden de volgende dingen
+genoemd:
+-Het idee voor de SCC is ontstaan uit (ja, je zult het niet geloven) de NES.
+ Voor de NES is er ooit eens een diskdrive systeem (geen copybox maar een
+ officieel systeem) gemaakt dat een extra soundchip aan boord had. Dit vond
+ men bij KONAMI wel heel intressant en besloot om voortaan ook maar een extra
+ geluidschip in de cartridges te implementeren.
+-De SCC is bijna gelijk aan de SCC wat betreft de aansturing. Dit is met
+ opzet gedaan. Dit scheelt namelijk heel wat moeite in het aansturen.
+-Het maken van muziek werd op 2 manieren gedaan, de eerste mogelijkheid was
+ een score-editor op de MSX zelf en ten tweede werd er gebruik gemaakt van
+ een MIDI converter. De laatste werd uiteraard het meeste gebruikt bij het
+ maken van muziek.
+Behalve dit interview stond er wat informatie over hoe de SCC aan te sturen
+maar dit betrof alleen info over de 'gewone' SCC. Opzich niet zo vreemd maar
+men gebruikte wel de SDSnatcher/Snatcher SCC dus dit lijkt te bevestigen dat
+hij mer de gewone SCC compatibel is.
+----------------------------------------------------------------------------
+
+Vraagtekens ???????????????????????????????????????????????????????????????
+---------------------------------------------------------------------------
+Een aantal dingen zijn me nog niet duidelijk:
+-In een artikel over de SCC stond dat je op adres &amp;H98e0 voor de zekerheid een
+ 0 neer moest zetten voor het correct af laten spelen avn de wave data. Bij
+ mijn SCC hoeft dit niet. Wordt &amp;H98E0 gebruikt of is het een fout in het
+ artikel?
+-De berekenings formule van de frequentie is gebaseerd op klokfrequentie. Zou
+ je dus op 7Mhz werken dan zou het theoretisch mogelijk moeten zijn om de SCC
+ aan te sturen dus gewoon de frequentie met een factor 2 te vergroten. Helaas
+ heb ik geen 7MHz aan boord dus dit heb ik (nog) niet kunnen testen.
+-SRAM in (SD)Snatcher
+-schakelen van de ROM-pages
+
+Als iemand inormatie, suggesties of misschien een fout tegen gekomen is,
+ben ik ook te bereiken via Msx Club Drechtsteden. Vragen zijn uiteraard
+ook welkom.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_15.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_17.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

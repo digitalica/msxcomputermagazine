@@ -1,0 +1,380 @@
+<html>
+
+<head>
+<title>MILC - Topic sliding into bdos [2/6]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_10.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_12.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">sliding into bdos [2/6]</b><br>
+    <i>M.J.Karas</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+DETERMINING IF THERE IS PENDING KEYBOARD INPUT: Function 11.
+
+     Some  computer programs are designed to spend large  amounts 
+of  time  processing inside of the computer or manipulating  data 
+within  disk  files without stopping to ask the  user  if  he/she 
+desires  to stop the processing sequence.  Also it is many  times 
+desirable  to  have  a  &quot;terminate&quot;  capability  for  application 
+programs  without waiting for the operator to answer a  character 
+input  request.  If the normal console input function is used the 
+user computer is not resumed until a character is already  input. 
+The  console input status check function may be used to poll  the 
+user keyboard to determine if a character input is pending. If no 
+input  is ready then the user program is immediately resumed with 
+an indication of if there was a pending input.  If a character is 
+pending a 0FFH is returned in the (A) register.  Otherwise a 000H 
+value  is returned.  The following example illustrates the use of 
+console  status to terminate a normally endless loop that  prints 
+the same string over and over.
+
+;CONSOLE STATUS USAGE EXAMPLE
+;
+CONSTAT EQU     00BH            ; FUNC # 11
+CONSTR  EQU     009H            ; PRINT STRING FUNCTION
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+CR      EQU     0DH             ; ASCII CARRIAGE RETURN
+LF      EQU     0AH             ; ASCII LINE FEED
+
+        ORG     0100H           ; START
+LOOP:
+        LD      DE,MESSAGE      ; POINT AT STRING TO SEND
+        LD      C,CONSTR        ; FUNCTION
+        CALL    BDOS            ; GO SEND STRING
+        LD      C,CONSTAT       ; GET ABORT STATUS
+        CALL    BDOS
+        OR      A               ; CHECK STATUS
+        JP      Z,LOOP          ; NO KEY SO CONTINUE LOOP
+        RET                     ; IMMEDIATE CCP RETURN IF ABORT
+;
+MESSAGE:
+        DEFB    CR,LF,'Depress any Key to STOP','$'
+;
+        END
+
+
+
+AUXILLIARY PERIPHERAL CHARACTER INPUT AND OUTPUT FUNCTIONS
+
+     The  generalized CP/M BDOS provides the capability for three 
+character by character logical I/O devices to be atteched to  the 
+computer  system.  This requirement stems from the fact that most 
+computers  are  designed to interface to the real world  in  more 
+ways than just a console device. The three devices are classified 
+as:
+
+     a)  A lister type device that is generally expected to be  a 
+printer  of  some sort.  This classification is  an  output  only 
+device.
+
+     b)  An input device supporting character input from a source 
+other than the console.  The device is specifcally an input  type 
+unit.  CP/M  jargon refers to this device as the &quot;READER&quot; for  no 
+particular reason.
+
+     c)  A  generalized character output only device  used  as  a 
+specific data destination other than the console or standard list 
+device.  Some  computer  systems  use this  device,  often  times 
+referred to as the &quot;PUNCH&quot; device as a second printer output.
+
+     The  three  following examples  illustrate  the  programming 
+techniques used to talk to each of these three devices.
+
+
+;LIST DEVICE OUTPUT EXAMPLE
+;
+LIST    EQU     005H            ; FUNC # 5
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+
+        ORG     0100H           ; START
+        LD      A,(LSTCHAR)     ; GET CHARACTER TO OUTPUT
+        LD      E,A
+        LD      C,LIST          ; FUNCTION
+        CALL    BDOS            ; GO SEND CHARACTER
+        RET                     ; IMMEDIATE CCP RETURN
+;
+LSTCHAR:
+        DEFB    'L'             ; PLACE TO GET OUTPUT CHAR
+;
+        END
+
+
+
+        
+;READER DEVICE INPUT EXAMPLE
+;
+READER  EQU     003H            ; FUNC # 3
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+
+        ORG     0100H           ; START
+        LD      C,READER        ; FUNCTION
+        CALL    BDOS            ; GO GET CHARACTER
+        LD      (RDRCHR),A      ; SAVE FOR WHATEVER REASON
+        RET                     ; IMMEDIATE CCP RETURN
+;
+RDRCHR:
+        DEFS    1               ; PLACE TO STORE INPUT CHAR
+;
+        END
+
+        
+
+
+;PUNCH DEVICE OUTPUT EXAMPLE
+;
+PUNCH   EQU     004H            ; FUNC # 4
+BDOS    EQU     0005H           ; SYSTEM ENTRY
+
+        ORG     0100H           ; START
+        LD      A,(PNCHCHR)     ; GET CHARACTER TO OUTPUT
+        LD      E,A
+        LD      C,PUNCH         ; FUNCTION
+        CALL    BDOS            ; GO SEND CHARACTER
+        RET                     ; IMMEDIATE CCP RETURN
+;
+PNCHCHR:
+        DEFB    'P'             ; PLACE TO GET OUTPUT CHAR
+;
+        END
+
+
+
+SYSTEM CONTROL BDOS FUNCTIONS
+
+     This  family of system calls supported by the CP/M BDOS  are 
+designed  to  allow  the programmer a degree  of  flexibility  in 
+manipulating  the  operation of general  CP/M  environment.  Each 
+function here will generally be discussed individually due to the 
+unique nature of each operation.
+
+SYSTEM RESET: Function 0.
+
+     The  system  reset function is designed to allow restart  of 
+the  CP/M  system  command processor  after  a  user  application 
+completes  execution or is aborted.  The system reset function is 
+equivalent  to a JMP to address 0000H or a CTL-C which  forces  a 
+system WARM Reboot.  The reboot operation de-activates all active 
+drives except drive A: which is re-logged. Operation is extremely 
+simple as:
+
+RESET     EQU       000H           ;SYSTEM RESET FUNC
+BDOS      EQU       0005H          ;SYSTEM ENTRY POINT
+
+          ORG       0100H
+          LD        C,RESET
+          JP        BDOS           ;CALL ALSO PERMISSABLE
+                                   ;EXCEPT THAT FUNCTION
+                                   ;DOES NOT RETURN TO USER
+                                   ;PROGRAM
+
+
+GET AND SET IOBYTE: Functions 7 &amp; 8.
+
+     The    generalized   CP/M   operating   system   environment 
+communicates via I/O to &quot;logical&quot; type devices.  This means  that 
+the console,  lister, &quot;reader&quot;, and &quot;punch&quot; are just treated as a 
+generic  device classsifications.  The CP/M system allows for and 
+supports, to a degree, the capability for the hardware to contain 
+multiple  physical devices (peripherals and/or real I/O  devices) 
+within  each of the generic logical device  classifications.  The 
+means to support the assignment of multiple physical devices to a 
+given classification is done through the IOBYTE,  normally stored 
+at address 00003H of the base page of the CP/M memory.  The  BIOS 
+hardware  I/O software may thusly be written to easily know which 
+one  of two printers to talk to when the BDOS requires output  to 
+one of two printers.  A &quot;default standard&quot; IOBYTE format has been 
+adopted  based  upon an 8-bit  microprocessor  system  convention 
+developed by Intel Corp as follows:
+
+                         (lister) (punch)  (reader) (console)
+      Logical Devices =&gt;   LST:     PUN:     RDR:     CON:
+          IOBYTE bits =&gt;   7 6      5 4      3 2      1 0
+      ---------------------------------------------------------
+        Bit pattern
+        dec  binary
+         0     00          TTY:     TTY:     TTY:     TTY:
+         1     01          CRT:     PTP:     PTR:     CRT:
+         2     10          LPT:     UP1:     UR1:     BAT:
+         3     11          UL1:     UP2:     UR2:     UC1:
+
+     The  designators in the table specify the &quot;standard types of 
+physical devices and are defined as follows:
+
+     TTY: A teletype console with keyboard, hard copy display and
+          possibly an integral tape reader/punch
+     CRT: An interactive cathode ray type terminal with keyboard
+          input and display screen
+     BAT: A batch processor workstation with a card reader type 
+          input device and a hard copy display/output device
+     UC1: A user defined alternate &quot;console&quot; unit
+     LPT: Line printer
+     UL1: A user defined list device
+     PTR: Paper Tape Reader
+     UR1: User defined &quot;reader&quot; character input device
+     UR2: User defined &quot;reader&quot; character input device
+     PTP: Paper Tape Punch
+     UP1: User defined &quot;punch&quot; character output device
+     UP2: User defined &quot;punch&quot; character output device
+
+     The BDOS support for the I/O device assignment is a standard 
+mechanism  to access the IOBYTE's current value and switch it  to 
+some  other  value.  Suppose  a CP/M computer  had  two  printers 
+connected as LST:  and UL1:. If the applications program needs to 
+switch printing output to another printer,  the process could  be 
+handeled as follows:
+
+
+;GET AND SET IOBYTE EXAMPLE
+;
+SETIOB  EQU     008H            ; SET IOBYTE FUNCTION
+GETIOB  EQU     007H            ; GET IOBYTE FUNCTION
+BDOS    EQU     00005H          ; SYSTEM ENTRY POINT
+LSTMASK EQU     11$00$00$00B    ; IOBYTE MASK FOR LIST
+                                ; ..DEVICE
+LPT     EQU     10$00$00$00B    ; BIT VALUE FOR LPT #1
+UL1     EQU     11$00$00$00B    ; BIT VALUE FOR LPT #2
+
+        ORG     0100H           ; PROGRAM START
+        LD      C,GETIOB        ; GO GET CURRENT IOBYTE VAL
+        CALL    BDOS
+        AND     (NOT LSTMASK) AND 0FFH ; KEEP ALL OTHER BITS
+        OR      UL1 AND LSTMASK ; SET IOBYTE FOR PRINTER #2
+        LD      E,A
+        LD      C,SETIOB        ; FUNCTION TO RESET THE IOBYTE
+        CALL    BDOS
+        RET                     ; IMMEDIATE CCP RETURN
+;
+        END
+
+
+
+GET CP/M VERSION NUMBER: Function 12.
+
+     Sometimes  it  is necessary for an applications  program  to 
+&quot;know&quot; what version of CP/M the program is running under. Version 
+2.0  and above support a feature to tell the application  program 
+what  the  version  number is.  One reason is to  permit  version 
+dependant functions such as random record file I/O to be used  if 
+it  is  supported by the version of CP/M being used.  The  system 
+call  to  get the version number returns a two byte  value  split 
+into two parts as follows:
+
+          if (H)=0 then this is a CP/M System
+             (H)=1 then this is an MP/M System
+             (L)=version number in hex
+          if (L)=00 then older than CP/M 2.0
+             (L)=20 then version CP/M 2.0
+             (L)=21 then version CP/M 2.1
+             (L)=22 then version CP/M 2.2
+
+     A program to read the CP/M version number is as follows:
+
+;VERSION NUMBER EXAMPLE
+;
+GETVERS EQU     00CH            ; FUNCTION 12
+BDOS    EQU     00005H          ; SYSTEM ENTRY POINT
+
+        ORG     0100H           ; PROGRAM START
+        LD      C,GETVERS       ; FETCH VERSION NUMBER
+        CALL    BDOS
+        LD      A,L             ; SAVE CP/M VERSION NUMBER
+        LD      (CURVERS),A
+        RET                     ; BACK TO CCP
+;
+CURVERS:
+        DEFS    1               ; STORE THE VERSION NUM HERE
+        END
+
+
+
+RESETTING THE CP/M DISK SYSTEM: Function 13.
+
+     The  CP/M  operating  system contains  features  to  control 
+access  to  files  upon the disk  drives.  A  directory  checksum 
+scheme,  beyond  the  scope of  this  presentation,  permits  the 
+operating  system to determine when a disk has been changed in  a 
+drive  thus preventing the a wrong disk from being written  upon. 
+This  is neat except that in many cases an appliciations  program 
+may  require  disk changes as functions are changed or new  files 
+are   required.   This  system  control  function   permits   the 
+application  to force read/write status to be set for all drives, 
+drive  A:  to  be logged,  and reset of the default  disk  record 
+buffer address to its default value of 080H within the CP/M  base 
+page.  The following program sequence shows how to reset the disk 
+system.
+
+;RESET DISK SYSTEM EXAMPLE
+;
+RESET   EQU     0DH             ; FUNCTION 13
+BDOS    EQU     0005H           ; SYSTEM ENTRY POINT
+
+        ORG     0100H           ; PROGRAM START
+        LD      C,RESET         ; SET UP FUNCTION
+        CALL    BDOS            ; GO RESET THE DRIVES
+        RET                     ; BACK TO THE CCP
+;
+        END
+
+
+GET AND SET OF CURRENT USER CODE: Function 32.
+
+     CP/M Version 2.2 permits the file system on a given drive to 
+be  partitioned into up to 15 individual directory areas so  that 
+usage areas can be setup. For instance, the system operator could 
+put  all assembly language development programs in one user  area 
+while  having disk utility programs in another.  The BDOS  allows 
+the application programmer to determine the currently logged user 
+number and to modify it if necessary.  The following example sets 
+the current user number up by one.  If the highest user number is 
+currently logged then the user 0 area is selected.
+
+;GET/SET USER EXAMPLE
+;
+GSUSR   EQU     020H            ; FUNCTION 20
+GET     EQU     0FFH            ; GET FLAG
+BDOS    EQU     0005H           ; SYSTEM ENTRY POINT
+
+        ORG     0100H           ; START UP POINT
+        LD      E,SET           ; MAKE THIS A FETCH NUM RQST
+        LD      C,GSUSR
+        CALL    BDOS            ; GET THE CURRENT USER #
+        INC     A               ; BUMP RETURNED USER UP 1
+        AND     00FH            ; MASK TO MOD(15)
+        LD      E,A             ; MOVE FOR SET TO NEW USER
+        LD      C,GSUSR
+        CALL    BDOS
+        RET                     ; CCP GETS US BACK
+;
+        END
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_10.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_12.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

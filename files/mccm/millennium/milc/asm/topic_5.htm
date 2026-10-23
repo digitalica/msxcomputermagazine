@@ -1,0 +1,227 @@
+<html>
+
+<head>
+<title>MILC - Topic Beschrijving routines.gen</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_6.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Beschrijving routines.gen</b><br>
+    <i>Hans Kester</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Alle macro's en sub-routines uit ROUTINES.GEN op een rijtje:
+
+			   Macro's:
+
+LOCATE
+Functie:	cursor op een bepaalde plaats op het tekstscherm zetten
+Invoer:	         x-coordinaat, y-coordinaat
+Uitvoer:	geen
+
+BEEP
+Functie:	geeft een beepje
+Invoer:	        geen
+Uitvoer:	geen
+
+HORLIJN
+Functie:	trekt een horizontale lijn op het tekstscherm
+Invoer:	        x-coordinaat,y-coordinaat,lengte
+Uitvoer:	geen
+
+VERTLIJN
+Functie:	trekt een verticale lijn op het tekstscherm
+Invoer:	        x-coordinaat,y-coordinaat,lengte
+Uitvoer:	geen
+
+
+			 Subroutines:
+
+INIT
+Functie:	haalt de VDP-poortadressen uit ROM en zet ze in RAM
+Invoer:	        geen
+Uitvoer:	geen
+
+BIOS1
+Functie:	roept de MSX1-BIOS aan (Main-Rom)
+Invoer:	        IX = aan te roepen adres
+Uitvoer:	hangt af van aangeroepen functie
+
+BIOS2
+Functie:	roept de MSX2-BIOS aan (Sub-Rom)
+Invoer:	        IX = aan te roepen adres
+Uitvoer:	hangt af van aangeroepen functie
+
+BLOKFILL
+Functie:	vult een stuk geheugen met een bepaalde waarde
+Invoer:	        HL = adres vanaf waar het geheugen gevuld moet worden
+	        BC = de lengte van het stuk geheugen
+	        A  = waarde waarmee het geheugen gevuld moet worden
+Uitvoer:	geen
+
+GET_ZEKWET
+Functie:	het opvragen van een J of een N van het toetsenbord
+Invoer:	        geen
+Uitvoer:	A = 0 als het antwoord nee was
+                    1 als het antwoord ja was
+
+UPPER
+Functie:	zet een letter om in een hoofdletter (als dat mogelijk is)
+Invoer:	        A = letter
+Uitvoer:	A = hoofdletter
+
+LOWER
+Functie:	zet een letter om in een kleine letter (als dat mogelijk is)
+Invoer:	        A = letter
+Uitvoer:	A = kleine letter
+
+GETFUNC
+Functie:	bepaalt welke functietoets er ingedrukt is
+Invoer:	        geen
+Uitvoer:	A = 0 als er geen functietoets ingedrukt was
+                anders bevat A het nummer van de functietoets (1 t/m 10)
+
+WAITFUNC
+Functie:	wacht net zolang tot er geen functietoets meer is ingedrukt
+Invoer:	        geen
+Uitvoer:	geen
+
+KILLFUNC
+Functie:	zorgt dat de functietoets-definities leeg gemaakt worden
+Invoer:	        geen
+Uitvoer:	geen
+
+GETCHAR
+Functie:	kijkt of er een toets is ingedrukt en haalt hem dan uit de
+                toetsenbuffer
+Invoer:	        geen
+Uitvoer:	A bevat het ingetoetste karakter
+                A = 0 als er geen toets ingedrukt was
+
+LIJN_HOR
+Functie:	trekt een horizontale lijn (zie de macro HORLIJN)
+Invoer:	        A = lengte
+	        B = x-coordinaat
+                C = y-coordinaat
+Uitvoer:	geen
+
+LIJN_VERT
+Functie:	trekt een verticale lijn (zie de macro VERTLIJN)
+Invoer:	A = lengte
+	B = x-co”rdinaat
+	C = y-co”rdinaat
+Uitvoer:	geen
+
+PRINT
+Functie:	zet een tekst op het scherm
+Invoer:	HL = adres van het begin van de tekst
+	De tekst moet afgesloten zijn met een 0-byte
+Uitvoer:	geen
+
+FAST_PRINT
+Functie:	zet een tekst op het scherm, sneller dan PRINT
+Invoer:	HL = adres van het begin van de tekst
+	De tekst moet afgesloten zijn met een 0-byte
+Uitvoer:	geen
+
+BALKJE
+Functie:	zet een VDP-balkje op het scherm (alleen MSX2)
+	Deze balkjes kunnen knipperen en hebben een eigen kleur.
+	Zie de routines KNIPPER en KNIPKLEUR
+Invoer:	A = lengte van het balkje
+	B = x-co”rdinaat
+	C = y-co”rdinaat
+Uitvoer:	geen
+
+BALKJE_WEG
+Functie:	haalt de door BALKJE gemaakte balkjes weer weg
+Invoer:	A = lengte van het balkje
+	B = x-co”rdinaat
+	C = y-co”rdinaat
+Uitvoer:	geen
+
+WEGBALK
+Functie:	haalt alle VDP-balkjes van het scherm
+Invoer:	geen
+Uitvoer:	geen
+
+KNIPPER
+Functie:	laat de VDP-balkjes knipperen
+Invoer:	hoge deel van B = de tijd dat de balkjes te zien zijn
+	lage deel van B = de tijd dat de balkjes weg zijn
+	Tijd wordt gemeten in vijfden van seconden.
+Uitvoer:	geen
+
+KNIPKLEUR
+Functie:	geeft de VDP-balkjes een kleur
+Invoer:	hoge deel van B = voorgrondkleur
+	lage deel van B = achtergrondkleur
+Uitvoer:	geen
+
+SETRD
+Functie:	stelt het VDP-leesadres in
+	!! DE INTERRUPTS GAAN UIT EN BLIJVEN UIT !!
+	Wilt u het toetsenbord o.i.d. weer gebruiken dan moeten de
+	interrupts weer aan d.m.v. het commando EI
+Invoer:	HL = adres in Video-Ram waarvan gelezen moet worden
+Uitvoer:	geen
+
+SETWRT
+Functie:	stelt het VDP-schrijfadres in
+	!! DE INTERRUPTS GAAN UIT EN BLIJVEN UIT !!
+	Wilt u het toetsenbord o.i.d. weer gebruiken dan moeten de
+	interrupts weer aan d.m.v. het commando EI
+Invoer:	HL = adres in Video-Ram waarnaar geschreven moet worden
+Uitvoer:	geen
+
+LDIRMV
+Functie:	kopieert Video-Ram naar Main-Ram
+Invoer:	HL = adres in Video-Ram
+	DE = adres in Main-Ram
+	BC = lengte van het te kopi‰ren blok
+Uitvoer:	geen
+
+LDIRVM
+Functie:	kopieert Main-Ram naar Video-Ram
+Invoer:	HL = adres in Main-Ram
+	DE = adres in Video-Ram
+	BC = lengte van het te kopi‰ren blok
+Uitvoer:	geen
+
+GET_ADRES
+Functie:	berekent het adres in het Video-Ram van een bepaalde positie
+	op het scherm
+Invoer:	B = x-co”rdinaat
+	C = y-co”rdinaat
+Uitvoer:	HL = adres in VRAM
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

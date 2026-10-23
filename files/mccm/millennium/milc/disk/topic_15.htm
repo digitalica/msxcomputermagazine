@@ -1,0 +1,67 @@
+<html>
+
+<head>
+<title>MILC - Topic Fatal disk errors</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_14.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_16.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Fatal disk errors</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+Fatal disk errors
+Hook #F323 ( Double indirection )
+Hook #F273 ( 3 bytes ) Exit to #471A to DISKROM ( Registers not stored )
+A - Drive
+C - Error code:
+X x x x X X X X
+|       | | | |
+|       | | | +------------ 1 - Writing / 0 - Reading
+|       | | +----- 0 1 1 #
+|       | +------- 0 0 0 #- Disk error (other)
+|       +--------- 0 0 1 #
+|                  | | +--- Unsupported media
+|                  | +----- Not ready
+|                  +------- Write protect
++-------------------------- 1 - Bad FAT
+
+Return status
+#F323 - C
+#F273 - A
+0 - Ignore
+1 - Retry
+2 - Abort
+
+#F1E6 - Address of ABORT
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_14.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_16.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

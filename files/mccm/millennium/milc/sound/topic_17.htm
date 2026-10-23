@@ -1,0 +1,145 @@
+<html>
+
+<head>
+<title>MILC - Topic MoonBlaster song decruncher</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_16.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_18.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MoonBlaster song decruncher</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;--- MoonBlaster song decruncher ---
+;
+; Opslag songdata: Alleen nullen gecrunched.
+;	   Alle waarden boven 242 = 1 of meer nullen, dus max. 13
+
+
+
+sngdecrc:	ld	a,sngpag	; SNGPAG = mapperbank met ONGECRUNCHTE
+	out	(0feh),a	; songdata
+
+	ld	hl,08000h	; verplaatsen van de instellingen
+	ld	de,08000h+200
+	ld	bc,376	; aantal bytes v. div. settings
+sngdecrl1:	call	copybyte
+	inc	hl
+	inc	de
+	dec	bc
+	ld	a,b
+	or	c
+	jr	nz,sngdecrl1
+
+	ld	a,em1pag	; EM1PAG = mapperbank met GECRUNCHTE
+	out	(0feh),a	; songdata
+	ld	a,(08000h)	; last position
+	inc	a
+	ld	b,a
+	push	bc	; verplaats pat/pos data
+	ld	de,08000h
+sngdecrl2:	call	copybyte
+	inc	hl
+	inc	de
+	djnz	sngdecrl2
+	pop	bc
+
+	push	hl
+	ld	e,1
+	ld	hl,08000h
+sngdecrl3:	ld	a,(hl)
+	cp	e
+	jr	c,sngdecrl4
+	ld	e,a
+sngdecrl4:	inc	hl
+	djnz	sngdecrl3
+
+	ld	d,0
+	pop	hl
+	add	hl,de
+	add	hl,de	; sla pattern adressen over
+
+	ld	a,em1pag
+	out	(0feh),a
+
+	ld	de,08240h	; echte decrunchen van songdata
+	ld	bc,03dc0h	; !maximale! aantal bytes
+sngdecrl6:	ld	a,(hl)
+	or	a
+	jr	z,sngdecrend	; eindmarker gevonden? eerder weg!
+	cp	243
+	jr	nc,sngdecrl7	; gecrunchte data? dan decrunchen!
+	call	wrtbyte
+sngdecrl9:	inc	hl
+	dec	bc
+	ld	a,b
+	or	c
+	jr	nz,sngdecrl6
+sngdecrend:	ld	a,sngpag	; einde decrunchen
+	out	(0feh),a
+	ret
+
+sngdecrl7:	push	bc	; decrunchen serie nullen
+	sub	242
+	ld	b,a
+sngdecrl8:	xor	a
+	call	wrtbyte
+	djnz	sngdecrl8
+	pop	bc
+	jr	sngdecrl9
+
+
+
+;--- copieer databyte vanuit ene mapperbank naar andere ---
+
+copybyte:	ld	a,em1pag
+	out	(0feh),a
+	ld	a,(hl)
+	ex	af,af'
+	ld	a,sngpag
+	out	(0feh),a
+	ex	af,af'
+	ld	(de),a
+	ret
+
+;--- schrijf gedecrunchte databyte ---
+
+wrtbyte:	ex	af,af'
+	ld	a,sngpag
+	out	(0feh),a
+	ex	af,af'
+	ld	(de),a
+	ld	a,em1pag
+	out	(0feh),a
+	inc	de
+                ret
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_16.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_18.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

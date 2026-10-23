@@ -1,0 +1,424 @@
+<html>
+
+<head>
+<title>MILC - Topic Standard MIDI spec 1.1 [1/2]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_2.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_4.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Standard MIDI spec 1.1 [1/2]</b><br>
+    <i>MIDI Assoc.</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+3 - Meta-Events
+
+A  few meta-events are defined herin. It is not required for every  program
+to support every meta-event.
+
+In the syntax descriptions for each of the meta-events a set of conventions
+is  used  to describe parameters of the events. The FF  which  begins  each
+event, the type of each event, and the lengths of events which do not  have
+a  variable  amount of data are given directly in hexadecimal.  A  notation
+such  as dd or se, which consists of two lower-case  letters,  mnemonically
+represents  an 8-bit value. Four identical lower-case letters such as  wwww
+mnemonically  refer to a 16-bit value, stored most-significant-byte  first.
+Six  identical lower-case letters such as tttttt refer to a  24-bit  value,
+stored  most-significan-byte first. The notation len refers to  teh  length
+portion of the meta-event syntax, that is, a number, stored as a  variable-
+length  quantity, which specifies how many bytes (possibly text) data  were
+just specified by the length.
+
+In  general, meta-events in a track which occur at the same time may  occur
+in any order. If a copyright event is used, it should be placed as early as
+possible  in  the file, so it will be noticed easily. Sequence  Number  and
+Sequence/Track  Name events, if present, must appear at time 0. An  end-of-
+track event must occur as the last event in the track.
+
+Meta-events initially defined include:
+
+FF 00 02                     Sequence Number
+    This  optional  event, which must occur at the beginning  of  a  track,
+    before  any  nonzero  delta-times, and before  any  transmittable  MIDI
+    events, specifies the number of a sequence. In a format 2 MIDI File, it
+    is used to identify each &quot;pattern&quot; so that a &quot;song&quot; sequence using  the
+    Cue  message to refer to the patterns. If the ID numbers  are  omitted,
+    the sequences' lacations in order in the file are used as defaults.  In
+    a format 0 or 1 MIDI File, which only contain one sequence, this number
+    should  be  contained  in the first (or only)  track.  If  transfer  of
+    several multitrack sequences is required, this must be done as a  group
+    of format 1 files, each with a different sequence number.
+
+FF 01 len text               Text Event
+    Any amount of text describing anything. It is a good idea to put a text
+    event right at the beginning of a track, with the name of the track,  a
+    description  of its intended orchestration, and any  other  information
+    which the user wants to put there. Text events may also occur at  other
+    times in a track, to be used as lyrics, or descriptions of cue  points.
+    The text in this event should be printable ASCII characters for maximum
+    interchange.  However, other characters codes using the high-order  bit
+    may be used for interchange of files between different programs on  the
+    same  computer which supports an extended character set. Programs on  a
+    computer  which  does not support non-ASCII  characters  should  ignore
+    those characters.
+
+    Meta-event  types 01 through 0F are reserved for various types of  text
+    events,  each of which meets the specification of text  events  (above)
+    but is used for a different purpose:
+
+FF 02 len text               Copyright Notice
+    Contains a copyright notice as printable ASCII text. The notice  should
+    contain the characters (C), the year of the copyright, and the owner of
+    the  copyright. If several pieces of music are in the same  MIDI  File,
+    all of the copyright notices should be placed together in this event so
+    that it will be at the beginning of the file. This event should be  the
+    first event in the track chunk, at time 0.
+
+FF 03 len text               Sequence/Track Name
+    If in a format 0 track, or the first track in a format 1 file, the name
+    of the sequence. Otherwise, the name of the track.
+
+FF 04 len text               Instrument Name
+    A description of the type of instrumentation to be used in that  track.
+    May  be  used  with the MIDI Prefix meta-event to  specify  which  MIDI
+    channel the description applies to, or the channel may be specified  as
+    text in the event itself.
+
+FF 05 len text               Lyric
+    A  lyric to be sung. Generally, each syllable will be a seperate  lyric
+    event which begins at the event's time.
+
+FF 06 len text               Marker
+    Normally  in a format 0 track, or the first track in a format  1  file.
+    The  name of that point in the sequence, such as a rehersal  letter  or
+    section name (&quot;First Verse&quot;, etc.)
+
+FF 07 len text               Cue Point
+    A description of something happening on a film or video screen or stage
+    at that point in the musical score (&quot;Car crashes into  house&quot;,
+    &quot;curtain opens&quot;, &quot;she slaps his face&quot;, etc.)
+
+FF 20 01 cc                  MIDI Channeel Prefix
+    The  MIDI  channel  (0-15)  containted in this event  may  be  used  to
+    associate a MIDI channel with all events which follow, including System
+    exclusive  and meta-events. This channel is &quot;effective&quot; until the  next
+    normal  MIDI event (which contains a channel) or the next MIDI  Channel
+    Prefix meta-event. If MIDI channels refer to &quot;tracks&quot;, this message may
+    into  a  format 0 file, keeping their non-MIDI data associated  with  a
+    track. This capability is also present in Yamaha's ESEQ file format.
+
+FF 2F 00                     End of Track
+    This  event  is not optional. It is included so that  an  exact  ending
+    point may be specified for the track, so that an exect length, which is
+    necessary for tracks which are looped or concatenated.
+
+
+FF 51 03 tttttt              Set Tempo
+                             (in microseconds per MIDI quarter-note)
+    This   event  indicates  a  tempo  change.  Another  way   of   putting
+    &quot;microseconds  per  quarter-note&quot; is &quot;24ths of a microsecond  per  MIDI
+    clock&quot;.  Repersenting tempos as time per beat instead of beat per  time
+    allows absolutly exact long-term synchronization with a time-based sync
+    protocol  such  as SMPTE time code or MIDI time code.  This  amount  of
+    accuracy  provided by this tempo resolution allows a four-minute  piece
+    at  120 beats per minute to be accurate within 500 usec at the  end  of
+    the  piece. Ideally, these events should only occur where  MIDI  clocks
+    would  be  located -- this convention is intended to  guarntee,  or  at
+    least   increase   the   liklihood,   of   compatibility   with   other
+    synchronization  devices so that a time signature/tempo map  stored  in
+    this format may easily be transfered to another device.
+
+FF 54 05 hr mn se fr ff      SMPTE Offset
+    This  event, if present, designates the SMPTE time at which  the  track
+    chunk  is supposed to start. It should be present at the  beginning  of
+    the  track,  that is, before any nonzero delta-times,  and  before  any
+    transmittable  MIDI  events. the hour must be encoded  with  the  SMPTE
+    format, just as it is in MIDI Time Code. In a format 1 file, the  SMPTE
+    Offset must be stored with the tempo map, and has no meaning in any  of
+    the other tracks. The ff field contains fractional frames, in 100ths of
+    a  frame,  even in SMPTE-based tracks which specify a  different  frame
+    subdivision for delta-times.
+
+FF 58 04 nn dd cc bb         Time Signature
+    The  time signature is expressed as four numbers. nn and  dd  represent
+    the  numerator  and denominator of the time signature as  it  would  be
+    notated.  The  denominator is a neqative power of two: 2  represents  a
+    quarter-note,  3  represents  an eighth-note,  etc.  The  cc  parameter
+    expresses  the  number  of MIDI clocks in a  metronome  click.  The  bb
+    parameter  expresses  the  number  of  notated  32nd-notes  in  a  MIDI
+    quarter-note (24 MIDI clocks). This was added because there are already
+    multiple  programs which allow a user to specify that what MIDI  thinks
+    of as a quarter-note (24 clocks) is to be notated as, or related to  in
+    terms of, something else.
+
+    Therefore, the complete event for 6/8 time, where the metronome  clicks
+    every three eighth-notes, but there are 24 clocks per quarter-note,  72
+    to the bar, would be (in hex):
+
+               FF 58 04 06 03 24 08
+
+    That is, 6/8 time (8 is 2 to the 3rd power, so this is 06 03), 36  MIDI
+    clocks  per dotted-quarter (24 hex!), and eight notated 32nd-notes  per
+    quarter-note.
+
+
+FF 59 02 sf mi               Key Signature
+    sf = -7: 7 flats
+    sf = -1: 1 flat
+    sf =  0: key of C
+    sf =  1: 1 sharp
+    sf =  7: 7 sharps
+
+    mi =  0: major key
+    mi =  1: minor key
+
+FF 7F len data               Sequencer Specific Meta-Event
+    Special requirements for particular sequencers may use this event type:
+    the  first  byte or bytes of data is a manufacturer ID (these  are  one
+    byte,  or  if the first byte is 00, three bytes). As with  MIDI  System
+    Exclusive,  manufacturers  who define something using  this  meta-event
+    should  publish  it  so that others may be used by  a  sequencer  which
+    elects  to  use  this as its only file format;  sequencers  with  their
+    established  feature-specific  formats  should probably  stick  to  the
+    standard features when using this format.
+
+4 - Program Fragments and Example MIDI Files
+
+Here are some of the routines to read and write variable-length numbers  in
+MIDI Files. These routines are in C, and use getc and putc, which read  and
+write single 8-bit characters from/to the files infile and outfile.
+
+WriteVarLen (value)
+register long value;
+(
+   register long buffer;
+
+   buffer = value &amp; 0x7f;
+   while ((value &gt;&gt;= 7) &gt; 0)
+   (
+      buffer &lt;&lt;= 8;
+      buffer |= 0x80;
+      buffer += (value &amp; 0x7f);
+   )
+
+   while (TRUE)
+   (
+      putc(buffer,outfile);
+      if (buffer &amp; 0x80)
+         buffer &gt;&gt;= 8;
+      else
+         break;
+   )
+)
+
+doubleword ReadVarLen ()
+(
+   register doubleword value;
+   register byte c;
+
+   if ((value = getc(infile)) &amp; 0x80)
+   (
+      value &amp;= 0x7f;
+      do
+      (
+         value = (value &lt;&lt; 7) + ((c = getc(infile))) &amp; 0x7f);
+      ) while (c &amp; 0x80);
+   )
+   return (value);
+)
+
+
+As an example, MIDI Files for the following excerpt are shown below. First,
+a format 0 file is shown, with all information intermingled; then, a format
+1 file is shown with all data seperated into four tracks: one for tempo and
+time  signature,  and three for the notes. A resolution of 96  &quot;ticks&quot;  per
+quarter  note is used. A time signature of 4/4 and a tempo of  120,  though
+implied, are explicitly stated.
+
+
+
+
+
+                   |\
+              ---- | &gt; ---------------------------------------
+                   |/         ____                    O
+Channel 1     ---- X --------------------------------|--------
+                  /                                  |
+Preset 5      -- / | --------------------------------|--------
+                / ____                               |
+              -|   |  \ --------------------------------------
+                \  |   |
+              -- \_|__/ --------------------------------------
+                  _|
+
+
+                   |\
+              ---- | &gt; ---------------------------------------
+                   |/           \
+Channel 2     ---- X ------------&gt;----------|-----------------
+                  /             /           |
+Preset 46     -- / | ----------&lt;------------|-----------------
+                / ____          \           | .
+              -|   |  \ ---------&gt;---------O------------------
+                \  |   |       (
+              -- \_|__/ --------\-----------------------------
+                  _|             \
+
+
+                              --O--
+
+              ----__ -----------------------------------------
+                 /  \  .
+Channel 3     - /    | ---------------------------------------
+                     | .
+Preset 70     ------ | ---------------------------------------
+                    /           O
+              ---- / -----------------------------------------
+                  /
+              -- / -------------------------------------------
+
+
+The contents of the MIDI stream represented by this example are broken down
+here:
+
+Delta-Time  Event-Code  Other Bytes     Comment
+(decimal)   (hex)       (decimal)
+----------  ----------  -----------     -----------------------------
+0           FF 58       04 04 02 24 08  4 bytes; 4/4 time; 24 MIDI
+                                        clocks/click, 8 32nd notes/
+                                        24 MIDI clocks
+0           FF 51       03 500000       3 bytes: 500,000 usec/
+                                        quarter note
+0           C0          5               Ch.1 Program Change 5
+0           C1          46              Ch.2 Program Change 46
+0           C2          70              Ch.3 Program Change 70
+0           92          48 96           Ch.3 Note On C2, forte
+0           92          60 96           Ch.3 Note On C3, forte
+96          91          67 64           Ch.2 Note On G3, mezzo-forte
+96          90          76 32           Ch.1 Note On E4, piano
+192         82          48 64           Ch.3 Note Off C2, standard
+0           82          60 64           Ch.3 Note Off C3, standard
+0           81          67 64           Ch.2 Note Off G3, standard
+0           80          76 64           Ch.1 Note Off E4, standard
+0           FF 2F       00              Track End
+
+The  entire  format 0 MIDI file contents in hex follow.  First, the  header
+chunk:
+              40 54 68 64              MThd
+              00 00 00 06              chunk length
+              00 00                    format 0
+              00 01                    one track
+              00 60                    96 per quarter-note
+
+Then the track chunk. Its header followed by the events (notice the running
+status is used in places):
+
+              4D 54 72 6B              MTrk
+              00 00 00 3B              chunk length (59)
+
+Delta-Time    Event                    Comments
+----------    -----------------------  -------------------------------
+00            FF 58 04 04 02 18 08     time signature
+00            FF 51 03 07 A1 20        tempo
+00            C0 05
+00            C1 2E
+00            C2 46
+00            92 30 60
+00            3C 60                    running status
+60            91 43 40
+60            90 4C 20
+81 40         82 30 40                 two-byte delta-time
+00            3C 40                    running status
+00            81 43 40
+00            80 4C 40
+00            FF 2F 00                 end of track
+
+A  format  1 representation of the file is slightly different.  Its  header
+chunk:
+
+              4D 54 68 64              MThd
+              00 00 00 06              chunk length
+              00 01                    format 1
+              00 04                    four tracks
+              00 60                    96 per quarter note
+
+First,  the  track chunk for the time signature/tempo  track.  Its  header,
+followed by the events:
+
+              4D 54 72 6B              MTrk
+              00 00 00 14              chunk length (20)
+
+Delta-Time    Event                    Comments
+----------    -----------------------  -------------------------------
+00            FF 58 04 04 02 18 08     time signature
+00            FF 51 03 07 A1 20        tempo
+83 00         FF 2F 00                 end of track
+
+Then,  the track chunk for the first music track. The MIDI  convention  for
+note on/off running status is used in this example:
+
+              4D 54 72 6B              MTrk
+              00 00 00 10              chunk length (16)
+
+Delta-Time    Event                    Comments
+----------    -----------------------  -------------------------------
+00            C0 05
+81 40         90 4C 20
+81 40         4C 00                    Running status: note on, vel=0
+00            FF 2F 00
+
+Then, the track chunk for the second music track:
+
+              4D 54 72 6B              MTrk
+              00 00 00 0F              chunk length (15)
+
+Delta-Time    Event                    Comments
+----------    -----------------------  -------------------------------
+00            C1 2E
+60            91 43 40
+82 20         43 00                    running status
+00            FF 2F 00                 end of track
+
+
+Then, the track chunk for the third music track:
+
+              4D 54 72 6B              MTrk
+              00 00 00 15              chunk length (21)
+
+Delta-Time    Event                    Comments
+----------    -----------------------  -------------------------------
+00            C2 46
+00            92 30 60
+00            3C 60                    running status
+83 00         30 00                    two-byte delta-time, running status
+00            3C 00                    running status
+00            FF 2F 00                 end of track
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_2.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

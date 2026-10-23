@@ -1,0 +1,72 @@
+<html>
+
+<head>
+<title>MILC - Topic Mathpack routines</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_4.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_6.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Mathpack routines</b><br>
+    <i>MCCM/WR/JvdM</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+;Deze routine is een voorbeeld van het gebruik van de DOS-funktie #0A,
+;genaamd &quot;BUFFERED INPUT&quot; voor ingeven van een numerieke waarde. Daarna
+;wordt het resultaat aangepast tot 1 lengtebyte gevolgd door de string en
+;afgesloten met 1 eindnul. Dit is een z.g. ascii-Z string. De lengtebyte is
+;nodig om de string te kontroleren, zie files &quot;MATH_LEN.GEN&quot; en &quot;MATH_CHK.GEN&quot;
+;Elke anders geprogrammeerde routine kan gebruikt worden, mits de 1e byte de
+;stringlengte is, gevolgd door de ascii-string + een nulbyte.
+;----------------------
+;INPUTSTRING INTYPEN
+;Input: HL Adrespointer
+;----------------------
+INPUT_$ PUSH HL         ;Save adrespointer
+        INC  HL         ;Adres +1
+        LD   (HL),#1D   ;Set max. lengte inputstring
+        POP  DE         ;Herstel adrespointer naar buffer 32 bytes lang
+        PUSH DE         ;Save
+        LD   C,#0A      ;Dosfunktie: bufferd input
+        CALL #0005      ;(String intypen)
+        POP  HL         ;Herstel adrespointer
+        LD   B,#00
+        LD   C,(HL)     ;BC = lengte ingetypte string
+        INC  HL         ;Adres +1 = doeladres
+        LD   D,H
+        LD   E,L        ;naar DE
+        INC  HL         ;Adres +2 = beginadres string
+        LDIR            ;Plaats string achter lengtebyte
+        XOR  A          ;'A' = #00
+        LD   (DE),A     ;Plaats eindnul (maak er een ascii-Z string van)
+        RET
+;---------------------------------------------------------------
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_4.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_6.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

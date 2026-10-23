@@ -1,0 +1,955 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>Metal Gear save file faking</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Bas Wijnen">
+<META NAME="description" LANG="en" CONTENT="Document which is part of MSX Computer &amp; Club Webmagazine, Issue 92, March/April/May">
+<META NAME="generator" CONTENT="XSLT, templates written by Manuel Bilderbeek [manuel@msxnet.org] and Maarten ter Huurne [maarten@treewalker.org], thanks to Geert Josten and Egon Willighagen for their help!">
+<STYLE TYPE="text/css"><!-- 
+	    A:hover  { color : "#008000"; }
+	    -->
+            P.indent:first-letter  { padding-left: 20pt; }
+            P.largeindent:first-letter  { padding-left: 80pt; }
+	    TT.key {
+			  padding: 0px 1px 0px 1px;
+			  border-width: 1px 2px 2px 1px;
+			  border-style: solid;
+			  background: #faf6f6;
+			  color: #000;
+			  border-color:  #edd #baa #baa #eed;
+		  }
+	    P.body { text-align: justify;}
+	    P.bodynoindent { text-align: justify;}
+            P.body:first-letter  { padding-left: 20pt; }
+	    SPAN.sc { text-transform: lowercase; font-variant: small-caps; }
+        </STYLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#000000" VLINK="#000000" ALINK="#008000">
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../Keyboard/en.html">The LP keyboard interface</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT FACE="Verdana,sans-serif">
+              MCCW 
+        issue
+        92,
+        March/April/May&nbsp;2000<BR>
+</FONT><A HREF="../contents/en.html#metal">Back to contents</A></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../kolom2/en.html">[nl] Wammes&#8217; kolom</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD VALIGN="top" ALIGN="left">
+<DIV ALIGN="right">
+<B><FONT FACE="Verdana,sans-serif" SIZE="4"><I>playing in assembly</I></FONT></B>
+</DIV>
+<DIV ALIGN="left">
+<B><FONT FACE="Verdana,sans-serif" SIZE="+8"><I>Metal Gear save file faking</I></FONT></B>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="4" CELLSPACING="10">
+<TR>
+<TD WIDTH="27%" VALIGN="top" ALIGN="left">
+<TABLE BORDER="0" CELLPADDING="2" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TD WIDTH="100%" VALIGN="top" HEIGHT="173">
+<P ALIGN="right">
+<B>
+In this article Bas Wijnen explains you how you can fool around with the Metal
+Gear savegame files. It&#8217;s not only useful to learn how to cheat, but the
+assembly programmer may learn something from this also.
+</B>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ALIGN="right" HEIGHT="21">&nbsp;</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+<TR>
+<TD ALIGN="left" BGCOLOR="#688878" HEIGHT="20"><B><I><A HREF="mailto:B.Wijnen@cpedu.rug.nl"><FONT COLOR="#FFFFFF" FACE="Verdana,sans-serif">Bas Wijnen</FONT></A></I></B></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="23">&nbsp;</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="left" HEIGHT="106"><B>
+                    Directory
+                  </B>
+<BR>
+<A HREF="#Par4">How to read a save file?</A>
+<BR>
+<A HREF="#Par7">The location of the data</A>
+<BR>
+<A HREF="#Par10">Write your own save file</A>
+<BR>
+<A HREF="#Par13">A table of values I found</A>
+<BR>
+<A HREF="#Par14">What&#8217;s the use?</A>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+</P>
+<BR>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>Some values found with the program</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+ 
+<TABLE>
+<TR>
+<TH VALIGN="top">Position</TH><TH ALIGN="LEFT" VALIGN="top">description</TH>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#000</TT></TD><TD VALIGN="top">room</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#001</TT></TD><TD VALIGN="top">energy</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#002</TT></TD><TD VALIGN="top">rank-1 (0-3)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#004</TT></TD><TD VALIGN="top">weapon in hand (not necessarily in inventory)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#005</TT></TD><TD VALIGN="top">item in hand (not necessarily in inventory)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#006</TT></TD><TD VALIGN="top">previous room (what&#8217;s the use of this one?)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#007</TT></TD><TD VALIGN="top">maximum energy</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#008</TT></TD><TD VALIGN="top">radio frequency in BCD</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#00A</TT></TD><TD VALIGN="top">captives counter, rank up at 5 (and counter resets to 0)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#012</TT></TD><TD VALIGN="top">Type of bullet in hand (indeed, you can make a SMG bullet hit like a rocket)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#020</TT></TD><TD VALIGN="top">Movement type</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#022</TT></TD><TD VALIGN="top">y coordinate of the player</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#024</TT></TD><TD VALIGN="top">x coordinate of the player</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#040</TT></TD><TD VALIGN="top">maximum bullets in BCD, 2 bytes/weapon, LSB first (0-999)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#050</TT></TD><TD VALIGN="top">maximum equipment in BCD, 2 bytes/item, LSB first (0-999)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#090</TT></TD><TD VALIGN="top">doors. 0 is open, 1 is closed. It is possible to close even lorries.</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#140</TT></TD><TD VALIGN="top">weapons: 4 bytes per weapon:</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>&nbsp;</TT></TD><TD VALIGN="top">+0 = weapon</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>&nbsp;</TT></TD><TD VALIGN="top">+1 = ammunition (2 bytes)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>&nbsp;</TT></TD><TD VALIGN="top">+3 = unused</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#160</TT></TD><TD VALIGN="top">0 means the weapon is still on the map. 1 mens it isn&#8217;t</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#168</TT></TD><TD VALIGN="top">equipment:4 bytes per item:</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>&nbsp;</TT></TD><TD VALIGN="top">+0 = item</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>&nbsp;</TT></TD><TD VALIGN="top">+1 = amount (only for rations) (2 bytes)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>&nbsp;</TT></TD><TD VALIGN="top">+1 = character in screen (only for cards)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>&nbsp;</TT></TD><TD VALIGN="top">+3 = unused</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#1D8</TT></TD><TD VALIGN="top">0 means the item is still on the map. 1 means it isn&#8217;t (some items are on multiple spots)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>#229</TT></TD><TD VALIGN="top">Shoot gunner. 0 means alive. 1 means dead. 2 means alive with his story told</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>Movement modes</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+
+<TABLE>
+<TR>
+<TH VALIGN="top">Value</TH><TH ALIGN="LEFT" VALIGN="top">Function</TH>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0</TT></TD><TD VALIGN="top">normal</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>1</TT></TD><TD VALIGN="top">demo (no reaction on controls for a long time, later normal)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>2</TT></TD><TD VALIGN="top">in elevator (no up/down, block on left wall)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>3</TT></TD><TD VALIGN="top">no movement at all</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>4</TT></TD><TD VALIGN="top">parachute (straight down)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>5</TT></TD><TD VALIGN="top">blowing on the rooftop of building no&nbsp;1</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>6</TT></TD><TD VALIGN="top">no up/down (ladders at the end)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>7</TT></TD><TD VALIGN="top">climbing (no left/right)</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>Weapons</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+
+<TABLE>
+<TR>
+<TH VALIGN="top">Value</TH><TH ALIGN="LEFT" VALIGN="top">Weapon</TH>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0</TT></TD><TD VALIGN="top">nothing</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>1</TT></TD><TD VALIGN="top">handgun</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>2</TT></TD><TD VALIGN="top">sub machine gun</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>3</TT></TD><TD VALIGN="top">grenade launcher</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>4</TT></TD><TD VALIGN="top">rocket launcher</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>5</TT></TD><TD VALIGN="top">plastic explosives</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>6</TT></TD><TD VALIGN="top">land mine</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>7</TT></TD><TD VALIGN="top">remote controlled missile</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>8</TT></TD><TD VALIGN="top">silencer</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>Equipment</B></FONT></TD>
+</TR>
+<TR>
+<TD>
+
+<TABLE>
+<TR>
+<TH VALIGN="top">Value</TH><TH ALIGN="LEFT" VALIGN="top">Item</TH>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>00</TT></TD><TD VALIGN="top">nothing</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>01</TT></TD><TD VALIGN="top">body armour</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>02</TT></TD><TD VALIGN="top">bomb blast suit</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>03</TT></TD><TD VALIGN="top">flashlight</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>04</TT></TD><TD VALIGN="top">infra red goggles</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>05</TT></TD><TD VALIGN="top">gasmask</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>06</TT></TD><TD VALIGN="top">cigarettes</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>07</TT></TD><TD VALIGN="top">mine detector</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>08</TT></TD><TD VALIGN="top">antenna</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>09</TT></TD><TD VALIGN="top">telescope</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0A</TT></TD><TD VALIGN="top">oxygen cylinder (&#8216;<SPAN CLASS="sc">BOMBE</SPAN>&#8217;)</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0B</TT></TD><TD VALIGN="top">compass</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0C</TT></TD><TD VALIGN="top">parachute</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0D</TT></TD><TD VALIGN="top">antidote</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0E</TT></TD><TD VALIGN="top">card 1</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>0F</TT></TD><TD VALIGN="top">card 2</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>10</TT></TD><TD VALIGN="top">card 3</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>11</TT></TD><TD VALIGN="top">card 4</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>12</TT></TD><TD VALIGN="top">card 5</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>13</TT></TD><TD VALIGN="top">card 6</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>14</TT></TD><TD VALIGN="top">card 7</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>15</TT></TD><TD VALIGN="top">card 8</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>16</TT></TD><TD VALIGN="top">ration</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>17</TT></TD><TD VALIGN="top">transceiver</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>18</TT></TD><TD VALIGN="top">uniform</TD>
+</TR>
+<TR>
+<TD VALIGN="top"><TT>19</TT></TD><TD VALIGN="top">cardboard box</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD WIDTH="100%" ALIGN="right" HEIGHT="41">
+<P ALIGN="left">
+<BR>
+</P>
+</TD>
+</TR>
+</TABLE>
+</TD><TD WIDTH="2%" VALIGN="top" ALIGN="left"></TD><TD VALIGN="top" ALIGN="left"><A NAME="Par1"></A>
+<P CLASS="bodynoindent">
+There are many reasons for people to like computers. Playing games
+is one of them for many people. The feeling that you can
+finish the game, that you control it and can do everything that is
+possible with it, is very nice. Another reason to like computers is
+programming. People who like playing with code,
+changing it and making new parts to get what they want are called
+hackers. (Note the difference with crackers. Crackers are those hackers, who
+break through some sort of security with use of their coding skills.)
+</P>
+<A NAME="Par2"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Cheating has nothing to do with playing games. It&#8217;s hacking. If you want
+to cheat you have to think from the programmers point of view. Imagine you
+coded the program. Would it in any way be possible to
+do things that are not meant to be
+done? This article describes a method, which can always be used if the
+game uses save files. I shall only write about Metal Gear, but the
+method is the same for other games.
+</P>
+<A NAME="Par3"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN> 
+I shall start with describing the methods for reading save files,
+finding the desired data &mdash;&nbsp;or actually, the location of the data to be
+changed&nbsp;&mdash; and writing the files back. I shall finish with some
+important locations that I have found.
+</P>
+<A NAME="Par4"></A>
+<P CLASS="bodynoindent">
+<B>How to read a save file?</B>
+<BR>
+Reading the save file is easy with Metal Gear. The first guess
+and hope that it is saved in a standard way seems to be incorrect,
+when reading the file from basic doesn&#8217;t find an end to it. When you
+try reading and writing the data, you will find that it is not
+possible to read more than 255 bytes and that writing 255 bytes is not
+enough to make a complete save file. This means that, as is usual when
+you are hacking, assembly language is needed.
+</P>
+<A NAME="Par5"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Let&#8217;s just stick to the assumption that it is saved in a standard way. If
+that is the case &mdash;&nbsp;and it seems to be so, since basic can open and read
+the first part of the file&nbsp;&mdash; then the bios routines can be used to
+read it. So let&#8217;s try to read the file and store it in memory:
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="READ.ASM"><FONT COLOR="#FFFFFF">READ.ASM</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+
+        DB    &amp;HFE            ;Header to make it a .bin-file
+        DW    &amp;HC000
+        DW    EIND
+        DW    &amp;HC000
+
+RDHDR:  EQU   &amp;HE1
+READ:   EQU   &amp;HE4
+MOTOR:  EQU   &amp;HF3
+CHPUT:  EQU   &amp;HA2
+
+SIZ1:   EQU   &amp;H11            ;so it breaks after the name
+SIZ2:   EQU   &amp;H0301          ;metal gear save file length
+BUF1:   EQU   &amp;HCF00
+BUF2:   EQU   &amp;HD000
+SIZE1:  EQU   &amp;HCEFC
+SIZE2:  EQU   &amp;HCEFE
+
+        ORG   &amp;HC000
+        CALL  RDHDR           ;Read first header
+        DI
+        LD    DE,BUF1
+        LD    HL,SIZ1
+        LD    (MAXSIZ),HL
+        CALL  RDTAP           ;Read file-name
+        LD    (SIZE1),HL
+
+;print filename to screen
+        LD    HL,BUF1+10      ;offset:some bytes before actual name
+        LD    B,6
+LOOP2:  LD    A,(HL)
+        PUSH  HL
+        PUSH  BC
+        CALL  CHPUT
+        POP   BC
+        POP   HL
+        INC   HL
+        DJNZ  LOOP2
+        LD    A,13            ;add a return
+        CALL  CHPUT
+        LD    A,10
+        CALL  CHPUT
+
+        CALL  RDHDR
+        DI
+        LD    DE,BUF2
+        LD    HL,SIZ2
+        LD    (MAXSIZ),HL
+        CALL  RDTAP
+        LD    (SIZE2),HL
+        RET
+
+RDTAP:  LD    HL,0            ;actual tape-reading
+LOOP0:  PUSH  HL
+        PUSH  DE
+        CALL  READ
+        DI
+        POP   DE
+        POP   HL
+        JR    C,STOP
+        LD    (DE),A
+        INC   DE
+        INC   HL
+        LD    BC,(MAXSIZ)
+        AND   A
+        PUSH  HL
+        SBC   HL,BC
+        POP   HL
+        JP    NZ,LOOP0
+
+STOP:   XOR   A
+        PUSH  HL
+        CALL  MOTOR
+        POP   HL
+        RET
+
+EIND:
+
+MAXSIZ: DS    2               ;don't put variables in reserved (saved) memory
+
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par6"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+But before we can read the data, we need to know how many bytes
+we have to read. Just experimenting with <TT>SIZE2</TT> gave me &amp;H301.
+
+If you run the program on your save file now, it will provide you with
+the data stored in <TT>BUF2</TT>. It is very easy to save it to disk, you can
+just use bsave.
+</P>
+<A NAME="Par7"></A>
+<P CLASS="bodynoindent">
+<B>The location of the data</B>
+<BR>
+What we want next, is changing the data in a way that it tells that we
+have all the
+weapons, energy, or something else. To find the location of the data,
+we need to make two save files, with only a few differences and
+compare them. For example, you make a save file in the elevator. You get
+out, fire exactly one shot and go in again, then you compare the two
+files. Luckily, the Metal Gear save files are not encryped. If they
+were, we had to crack the code as well. But now life is easy. Values that
+can be found rather easily are life, inventory, rank, radio frequency,
+location etc.
+</P>
+<A NAME="Par8"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+It is possible to check the differeces by hand, but if you have a computer,
+you can just as well let it do the work. If you move one save file to &amp;HD400
+and another to &amp;HD000, then the following code-fragment does the comparison:
+
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="CHECK.ASM"><FONT COLOR="#FFFFFF">CHECK.ASM</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+        DB    &amp;HFE
+        DW    &amp;HC000
+        DW    EIND
+        DW    &amp;HC000
+
+CHPUT:  EQU   &amp;HA2
+
+BUFFER: EQU   &amp;HD000
+COPY:   EQU   &amp;HD400
+SIZE:   EQU   &amp;H0304
+
+        ORG   &amp;HC000
+        LD    HL,BUFFER
+        LD    DE,COPY
+        LD    BC,SIZE
+
+LOOP0:  LD    A,(DE)          ;check all bytes and print them if not equal
+        CP    (HL)
+        CALL  NZ,PRINT
+        INC   HL
+        INC   DE
+        DEC   BC
+        LD    A,B
+        OR    C
+        JP    NZ,LOOP0
+        RET
+
+PRINT:  LD    A,H             ;address
+        CALL  PRTHEX
+        LD    A,L
+        CALL  PRTHEX
+        CALL  PRTSPC
+        LD    A,(HL)          ;byte 1
+        CALL  PRTHEX
+        CALL  PRTSPC
+        LD    A,(DE)          ;byte 2
+        CALL  PRTHEX
+        PUSH  AF
+        PUSH  DE
+        PUSH  BC
+        PUSH  HL
+        LD    A,13            ;return
+        CALL  CHPUT
+        LD    A,10
+        CALL  CHPUT
+        POP   HL
+        POP   BC
+        POP   DE
+        POP   AF
+        RET
+
+PRTSPC: PUSH  AF              ;print a space
+        PUSH  BC
+        PUSH  DE
+        PUSH  HL
+        LD    A," "
+        CALL  CHPUT
+        POP   HL
+        POP   DE
+        POP   BC
+        POP   AF
+        RET
+
+PRTHEX: PUSH  HL              ;print a byte in hexadecimal
+        PUSH  BC
+        PUSH  DE
+        PUSH  AF
+        PUSH  AF
+        RLCA
+        RLCA
+        RLCA
+        RLCA
+        LD    B,2
+LOOP1:  AND   &amp;H0F
+        PUSH  BC
+        ADD   A,"0"
+        CP    "0"+10
+        JR    C,SKIP0
+        ADD   A,"A"-"0"-10
+SKIP0:  CALL  CHPUT
+        POP   BC
+        POP   AF
+        DJNZ  LOOP1
+        POP   DE
+        POP   BC
+        POP   HL
+        RET
+EIND:
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par9"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+If you tried to find the room, you probably compared the starting room
+and the first elevator and found that more than one byte has changed. One
+of them really is the room. Others are the room you came from, position on
+the screen and what I call the &#8220;movement mode&#8221;.
+This variable must be there because the allowed movements in the elevator
+and in a normal screen are totally different.
+</P>
+<A NAME="Par10"></A>
+<P CLASS="bodynoindent">
+<B>Write your own save file</B>
+<BR>
+When you write your own save files with data you didn&#8217;t find in known
+saves, but what you just guessed &mdash;&nbsp;where would room 50 be?&nbsp;&mdash; don&#8217;t be
+surprised if you hang the computer. It will never cause any
+permanent damage &mdash;&nbsp;it&#8217;s only software&nbsp;&mdash;, the game might just hang.
+But that shouldn&#8217;t bother you. Just try another value.
+</P>
+<A NAME="Par11"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Writing the save file must also be done in assembly language, too.
+That isn&#8217;t really hard anyway, so let&#8217;s just do
+it:
+</P><TABLE WIDTH="100%" BGCOLOR="#FFFFFF" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD>
+<TABLE ALIGN="LEFT" BGCOLOR="#688878" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" BORDER="0" CELLSPACING="0" CELLPADDING="1">
+<TR>
+<TD ALIGN="center" BGCOLOR="#688878"><FONT COLOR="#FFFFFF"><B>ML-listing:
+                            <TT><A HREF="WRITE.ASM"><FONT COLOR="#FFFFFF">WRITE.ASM</FONT></A></TT></B></FONT></TD>
+</TR>
+<TR>
+<TD>
+<PRE>
+<SPAN STYLE="font-size: smaller">
+        DB    &amp;HFE
+        DW    &amp;HC000
+        DW    EIND
+        DW    &amp;HC000
+
+WRHDR:  EQU   &amp;HEA
+WRITE:  EQU   &amp;HED
+MOTOR:  EQU   &amp;HF3
+BUF1:   EQU   &amp;HCF00
+BUF2:   EQU   &amp;HD000
+SIZE1:  EQU   &amp;HCEFC          ;make sure this is where read has stored them
+SIZE2:  EQU   &amp;HCEFE
+
+        ORG   &amp;HC000
+        LD    A,1             ;long header
+        CALL  WRHDR
+        DI
+        LD    HL,BUF1
+        LD    DE,(SIZE1)
+        CALL  WRTAP
+        XOR   A               ;short header
+        CALL  WRHDR
+        DI
+        LD    HL,BUF2
+        LD    DE,(SIZE2)
+        CALL  WRTAP
+        XOR   A
+        JP    MOTOR           ;This will return to the caller
+
+WRTAP:  PUSH  HL
+        PUSH  DE
+        LD    A,(HL)
+        CALL  WRITE
+        DI
+        POP   DE
+        POP   HL
+        INC   HL
+        DEC   DE
+        LD    A,E
+        OR    D
+        JP    NZ,WRTAP
+        RET
+
+EIND:
+</SPAN>
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+</P>
+<A NAME="Par12"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+Of course you should use this after you made your changes. If you want
+to be able to do it quick and you have two MSXs, you can connect them.
+One with the Metal Gear cartridge in it, the other running
+the code above or something similar. The signal must be ampilfied, for
+the record signal is not strong enough to be recognised by the other MSX.
+Just put a tape recorder in
+between to amplify the signal. This must not be an official computer
+tape recorder like the one Philips made. They don&#8217;t output the signal
+that they are recording, so that doesn&#8217;t work.
+</P><TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#FFFFFF" CELLSPACING="0" CELLPADDING="5" WIDTH="300">
+<TR>
+<TD ALIGN="RIGHT">
+<TABLE BORDER="0" ALIGN="RIGHT" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BORDER="0" BGCOLOR="#D0F8D8" CELLPADDING="4" CELLSPACING="0">
+<TR>
+<TD ALIGN="center"><IMG BORDER="0" ALIGN="MIDDLE" SRC="metal.fig0.gif" ALT=""></TD>
+</TR>
+<TR>
+<TD ALIGN="left"><B>Figure&nbsp;1:
+                  </B><I>Connecting two MSXs with tape recorders</I></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE><P CLASS="body">
+Set it to record and plug in the white
+plug from the Metal Gear computer and the red one from the other. Do
+the same with a second tape recorder and the other two plugs. The
+&#8216;motor on/off&#8217; plugs don&#8217;t need to be connected. All connections are shown
+in figure 1. Make sure you give
+the load command before you give the save command. Load will wait for
+data, while save just starts writing straight away.
+</P>
+<A NAME="Par13"></A>
+<P CLASS="bodynoindent">
+<B>A table of values I found</B>
+<BR>
+With the above information you should be able to find all the values
+yourself, on the left there is a table of some values I found.
+</P>
+<A NAME="Par14"></A>
+<P CLASS="bodynoindent">
+<B>What&#8217;s the use?</B>
+<BR>
+Now the final question: why would you do all this? The
+entertainment of the game certainly doesn&#8217;t improve by
+cheating. Actually, the game is very boring if you cheat. So why would
+anyone want to cheat in games? One reason, which goes mostly for
+children, is that it is an easy way to finish the game. Just start
+with a large inventory in room #76 &mdash;&nbsp;where Metal Gear is&nbsp;&mdash; and you&#8217;ll be
+finishing within two minutes. If this was the reason you did it, you
+probably never do it again, since you&#8217;ll find this is not a very
+satisfying way of finishing the game.
+</P>
+<A NAME="Par15"></A>
+<P CLASS="body">
+<SPAN STYLE="display: none;">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
+A very good reason to do it is what I mentioned at the start. You
+really control the game and you can do anything you want in it. That is
+what hacking is about in general: controlling the computer. Many
+people like playing games for that reason. For those people making a
+cheat in a game is fun. Not because they can cheat with it, but
+because the making is a puzzle by itself.
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE WIDTH="100%" BGCOLOR="#688878" CELLPADDING="1" CELLSPACING="0" BORDER="0">
+<TR>
+<TD>
+<TABLE WIDTH="100%" BGCOLOR="#D0F8D8" CELLPADDING="3" CELLSPACING="0" BORDER="0">
+<TR>
+<TD WIDTH="30%" ALIGN="left">previous:<BR>
+<A HREF="../Keyboard/en.html">The LP keyboard interface</A></TD><TD WIDTH="40%" ALIGN="center" VALIGN="bottom"><FONT SIZE="-1" FACE="Verdana,sans-serif">
+            MSX Computer &amp; Club Webmagazine<BR>
+        issue
+        92,
+        March/April/May&nbsp;2000</FONT></TD><TD WIDTH="30%" ALIGN="right">next:<BR>
+<A HREF="../kolom2/en.html">[nl] Wammes&#8217; kolom</A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

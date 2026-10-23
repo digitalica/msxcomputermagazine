@@ -1,0 +1,176 @@
+<html>
+
+<head>
+<title>MILC - Topic SCC / Sound-Custom-Chip</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_26.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_28.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">SCC / Sound-Custom-Chip</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+    SCC / Sound-Custom-Chip
+    -----------------------
+
+    De SCC  die ook  in een  aantal Konami  ROM cartridge's  is ingebouwd, 
+    heeft  5 geluids  kanalen. Ze  werkt niet zoals bij de MSX-MUSIC en de 
+    MSX-AUDIO met  OUTPUT poorten,  maar is gewoon via het geheugen aan te 
+    sturen. De SCC-Chip Heeft een Geheugen blok van 16Kb, deze kan via een 
+    out als gewoon geheugen worden gebruikt, maar de inhoud van een aantal 
+    adressen zal meteen naar de Sound-chip worden gestuurt.
+
+    Om dit  geheugen blok  omteschakelen moet  er een andere slot selectie 
+    plaats vinden.
+
+    Omdat Page 0 (0000h-3FFFh) allerlei belangrijke routines bevat is het
+                               niet handig om deze te schakelen.
+    Omdat Page 1 (4000h-7FFFh) Basic functies bevat zal deze dus alleen
+                               kunnen worden gebruikt in ML-code.
+    Omdat Page 2 (8000h-BFFFh) alleen als data voor Basic word gebruikt
+                               kan dit blok dus wel worden gebruikt, maar
+                               dan moet het Basic programma wel op een
+                               andere plaats beginnen.
+    Omdat Page 3 (C000h-FFFFh) allerlei belangerijke routines en de STACK
+                               pointer bevat kan deze ook niet worden
+                               geschakeld.
+
+
+    We  zullen er nu maar van uitgaan dat we in Basic werken en dus Blok 2 
+    geschakeld moet  worden, ook  moet het Basic-programma nu op een ander 
+    adres  beginnen omdat het anders de SCC data zou overlappen. Het scha&uacute; 
+    kelen kan met de volgende out gebeuren:
+
+
+    I/O Poort #0A8h
+
+       7   6   5   4   3   2   1   0
+     +---+---+---+---+---+---+---+---+
+     |Page 3 |Page 2 |Page 1 |Page 0 |
+     |PSLOT# |PSLOT# |PSLOT# |PSOLT# |
+     +---+---+---+---+---+---+---+---+
+
+
+     De Slot's zijn als volgt verdeelt:
+
+     00      - Systeem
+     01      - Cartridge Slot 1
+     10      - Cartridge Slot 2
+     11      - Memmory mapper ( Gebruikers geheugen.)
+
+
+    Page 1  en page 0 bevatten in (normale) omstandigheden 00 en Page 3 en 
+    page 2: 11. Als we in Page 2 de SCC willen schakelen moeten we in deze 
+    2  bit's ( 5 en 4 ) de het nummer van het Externe slot zetten, dus als 
+    de SCC-Cartridge zich in Cartridge-Slot 1 bevind moeten de bits 5 en 4 
+    dus 0  en 1 bevatten, dit is namelijk het binaire getal voor 1. Dus om 
+    dit  in basic  te verwezelijken:  OUT &amp;HA8,&amp;b11010000,  dat is &amp;HD0 en 
+    voor Cartridge-Slot  2 is  dit dus &amp;b11100000 ofterweil &amp;HE0. Dan moet 
+    nog  het begin adres van de basic data worden verplaatst. Dit kan door 
+    het Meest significante byte van het adres in adres F677h te zetten, en 
+    vervolgens het  eerste data byte te resetten. Om dit weer even te ver&uacute; 
+    wezelijken het volgende voorbeeld:
+
+    POKE &amp;HF677,&amp;HC0:POKE &amp;HC000,0:NEW      - Het nieuwe data adres is nu
+                                              C000h
+    OUT &amp;HA8,&amp;HD0                           - De Slotselectie (indien SCC
+                                              in SLOT 1)
+    POKE &amp;H9000,&amp;H3F                        - SCC in 8000h - BFFFh
+
+
+    De SCC is nu klaar voor gebruik.
+
+    Zoals  al eerder  bekent gemaakt  heeft de SCC 5 geluids kanalen, deze 
+    hebben op kanaal 5 na allemaal hun eigen instellingen:
+
+      - Golf-patroon.         8 bits; 32 bytes.
+      - Frequentie NR.        LSB 8 bits, MSB bit 3-0; 2 bytes dus
+      - Volume.               0-15; bits 3-0, 1 byte dus.
+
+    Alleen kanaal 5 heeft geen eigen golfpatroon, maar moet deze delen met 
+    kanaal 4
+
+    Bij het  golf-patroon moet  de vorm  van de  geluids vorm worden inge&uacute; 
+    steld,  de nulwaarde ( De waarde waarbij er dus geen uitgangs spanning 
+    is) is  0 de  maximale positive  waarde is  127. De  maximale Negative 
+    waarde  is 128  en deze  loopt (af) tot 255. 255 is dus infeite gelijk 
+    aan -1.  Met het Volume kan de Amplitude worden bepaalt, deze word bij 
+    het  uitgangs signaal met het huidige sample van het golf-patroon ver&uacute; 
+    menigvuldigt. De Frequentie bepaalt de snelheid van het afwisselen van 
+    de samples  van het  Golf-patroon, als  alle 32  samples zijn  voorbij 
+    gegaan start de Chip weer met sample nummer 0.
+
+    De Adressen
+
+     Kanaal  Golf-patroon    Frequenties     Volume
+                             LSB   MSB
+       1     9800h-981Fh     9880h 9881h     988Ah
+       2     9820h-983Fh     9882h 9883h     988Bh
+       3     9840h-985Fh     9884h 9885h     988Ch
+       4     9860h-987Fh     9886h 9887h     988Dh
+       5     Als Kanaal 4    9888h 9889h     988Eh
+
+    De  kanalen kunnen  ook afzonderlijk  worden uit- of aangeschakeld met 
+    adres 988Fh
+
+        7   6   5   4   3   2   1   0
++      ---+---+---+---+---+---+---+---+
+      | X | X | X |CH5|CH4|CH3|CH2|CH1|
+      +---+---+---+---+---+---+---+---+
+
+    Als Bij CH5/0 een bit 0 maakt zal het kanaal uit gezet worden. De bits 
+    met  X aangeduid  heben geen  functie. Adres  98E0 kan  het beste op 0 
+    gezet worden.  Het nut  hiervan weet  ik nog  niet, maar  de SCC maakt 
+    anders een ander Golf-Patroon.
+
+    Het  Frequentie nummer  is uit  te rekenen door 111760 tedelen door de 
+    Frequentie. NR=111760 / FREQ
+
+    Om een  zuivere sinus te genereren kan het volgende programme gebruikt 
+    worden: 
+
+     10 POKE &amp;H9000,&amp;H3F
+     20 PI=4*ATN(1)
+     30 FOR N=0 TO 31:POKE &amp;H9800+T,128+127*SIN(T*PI/16) XOR 128:NEXT T
+     40 POKE&amp;H988F,&amp;B00000001:POKE &amp;H988A,15:POKE&amp;H9880,128:POKE&amp;H9881,1
+     50 END
+
+    Om  de toon  te stoppen typ: POKE &amp;H988F,0 , dit zet alle geluids sig&uacute; 
+    nalen uit,  als een  van de bits weer 1 word gemaakt, dan zal de laast 
+    ingestelte  toon  weer  herklinken. Bij  een muziek  programma is  het 
+    natuurlijk  ook leuk  als er Drum's gebruikt kunnen worden, maar op de 
+    SCC  is  dit nogal  moeilijk, omdat  de Chip  namelijk geen  ruis kent 
+    moeten er  zelf patronen  gemaakt worden  die als ruis klinken, het is 
+    dan  veel makelijker  om gewoon  de PSG-Chip  te gebruiken. De PSG kan 
+    namelijk wel makkelijk ruis produceren.
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_26.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_28.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

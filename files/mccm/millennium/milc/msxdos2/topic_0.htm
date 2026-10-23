@@ -1,0 +1,382 @@
+<html>
+
+<head>
+<title>MILC - Topic MSX-DOS 2.20 functions [1/5]</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="index.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_1.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">MSX-DOS 2.20 functions [1/5]</b><br>
+    <i>ASCII</i>, 01-09-94</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+3.   FUNCTION BY FUNCTION DEFINITIONS
+
+   Below are detailed descriptions of each of the MSX-DOS functions including
+both the  old and  new ones. The names in brackets after the function numbers
+are   the  public  labels  for  the  function  codes  which  are  defined  in
+&quot;CODES.MAC&quot;. Programs should use these names whenever possible.
+
+   Many of  the functions below 40h return an error flag rather than an error 
+code.  If the  error flag  is set  then the  actual error code indicating the 
+cause of  the error can be obtained by the &quot;get previous error code&quot; function 
+(function  65h).  All  of the  functions above  40h return  an error  code in 
+register  A.  The  &quot;Program Interface  Specification&quot; document  describes the 
+general  errors  which  can  be  returned  from  many of  the functions.  The 
+individual  function specifications  here describe  the main error conditions 
+which are specific to particular functions.
+   Note that  many of  the function  calls which  modify the information on a 
+disk  do  not  automatically  flush  disk  buffers  and  so  the disk  is not 
+necessarily  correctly updated  immediately after  the function call is made. 
+Such  calls  include  all  types  of  &quot;create&quot;, &quot;write&quot;,  &quot;delete&quot;, &quot;rename&quot;, 
+&quot;change file  attributes&quot; and &quot;change file date and time&quot; function calls. The 
+only  functions which  always flush disk buffers are &quot;flush buffers&quot;, &quot;close&quot; 
+and  &quot;ensure&quot;.  After  these  operations the  disk will  always be  correctly 
+updated.
+
+  3.1   PROGRAM TERMINATE (00H)
+
+     Parameters:    C = 00H (_TERM0)
+     Results:       Does not return
+
+   This function  terminates program  with a zero return code. It is provided 
+for  compatibility with MSX-DOS 1 and CP/M, the preferred method of exiting a 
+program is  to use  the &quot;terminate  with error  code&quot; function call (function 
+62h),  passing  a  zero  error  code  if  that is  what is  desired. See  the 
+description   of  that   function  call,  and  also  the  &quot;Program  Interface 
+Specification&quot;, for  details of  what happens when a program terminates. This 
+function call never returns to the caller.
+
+  3.2   CONSOLE INPUT (01H)
+
+    Parameters:    C = 01H (_CONIN)
+    Results:     L=A = Character from keyboard
+
+   A  character will be read from the standard input (file handle 0 - usually 
+the keyboard)  and echoed to the standard output (file handle 1 - usually the 
+screen).  If no  character is  ready then  this function  will wait  for one. 
+Various control  characters, as  specified for  the &quot;console status&quot; function 
+(function  0Bh),  will  be  trapped  by  this  function  for  various control 
+purposes.  If one  of these  characters is detected then it will be processed 
+and this function will wait for another character. Thus these characters will 
+never be returned to the user by this function.
+
+  3.3   CONSOLE OUTPUT (02H)
+
+     Parameters:    C = 02H (_CONOUT)
+                    E = Character to be output
+     Results:       None
+
+   The character passed in register E is written to the standard output (file
+handle 1 - usually the screen). If printer echo is enabled then the character 
+is also  written to  the printer.  Various control codes and escape sequences 
+are  interpreted as  screen control codes. A list of these is included in the 
+&quot;Program Interface  Specification&quot;, they  are a sub-set of the standard VT-52 
+control codes. TABs will be expanded to every eighth column.
+
+   A  console input  status check  is done, and if any of the special control
+characters  described  for the  &quot;console status&quot;  function (function  0Bh) is 
+found then  it will  be processed  as for  that function. Any other character 
+will be saved internally for a later &quot;console input&quot; function call.
+
+  3.4   AUXILIARY INPUT (03H)
+
+     Parameters:    C = 03H (_AUXIN)
+     Results:     L=A = Input character
+
+   A character is read from the auxiliary input device (file handle 3) and if 
+no character  is ready  then it will wait for one. The auxiliary input device 
+must  have been installed before this function may be used. If no such device 
+has been  installed then  this function  will always  return the  end of file 
+character (&quot;Ctrl-Z&quot;).
+
+  3.5   AUXILIARY OUTPUT (04H)
+
+     Parameters:    C = 04H (_AUXOUT)
+                    E = Character to be output
+     Results:       None
+
+   The character passed in register E will be written to the auxiliary output 
+device (file  handle 3). The auxiliary output device must have been installed 
+before  this function  may be used. If no such device has been installed then 
+this function will simply throw the character away.
+
+ 
+  3.6   PRINTER OUTPUT (05H)
+
+     Parameters:    C = 05H (_LSTOUT)
+                    E = Character to be output
+     Results:       None
+
+   The character  passed in  register E  will be sent to the standard printer 
+device  (file handle  4 -  usually the parallel printer). The same channel is 
+used for console output which is echoed to the printer. TABs are not expanded 
+by this  function, although they are expanded when screen output is echoed to 
+the printer with &quot;Ctrl-P&quot;.
+
+  3.7   DIRECT CONSOLE I/O (06H)
+
+     Parameters:    C = 06H (_DIRIO)
+                    E = 00H...FEH - character for output
+                      = FFH  - requests input
+     Results:     A=L = input - 00H - no character ready
+                                else input character
+                       undefined for output
+
+   If  E=FFh on  entry then the keyboard will be examined for a characterfrom 
+the standard input (file handle 0) and 00h returned if no character is ready. 
+If a  character is  ready then  it will be read from the standard input (file 
+handle  0) and  returned in register A without being echoed and with no check 
+for control characters.
+
+   If  E&lt;&gt;FFh  on entry  then the  character in  register E  will be  printed 
+directly to  the standard  output (file  handle 1)  with no  TAB expansion or 
+printer  echo. Also  no console  status check  is done by this function. Note 
+that although  this function  does not  expand TABs,  the VT-52 control codes 
+include TAB expansion so the effect on the screen is the same.
+
+  3.8   DIRECT CONSOLE INPUT (07H)
+
+     Parameters:    C = 07H (_DIRIN)
+     Results:     L=A = Input character
+
+   This function  is identical  to the  input option  of function 06h, except
+that  if no  character is  ready it  will wait for one. Like function 06h, no 
+echo  or  control  characters  checks  will  be  done.  This function  is not 
+compatible with CP/M which uses this function number for &quot;get I/O byte&quot;.
+
+  3.9   CONSOLE INPUT WITHOUT ECHO (08H)
+
+     Parameters:    C = 08H (_INNOE)
+     Results:     L=A = Input character
+
+   This function is identical to function 01h except that the input character 
+will  not be echoed to the standard output. The same control character checks 
+will be  done. This  function is  not compatible  with CP/M  which uses  this 
+function number for &quot;set I/O byte&quot;.
+
+  3.10   STRING OUTPUT (09H)
+
+     Parameters:    C = 09H (_STROUT)
+                  DE = Address of string
+     Results:       None
+
+   The characters  of the  string pointed  to by  register DE  will be output 
+using  the normal  console output  routine (function call 02h). The string is 
+terminated by &quot;$&quot; (ASCII 24h).
+
+  3.11   BUFFERED LINE INPUT (0AH)
+
+     Parameters:    C = 0AH (_BUFIN)
+                   DE = Address of an input buffer
+     Results:       None
+
+   DE  must point  to a  buffer to  be used for input. The first byte of this 
+buffer  must  contain  the  number of  characters which  the buffer  can hold 
+(0...255). A  line of input will be read from the standard input device (file 
+handle  0 - usually the keyboard) and stored in the buffer. The input will be 
+terminated  when  a  CR  is  read  from  the  standard input.  The number  of 
+characters entered,  which does  not include the CR itself, will be stored at 
+(DE+1).  If there  is room in the buffer then the CR will be stored after the 
+last character.
+
+   When inputting  from the  keyboard (which  will normally  be the  case), a 
+simple  line  editor  is provided,  and also  a 256  byte circular  buffer of 
+previous  lines which  can be  edited and  re-entered. The  details of  these 
+editing  facilities  are described  in the  separate &quot;Command  Specification&quot; 
+document, so  they are not included here. When the input buffer becomes full, 
+the console bell will be rung for each character typed which cannot be put in 
+the  buffer. Each character entered will be echoed to the standard output and 
+also to the printer if printer echo is enabled.
+
+  3.12   CONSOLE STATUS (0BH)
+
+     Parameters:    C = 0BH (_CONST)
+     Results:     L=A = 00H if no key was pressed
+                      = FFH if a key was pressed
+
+   A  flag is returned in register A to indicate whether a character is ready 
+(that is,  a key  was pressed) for input from the keyboard. If a character is 
+ready then it will be read and tested for certain special control characters. 
+If it is not one of these then it is stored in an internal single byte buffer 
+and   subsequent  call   to  this  function  will  return  &quot;character  ready&quot; 
+immediately  without  checking the  keyboard. If  this function  says that  a 
+character is ready then the character may be read by function 02h or 08h.
+
+   If the  character is  &quot;Ctrl-C&quot; then  the program will be terminated with a 
+&quot;.CTRLC&quot;  error  via  the  user's  abort routine  if one  is defined.  If the 
+character  is  &quot;Ctrl-P&quot;  then printer  echo will  be enabled  and it  will be 
+disabled  if it  is &quot;Ctrl-N&quot;.  If the  character is &quot;Ctrl-S&quot; then the routine 
+will hang  up waiting for another character to be pressed and then return &quot;no 
+character  ready&quot;, thus  providing a  &quot;wait&quot; facility. The character typed to 
+continue operation  will be  ignored, except  that of it is &quot;Ctrl-C&quot; then the 
+program  will  be  terminated.  These  same input  checks are  also done  for 
+functions 01h, 02h, 08h, 09h and 0Ah.
+
+  3.13   RETURN VERSION NUMBER (0CH)
+
+     Parameters:    C = 0CH (_CPMVER)
+     Results:     L=A = 22H
+                  H=B = 00H
+ 
+   This  function  simply  returns  the  CP/M version  number which  is being 
+emulated. This is always version 2.2 in current systems. 
+
+  3.14   DISK RESET (0DH)
+
+     Parameters:    C = 0DH (_DSKRST)
+     Results:       None
+
+   Any  data which  is waiting in internal buffers is written out to disk. It 
+is not  necessary to call this function in order to allow a disk change as is 
+the case with CP/M. The disk transfer address is also set back to its default 
+value of 80h by this function.
+
+  3.15   SELECT DISK (0EH)
+
+     Parameters:    C = 0EH (_SELDSK)
+                    E = Drive number.  0=A:  1=B:   etc.
+     Results:     L=A = Number of drives (1...8)
+
+   This function simply selects the specified drive as the default drive. The 
+current  drive is  also stored  at address  0004h for CP/M compatibility. The 
+number  of  drives available  is returned  in register  A but  this will  not 
+include the RAM disk.
+
+  3.16   OPEN FILE [FCB] (0FH)
+
+     Parameters:    C = 0FH (_FOPEN)
+                   DE = Pointer to unopened FCB 
+     Results:     L=A = 0FFH if file not found
+                      =   0  if file is found
+
+   The unopened  FCB must  contain a  drive which may be zero to indicate the 
+current  drive  and  a filename  and extension  which may  be ambiguous.  The 
+current directory of the specified drive will be searched for a matching file 
+and if found it will be opened. Matching entries which are sub-directories or 
+system files will be ignored, and if the filename is ambiguous then the first 
+suitable matching entry will be opened.
+
+   Device  names may  be put in the FCB (without a colon) to allow devices to
+be accessed  as if  they were  actually disk files. The standard device names 
+are defined in the &quot;Program Interface Specification&quot;.
+
+   The  low byte  of the extent number is not altered by this function, and a 
+file will only be opened if it is big enough to contain the specified extent. 
+Normally the  transient program  will set  the extent  number to  zero before 
+calling this function. The high byte of the extent number will be set to zero 
+to ensure compatibility with CP/M.
+
+   The filename  and extension in the FCB will be replaced by the actual name
+of  the file  opened from the directory entry. This will normally be the same 
+as what was there before but may be different if an ambiguous filename or one 
+with lower case letters in was used. 
+
+   The  record count  will be  set to  the number  of 128 byte records in the 
+specified extent, which is calculated from the file size. The file size field 
+itself, the  volume-id and  the 8  reserved bytes  will also  be set  up. The 
+current record and random record fields will not be altered by this function, 
+it  is the  application program's  responsibility to  initialize them  before 
+using the read or write functions.
+
+   If  the file  cannot be  found, then the &quot;APPEND&quot; environment item will be 
+examined. If  this is set then it is interpreted as a drive/path string which 
+specifies  a second  directory in  which to  look for the file. The specified 
+directory will  be searched  for the  file and  if found it will be opened as 
+above.  In this  case the  drive byte  of the FCB will be set to the drive on 
+which the  file was  found to  ensure correct  accessing of  the file  if the 
+original drive byte was zero (default).
+
+  3.17   CLOSE FILE [FCB] (10H)
+
+     Parameters:    C = 10H (_FCLOSE)
+                   DE = Pointer to opened FCB
+     Results:     L=A = 0FFH if not successful
+                      =   0  if successful
+
+   The  FCB must  have previously been opened with either an OPEN or a CREATE 
+function  call.  If  the  file has  only been  read then  this function  does 
+nothing. If  the file  has been  written to  then any  buffered data  will be 
+written  to disk  and the directory entry updated appropriately. The file may 
+still be  accessed after a close, so the function can be regarded as doing an 
+&quot;ensure&quot; function.
+
+  3.18   SEARCH FOR FIRST [FCB] (11H)
+
+     Parameters:    C = 11H (_SFIRST)
+                   DE = Pointer to unopened FCB
+     Results:     L=A = 0FFH if file not found
+                      =   0  if file found.
+
+   This function searches the current directory of the drive specified in the 
+FCB  (default  drive  if  FCB contains  zero) for  a file  which matches  the 
+filename and  extension in the FCB. The filename may be ambiguous (containing 
+&quot;?&quot;  characters) in which case the first match will be found. The low byte of 
+the extent  field will  be used,  and a  file will only be found if it is big 
+enough  to contain  this extent number. Normally the extent field will be set 
+to  zero  by  the  program  before  calling  this  function. System  file and 
+sub-directory entries will not be found.
+
+   If a suitable match is found (A=0) then the directory entry will be copied 
+to the  DTA address,  preceded by the drive number. This can be used directly 
+as an FCB for an OPEN function call if desired. The extent number will be set 
+to  the low byte of the extent from the search FCB, and the record count will 
+be initialized  appropriately (as  for OPEN).  The attributes  byte from  the 
+directory  entry will  be stored  in the  S1 byte  position, since its normal 
+position (immediately  after the  filename extension  field) is  used for the 
+extent byte.
+
+   If no match is found (A=0FFh) then the DTA will not be altered. In no case 
+will  the FCB  pointed to  by DE  be modified at all. This function remembers 
+sufficient information  internally to  allow it to continue the search with a 
+SEARCH  FOR NEXT function, so it is not necessary for the FCB to be preserved 
+if doing a SEARCH FOR NEXT function.
+
+   In CP/M,  if the  drive number  is set  to &quot;?&quot;  in this  function then all 
+directory  entries, allocated  or free  will be  matched. Also  if the extent 
+field is  set to &quot;?&quot; then any extent of a file will be matched. Both of these 
+features  are normally  only used  by special purpose CP/M programs which are 
+generally  specific  to  the  CP/M filing  system (such  as &quot;STAT&quot;).  Neither 
+feature is present in MSX-DOS 1/2.
+
+  3.19   SEARCH FOR NEXT [FCB] (12H)
+
+     Parameters:    C = 12H (_SNEXT)
+     Results:     L=A = 0FFH if file not found
+                      =   0  if file found.
+
+   It continues  the search to look for the next match with the filename. The 
+results returned from this function are identical to SEARCH FOR FIRST and all 
+the  same comments apply. The information used to continue the search is held 
+internally within  MSX-DOS and  so the  original FCB  used in  the SEARCH FOR 
+FIRST need not still exist.
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

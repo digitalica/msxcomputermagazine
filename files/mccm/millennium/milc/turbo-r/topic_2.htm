@@ -1,0 +1,3225 @@
+<html>
+
+<head>
+<title>MILC - Topic Datapack ch17</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_1.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_3.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Datapack ch17</b><br>
+    <i>Onbekend</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+&lt;263                                                                         &gt;
+------------------------------------------------------------------------------
+                       CHAPTER 17
+                     FUNCTION CALLS
+------------------------------------------------------------------------------
+1.   INTRODUCTION
+
+   This document describes in detail each of the MSX-DOS 2 function calls. It
+should  be read  in conjunction  with the  &quot;Program Interface  specification&quot;
+which describes  system features  such as  file handles,  file info blocks
+(FIB) and environment strings in general terms.
+   There are  two ways  of doing  MSX-DOS function  calls, reflecting the two
+different  environments (MSX-DOS and disk BASIC) in which the system can run.
+Transient  programs  running  in  the  MSX-DOS  environment  must  access the
+functions with a &quot;CALL 00005h&quot; instruction. Disk BASIC and other MSX programs
+running  in  the disk  BASIC environment  (usually executing  from ROM)  must
+access the system via a &quot;CALL 0F37Dh&quot; instruction.
+   There   are  some   limitations  when   calling  the  system  via  0F37Dh,
+particularly to do with error handling and abort routines. Also no parameters
+may be passed in page-1, unless they are in the master disk ROM (as they will
+be for  disk BASIC)  since the master disk ROM will be paged into page-1 when
+such  a function  call is  made. The individual function descriptions mention
+the differences for particular functions.
+
+17.1   CALLING CONVENTIONS
+     MSX-DOS function calls are made by putting the function code in register
+C  with any  other parameters  required in  the other main registers and then
+executing a  &quot;CALL 5&quot;  instruction. The  operation will  be performed and the
+results will be returned in various registers depending on the function.
+     Generally  all the  main registers (AF, BC, DE and HL) will be corrupted
+by MSX-DOS  calls or  will return  results. The  alternate register set (AF',
+BC',  DE' and  HL') are  always preserved, whilst the index registers (IX and
+IY) are preserved except in the one or two cases where they return results.
+     Only  a  small  amount of  space (8  bytes) is  needed on  the transient
+program's  stack because  MSX-DOS switches  to an  internal stack  when it is
+called.
+     For compatibility  all functions  which have  a CP/M  counterpart return
+with  A=L and  B=H. Frequently  A returns an error flag, with zero indicating
+success and 01h or FFh indicating failure.
+     All of  the new  MSX-DOS functions (function code above 40h) return with
+an  error code  in A  and any  other results  in the other main registers. An
+error code  of 0  means no  error, whilst  any non-zero  code means  an error
+occurred,  the exact  nature of which can be found by looking at the value. A
+list of error codes and messages is given in section 6. An &quot;explain&quot; function
+is provided  which will  give an  ASCII explanation  string for an error code
+(see Function Specification for details).
+     The  actual functions  available are  documented in the MSX-DOS Function
+Specification.
+
+
+17.2   LIST OF FUNCTIONS
+
+   Below there  is a  complete list  of the  functions calls. &quot;CPM&quot; indicates
+that the function is compatible with the equivalent CP/M 2.2 function, &quot;MSX1&quot;
+indicates  compatibility  with  MSX-DOS  version  1,  and  &quot;NEW&quot; indicates  a
+function  which is  new to  this system. An asterisk (&quot;*&quot;) indicates that the
+function may  be safely  called from  a user disk error routine (see function
+64h and function 70h).
+&lt;17.2  function summary                                                 265&gt;
+
+     diagram 2.24 Summary of MSX-DOS 2 Function Calls
+-----------------------------------------------------------------------------
+      FUNCTION                                CP/M     DOS1  ERROR      PAGE
+-----------------------------------------------------------------------------
+00h -  Program terminate                        o       o               269
+01h    Console input                            o       o       o       269
+02h    Console output                           o       o       o       270
+03h    Auxiliary input                          o       o       o       270
+04h    Auxiliary output                         o       o       o       271
+05h    Printer output                           o       o       o       271
+06h    Direct console I/O                       o       o       o       271
+07h    Direct console input                             o       o       272
+08h    Console input without echo                       o       o       272
+09h    String output                            o       o       o       273
+0Ah    Buffered line input                      o       o       o       273
+0Bh    Console status                           o       o       o       274
+0Ch    Return version number                    o       o       o       274
+0Dh    Disk reset                               o       o               275
+0Eh    Select disk                              o       o               275
+0Fh    Open file (FCB)                          o       o               275
+10h    Close file (FCB)                         o       o               277
+11h    Search for first entry (FCB)             o       o               277
+12h    Search for next entry (FCB)              o       o               278
+13h    Delete file (FCB)                        o       o               279
+14h    Sequential read (FCB)                    o       o               279
+15h    Sequential write FCB)                    o       o               280
+16h    Create file (FCB)                        o       o               280
+17h    Rename file (FCB)                        o       o               281
+18h    Get login vector                         o       o       o       281
+19h    Get current drive                        o       o       o       282
+1Ah    Set disk transfer address                o       o               282
+1Bh    Get allocation information                       o               282
+----------------------------------------------------------------------------
+&lt;266                                          CHAPTER 17 FUNCTION CALLS&gt;
+-----------------------------------------------------------------------------
+      FUNCTION                                CP/M     DOS1  ERROR      PAGE
+-----------------------------------------------------------------------------
+21h    Random read (FCB)                        o       o               283
+22h    Random write(FCB)                        o       o               283
+23h    Get file size (FCB)                      o       o               284
+24h    Set random record (FCB)                  o       o               284
+26h    Random block write (FCB)                         o               285
+27h    Random block read (FCB)                          o               286
+28h    Random write with zero fill (FCB)        o       o               286
+2Ah    Get date                                         o       o       287
+2Bh    Set date                                         o       o       287
+2Ch    Get time                                         o       o       288
+2Dh    Set time                                         o       o       288
+2Eh    Set/reset verify flag                            o       o       289
+2Fh    Absolute sector read                             o       o       289
+30h    Absolute sector write                            o       o       290
+31h    Get disk parameters                                      o       290
+40h    Find first entry                                                 291
+41h    Find next entry                                                  292
+42h    Find new entry                                                   293
+43h    Open file handle                                                 295
+44h    Create file handle                                               296
+45h    Close file handle                                                297
+46h    Ensure file handle                                               297
+47h    Duplicate file handle                                            297
+48h    Read from file handle                                            298
+49h    Write to file handle                                             300
+4Ah    Move file handle pointer                                         301
+4Bh    I/O control for devices                                          302
+4Ch    Test file handle                                                 304
+4Dh    Delete file or subdirectory                                      304
+4Eh    Rename file or subdirectory                                      305
+4Fh    Move file or subdirectory                                        306
+----------------------------------------------------------------------------
+&lt;17.2 FUNCTION SUMMARY                                                  267&gt;
+-----------------------------------------------------------------------------
+      FUNCTION                                CP/M     DOS1  ERROR      PAGE
+-----------------------------------------------------------------------------
+50h    Get/set file attributes                                          307
+51h    Get/set file date and time                                       308
+52h    Delete file handle                                               309
+53h    Rename file handle                                               309
+54h    Move file handle                                                 310
+55h    Get/set file handle attributes                                   310
+56h    Get/set file handle date and time                                311
+57h    Get disk transfer address                                o       311
+58h    Get verify flag setting                                  o       312
+59h    Get current directory                                            312
+5Ah    Change current directory                                         313
+5Bh    Parse pathname                                                   313
+5Ch    Parse filename                                                   314
+5Dh    Check character                                          o       315
+5Eh    Get whole path string                                            316
+5Fh    Flush disk buffers                                               317
+60h    Fork a child process                                             318
+61h    Rejoin parent process                                            318
+62h    Terminate with error code                                        320
+63h    Define abort exit routine                                        320
+64h    Define disk error handler routine                                322
+65h    Get previous error code                                  o       323
+66h    Explain error code                                       o       323
+67h    Format a disk                                                    324
+68h    Create or destroy RAM disk                                       326
+69h    Allocate sector buffers                                          326
+6Ah    Logical drive assignment                                 o       327
+6Bh    Get environment item                                     o       328
+6Ch    Set environment item                                     o       328
+6Dh    Find environment item                                    o       329
+6Eh    Get/set disk check status                                o       329
+6Fh    Get MSX-DOS version number                               o       330
+70h    Get/set redirection status                               o       331
+----------------------------------------------------------------------------
+&lt;268                                                 CHAPTER 17 FUNCTION CALL&gt;
+17.3   EXPLANATION OF THE FUNCTIONS
+
+   Below are detailed descriptions of each of the MSX-DOS functions including
+both the  old and  new ones. The names in brackets after the function numbers
+are   the  public  labels  for  the  function  codes  which  are  defined  in
+&quot;CODES.MAC&quot;. Programs should use these names whenever possible.
+
+   Many of  the functions below 40h return an error flag rather than an error
+code.  If the  error flag  is set  then the  actual error code indicating the
+cause of  the error can be obtained by the &quot;get previous error code&quot; function
+(page 323).  All  of the  functions above  40h return  an error  code in
+register  A.  The  &quot;Program Interface  Specification&quot; document  describes the
+general  errors  which  can  be  returned  from  many of  the functions.  The
+individual  function specifications  here describe  the main error conditions
+which are specific to particular functions.
+   Note that  many of  the function  calls which  modify the information on a
+disk  do  not  automatically  flush  disk  buffers  and  so  the disk  is not
+necessarily  correctly updated  immediately after  the function call is made.
+Such  calls  include  all  types  of  &quot;create&quot;, &quot;write&quot;,  &quot;delete&quot;, &quot;rename&quot;,
+&quot;change file  attributes&quot; and &quot;change file date and time&quot; function calls. The
+only  functions which  always flush disk buffers are &quot;flush buffers&quot;, &quot;close&quot;
+and  &quot;ensure&quot;.  After  these  operations the  disk will  always be  correctly
+updated.
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        269&gt;
+
+PROGRAM TERMINATE                                       CP/M    DOS1
+------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   00H(_TERM0)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  terminates program  with a zero return code.
+-----------   It is provided for  compatibility with MSX-DOS 1 and CP/M,
+                the preferred method of exiting a program is  to use  the
+                &quot;terminate  with error  code&quot; function call (P. 320),
+                passing  a  zero  error  code  if  that is  what is  desired.
+                See  the description   of  that   function  call,  and  also
+                the  &quot;Program  Interface Specification&quot;, for  details of
+                what happens when a program terminates. This function call
+                never returns to the caller.
+
+
+CONSOLE INPUT                                           CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   01H(_CONIN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = Character from keyboard
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   A  character will be read from the standard input (file handle
+-----------   0 - usually the keyboard)  and echoed to the standard output
+                (file handle 1 - usually the screen).  If no  character is
+                ready then  this function  will wait  for one. Various control
+                characters, as  specified for  the &quot;console status&quot; function
+                (P.274),  will  be  trapped  by  this  function  for  various
+                control purposes.  If one  of these  characters is detected
+                then it will be processed and this function will wait for
+                another character. Thus these characters will never be
+                returned to the user by this function.
+&lt;270                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+CONSOLE OUTPUT                                          CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   02H(_CONOUT)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   E = Character to be output
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The character passed in register E is written to the standard
+-----------   output (file handle 1 - usually the screen). If printer echo
+                is enabled then the character is also  written to  the
+                printer.  Various control codes and escape sequences are
+                interpreted as  screen control codes. A list of these is
+                included in the &quot;Program Interface  Specification&quot;, they
+                are a sub-set of the standard VT-52 control codes. TABs will
+                be expanded to every eighth column. A  console input  status
+                check  is done, and if any of the special control characters
+                described  for the  &quot;console status&quot;  function (P.274) is
+                found then  it will  be processed  as for  that function.
+                Any other character will be saved internally for a later
+                &quot;console input&quot; function call.
+
+AUXILIARY INPUT                                         CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   03H(_AUXIN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = Input Character
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   A character is read from the auxiliary input device (file
+-----------   handle 3) and if no character  is ready  then it will wait for
+                one. The auxiliary input device must  have been installed
+                before this function may be used. If no such device has been
+                installed then  this function  will always  return the  end of
+                file character (^Z).
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        271&gt;
+AUXILIARY OUTPUT                                        CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   04H(_AUXOUT)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   E = Character to be output
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;  The character passed in register E will be written to the
+-----------  auxiliary output device (file  handle 3). The auxiliary output
+               device must have been installed before  this function  may be
+               used. If no such device has been installed then this function
+               will simply throw the character away.
+
+PRINTER OUTPUT                                          CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   05H(_LSTOUT)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   E = Character to be output
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The character  passed in  register E  will be sent to the
+-----------   standard printer device  (file handle  4 -  usually the
+                parallel printer). The same channel is used for console output
+                which is echoed to the printer. TABs are not expanded by this
+                function, although they are expanded when screen output is
+                echoed to the printer with [Ctrl] + [P].
+
+DIRECT CONSOLE I/O                                      CP/M    DOS1    ERROR
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   06H(_DIRIO)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   E = 00H ... FEH Character to be output
+-----------     = FFH         requests input
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A=L  input - 00H - no character ready else input character
+-----------                      undefined for output
+&lt;272                                                CHAPTER 17 FUNCTION CALLS&gt;
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   If  E=FFh on  entry then the keyboard will be examined for a
+-----------   characterfrom the standard input (file handle 0) and 00h
+                returned if no character is ready. If a  character is  ready
+                then  it will be read from the standard input (file handle  0)
+                and  returned in register A without being echoed and with no
+                check for control characters.
+                 If  E&lt;&gt;FFh  on entry  then the  character in  register E
+                will be  printed directly to  the standard  output (file
+                handle 1)  with no  TAB expansion or printer  echo. Also  no
+                console  status check  is done by this function. Note that
+                although  this function  does not  expand TABs,  the VT-52
+                control codes include TAB expansion so the effect on the
+                screen is the same.
+
+DIRECT CONSOLE INPUT                                            DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   07H(_DIRIN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A Input Character
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  is identical  to the  input option  of
+-----------   function 06h, except that  if no  character is  ready it  will
+                wait for one. Like function 06h, no echo  or  control
+                characters  checks  will  be  done.  This function  is not
+                compatible with CP/M which uses this function number for
+                &quot;get I/O byte&quot;.
+
+CONSOLE INPUT WITHOUT ECHO                                      DOS1   ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   08H(_INNOE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = INPUT Character
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function is identical to function 01h (P.269) except that
+-----------   the input character will  not be echoed to the standard output.
+                The same control character checks will be  done. This function
+                is  not compatible  with CP/M  which uses  this function
+                number for &quot;set I/O byte&quot;.
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        273&gt;
+
+STRING OUTPUT                                           CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   09H(_STROUT)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Address of string
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The characters of the string pointed to by register DE will be
+-----------   output using  the normal  console output  routine (P.270).
+                The string is terminated by &quot;$&quot; (ASCII 24h).
+
+BUFFERED LINE INPUT                                     CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   0AH(_BUFIN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Address of an input buffer
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   DE  must point  to a  buffer to  be used for input. The first
+-----------   byte of this buffer  must  contain  the  number of
+                characters which  the buffer  can hold (0...255). A  line of
+                input will be read from the standard input device (file handle
+                0 - usually the keyboard) and stored in the buffer. The input
+                will be terminated  when  a  CR  is  read  from  the  standard
+                input.  The number  of characters entered,  which does  not
+                include the CR itself, will be stored at (DE+1).  If there  is
+                room in the buffer then the CR will be stored after the last
+                character. When inputting  from the  keyboard (which  will
+                normally  be the  case), a simple  line  editor  is provided,
+                and also  a 256  byte circular  buffer of previous  lines
+                which  can be  edited and  re-entered. The  details of  these
+                editing  facilities  are described  in the  chapter 5.1 so
+                they are not included here. When the input buffer becomes full,
+                the console bell will be rung for each character typed which
+                cannot be put in the  buffer.
+                Each character entered will be echoed to the standard output
+                and also to the printer if printer echo is enabled.
+&lt;274                                                CHAPTER 17 FUNCTION CALLS&gt;
+CONSOLE STATUS                                          CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   0BH(_CONST)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 00H if no key was pressed
+-----------       = FFH if a key was pressed
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   A  flag is returned in register A to indicate whether a
+-----------   character is ready (that is,  a key  was pressed) for input
+                from the keyboard. If a character is ready then it will be
+                read and tested for certain special control characters.
+                If it is not one of these then it is stored in an internal
+                single byte buffer and   subsequent  call   to  this  function
+                will  return  &quot;character  ready&quot; immediately without checking
+                the  keyboard. If  this function  says that  a character is
+                ready then the character may be read by function 02h or 08h.
+                If the  character is [^C] then  the program will be terminated
+                with a &quot;.CTRLC&quot;  error  via  the  user's  abort routine  if
+                one  is defined.  If the character  is  [^P]  then printer
+                echo will  be enabled  and it  will be disabled  if it  is
+                [^N].  If the  character is [^S] then the routine will hang
+                up waiting for another character to be pressed and then return
+                &quot;no character  ready&quot;, thus  providing a  &quot;wait&quot; facility. The
+                character typed to continue operation  will be  ignored,
+                except  that of it is [^C] then the program  will  be
+                terminated.  These  same input  checks are  also done  for
+                functions 01h (P.269), 02h (P.270), 08h (.272), 09h (P.273)
+                and 0Ah(P.273).
+
+RETURN VERSION NUMBER                                   CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   0CH(_CPMVER)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A 22H
+-----------   H=B 00H
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function  simply  returns  the  CP/M version  number
+-----------   which  is being emulated. This is always version 2.2 in
+                current systems.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        275&gt;
+DISK RESET                                                      CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   0DH(_DSKRST)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   Any  data which  is waiting in internal buffers is written out
+-----------   to disk. It is not  necessary to call this function in order
+                to allow a disk change as is the case with CP/M. The disk
+                transfer address is also set back to its default value of 80h
+                by this function.
+
+SELECT DISK                                                     CP/M   DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   0EH(_SELDSK)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   E = Drivenumber. 0=A; 1=B  etc
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = Number of drives (1...8)
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function simply selects the specified drive as the
+-----------   default drive. The current  drive is  also stored  at address
+                0004h for CP/M compatibility. The number  of  drives available
+                is returned  in register  A but  this will  not include the
+                RAM disk.
+
+OPEN FILE [FCB]                                                 CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   0FH(_FOPEN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to unopened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 0FFH if file not found
+-----------       = 0    if file is found
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The unopened  FCB must  contain a  drive which may be zero to
+-----------   indicate the current  drive  and  a filename  and extension
+                which may  be ambiguous.  The current directory of the
+&lt;276                                                CHAPTER 17 FUNCTION CALLS&gt;
+                specified drive will be searched for a matching file and if
+                found it will be opened. Matching entries which are
+                sub-directories or system files will be ignored, and if the
+                filename is ambiguous then the first suitable matching entry
+                will be opened.
+                  Device  names may  be put in the FCB (without a colon) to
+                allow devices to be accessed  as if  they were  actually disk
+                files. The standard device names are defined in the &quot;Program
+                Interface Specification&quot;.
+                  The  low byte  of the extent number is not altered by this
+                function, and a file will only be opened if it is big enough
+                to contain the specified extent. Normally the  transient
+                program  will set  the extent  number to  zero before calling
+                this function. The high byte of the extent number will be set
+                to zero to ensure compatibility with CP/M.
+                  The filename  and extension in the FCB will be replaced by
+                the actual name of  the file  opened from the directory entry.
+                This will normally be the same as what was there before but
+                may be different if an ambiguous filename or one with lower
+                case letters in was used.
+                  The  record count  will be  set to  the number  of 128 byte
+                records in the specified extent, which is calculated from the
+                file size. The file size field itself, the  volume-id and
+                the 8  reserved bytes  will also  be set  up. The current
+                record and random record fields will not be altered by this
+                function, it  is the  application program's  responsibility to
+                initialize them  before using the read or write functions.
+                  If  the file  cannot be  found, then the &quot;APPEND&quot;
+                environment item will be examined. If  this is set then it is
+                interpreted as a drive/path string which specifies  a second
+                directory in  which to  look for the file. The specified
+                directory will  be searched  for the  file and  if found it
+                will be opened as above.  In this  case the  drive byte  of
+                the FCB will be set to the drive on which the  file was found
+                to  ensure correct  accessing of  the file  if the original
+                drive byte was zero (default).
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        277&gt;
+
+CLOSE FILE [FCB]                                                CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   10H(_FCLOSE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to opened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = FFH if not successful
+-----------          0H if successful
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The  FCB must  have previously been opened with either an
+-----------   OPEN or a CREATE function  call.  If  the  file has  only
+                been  read then  this function  does nothing. If  the file has
+                been  written to  then any  buffered data  will be written
+                to disk  and the directory entry updated appropriately. The
+                file may still be  accessed after a close, so the function can
+                be regarded as doing an &quot;ensure&quot; function.
+
+SEARCH FOR FIRST ENTRY [FCB]                                          CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   11H(_SFIRST)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to unopened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 0FFH if file is not found
+-----------       = 000H if file is found
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function searches the current directory of the drive
+-----------   specified in the FCB  (default  drive  if  FCB contains  zero)
+                for  a file  which matches  the filename and  extension in the
+                FCB. The filename may be ambiguous (containing &quot;?&quot;  characters)
+                in which case the first match will be found. The low byte of
+                the extent  field will  be used,  and a  file will only be
+                found if it is big enough  to contain  this extent number.
+                Normally the extent field will be set to  zero  by the program
+                before  calling  this  function. System  file and sub-directory
+                entries will not be found.
+                  If a suitable match is found (A=0) then the directory entry
+                will be copied to the  DTA address,  preceded by the drive
+                number. This can be used directly as an FCB for an OPEN
+                function call if desired. The extent number will be set to the
+                low byte of the extent from the search FCB, and the record
+&lt;278                                                CHAPTER 17 FUNCTION CALLS&gt;
+                count will be initialized  appropriately (as  for OPEN).  The
+                attributes  byte from  the directory  entry will  be stored in
+                the  S1 byte  position, since its normal position (immediately
+                after the  filename extension  field) is  used for the extent
+                byte.
+                  If no match is found (A=0FFh) then the DTA will not be
+                altered. In no case will  the FCB  pointed to  by DE  be
+                modified at all. This function remembers sufficient information
+                internally to  allow it to continue the search with a SEARCH
+                FOR NEXT function, so it is not necessary for the FCB to be
+                preserved if doing a SEARCH FOR NEXT function.
+                  In CP/M,  if the  drive number  is set  to &quot;?&quot;  in this
+                function then all directory  entries, allocated  or free  will
+                be  matched. Also  if the extent field is  set to &quot;?&quot; then any
+                extent of a file will be matched. Both of these features  are
+                normally  only used  by special purpose CP/M programs which are
+                generally  specific  to  the  CP/M filing  system (such  as
+                &quot;STAT&quot;).  Neither feature is present in MSX-DOS 1/2.
+
+SEARCH FOR NEXT [FCB]                                           CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   12H(_SNEXT)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A  0FFH if file is not found
+-----------        000H if file found
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   It continues  the search to look for the next match with the
+-----------   filename. The results returned from this function are
+                identical to SEARCH FOR FIRST and all the  same comments apply.
+                The information used to continue the search is held internally
+                within  MSX-DOS and  so the  original FCB  used in  the SEARCH
+                FOR FIRST need not still exist.
+&lt;17.3 EXPLANATION OF FUNCTIONS                                            279&gt;
+
+DELETE FILE [FCB]                                               CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   13H(_FDEL)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to unopened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 0FFH if no files deleted
+-----------         000h if files deleted OK
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   All  files in  the current directory of the disk specified by
+-----------   the FCB, and which match  the ambiguous filename in the FCB,
+                are deleted. Sub-directories, system  files, hidden files and
+                read only files are not deleted. If any files at all are
+                successfully deleted then this function returns with A=0.
+                A return with A=FFh indicates that no files were deleted.
+
+SEQUENTIAL READ [FCB]                                           CP/M    DOS1
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   14H(_RDSEQ)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to opened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 01H if error (end of file)
+-----------       = 00H if read was successful
+
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function reads the next sequential 128 byte record from
+-----------   the file into the  current  disk transfer  address. The record
+                is  defined by  the current extent  (high  and  low  bytes)
+                and  the current  record. After  successfully reading the
+                record, this  function increments  the current  record and if
+                it reaches  080h, sets  it back  to zero  and increments  the
+                extent number. The record count field is also kept updated when
+                necessary.
+                  Unlike  CP/M it  is possible  to have  partially filled
+                records, since the file size is not necessarily a multiple of
+                128 bytes. If this occurs then the partial record  is padded
+                out with zeroes when it is copied to the transient program's
+                DTA address.
+&lt;280                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+SEQUENTIAL WRITE [FCB]                                          CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   15H(_WRSEQ)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to opened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 01H if error (disk full)
+-----------       = 00H if write was successful
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  writes the 128 bytes from the current disk
+-----------   transfer address to  the file  at the position defined by the
+                current record and extent, which are then  incremented
+                appropriately.  The record  count byte  is kept updated
+                correctly  if the  file is  extended or if the write moves
+                into a new extent. The file size in the FCB is also updated if
+                the file is extended.
+
+
+CREATE FILE [FCB]                                               CP/M    DOS1
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   16H(_FMAKE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE =Pointer to unopened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 0FFH if unsuccessful
+-----------         000H if successful
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function creates a new file in the current directory of
+-----------   the specified drive and opens it ready for reading and writing.
+                The drive, filename and low byte of the extent number must be
+                set up in the FCB and the filename must not be ambiguous.
+                Checks  will be  done to ensure that invalid filenames are not
+                created.
+                  If there is already a file of the required name then the
+                action depends on the value  of the  extent number byte.
+                Normally this will be zero and in this case  the old  file
+                will  be deleted  and a  new one  created. However if the
+                extent  number  is non-zero  then the  existing file  will be
+                opened without creating a new file. This ensures compatibility
+                with early versions of CP/M where each extent had to be
+                explicitly created.
+&lt;17.3 EXPLANATION OF THe FUNCTIONS                                        281&gt;
+
+                    In all  cases the  resulting file  will be opened with the
+                 required extent number exactly as if an OPEN function call
+                 had been done.
+
+RENAME FILE [FCB]                                               CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   17H(_FREN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE =Pointer to unopened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 0FFH if not successful
+-----------         000H if successful
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The  unopened FCB  has the  normal drive  and filename,  and
+-----------   also a second filename starting  at (DE+17).  Every file in
+                the  current directory  of the specified  drive which  matches
+                the  first filename, is changed to the second filename with
+                &quot;?&quot; characters  in the second filename leaving the appropriate
+                character  unchanged.  Checks  are  done  to  prevent duplicate
+                or  illegal filenames  from being  created. Entries for
+                sub-directories, hidden files and system files will not be
+                renamed.
+
+GET LOGIN VECTOR                                        CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   18H(_LOGIN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   HL =Login vector
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  returns a  bit set in HL for each drive which
+-----------   is available, bit-0 of L corresponding to drive &quot;A:&quot;. Up to
+                eight drives (&quot;A:&quot; to &quot;H:&quot;) are supported  by the system
+                currently,  so register  H will  usually be zero on return.
+&lt;282                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+GET CURRENT DRIVE                                       CP/M    DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   19H(_CURDRV)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = Current drive (0=a: etc)
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function just returns the current drive number.
+-----------
+
+SET DISK TRANSFER ADDRESS                                       CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   1AH(_SETDTA)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Required Disk Transfer Address
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function simply records the address passed in DE as the
+-----------   disk transfer address.  This address  will be  used for  all
+                subsequent  FCB read and write calls,  for  &quot;search for  first&quot;
+                and  &quot;search for  next&quot; calls  to store  the directory entry,
+                and for absolute read and write calls. It is not used by the
+                new MSX-DOS  read and  write functions.  The address  is set
+                back to 80h by a DISK RESET call.
+
+GET ALLOCATION INFORMATION                                              DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   1BH(_ALLOC)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   E = Drive number (0=current, 1=A: etc)
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Sectors per cluster
+-----------   BC = Sector size (always 512)
+                DE = Total clusters on disk
+                HL = Free clusters on disk
+                IX = Pointer to DPB
+                IY = Pointer to first FAT sector
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        283&gt;
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  returns various information about the disk in
+-----------   the specified drive.  It is  not compatible  with CP/M which
+                uses  this function number to return the  address of an
+                allocation vector. Note that unlike MSX-DOS 1, only the first
+                sector  of the FAT may be accessed from the address in IY, and
+                the data there will only remain valid until the next MSX-DOS
+                call.
+
+RANDOM READ [FCB]                                               CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   21H(_RDRND)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to opened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 01H if error (end of file)
+-----------         00H if read was successful
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  reads a  128 byte  record from the file to the
+-----------   current disk transfer  address. The  file position  is defined
+                by the  three byte  random record number  in the  FCB (bytes
+                21h...23h). Unlike CP/M all three bytes of the  random record
+                number are  used. A partial record at the end of the file will
+                be padded with zeroes before being copied to the user's DTA.
+                  The  random  record  number is  not altered  so successive
+                calls to  this function  will read  the same  record unless
+                the transient program alters the random record number. A side
+                effect is that the current record and extent are set up  to
+                refer  to the  same record as the random record number. This
+                means that  sequential reads  (or writes) can follow a random
+                read and will start from the  same record. The record count
+                byte is also set up correctly for the extent.
+
+RANDOM WRITE [FCB]                                              CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   22H(_WRRND)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to opened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 01H if error (disk full)
+-----------         00H if no error
+&lt;284                                                CHAPTER 17 FUNCTION CALLS&gt;
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function writes  a 128  byte record  from the  current
+-----------   disk transfer address to  the file,  at the  record position
+                specified by  the three  byte random  record number (bytes
+                21h...23h). All three bytes of the random record number are
+                used. If  the record  position is  beyond the current end of
+                file then un-initialized disk space will be allocated to fill
+                the gap.
+                  The random record number field will not be changed, but the
+                current record and extent  fields will  be set  up to  refer
+                to  the same record. The record count  byte will be adjusted
+                as necessary if the file is being extended or if the write
+                goes into a new extent.
+
+GET FILE SIZE [FCB]                                             CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   23H(_FSIZE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to unopened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 0FFH if file not found
+-----------         000H if file found OK
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  searches for  the first match with the filename
+-----------   in the FCB, exactly the same as OPEN FILE (P.275). The
+                size of the located file is rounded up to the nearest 128 bytes
+                and the number of records determined. The three byte random
+                record field of the FCB is set to the number of records, so it
+                is the number of the first record which does not exist. The
+                fourth byte of the random record number is not altered.
+
+SET RANDOM RECORD [FCB]                                         CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   24H(_SETRND)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   De = Pointer to opened FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        285&gt;
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function simply sets the three byte random record field
+-----------   in the FCB to the record  determined by  the current  record
+                and  extent number. The fourth byte  of the  random record
+                number is  not altered.  No check  is done as to whether the
+                record actually exists in the file.
+
+RANDOM BLOCK WRITE [FCB]                                                DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   26H(_WRBLK)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to opened FCB
+-----------   HL = Number of records to write
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = 01H if error
+-----------       00H if no error
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   Data  is written from the current disk transfer address to the
+-----------   position in the file  defined by  the random record number.
+                The record size is determined by  the record size field in the
+                FCB (bytes 0Eh and 0Fh) which must be set by the user  after
+                opening  the file  and before  calling this  function. If the
+                record  size is  less than  64 bytes then all four bytes of
+                the random record number are used, otherwise only the first
+                three are used.
+                  The number  of records to be written is specified by HL,
+                and together with the  record size  this determines the amount
+                of data to be written. An error will be returned if the size
+                exceeds 64k, thus limiting the maximum size of a transfer.
+                  After  writing the  data, the  random record field is
+                adjusted to the next record number  in the file (ie. HL is
+                added on to it). The current record and extent  fields are not
+                used or altered. The file size field is updated if the file
+                has been altered.
+                   The  record size  can be any value from 1...0FFFFh. Small
+                record sizes are no less  efficient that large record sizes so
+                if desired the record size can be set to one and the record
+                count then becomes a byte count. It is desirable to  write as
+                much as possible with one function call since one large
+                transfer will be quicker than several small ones.
+                  If  the number  of records  to write  (HL) is  zero then  no
+                data  will be written, but  the size  of the file will be
+                altered to the value specified by the random record field.
+&lt;286                                                CHAPTER 17 FUNCTION CALLS&gt;
+                This may be either longer or shorter than the file's current
+                size  and  disk  space  will  be  allocated  or  freed as
+                required. Additional  disk space  allocated in  this way will
+                not be initialized to any particular value.
+
+RANDOM BLOCK READ [FCB]                                                 DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   27H(_RDBLK)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to opened FCB
+-----------   HL = Number of records to read
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = 01H if error (usually cause by end-of-line)
+-----------        00H if no error
+                HL = Number of records actually read
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function is  the complement of the BLOCK WRITE function
+-----------   described above and most of the same comments apply as regards
+                its use. Again if large blocks are read then it will be much
+                faster than the normal CP/M operation.
+                   For example if it is desired to read 20k from a file, it is
+                better to read the 20k  with one  function call rather than 20
+                separate function calls of 1k each.  However it  makes no
+                difference whether  the 20k  read is done with a record size
+                of 1  and a record count of 20k, with a record size of 20k
+                and a record count of 1, or any intermediate combination.
+                  The number of records actually read is returned in HL. This
+                may be smaller than the  number of records requested if the
+                end of the file was encountered. In  this case  any partial
+                record will be padded out with zeroes before being copied to
+                the users  DTA. The  random record  field is adjusted to the
+                first record not read, ie. the value returned in HL is added
+                on to it.
+
+RANDOM WRITE WITH ZERO FILL [FCB]                               CP/M    DOS1
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   28H(_WRZER)
+-----------
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        287&gt;
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer openend FCB
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   L=A = 01H if error
+-----------         00H if no error
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function is  identical to RANDOM WRITE (P.283)
+-----------   except that if the file has to be extended, any extra
+                allocated disk clusters will be filled with zeroes before
+                writing the data.
+
+GET DATE                                                        DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   2AH(_GDATE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   HL = Year 1980 .. 2079
+-----------   D  = Month (1=Jan .. 12=Dec)
+                E  = Date (1...31)
+                A  = Day of the week (0=Sun...6=Sat)
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function simply returns the current value of the internal
+-----------   calender in the format shown.
+
+SET DATE                                                        DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   2BH(_SDATE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   HL = Year (1980 ... 2079)
+-----------   D  = Month (1=Jan .. 12=Dec)
+                E  = Date  (1...31)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = 00H if date was valid
+-----------        FFH if date was invalid
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The supplied  date is  checked for  validity and if it is
+-----------   valid then it is stored  as the  new date.  The validity
+                checks include full checking for the number of  days in each
+                month and leap years. If the date is invalid then the current
+                date will  be left  unaltered. The  date is  stored in the
+                real time clock chip so it will be remembered when the machine
+                is turned off.
+&lt;288                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+GET TIME                                                        DOS1   ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   2CH(_GTIME)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   H = Hours (0...23)
+-----------   L = Minutes (0...59)
+                D = Seconds (0...59)
+                E = Centiseconds (always 0)
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  returns the current value of the system clock
+-----------   in the format shown.
+
+SET TIME                                                        DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   2DH(_STIME)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   H = Hours (0..23)
+-----------   L = Minutes (0...59)
+                C = Seconds (0..59)
+                E = Centiseconds (ignored)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = 00H if time was valid
+-----------       FFH if time was invalid
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  sets the internal system clock to the
+-----------   specified time value. If  the time  is invalid then register A
+                will be returned as 0FFh to indicate an error  and the current
+                time will be left unaltered. The time is stored in the  real
+                time  clock chip and so it will be remembered and kept correct
+                when the machine is turned off.
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        289&gt;
+
+SET/RESET VERIFY FLAG                                           DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   2EH(_VERIFY)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   E =  0 to disable verify
+-----------     &lt;&gt; 0 to enale verify
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  simply enables  or disables  automatic
+-----------   verification  of all writes.  It  defaults  to off  when
+                MSX-DOS  is started  up. Enabling  verify improves  system
+                reliability  but also slows down write operations. Note that
+                this function  depends on  the disk  driver and  the
+                verification will not be done if the driver does not
+                support it.
+
+ABSOLUTE SECTOR READ                                            DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   2FH(_RDABS)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Sector number
+-----------   L  = Drive number (0=a ; etc)
+                H  = Number of sectors to read
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A &lt;&gt; 0 = error code
+-----------     =  0 = no error
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  reads sectors  directly from  the disk without
+-----------   interpreting them  as files.  The disk  must be  a valid  DOS
+                disk in order for the sector number to  be translated  into a
+                physical position  on the disk. The sectors will  be read  to
+                the  current disk  transfer address. Any disk error will be
+                reported by the system in the usual way.
+&lt;290                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+ABSOLUTE SECTOR WRITE                                           DOS1    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   30H(_WRABS)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Sector number
+-----------   L  = Drivenumber (0=A; etc)
+                H  = Number of sectors
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = error code
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function writes  sectors directly  to the  disk without
+-----------   interpreting them as  files. The  disk must  be a  valid DOS
+                disk in order for the sector number  to be  translated into  a
+                physical  position on the disk. The sectors will be  written
+                from  the current disk transfer address. Any disk errors are
+                reported by the system in the usual way.
+
+GET DISK PARAMETERS                                                     ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   31H(_DPARM)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to 32 byte buffer
+-----------   L  = Drive number (0=current, 1=A: etc)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = error code
+-----------   DE Preserved
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This functions  returns a  series of  parameters relating to
+-----------   the format of the  disk in  the specified  drive, to the
+                buffer allocated within the user's program. It  is useful for
+                programs  which are  going to  do absolute sector reads and
+                writes,  in order  for them  to be  able to interpret the
+                absolute sector numbers. The parameters returned contain some
+                redundant information in order to  provide parameters which
+                are most useful to transient programs. The format of the
+                returned parameter block is:
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        291&gt;
+
+    ---------------------------------------------------------
+    offset       Meaning
+    ---------------------------------------------------------
+     DE+0        Physical drive number (1=A: etc)
+     DE+1,2      Sector size (always 512 currently)
+     DE+3        Sectors per cluster (non-zero power of 2)
+     DE+4,5      Number of reserved sectors (usually 1)
+     DE+6        Number of copies of the FAT (usually 2)
+     DE+7,8      Number of root directory entries
+     DE+9,10     Total number of logical sectors
+     DE+11       Media descriptor byte
+     DE+12       Number of sectors per FAT
+     DE+13..14   First root directory sector number
+     DE+15..16   First data sector number
+     DE+17..18   Maximum cluster number
+     DE+19       Dirty disk flag
+     DE+20..23   Volume id. (-1 =&gt; no volume id.)
+     DE+24..31   Reserved (currently always zero)
+   ---------------------------------------------------------
+     The dirty  disk flag  indicates whether  in the disk there is a file which
+     can  be recovered  by UNDEL  command. It is reset when the file
+     allocation is done.
+
+FIND FIRST ENTRY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   40H (_FFIRST)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIIZ string or fileinfo block
+-----------   HL = filename ASCIZZ string (only if DE is fileinfo pointer)
+                B  = Search attributes
+                IX = Pointer to new fileinfoblock
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error code
+-----------   (IX) = Filled in with matching entry
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The &quot;drive/path&quot; portion of the string, or the fileinfo block,
+-----------   specifies a directory which  is to  be searched.  A &quot;.IATTR&quot;
+                error will be returned if a fileinfo  block which  specifies a
+&lt;292                                                CHAPTER 17 FUNCTION CALLS&gt;
+                file is passed. The &quot;file&quot; portion of the string, or  the
+                filename  ASCIIZ string in HL, determines what filenames will
+                be matched. If no match is found then a &quot;.NOFIL&quot; error is
+                returned, otherwise the  fileinfo block  pointed to  by IX is
+                filled  in with the details of the matching entry.
+                  The filename  may contain  ambiguous filename  characters
+                (&quot;?&quot;  or &quot;*&quot;) in which case the first matching entry will be
+                returned. If the filename is null (either  the ASCIIZ  string
+                pointed  to by DE is null or ends in a &quot;\&quot; or the filename
+                string  pointed to  by HL  is null),  then this function will
+                behave exactly as if the filename was &quot;*.*&quot; so any name will
+                match.
+                   The  attributes byte  in register  B specifies  what type
+                of entry will be matched. If  it is zero then only non-hidden,
+                non-system files will be found. If  the directory,  hidden or
+                system bits in register B are set then entries with these
+                attributes will  be matched  as well  as ordinary files. The
+                read only and archive bits of register B are ignored.
+                  If the  volume name bit of register B is set then the
+                search is exclusive, only  the volume  label entry  will be
+                found. In this case also the fileinfo block  and  filename or
+                the drive/path/file  string are  ignored apart from specifying
+                the drive. This means that the volume name will always be
+                found in the root directory if it exists whether or not it
+                matches the filename given.
+                  If DE  points to  a fileinfo  block, then  if desired, IX
+                can point to the same  fileinfo block.  In this  case when a
+                match  is found the new fileinfo block will overwrite the old
+                one.
+
+FIND NEXT ENTRY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   41H(_FNEXT)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   IX = Pointer to fileinfoblock from previous find first
+-----------        function.
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A    = error
+-----------   (IX) = Filled in with next matching entry
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  should only  be used  after a  &quot;find first
+-----------   entry&quot; function call.  It  searches  the  directory  for the
+                next match  to the  (presumably ambiguous)  filename which was
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        293&gt;
+                given to the &quot;find first entry&quot; function call. If there are no
+                more matching  entries then  a &quot;.NOFIL&quot;  error is returned,
+                otherwise  the fileinfo block is filled in with the information
+                about the new matching entry.
+
+FIND NEW ENTRY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   42H(_FNEW)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIIZ string or fileinfo block
+-----------   HL = filename ASCIZZ string (only if DE = fileinfo pointer)
+                B  = b0..b6 = Required attributes
+                         b7 = Create flag
+
+                IX = pointer to new fileinfo block containing template filename
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A    = Error
+-----------   (IX) = Filled in with new entry
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function is very similar to the &quot;find first entry&quot;
+-----------   function described above. The  parameters in  HL and  DE are
+                used in  exactly the  same way  to specify  a  directory
+                entry. However instead of searching the selected directory for
+                an entry which matches the specified name, a new entry will be
+                created with this name. The fileinfo block pointed to by IX
+                will be filled in with information  about the  new entry just
+                as  if it  had been found with a &quot;find first entry&quot; call.
+                  If there  are any  ambiguous characters (&quot;?&quot; or &quot;*&quot;) in the
+                filename, then they will be replaced by the appropriate
+                character from a &quot;template filename&quot; in  the filename  position
+                of the new fileinfo block pointed to by IX. If the result is
+                still ambiguous,  or otherwise  illegal, then  a &quot;.IFNM&quot;  error
+                is returned. This is useful for copy operations which do an
+                automatic rename.
+                   Like  &quot;find first entry&quot;, if the filename is null, then it
+                will be treated exactly as  if it  was &quot;*.*&quot;.  For this
+                function that means that the template filename will be used as
+                the new filename to create.
+                   A  &quot;.DRFUL&quot;  error  will  be  returned if  there is  no room
+                in the  root directory, and a &quot;.DKFUL&quot; if a sub-directory must
+                be extended and the disk is already full.
+&lt;294                                                CHAPTER 17 FUNCTION CALLS&gt;
+                   The  attribute byte  passed in  register B  is the attribute
+                which the new entry will be given. If the volume name bit is
+                set then a volume name will be created in  the root  directory.
+                If  the directory  bit is set then the entry created  will be
+                for a  sub-directory, otherwise  it will be for a file. The
+                system, hidden  and read  only bits may be set for a file, and
+                the hidden bit for a sub-directory. A file will always be
+                created with the archive attribute bit set.
+                   A file  will be  created as  zero length with the current
+                date and time. A sub-directory will have a single cluster
+                allocated to it and the &quot;.&quot; and &quot;..&quot; entries will be
+                initialized appropriately.
+                   If there is already an entry with the specified name in the
+                directory then the action depends on the &quot;create new&quot; flag
+                (bit-7 of register B) and also on the type  of the entry. If
+                the &quot;create new&quot; flag is set then a &quot;.FILEX&quot; error will always
+                be returned. Setting this flag thereforeensures that an
+                existing file will not be deleted.
+                   If  an entry  already exists and the &quot;create new&quot; flag is
+                not set then the type of  the existing  entry is  examined to
+                see whether it can be deleted to make  room for the new file.
+                An error will be returned if the entry is a read only file
+                (&quot;.FILRO&quot; error), a system file (&quot;.SYSX&quot; error) or a
+                sub-directory (&quot;.DIRX&quot; error) or there is a file handle
+                already open to this file (&quot;.FOPEN&quot; error). If we are trying
+                to create a sub-directory then even an ordinary file will not
+                be deleted (&quot;.FILEX&quot; error).
+                   For  all  of  these  error  codes (&quot;.FILEX&quot;,  &quot;.FILRO&quot;,
+                &quot;.SYSX&quot;,  &quot;.DIRX&quot;, &quot;.FOPEN&quot;),  the  fileinfo  block will  be
+                filed  in with  the details  of the already  existing entry
+                and this fileinfo block may be used exactly as if it had been
+                returned from a &quot;find first&quot; function.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        295&gt;
+
+OPEN FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   43H(_OPEN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIZZ strinf or fileinfo block
+-----------   A  = Open mode. b0 = no write
+                                b1 = no read
+                                b2 = inhertitable
+                                b3.. b7 must be clear
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = error
+-----------   B = New file handle
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The  drive/path/file string or the fileinfo block should
+-----------   normally refer to a file  rather than  a sub-directory  or
+                volume  name. If it is a volume name then a &quot;.IATTR&quot; error
+                will be returned. If it is a sub-directory then &quot;.DIRX&quot;
+                error will be returned.
+                   Assuming that a file is specified then it will be opened
+                ready for reading and/or writing (depending on the open mode
+                in A) and a new file handle for it will  be returned in
+                register B. The lowest available file handle number will be
+                used and an error will result if there are no spare file
+                handles (&quot;.NHAND&quot; error), or insufficient memory (&quot;.NORAM&quot;
+                error).
+                  If the  &quot;no read&quot; bit of register A is set then reads from
+                the file handle will  be  rejected  and if  the &quot;no  write&quot;
+                bit  is set  then writes  will be rejected,  in both  cases
+                with an &quot;.ACCV&quot; error. Writes will also be rejected if  the
+                file is  read only  (&quot;.FILRO&quot; error).  If the  &quot;inheritable&quot;
+                bit  of register A  is set  then the  file handle  will be
+                inherited by a new process created by the &quot;fork&quot; function
+                call (P. 318).
+                  If a  device file  handle is opened by giving a filename
+                which matches one of  the built in devices (for example &quot;CON&quot;
+                or &quot;NUL&quot;), then it will always be opened initially in ASCII
+                mode. The IOCTL function (P.302) can be used to change this to
+                binary mode  but great care must be taken in reading from
+                devices in binary mode because there is no end of file
+                condition.
+&lt;296                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+CREATE FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   44H(_CREATE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIIZ string
+-----------   A  = Open mode. b0 set to no write
+                                b1 set to no read
+                                b2 set to inheritable
+                                b3..b7   -  must be clear
+                B  = b0..b6 = Required attributes
+                         b7 = Create new flag
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = New file handle
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   A file  or sub-directory,  as specified  by the  attributes
+-----------   in register B, will  be  created  with  the  name  and  in
+                the  directory specified  by the drive/path/file  string.
+                A &quot;.IATTR&quot; error is returned if register B specifies a volume
+                name.  An error  will be returned if the file or sub-directory
+                cannot be created. The  error conditions  in this  case are
+                the same as for the &quot;find new entry&quot; function (function  42h)
+                with  the main  error codes being &quot;.FILEX&quot;, &quot;.DIRX&quot;, &quot;.SYSX&quot;,
+                &quot;.FILRO&quot;,  &quot;.FOPEN&quot;,  &quot;.DRFUL&quot; and  &quot;.DKFUL&quot;. Like  the &quot;find
+                new&quot; function,  if the  &quot;create new&quot;  flag (bit-7  of register
+                B) is  set then an existing file will not be deleted and will
+                always return a &quot;.FILEX&quot; error.
+                   If the  attributes byte  specifies a sub-directory then the
+                hidden bit may also  be set to create a hidden sub-directory.
+                For a file, the hidden, system or  read  only  bits  may  be
+                set  to  create  a  file with  the appropriate attributes. An
+                invalid attributes  bits will  simply be ignored. A file will
+                always be created with the archive attribute bit set.
+                   A  file  will  automatically  be opened  just as  for the
+                &quot;open&quot; function described above,  and a  file handle  returned
+                in register B. The &quot;open mode&quot; parameter  is  interpreted  in
+                the  same way  as for  the &quot;open&quot;  function. A sub-directory
+                will not be opened (because this is meaningless) so register B
+                will be returned as 0FFh which can never be a valid file
+                handle.
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        297&gt;
+
+CLOSE FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   45H(_CLOSE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = File handle
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function  releases  the  specified file  handle for
+-----------   re-use. If  the associated file  has been written to then its
+                directory entry will be updated with  a new  date and  time,
+                the  archive attributes bit will be set, and any buffered data
+                will be  flushed to  disk. Any  subsequent attempt to use this
+                file  handle will return an error. If there are any other
+                copies of this file handle, created by &quot;duplicate file handle&quot;
+                or &quot;fork&quot;, then these other copies may still be used.
+
+ENSURE FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;  C = 46H(_ENSURE)
+&iexcl;number     &iexcl;
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = File Handle
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   If  the file  associated with the file handle has been written
+-----------   to then its directory  entry  will  be  updated with  a new
+                date and  time, the  archive attributes bit  will be  set, and
+                any buffered data will be flushed to disk.
+                The file handle is not released and so it can still be used for
+                accessing the file, and the current file pointer setting will
+                not be altered.
+
+DUPLICATE FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   47H (_DUP)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = File handle
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = New File handle
+&lt;298                                                CHAPTER 17 FUNCTION CALLS&gt;
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function creates  a copy  of the  specified file  handle.
+-----------   The lowest available  file  handle  number  will  always  be
+                used  and a  &quot;.NHAND&quot; error returned if  there are  none
+                available. The new file handle will refer to the same file as
+                the original and either one may be used. If the file pointer
+                of one handle  is moved,  the other  one will also be moved.
+                If either handle is closed the other one may still be used.
+                   Note that  because duplicate file handles created by this
+                function are not &quot;separately  opened&quot;, they  do not  count as
+                separate file  handles for  the purposes of  generating
+                &quot;.FOPEN&quot; errors. So for example a &quot;DUP&quot;ed file handle may  be
+                renamed  (P.309) or have its attributes changed (P.310) and
+                the  effect will  apply to  both file handles. Note in
+                particular that if one  copy of  a &quot;DUP&quot;ed  file handle is
+                deleted (P.310) then the file really will be deleted and the
+                other file handle, although still open, can no longer be used
+                safely.  If it  is used  (other than being closed, ensured or
+                deleted) then an &quot;.FDEL&quot; error will be returned.
+
+READ FROM FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   48H(_READ)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = File handle
+-----------   DE = Buffer address
+                HL = Number of bytes to read
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   HL = Number of bytes actually read
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The  specified number  of bytes are read from the file at
+-----------   the current file pointer position  and copied  to the buffer
+                address specified in register DE. The file pointer is then
+                updated to the next sequential byte. A &quot;.ACCV&quot; error will be
+                returned if the file handle was opened with the &quot;no read&quot;
+                access bit set.
+                   The number of bytes read may be less than the number
+                requested for various reasons, and  the number  read will be
+                returned in register HL if there is no error.  In general if
+                less  is read  than requested  then this should not be treated
+                as  an error  condition but  another read  should be done to
+                read the next portion, until a &quot;.EOF&quot; error is returned.
+                An &quot;.EOF&quot; error will never be returned  for a partial read,
+                only for a read which reads zero bytes.
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                      299&gt;
+                Reading files in  this way  ensures that device file handles
+                will work correctly (see below).
+                   For disk  files the number of bytes read will only be less
+                than the number requested  if the  end of  the file is reached
+                and in this case the next read operation will read zero bytes
+                and will return an &quot;.EOF&quot; error. When reading from a device
+                file handle (for example the standard file handles 0 to 4),
+                the behaviour  depends on  the particular device, and on
+                whether it is being read in ASCII  or binary  mode (see
+                function 4Bh below). The &quot;CON&quot; device will be described  as an
+                example because  it is  the most  commonly used device, but
+                other devices behave similarly.
+                   When reading from the &quot;CON&quot; device in binary mode,characters
+                will be read from the keyboard, without any interpretation and
+                without being echoed to the screen or  printer. The  exact
+                number of characters requested will always be read and there is
+                no end of file condition. Because of the lack of any end of
+                file indication, great care must be taken when reading from
+                devices in binary mode.
+                  A  read function  call to the &quot;CON&quot; device in ASCII mode
+                (the default mode and that  which normally  applies to  the
+                standard  input channel), will only read  one line  of input.
+                The input line will be read from the keyboard with the normal
+                line editing facilities available to the user, and the
+                character typed  will be  echoed to the screen and to the
+                printer if Ctrl-P is enabled. Special control characters [^P],
+                [^N], [^S] and [^C] will be tested  for and  will be  treated
+                exactly  as for the console status function 0Bh.
+                   When  the user types a carriage return the line will be
+                copied to the read buffer, terminated  with a  CR-LF sequence
+                and the read function will return with  an appropriate  byte
+                count.  The next  read will start another buffered line input
+                operation. If  the number of bytes requested in the read was
+                less than the length of the line input then as many character
+                as requested will be returned,  and the  next read  function
+                call will return immediately with the next portion of the line
+                until it has all been read.
+                   If the  user types a line which starts with a &quot;Ctrl-Z&quot;
+                character then this will be interpreted as indicating end of
+                file. The line will be discarded and the  read function  call
+                will  read zero  bytes and return an &quot;.EOF&quot; error. A subsequent
+                read after this will be back to normal and will start another
+                line input. The end of file condition is thus not permanent.
+&lt;300                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+WRITE TO FILE HANDLE
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;    49H(_WRITE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;    B  = File handle
+-----------    DE = Buffer address
+                 HL = Number of bytes to write
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;    A  = Error
+-----------    HL = Number of bytes actually written
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function is very similar to the &quot;read&quot; function above
+-----------   (P.298). The number  of bytes  specified will  be written  to
+                the current file pointer position  in the file, and the file
+                pointer will be adjusted to point to just after the  last byte
+                written. If  the file  was opened  with the  &quot;no write&quot;
+                access bit set then a &quot;.ACCV&quot; error will be returned, and if
+                the file is read only then a &quot;.FILRO&quot; error will be returned.
+                   If the  write goes  beyond the  current end  of file then
+                the file will be extended  as necessary.  If the file pointer
+                is already beyond the end of the file then disk space will be
+                allocated to fill the gap and will not be initialized.  If
+                there  is insufficient disk space then a &quot;.DKFUL&quot; error will
+                be returned  and no  data will be written, even if there was
+                room for some of the data.
+                   The number of bytes written can usually be ignored since
+                it will either be zero  if an  error is returned or it will be
+                equal to the number requested if the write  was successful.
+                It is very much more efficient to write files in a few  large
+                blocks  rather than many small ones, so programs should always
+                try to write in as large blocks as possible.
+                   This function sets a &quot;modified&quot; bit for the file handle
+                which ensures that when the  file handle  is closed or ensured,
+                either explicitly or implicitly, the  directory entry  will be
+                updated with the new date, time and allocation information.
+                Also  the archive bit will be set to indicate that this file
+                has been modified since it was last archived.
+                   Writing  to device  file handles is not a complicated as
+                reading from them because there  are no  end of file conditions
+                or line input to worry about. There  are some differences
+                between ASCII and binary mode when writing to the &quot;CON&quot; device,
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        301&gt;
+
+                in that a console status check is done in ASCII mode only. Also
+                printer echo if enabled will only be done in ASCII mode.
+
+MOVE FILE HANDLE POINTER
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;  4AH(_SEEK)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;  B     = File handle
+-----------  A     = Method code
+               DE:HL = Signed offset
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;  A     = Error
+-----------  DE;HL = New file pointer
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The file pointer associated with the specified file handle will
+-----------   be altered according to  the method  code and offset, and the
+                new pointer value returned in DE:HL. The method code specifies
+                where the signed offset is relative to as follows:
+
+                     A=0  Relative to the beginning of the file
+                     A=1  Relative to the current position
+                     A=2  Relative to the end of the file.
+
+                   Note  that an  offset of  zero with an method code of 1 will
+                simply return the current  pointer value,  and with a method
+                code of 2 will return the size of  the file.  No end  of file
+                check is  done so  it is  quite possible (and sometimes useful)
+                to set  the file  pointer beyond  the end  of the file. If
+                there  are any  copies of  this file  handle created  by the
+                &quot;duplicate file handle&quot; function  (P.297)  or the &quot;fork&quot;
+                function (P.318) then their file pointer will also be changed.
+                   The file  pointer only  has any  real meaning  on disk files
+                since random access is possible. On device files the file
+                pointer is updated appropriately when  any read  or write  is
+                done,  and can  be examined  or altered  by this function.
+                However changing will have no effect and  examining it is very
+                unlikely to be useful.
+
+&lt;302                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+I/O CONTROL FOR DEVICES
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   4BH (_IOCTL)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = File handle
+-----------   A = Sub-function code
+                        00H =&gt; get file handle status
+                        01H =&gt; set ASCII/binary mode
+                        02H =&gt; test input ready
+                        03H =&gt; test output ready
+                        04H =&gt; find screen size
+                 DE = Other parameters
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;    A = Error
+-----------   DE = Other results
+
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  allows various  aspects of  file handles to be
+-----------   examined and altered.  In particular  it can  be used  to
+                determine  whether a file handle refers to  a disk file or a
+                device. This is useful for programs which want to behave
+                differently for disk files and device I/O.
+                   This function  is passed  the file handle in register B and
+                a sub-function code  in register  A which specifies one of
+                various different operations. Any other  parameters  required
+                by  the  particular  sub-function are  passed in register DE
+                and results are returned in register DE. If the sub-function
+                code is invalid then a &quot;.ISBFN&quot; error will be returned.
+                   If A=0 then the operation is &quot;get file handle status&quot;.
+                This returns a word of flags  which give various information
+                about the file handle. The format of this  word is  different
+                for  device file  handles and disk file handles, and bit-7
+                specifies which it is. The format of the word is as follows:
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        303&gt;
+             * in case of deveices
+             -----------------------------------------------------------
+                       bit   meaning
+             -----------------------------------------------------------
+                DE -     b0  set   = console input device
+                         b1  set   = console output device
+                     b2..b4  reserved
+                         b5  set   = ASCII mode
+                             clear = binary mode
+                         b6  set   = end of file
+                         b7  always set (=&gt; device)
+                    b8..b15  reserved
+             -----------------------------------------------------------
+
+             * in case of diskfiles
+             -----------------------------------------------------------
+                       bit   meaning
+             -----------------------------------------------------------
+                DE - b0..b5  drive number (0=A: etc)
+                         b6  set = end of file
+                         b7  always clear (=&gt; disk file)
+                    b8..b15  reserved
+             -----------------------------------------------------------
+
+                   Note  that the end of file flag is the same for devices as
+                for disk files. For devices  it will  be set  if the previous
+                attempt to read from the device produced  a &quot;.EOF&quot; error and
+                will be cleared by the next read. For disk files it is worked
+                out by comparing the file pointer with the file size.
+                   If  A=1 then the operation is a &quot;set ASCII/binary mode&quot;.
+                This operation is only allowed  for device file handles. An
+                ASCII/binary flag must be passed in bit-5 of register E
+                (exactly  where it  is returned  by &quot;get  file handle status&quot;).
+                This is  set for  ASCII mode  and clear for binary mode. All
+                other bits of register DE are ignored.
+                   If A=2  or 3  then the  operation is  &quot;test input  ready&quot;
+                or  &quot;test output ready&quot;  respectively. In both cases a flag is
+                returned in register E which is FFh if  the file  handle is
+                ready for  a character and 00h if not. The exact meaning  of
+                &quot;ready  for a character&quot; depends on the device. Disk file
+                handles are always  ready for  output, and are always ready for
+                input unless the file pointer is at the end of file. The &quot;CON&quot;
+                device checks the keyboard status to determine whether it is
+                ready for input or not.
+
+&lt;304                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+                   If A=4  the the  operation is  &quot;get screen size&quot;. This
+                returns the logical screen size for the file handle with the
+                number of rows in register D and the number of columns  in
+                register  E. For  devices with no screen size (such as disk
+                files)  both  D  and  E  will be  zero. Zero  for either
+                result should therefore be interpreted as &quot;unlimited&quot;. For
+                example this function is used by the &quot;DIR/W&quot; command to decide
+                how many files to print per line, and a value of zero for
+                register E is defaulted to 80.
+
+TEST FILE HANDLE
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   4CH(_HTEST)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = File handle
+-----------   HL = Drive/path/file ASCIZZ string or fileinfo block pointer
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   B  = 00H = not the same file
+                     FFH = the same file
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  rather  specialist function  is passed  a file  handle
+-----------   and  either a drive/path/file  string  or  a  fileinfo block
+                which identifies  a file.  It determines if  the two  files
+                are  actually the  same file and returns a flag indicating
+                the result.  Note that  if the file handle is for a device
+                rather than a disk file then it will always return &quot;B=00h&quot; to
+                indicate &quot;not the same file&quot;.
+                   This function allows the &quot;COPY&quot; command to detect certain
+                error conditions such as  copying file  onto themselves  and
+                give  the user  informative error messages.  It may  also be
+                useful for other programs which need to do similar tests.
+
+DELETE FILE OR SUBDIRECTORY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   4DH(_DELETE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE =Drive/path/file ASCIIZ string or fileinfo block pointer
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        305&gt;
+
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  deletes the object (file or sub-directory)
+-----------   specified by the drive/path/file  string or the fileinfo block.
+                Global filename characters are not  allowed  so only  one file
+                or sub-directory  can be  deleted with  this function.
+                A sub-directory can  only be  deleted if  it is  empty or an
+                error (&quot;.DIRNE&quot;) occurs if not). The &quot;.&quot; and &quot;..&quot; entries in a
+                sub-directory cannot be  deleted (&quot;.DOT&quot;  error) and neither
+                can the root directory. A file cannot be deleted  if there  is
+                a  file handle open to it (.FOPEN error) or if it is read only
+                (.FILRO error).
+                   If  it is  a file  then any  disk space  which was allocated
+                to it will be freed. If  the disk  is an MSX-DOS 2 disk then
+                enough information is retained on  the disk  to allow the
+                &quot;UNDEL&quot; utility program do undelete the file. This information
+                is only retain ed until the next disk space allocation
+                (usually a write to  a file) is done on this disk. After
+                making this function call, if a fileinfo  block was passed
+                then it must not be used again (other than passing it to  a
+                &quot;find  next entry&quot;  function) since  the file  to which it
+                refers no longer exists.
+                   If a device name such as &quot;CON&quot; is specified then no error
+                will be returned but the device will not actually be deleted.
+
+RENAME FILE OR SUBDIRECTORY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   4EH(_RENAME)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIIZ string or fileinfo block pointer
+-----------   HL = New filename ASCIIZ string
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  renames the object (file or sub-directory)
+-----------   specified by the drive/path/file string or the fileinfo block,
+                with the new name in the string pointed  to by HL. The new
+                filename string must not contain a drive letter or directory
+                path  (&quot;.IFNM&quot; error if it does). If a device name such as
+                &quot;CON&quot; is specified  then no error will be returned but the
+                device will not actually be renamed.
+                   Global filename  characters are not allowed in the
+                drive/path/file string, so  only one  object can be renamed
+                by this function. However global filename characters are
+                allowed in the new filename passed in HL and where they occur
+
+&lt;306                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+                the  existing filename  character will  be left unaltered.
+                Checks are done to avoid creating an illegal filename, for
+                example a file called &quot;XYZ&quot; cannot be renamed with  a new
+                filename string of &quot;????A&quot; because the new filename would
+                be &quot;XYZ A&quot; which is illegal. In this case a &quot;.IFNM&quot; error will
+                be returned.
+                   If there is already an entry with the new filename then an
+                error (&quot;.DUPF&quot;) is returned  to avoid  creating duplicate
+                filenames. The &quot;.&quot; and &quot;..&quot; entries in a sub-directory cannot
+                be renamed (&quot;.IDOT&quot; error) and neither can the root directory
+                (it has noname). A file cannot be renamed if there is a file
+                handle open to it (&quot;.FOPEN&quot; error) although a read only file
+                can be renamed.
+                   Note that  if DE pointed to a fileinfo block, this is not
+                updated with the new  name of  the file.  Therefore care  must
+                be  taken in using the fileinfo block after making this
+                function call.
+
+MOVE FILE OR SUBDIRECTORY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   4FH(_MOVE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIIZ string or fileinfo block pointer
+-----------   HL = New path ASCIIZ string
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function moves  the object  (file or sub-directory)
+-----------   specified by the drive/path/file string  or the  fileinfo
+                block, to the directory specified by the new path string
+                pointed to by HL. There must not be a drive name in the new
+                path  string. If  a device  name such as &quot;CON&quot; is specified
+                then no error will be returned but the device will not
+                actually be moved.
+                   Global filename  characters are  not allowed in any of the
+                strings so only one object (file or sub-directory) can be
+                moved by this function, although if a sub-directory is moved,
+                all its descendants will be moved with it. If there is already
+                an  entry of  the required  name in  the target  directory then
+                a &quot;.DUPF&quot; error  is returned  to prevent  creating duplicate
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        307&gt;
+
+                filenames. The &quot;.&quot; and &quot;..&quot; entries in a sub-directory cannot
+                be moved (&quot;.DOT&quot; error) and also a directory  cannot be  moved
+                into  one of  its own descendants (&quot;.DIRE&quot; error) since this
+                would create an isolated loop in the filing system. A file
+                cannot be moved if there is a file handle open to it (&quot;.FOPEN&quot;
+                error).
+                   Note  that if  a fileinfo  block is  passed to this
+                function, the internal information in  the fileinfo block is
+                not updated to reflect the new location of the file. This is
+                necessary because otherwise the fileinfo block could not be
+                used for a subsequent &quot;find next&quot; function call. However it
+                does mean that the fileinfo block no longer refers to the moved
+                file and so must not be used for any operations on it such
+                as &quot;rename&quot; or &quot;open&quot;.
+
+GET/SET FILE ATTRIBUTES
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   50H(_ATTR)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIZZ string or fileinfo block pointer
+-----------   A  = 0 = get attributes
+                     1 = set attributes
+                L  = New attributes byte (only if A=1)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   L = Current attributes byte
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  is normally  used to  change the  attributes
+-----------   of  a file  or sub-directory.  It can  also be  used to  find
+                out the current attributes but this is  more usually done with
+                the &quot;find  first entry&quot;  function (P. 291).  If A=0  then the
+                current attributes byte for the file or sub-directory will just
+                be returned in register L.
+                   If A=1  then the attributes byte will be set to the new
+                value specified in register  L, and this new value will also
+                be returned in register L. Only the system, hidden,  read only
+                and archive  bits may  be altered for a file, and only  the
+                hidden  bit for a sub-directory. An &quot;.IATTR&quot; error will be
+                returned if an  attempt is made to alter any other attribute
+                bits. If a fileinfo block is  passed then  the attributes byte
+                in  it will not be updated with the new setting.
+                   Global filename  characters are  not allowed  so only  one
+                object (file or sub-directory)  can have  its attributes set
+                by this function. The attributes of the  root directory cannot
+
+&lt;308                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+                be  changed because  it does not have any. The attributes  of
+                a  file cannot be changed if there is a file handle open to it
+                (&quot;.FOPEN&quot;  error).  The  attributes  of the  &quot;.&quot; and  &quot;..&quot;
+                directory  entries however can  be changed.  If a device name
+                such as &quot;CON&quot; is specified then no error  will be returned but
+                the device's  attributes will  not actually  be changed (since
+                it does not have any).
+
+GET/SET FILE DATE AND TIME
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   51H(_FTIME)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIIZ string or fileinfo block pointer
+-----------   A  = 0 = get date and time
+                     1 = set date and time
+                IX = New time value (only if A=1)
+                HL = New date value (only if A=1)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   DE = Current file time value
+                HL = Current file date value
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   If  A=1 then  this function sets the date and time of last
+-----------   modification of the file or sub-directory specified by the
+                drive/path/file string or fileinfo block. Global  filename
+                characters  are not allowed in any part of the string so only
+                one  file can have its date and time modified by this
+                function. If a device name such as &quot;CON&quot; is specified then no
+                error will be returned but the device's date and time will not
+                actually be changed.
+                   The date  and time  format are exactly as contained in the
+                directory entry and fileinfo blocks (see the &quot;Program Interface
+                Specification&quot;). No checks are done for sensible dates or times
+                , the values are simply stored. Note that if a fileinfo block
+                is passed then the date and time stored in it will not be
+                updated by this function.
+                   If  A=0 then  the current values are just returned. Note
+                that although the time value is passed in IX, it is returned
+                in DE. The date and time of a file cannot be altered (although
+                it can be read) if there is a file handle open to the file
+                (&quot;.FOPEN&quot; error).
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        309&gt;
+
+DELETE FILE HANDLE
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   52H(_HDELETE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = File handle
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A= Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  deletes the  file handle associated with the
+-----------   specified file and  closes the file handle. A file handle
+                cannot be deleted if there are any other separately  opened
+                file handles open to the same file (&quot;.FOPEN&quot; error). If there
+                are any duplicates of the file handle (created by a &quot;duplicate
+                file handle&quot; or  &quot;fork&quot; function), then these duplicates will
+                be marked as invalid and any attempt to use them will produce
+                an &quot;.HDEAD&quot; error.
+                   The  error conditions  for this  function are  the same as
+                for the &quot;delete file or  sub-directory&quot; function  (P. 304).
+                The file handle will always be closed, even if there is an
+                error condition such as &quot;.FILRO&quot; or &quot;.FOPEN&quot;.
+
+RENAME FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   53H(_HRENAME)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = File handle
+-----------   HL = New filename ASCIIZ string
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function renames  the file associated with the specified
+-----------   file handle with the  new name  in the  string pointed to by
+                HL. Apart from the fact that the  file is  specified by a file
+                handle rather  than an ASCIIZ string or a fileinfo  block,
+                this  function   is  identical  to  the  &quot;rename  file  or
+                subdirectory&quot; function (P. 305), and has the same error
+                conditions.
+                   A file  handle cannot  be renamed if there are any other
+                separately opened file  handles for  this file  (&quot;.FOPEN&quot;
+                error), although it can be renamed if there are  copies of this
+                file  handle, and  in this case the copies will be renamed.
+                Renaming a  file handle will not alter the file pointer but it
+                will do an implicit &quot;ensure&quot; operation.
+
+&lt;310                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+MOVE FILE HANDLE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   54H(_HMOVE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = File hande
+-----------   HL = New path ASCIIZ string
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  moves the file associated with the specified
+-----------   file handle to the  directory specified  by the new path
+                string pointed to by HL. Apart from the fact  that the file
+                is  specified by a file handle rather than an ASCIIZ string
+                or a  fileinfo block, this function is identical to the &quot;move
+                file or subdirectory&quot; function (P. 306), and has the same
+                error conditions.
+                   A file  handle cannot  be moved  if there  are any other
+                separately opened file  handles for  this file  (&quot;.FOPEN&quot;
+                error),  although it  can be moved if there are  copies of
+                this file handle, and in this case the copies will also be
+                moved. Moving a file handle will not alter the file pointer
+                but it will do an implicit &quot;ensure&quot; operation.
+
+GET/SET FILE HANDLE ATTRIBUTES
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   55H (_HATTR)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = File handle
+-----------   A = 0 = get attributes
+                    1 = set attributes
+                L = New attributes (only if A=1)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   L = Current attributes byte
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function gets or sets the attributes byte of the file
+-----------   associated with the specified  file handle. Apart from the
+                fact that the file is specified by a file handle rather than
+                an ASCIIZ string or a fileinfo block, this function is
+                identical to  the &quot;get/set  file attributes&quot; function (P. 307),
+                and has the same error conditions.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        311&gt;
+
+                A file handle  cannot have  its attributes  changed (although
+                they can be read) if  there are  any other  separately opened
+                file handles for this file (&quot;.FOPEN&quot;  error). The file pointer
+                will not  be altered  but an  implicit &quot;ensure&quot; operation will
+                be done.
+
+GET/SET FILE HANDLE DATE AND TIME
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   56H (_HFTIME)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = File handle
+-----------   A  = 0 =&gt; get date and time
+                     1 =&gt; set date and time
+                IX = New time value (only if A=1)
+                HL = New date value (only if A=1)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   DE = Current file time value
+                HL = Current file date value
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function gets  or sets the date and time of the file
+-----------   associated with the specified  file handle. Apart from the
+                fact that the file is specified by a file handle rather than
+                an ASCIIZ string or a fileinfo block, this function is
+                identical to the &quot;get/set file date and time&quot; function
+                (P. 307), and has the same error conditions.
+                   A  file handle cannot have its date and time changed
+                (although they can be read) if  there are  any other separately
+                opened  file handles for this file (&quot;.FOPEN&quot;  error). The file
+                pointer  will not  be altered  but an  implicit &quot;ensure&quot;
+                operation will be done.
+
+GET DISK TRANSFER ADDRESS                                               ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   57H(_GETDTA)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   DE = Current Disk Transfer Address
+-----------
+
+&lt;312                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function returns  the current disk transfer address. This
+-----------   address is only used  for the  &quot;traditional&quot; CP/M  style FCB
+                functions and the absolute sector read and write functions.
+
+GET VERIFY FLAG SETTING                                                 ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   58H (_GETVFY)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = 00H = verify disabled
+-----------       FFH = verify enabled
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function simply  returns the  current state of the verify
+-----------   flag which can be set with MSX-DOS function 2Eh (P. 289).
+
+GET CURRENT DIRECTORY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   59H (_GETC)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = Drive number (0=current, 1=A etc)
+-----------   DE = Pointer to 64 byte buffer
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   DE = Filled in with current path
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function  simply  gets  an  ASCIIZ  string representing
+-----------   the current directory of the specified drive into the buffer
+                pointed to by DE. The string will not  include a drive name or
+                a leading or trailing &quot;\&quot; character, so the root directory is
+                represented by a null string. The drive will be accessed to
+                make sure that the current directory actually exists on the
+                current disk, and if  not then  the current  directory will
+                be set back to the root and a null string returned.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        313&gt;
+
+CHANGE CURRENT DIRECTORY
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   5AH (_CHDIR)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Drive/path/file ASCIIZ string
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   The drive/path/file  string must  specify a  directory rather
+-----------   than a file. The  current directory  of the drive will be
+                changed to be this directory. If the  specified directory does
+                not exist  then the  current setting  will be unaltered and
+                a &quot;.NODIR&quot; error returned.
+
+PARSE PATHNAME
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   5BH(_PARSE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = Volume name flag (bit 4)
+-----------   DE = ASCIIZ string for parsing
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   DE = Pointer to termination character
+                HL = Pointer to start of last item
+                B  = Parse flags
+                C  = Logical drive number (1=A: etc)
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function is purely a string manipulation function, it
+-----------   will not access the disks  at all  and it  will not  modify
+                the  user's string  at all. It is intended to help transient
+                programs in parsing command lines.
+                   The volume  name flag (bit 4 of register B; it is in the
+                same bit position as  the volume  name bit in an attributes
+                byte) determines whether the string will be parsed as a
+                &quot;drive/path/file&quot;  string (if  the bit is cleared) or a
+                &quot;drive/volume&quot; string (if the bit is set).
+                   The pointer  returned in DE will point to the first
+                character which is not valid in a pathname string, and may be
+                the null at the end of the string. See Chapter 5.1 for details
+                of the syntax of pathname strings and also for a list of valid
+                characters.
+                   The  pointer returned  in HL will point to the first
+                character of the last item of  a string  (filename portion).
+                For example, when a string &quot;A:\XYZ\P.Q /F&quot; was passed, DE will
+
+&lt;314                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+                point to the white space character before &quot;/F&quot; and HL will
+                point to &quot;P&quot;. If the parsed string ends with a character &quot;\&quot;
+                or is null (apart from  drive name),  then there  will be no
+                &quot;last item&quot;, thus HL and DE will  point to the same character.
+                In this case, some special procedures will be needed to all
+                the programs which use this function.
+                   The  drive number returned in register C is the logical
+                drive specified in the string.  If the  string did not start
+                with a drive letter then register C will  contain the  default
+                drive  number, since  the default  drive has  been implicitly
+                specified. Register C will never be zero.
+                   The  parse flags  returned in  register B  indicate various
+                useful things about the  string. For  a volume  name bits
+                1, 4,  5, 6 and 7 will always be clear. For a filename, bits 3
+                to 7 relate to the last item on the string (the &quot;filename&quot;
+                component). The bit assignments are as follows:
+
+                ---------------------------------------------------------
+                 bit   meaning
+                ---------------------------------------------------------
+                 b0    set if any characters parsed other than drive name
+                 b1    set if any directory path specified
+                 b2    set if drive name specified
+                 b3    set if main filename specified in last item
+                 b4    set if filename extension specified in last item
+                 b5    set if last item is ambiguous
+                 b6    set if last item is &quot;.&quot; or &quot;..&quot;
+                 b7    set if last item is &quot;..&quot;
+                ---------------------------------------------------------
+
+PARSE FILENAME
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   5CH(_PFILE)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = ASCIIZ string for parsing
+-----------   HL = Pointer 11 byte buffer
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error (always zero)
+-----------   DE = Pointer to termination character
+                HL = Preserved, buffer filled in
+                B  = Parse flags
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        315&gt;
+
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function is purely a string manipulation function, it
+-----------   will not access disks at  all and will not modify the string
+                at all. It is intended mainly to help  transient programs  in
+                printing  out filenames  in a formatted way. The ASCIIZ string
+                will be parsed as a single filename item, and the filename will
+                be  stored  in the  user's 11  byte buffer  in expanded  form,
+                with  both the filename and the extension padded out with
+                spaces.
+                   The parse  flags returned  in register  B are  identical to
+                those for the &quot;parse  pathname&quot; function  above (P. 313),
+                except that bits 0, 1 and 2 will always  be clear.  The user's
+                buffer will  always be filled in, even if there  is no  valid
+                filename in the string, in which case the buffer will be filled
+                with spaces. &quot;*&quot; characters will be expanded to the appropriate
+                number of &quot;?&quot;s.  If either  the filename  or the filename
+                extension is too long then the excess characters will be
+                ignored.
+                   The pointer  returned in  register DE will point to the
+                first character in the  string which  was not part of the
+                filename, which may be the null at the end of  the string.
+                This character  will never be a valid filename character (see
+                Chapter 5.1 for details of valid filename characters).
+
+CHECK CHARACTER
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   5DH(_CHKCHR)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   D = Character flags
+-----------   E = Character to be checked
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = 0 (never returns an error)
+-----------   D = Updated character flags
+                E = Checked (upper cased) character
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function allow  language independent  upper casing of
+-----------   characters and also helps with handling 16-bit characters and
+                manipulation of filenames. The bit assignments in the
+                character flags are as follows:
+
+&lt;316                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+                --------------------------------------------------------
+                bit       meaning
+                --------------------------------------------------------
+                 b0       set to suppress upper casing
+                 b1       set if first byte of 16-bit character
+                 b2       set if second byte of 16-bit character
+                 b3       set =&gt; volume name (rather than filename)
+                 b4       set =&gt; not a valid file/volume name character
+                 b5...b7  reserved (always clear)
+                --------------------------------------------------------
+
+                Bit 0  is used  to control upper casing. If it is clear then
+                the character will be upper cased according to the language
+                setting of the machine. If this bit is set then the returned
+                character  will always  be the  same as  the character passed.
+                  The two  16-bit character  flags (bits 1 and 2) can both be
+                clear when the first  character of  a string  is checked  and
+                the  settings returned  can be passed straight  back to  this
+                function  for each  subsequent character. Care must  be taken
+                with these  flags when moving backwards through strings which
+                may contain 16-bit characters.
+                   Bit  4 is  set on return if the character is one of the set
+                of filename or volume name  terminator characters. Bit 3 is
+                simply used to determine whether to  test for filename or
+                volume name characters since the sets are different.
+                16-bit characters  (either byte)  are never  considered as
+                volume or filename terminators.
+
+GET WHOLE PATH STRING
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   5EH(_WPATH)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Pointer to 64 byte buffer
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   DE = Filled in with whole path string
+                HL = Pointer to start of last item
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function simply copies an ASCIIZ path string from an
+-----------   internal buffer into the  user's buffer.  The string represents
+                the whole path and filename, from  the root  directory, of a
+                file  or sub-directory located by a previous &quot;find first entry&quot;
+                or &quot;find new entry&quot; function. The returned string will not
+                include a  drive, or  an initial &quot;\&quot; character. Register HL
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        317&gt;
+
+                will point at the first  character of  the last  item on  the
+                string, exactly as for the &quot;parse path&quot; function (P. 313).
+                   If a  &quot;find first entry&quot; or &quot;find new entry&quot; function call
+                is done with DE pointing to an ASCIIZ string then a subsequent
+                &quot;get whole path&quot; function call will  return a string
+                representing the sub-directory or file corresponding to the
+                fileinfo   block  returned   by  the  &quot;find&quot;  function.  If
+                this  is  a sub-directory  then the  fileinfo block  may be
+                passed back in register DE to another &quot;find  first entry&quot;
+                function call,  which will  locate a file within this
+                sub-directory. In  this case  the newly located file will be
+                added onto the already  existing whole  path string internally,
+                and so a subsequent &quot;get whole  path string&quot; function call
+                will return a correct whole path string for the located file.
+                   Great care must be taken in using this function because the
+                internal whole path  string is modified by many of the function
+                calls, and in many cases can be invalid.  The &quot;get  whole path&quot;
+                function call  should be done immediately after  the  &quot;find
+                first  entry&quot;  or &quot;find  new entry&quot;  function to  which it
+                relates.
+
+FLUSH DISK BUFFERS
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   5FH(_FLUSH)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = Drive number (0=current, FFH = all)
+-----------   D = 00H = Flush only
+                    FFH = Flush and invalidate
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function flushes  any dirty disk buffers for the
+-----------   specified drive, or for all drives if B=FFh. If register D
+                is FFh then all buffers for that drive will also be
+                invalidated.
+
+&lt;318                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+FORK TO CHILD PROCESS
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   60H(_FORK)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = Process id of parent process
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  informs the  system that  a child  process is
+-----------   about to  be started.  Typically this  is a new program or
+                sub-command being executed. For example COMMAND2.COM does a
+                &quot;fork&quot; function call before executing any command or transient
+                program.
+                A new set of file handles is created, and any current file
+                handles which were opened with the &quot;inheritable&quot; access mode
+                bit set (see the &quot;open file handle&quot; function -  P. 285),  are
+                copied  into the new set of file handles. Any file handles
+                which were  opened with  the &quot;inheritable&quot; bit clear will not
+                be copied and so will not be available to the child process.
+                The standard file handles (00h...05h) are inheritable and so
+                these will be copied.
+                   A new process id is allocated for the child process and the
+                process id. of the parent  process is returned so that a later
+                &quot;join&quot; function call can switch  back to  the parent process.
+                A &quot;.NORAM&quot; error can be produced by this function if there is
+                insufficient memory to duplicate the file handles.
+                   Because  the child  process now has a copy of the previous
+                file handles rather than  the originals,  if one  of them is
+                closed then the original will remain  open. So  for example if
+                the child process closes the standard output file handle
+                (file handle number 1) an re-opens it to a new file, then when
+                a &quot;join&quot; function is done to return to the parent process the
+                original standard output channel will still be there.
+
+REJOIN PARENT PROCESS
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   61H (_JOIN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = Process if of parent, or zero
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = Primary error code from child
+                C = Secondary code from child
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  switches back to the specified parent process
+-----------   and returns the error code which the child process terminated
+                with in register B, and a secondary error code from the child
+                in register C. Although the relationship between  parent and
+                childprocesses is strictly one-to-one, this function can jump
+                back several levels by giving it a suitable process
+                id. A &quot;.IPROC&quot; error will be returned if the process id is
+                invalid.
+                   The child  process's set  of file handles are automatically
+                closed and the parent  process's set of file handles becomes
+                active again. Also any user RAM segments which the child
+                process had allocated will be freed.
+                   If the  process id  passed to  this function is zero then a
+                partial system re-initialisatin  is done. All file handles are
+                closed and the standard input and output handles re-opened and
+                all user segments are freed. This should not normally be done
+                by  a user  program if  it intends to return to the command
+                interpreter  since the  command interpreter will not be in a
+                consistent state after this.
+                   This function takes great care that the freeing of memory
+                and adjusting of process id  is done  before actually closing
+                any file handles and thus before accessing  the disk.
+                This ensures that if a disk error occurs and is aborted, the
+                join  operation will  have been  done successfully. However if
+                a &quot;join 0&quot; produces a disk error which is aborted, then the
+                re-initialization of default file  handles will not have been
+                done. In this case another &quot;join 0&quot; function call should  be
+                done  and this  will not attempt access disk (because all the
+                files have been closed) and so will be successful.
+                   Note that  if this function call is made via 0F37Dh then
+                registers B and C will  not return  the error  codes. This  is
+                because  program termination and abort handling  must be  done
+                by the application program. The error code will have  been
+                passed  to the abort vector and code there must remember the
+                error code if  it needs  to. See the &quot;terminate with error
+                code&quot; function (P. 320) for the meaning of the primary and
+                secondary error code.
+
+&lt;320                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+TERMINATE WITH ERROR CODE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   62H(_TERM)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = Error code for termination
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function terminates the program with the specified error
+-----------   code, which may be  zero indicating no error. This function
+                call will never return to the caller  (unless a  user abort
+                routine executes  forces it  to - see function 63h(P. 320))).
+                The operation of this function is different depending on
+                whether it was called  from  the  MSX-DOS  environment  via
+                00005h or  from the  disk BASIC environment via 0F37Dh.
+                   If called  via 00005h  then if  a user  abort routine  has
+                been defined by function  63h it  will be  called with  the
+                specified  error code (and a zero secondary error code).
+                Assuming that this routine returns, or if there was no user
+                abort  routine defined,  then control  will be  passed back to
+                whatever loaded  the transient program via a jump at location
+                00000h. This will almost always  be  the command  interpreter,
+                but  in some  cases it  may be  another transient program.
+                The error  code will  be remembered by the system and the next
+                &quot;join&quot; function  (function 61h)  which is  done will  return
+                this error code. The command interpreter will print an error
+                message for any code in the range 20h...FFh, but will not
+                print a message for errors below this.
+                   If this function is called from the disk BASIC environment
+                via 0F37Dh then control  will be  passed to the abort vector
+                at location &quot;BREAKVECT&quot;. In this environment there  is no
+                separately defined user abort routine and the error code  must
+                be  remembered by  the code at &quot;BREAKVECT&quot; because &quot;join&quot; will
+                not return the error code.
+
+DEFINE ABORT EXIT ROUTINE
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   63H(_DEFAB)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Adress of abort exit routine
+-----------        0000H to un-define routine
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A =0 (never generates errors)
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  is only  available when  called via  location
+-----------   00005h in the MSX-DOS  environment. It  cannot be  called at
+                location 0F37Dh from the disk BASIC environment.
+                   If  register DE  is zero  then a  previously defined abort
+                routine will be undefined, otherwise a new one will be defined.
+                The abort routine will be called by the system whenever the
+                transient program is about to terminate for any  reason other
+                than a direct jump to location 0000h. Programs written for
+                MSX-DOS  2  should  exit  with a  &quot;terminate with  error code&quot;
+                function call (P. 320) rather than a jump to location 0000h.
+                   The user  abort routine  will be  entered with the user
+                stack active, with IX,  IY and  the alternate  register set as
+                it was when the function call was made and  with the  whole
+                TPA  paged in.  The termination  error code will be passed to
+                the routine in register A with a secondary error code in
+                register B and  if the  routine executes a &quot;RET&quot; then the
+                values returned in registers A and  B  will be stored as the
+                error  codes to  be returned  by the  &quot;join&quot; function, and
+                normally printed out by the command interpreter. Alternatively
+                the  routine may jump to some warm start code in the transient
+                program rather than returning. The system will be in a
+                perfectly stable state able to accept any function calls.
+                   The primary  error code  passed to  the routine  in
+                register A will be the code  which the  program itself  passed
+                to  the &quot;terminate  with error  code&quot; function (which  may be
+                zero) if this is the reason for the termination. The routine
+                will also be called if a Ctrl-C or Ctrl-STOP is detected
+                (&quot;.CTRLC&quot; or &quot;.STOP&quot;  error), if  a disk error is aborted
+                (&quot;.ABORT&quot; error), or if an error occurred  on  one of  the
+                standard  input or  output channels  being accessed through
+                MSX-DOS function calls 01h...0Bh (&quot;.INERR&quot; or &quot;.OUTERR&quot;).
+                   The errors &quot;.ABORT&quot;, &quot;.INERR&quot; and &quot;.OUTERR&quot; are generated
+                by the system as a  result of  some other  error. For  example
+                a  &quot;.ABORT&quot; can  result from  a &quot;.NRDY&quot; error,  or a  &quot;.INERR&quot;
+                can result from a &quot;.EOF&quot; error. In these cases the original
+                error code (&quot;.NRDY&quot; or &quot;.EOF&quot;) is passed to the abort routine
+                in register  B as  the secondary  error code.  For all  other
+                errors there is no secondary error code and register B will be
+                zero.
+
+&lt; 322                                               CHAPTER 17 FUNCTION CALLS&gt;
+
+                    If the abort routine executes &quot;POP HL : RET&quot; (or
+                equivalent) rather than a simple  return,  then  control  will
+                pass  to  the  instruction  immediately following the MSX-DOS
+                call or BIOS call in which the error occurred. This may be
+                useful in conjunction with a disk error handler routine (see
+                P. 322) to  allow  an option  to abort  the current  MSX-DOS
+                call  when a  disk error occurs.
+
+DEFINE DISK ERROR HANDLER ROUTINE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   64H(_DEFER)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Address of disk error routine
+-----------        0000H to un-define routine
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = 0 (never generates errors)
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function specifies the address of a user routine which
+-----------   will be called if a  disk error  occurs. The routine will be
+                entered with the full TPA paged in, but with the system stack
+                in page-3 active and none of the registers will be preserved
+                from when the MSX-DOS function call was made.
+                   The error routine can make MSX-DOS calls but must be very
+                careful to avoid recursion. The list of function calls in
+                chapter 17.2 indicates which function  calls can be safely
+                made from  a user  error routine.  This routine is called with
+                the redirection status being temporarily invalidated in case
+                the standard  I/O channels  have been redirected. See  the
+                &quot;get/set redirection state&quot; function (P. 329) for details of
+                this.
+                   The  specification of  parameters and results for the
+                routine itself is as below. All  registers including  IX, IY
+                and the alternate register set may be destroyed but the paging
+                and stack must be preserved. The routine must return to the
+                system, it must not jump away to continue the transient
+                program. If it wants to do this then it should return A=1
+                (&quot;abort&quot;) and a user abort routine will then get control and
+                this may do whatever it wants to.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        323&gt;
+
+               Parameters:  A  = Error code which caused error
+                            B  = Physical drive
+                            C  = b0 - set if writing
+                                 b1 - set if ignore not recommended
+                                 b2 - set if auto-abort suggested
+                                 b3 - set if sector number is valid
+                            DE = Sector number (if b3 of C is set)
+                Results:    A  = 0 =&gt; Call system error routine
+                                 1 =&gt; Abort
+                                 2 =&gt; Retry
+                                 3 =&gt; Ignore
+
+GET PREVIOUS ERROR CODE                                                 ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   65H (_ERROR)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = 0
+-----------   B = Error code from previous function
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function allows  a user  program to  find out  the
+-----------   error  code which caused the  previous MSX-DOS  function call
+                to fail.  It is intended for use with the old CP/M compatible
+                functions which do not return an error code. For example if a
+                &quot;create file  FCB&quot; function  returns A=0FFh thee could be many
+                reasons  for  the  failure  and  doing  this  function  call
+                will  return the appropriate on, for example &quot;.DRFUL&quot;
+                or &quot;.SYSX&quot;.
+
+EXPLAIN ERROR CODE                                                      ERROR
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   66H (_EXPLAIN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = Error code to be explained
+-----------   DE = Pointer to 64 byte string buffer
+
+&lt;324                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = 0
+-----------   B  = 0 or is unchanged
+                DE = Filled with error message
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function allows a user program to get an ASCIIZ
+-----------   explanation stringor a  particular error  code returned by any
+                of the MSX-DOS functions. If an error comes from one of the old
+                functions then &quot;get previous error code&quot; must be  called first
+                to get  the real  error code  and then this function can be
+                called to get an explanation string.
+                   Chapter 16 &quot;Error&quot; contains a list of all the currently
+                defined  error codes  and the messages for them. Foreign
+                language versions of the system  will of  course have
+                different messages.  If the error code does have  a built  in
+                explanation  string then  this string  will be returned and
+                register B  will be  set to  zero. If  there is  no explanation
+                string then a string  of the  form: &quot;System error 194&quot; or
+                &quot;User error 45&quot; will be returned, and register  B will  be
+                unchanged.  (System errors  are those  in the  range 40h...FFh
+                and user errors are 00h...3Fh.)
+
+FORMAT A DISK
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   67H (_FORMAT)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B  = Drive number (0=&gt;current, 1=&gt;A:)
+-----------   A  = 00H    =&gt; return choice string
+                     01H...09H =&gt; format this choice
+                     0AH...FDH =&gt; illegal
+                     FEH, FFH  =&gt; new boot sector
+                HL = Pointer to buffer (if A=1...9)
+                DE = Size of buffer (if A=1...9)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   B  = Slot of choice string (only if A=0 on entry)
+                HL = Address of choice string (only if A=0 on entry)
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function  is used  to format  disks and  is really only
+-----------   provided for the &quot;FORMAT&quot;  command although other programs may
+                use it (with care) if they find it useful.  It has  three
+                different  options which  are selected  by the code passed in
+                register A.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        325&gt;
+
+                   If  A=0  then  registers  B  and  HL  return the  slot
+                number  and address respectively  of an ASCIIZ string which
+                specifies the choice of formats which is  available.
+                A &quot;.IFORM&quot;  error will  be returned  if this  disk cannot  be
+                formatted (for  example the RAM disk). Normally the string will
+                be read using the  &quot;RDSLT&quot; routine  and displayed  on the
+                screen followed by a &quot;? &quot; prompt. The user  then specifies a
+                choice &quot;1&quot;...&quot;9&quot; and this choice is passed back to the
+                &quot;format&quot; function,  after a  suitable warning prompt, to
+                actually format the disk. If A=0, in some cases zero is
+                returned in HL. This means that there is only  one kind of the
+                format and no prompt is required. There is no way of knowing
+                what  disk  format  a  particular  choice refers to since this
+                is dependant on the particular disk driver.
+                   If A=01h...09h then this is interpreted as a format choice
+                and a disk will be formatted  in the  specified drive  with no
+                further prompting. Register HL and  DE must specify a buffer
+                area to be used by the disk driver. There is no way of knowing
+                how big this buffer should be so it is best to make it as big
+                as  possible. If  the buffer  crosses page boundaries then
+                this function will select the largest portion of it which is
+                in one page for passing to the disk driver. Many disk drivers
+                do not use this buffer at all.
+                   If  A=FFh then  the disk  will not  actually be  formatted,
+                but it will be given a  new boot  sector to  make the  disk a
+                true MSX-DOS 2 disk. This is designed to update old
+                MSX-DOS 1.0 disks to have a volume id and thus allow the full
+                disk checking and undeletion which MSX-DOS 2 allows. The case
+                A=FEh is  the  same  as  A=FFh  except that  only the  disk
+                parameters  are updated correctly  and the  volume id does not
+                overwrite the boot program. Also there are some  MSX-DOS 1.0
+                implementations which  put an incorrect boot sector on the
+                disk and  these disks  cannot be  used by MSX-DOS 2 until they
+                have been corrected by this function.
+                   The  &quot;new  boot  sector&quot;  function  is mainly  intended for
+                the &quot;FIXDISK&quot; utility program, but may be used by other
+                programs if they find it useful. If it  is used  then a  &quot;get
+                format  choice&quot; function  call (A=0) should be done first and
+                if this  returns an  error (typically &quot;.IFORM&quot;) then the
+                operation should be aborted because this is a drive which does
+                not like to be formatted and the disk could be damaged by this
+                function.
+
+&lt;326                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+CREATE OR DESTROY RAMDISK
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   68H (_RAMD)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = 00H    = destroy ramdisk
+-----------       1..FEH = create ramdisk
+                    FFH    = return RAM disk size
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = RAM disk size
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   If  register B=0FFh  then this  routine just returns the
+-----------   number of 16k RAM segments which  are allocated  to the  RAM
+                disk  currently. A  value of  zero indicates  that  there  is
+                no  RAM disk  currently defined.  If B=0  then the current RAM
+                disk  will be destroyed, loosing all data which it contained
+                and no error will be returned if there was no RAM disk.
+                   Otherwise, if  B is in the range 01h...FEh then this
+                function will attempt to  create a  new RAM  disk using  the
+                number  of 16k  segments specified  in register  B.  An error
+                will  be  returned if  there is  already a  RAM disk
+                (&quot;.RAMDX&quot;) or  if there is not even one segment free
+                (&quot;.NORAM&quot;). If there are insufficient  free RAM segments to
+                make a RAM disk of the specified size then the largest one
+                possible will be created. No error is returned in this case.
+                   In  all cases the size of the RAM disk will be returned in
+                register B as a number of segments. Note that some of the RAM
+                is used for the file allocation tables and  the root directory
+                so  the size  of the RAM disk as indicated by &quot;DIR&quot; or &quot;CHKDSK&quot;
+                will be somewhat smaller than the total amount of RAM used.
+                The  RAM will  always be  assigned the  drive letter  &quot;H:&quot;
+                regardless  of the number of drives in the system.
+
+ALLOCATE SECTOR BUFFERS
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   69H (_BUFFER)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B =0 = return number of buffers else number of buffers required
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = Current number of buffers
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        327&gt;
+
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   If  B=0 then this function just returns the number of sector
+-----------   buffers which are currently  allocated. If B&lt;&gt;0 then this
+                function will attempt to use this number  of sector  buffers
+                (must always be at least 2). If it cannot allocate as many as
+                requested then it will allocate as many as possible and return
+                the number in  register B  but will  not return  an error. The
+                number  of sector buffers can be reduced as well as increased.
+                   The  sector buffers  are allocated in a 16k RAM segment
+                outside the normal 64k so  the number  of buffers  does not
+                detract from  the size  of the TPA. However  the number of
+                buffers does affect efficiency since with more buffers allow
+                more  FAT and directory sectors to be kept resident. The
+                maximum number of buffers will be about 20.
+
+LOGICAL DRIVE ASSIGNMENT                                                ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   6AH(_ASSIGN)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   B = Logical drive number (1=A: etc)
+-----------   D = Physical drive number (1=A: etc)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   D = Physical drive number (1=a: etc)
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function controls the logical to physical drive
+-----------   assignment facility. It is  primarily intended for the &quot;ASSIGN&quot;
+                command although user programs may want to use it to translate
+                logical drive numbers to physical drive numbers.
+                   If both  B and  D are  non-zero then  a new  assignment
+                will be set up. If register  B is  non-zero and  register D
+                is zero then any assignment for the logical drive  specified
+                by B will be cancelled. If both register B and D are zero
+                then all  assignments will  be cancelled. If register B is
+                non-zero and register D is FFh then the current assignment for
+                the logical drive specified by register B will simply be
+                returned in register D.
+                   All  drives used  in the  various function calls, including
+                drive names in strings  and  drive  numbers  as parameters  to
+                function  calls, are  logical drives. However  the drive number
+                passed to disk error routines is a physical drive  so  if
+                &quot;ASSIGN&quot;  has  been  used  these  may  be  different  from the
+                corresponding logical drive.
+
+&lt;328                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+GET ENVIRONMENT ITEM                                                    ERROR
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   6BH(_GENV)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   HL = ASCIIZ name string
+-----------   DE = Pointer to buffer for value
+                B  = Size of buffer
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   DE = Preserved, buffer in if A=0
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function gets the current value of the environment item
+-----------   whose name is passed  in register  HL. A  &quot;.IENV&quot; error  is
+                returned  if the name string is invalid. If there is no
+                environment item of that name then a null string will be
+                returned  in the  buffer. If  there is an item of that name
+                then its value string  will be  copied to  the buffer.  If the
+                buffer is too small then the value string  will be truncated
+                with no terminating null and a &quot;.ELONG&quot; error will be returned.
+                A buffer 255 bytes will always be large enough since value
+                strings cannot be longer than this (including the terminating
+                null).
+
+SET ENVIRONMENT ITEM                                                    ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   6CH(_SENV)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   HL = ASCIIZ name string
+-----------   DE = ASCIIZ value string
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function sets  a new environment item. If the name
+-----------   string is invalid then a &quot;.IENV&quot; error is returned, otherwise
+                the value string is checked and a &quot;.ELONG&quot; error  returned if
+                it is  longer than 255 characters, or a &quot;.NORAM&quot; error  if
+                there  is insufficient memory to store the new item. If all is
+                well then any  old item  of this  name is deleted and the new
+                item is added to the beginning  of the  environment list.  If
+                the  value string  is null  then the environment item will be
+                removed.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        329&gt;
+
+FIND ENVIRONMENT ITEM                                                   ERROR
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   6DH(_FENV)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   DE = Environment item number
+-----------   HL = Pointer to buffer for name string
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error
+-----------   HL = Preserved, buffer filled in
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function is  used to  find out  what environment items
+-----------   are currently set. The  item number  in register DE identifies
+                which item in the list is to be  found (the  first item
+                corresponds to  DE=1). If there is an item number &lt;DE&gt; then the
+                name string of this item will be copied into the buffer pointed
+                to by  HL. If the buffer is too small then the name will be
+                truncated with no terminating null, and a &quot;.ELONG&quot; error
+                returned. A 255 byte buffer will never be  too small. If there
+                is no  item number  &lt;DE&gt; then a null string will be returned,
+                since an item can never have a null name string.
+
+GET/SET DISK CHECK STATUS                                               ERROR
+-----------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   6EH (_DSKCHK)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   A = 00H = get disk check status
+-----------       01H = set disk check status
+                B = 00H = enable (only if A=01H)
+                    FFH = disable (only if A=01H)
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = Current disk check setting
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   If A=0  then the  current value  of the disk check variable
+-----------   is returned in register  B. If  A=01h then the variable is
+                set to the value in register B. A value of 00h means that disk
+                checking is enabled and a non-zero means that it is disabled.
+                The default state is enabled.
+                   The disk check variable controls whether the system will
+                re-check the boot sector of  a disk  to see  whether it  has
+                changed,  each time a file handle, fileinfo  block  or  FCB
+
+&lt;330                                                CHAPTER 17 FUNCTION CALLS&gt;
+
+                is  accessed.  If  it is  enabled then  it will  be impossible
+                to accidentally  access the  wrong disk by changing a disk in
+                the middle of  an operation,  otherwise this will be possible
+                and may result in a corrupted  disk. Depending  on the type of
+                disk interface, there may be some additional overhead in
+                having  this feature enabled although with many types of disk
+                (those with explicit disk change detection hardware) it will
+                make no difference and the additional security is well worth
+                having.
+
+GET MSX-DOS VERSION NUMBER
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   6FH(_DOSVER)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   NONE
+-----------
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A  = Error (always 0)
+-----------   BC = MSX-DOS kernel version
+                DE = MSXDOS2.SYS vesion number
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This function allows a program to determine which version of
+-----------   MSX-DOS it is running  under. Two  version numbers  are
+                returned, one in BC for the MSX-DOS kernel in  ROM and the
+                other  is DE for the MSXDOS2.SYS system file. Both of these
+                version numbers  are BCD  values with  the major version
+                number in the high byte  and the  two digit  version number
+                in the low byte. For example if there were a version 2.34 of
+                the system, it would be represented as 0234h.
+                   For compatibility  with MSX-DOS 1.0, the following be
+                followed in using this function. Firstly if there is any
+                error (A&lt;&gt;0) then it  is not  MSX-DOS at  all. Next  look at
+                register B. If this is less than 2 then the system is earlier
+                than 2.00 and registers C and DE are undefined. If register B
+                is 2 or greater then registers BC and DE can be used as
+                described above.  In general  the version  number which should
+                be  checked (after this procedure) is the MSXDOS2.SYS version
+                in register DE.
+
+&lt;17.3 EXPLANATION OF THE FUNCTIONS                                        331&gt;
+
+GET/SET REDIRECTION STATE
+------------------------------------------------------------------------------
+&Aring;-----------&atilde;
+&iexcl;function   &iexcl;
+&iexcl;number     &iexcl;   70H (_REDIR)
+-----------
+&Aring;-----------&atilde;
+&iexcl;input      &iexcl;   A = 00H = get redirection state
+-----------       01H = set redirection state
+                B = New state.  b0 - standard input
+                                b1 - standard output
+&Aring;-----------&atilde;
+&iexcl;output     &iexcl;   A = Error
+-----------   B = Redirection state before command
+                        b0 set = input is redirected
+                        b1 set = output is redirected
+&Aring;-----------&atilde;
+&iexcl;explanation&iexcl;   This  function is  provided primarily  for disk  error
+-----------   routines  and other character  I/O  which  must  always  go
+                to  the  console  regardless  of any redirection.  When  the
+                CP/M  character functions  (functions 01h...0Bh)  are used,
+                they  normally refer  to the  console. However if the standard
+                input or output file handles (file handles 0 and 1) have been
+                closed and reopened to a disk  file, then  the CP/M character
+                functions will also go to the disk file. However certain
+                output such as disk error output must always go to the screen
+                regardless.
+                   This  function allows  any such redirection to be
+                temporarily cancelled by calling this  function with A=1 and
+                B=0. This will ensure that any subsequent CP/M  console I/O
+                will go  to the console, and will also return the previous
+                setting so  that this  can be  restored afterwards.
+                The system is a somewhat unstable  state when  the redirection
+                state has  been altered  like this and there are many function
+                calls which  will reset the redirection to its real state
+                over-riding  this  function.  In  general  any  function  call
+                which manipulates file  handles, such  as &quot;open&quot;,  &quot;close&quot;,
+                &quot;duplicate&quot;  and so on, will  reset the  redirection state.
+                The effect of this function is therefore purely temporary.
+
+&lt;332                                                                         &gt;
+
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_1.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_3.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>

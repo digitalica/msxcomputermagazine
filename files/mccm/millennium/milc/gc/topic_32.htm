@@ -1,0 +1,272 @@
+<html>
+
+<head>
+<title>MILC - Topic Disk cursus (1)</title>
+</head>
+
+<body link="#004080" bgcolor="#FFFFFF">
+
+<p><font face="Arial,Helverica">&nbsp;</font></p>
+
+<p align="center"><font face="Verdana,Arial,Helvetica"><img src="../milc.gif" width="263"
+height="77" alt="MILC logo"></font></p>
+<div align="center"><center>
+
+<table border="0" width="602" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="100%" height="400" valign="top" align="left"><p align="center"><font
+    face="Verdana,Arial,Helverica"><a href="index.htm"><img src="../bwindex.gif" width="150" height="23"
+    alt="Index" border=0></a><a href="topic_31.htm"><img src="../bwvorige.gif" width="150" height="23"
+    alt="Vorige" border=0></a><a href="topic_33.htm"><img src="../bwvolgende.gif" width="150" height="23"
+    alt="Volgende" border=0></a><img src="../bleeg.gif" width="150" height="23"
+    alt="Leeg"></font></p>
+
+    <b><font size="3"><p></font><font face="Verdana,Arial,Helverica">Disk cursus (1)</b><br>
+    <i>Genic Clubguide</i>, 00-00-00</font></p>
+
+    <hr noShade>
+
+    <pre>
+    
+NIEUWE CURSUS:
+
+                D I S K   C U R S U S   ( 1 )
+               ===============================
+
+Zoals beloofd op de vorige ClubGuide  start  ik  vanaf  deze
+ClubGuide met een nieuwe cursus over diskgebruik op MSX.  De
+cursus  zal  vooralsnog  alleen   MSXDOS1/Disk   Basic   1.0
+behandelen. Misschien zal ik over een  tijdje  ook  aandacht
+besteden aan MSXDOS2, maar dat kan ik nu nog  niet  beloven.
+Om te beginnen leg ik u eerst uit hoe een  MSX  diskette  is
+ingedeeld.
+
+
+                    DE 3.5 INCH DISKETTE
+
+MSX computers maken gebruik van de 3.5&quot; disk. Deze  diskette
+kan enkelzijdig of dubbelzijdig zijn. De offici‰le  naam  is
+MF-1DD voor enkelzijdig  of  MF-2DD  voor  dubbelzijdig.  MF
+staat voor MicroFloppydisk, DD staat voor Double Density.
+
+Elke zijde bevat 80 tracks, die elk weer onderverdeeld  zijn
+in 9 sectoren. In totaal zijn er dus 9 * 80 =  720  sectoren
+op ‚‚n kant. Elke sector kan 512 bytes bevatten, waardoor de
+opslag van een dubbelzijdige diskette 2 * 9 * 80 * 512 = 720
+kB bedraagt.
+
+U heeft misschien wel eens de kreet &quot;Ongeformatteerd  1  MB&quot;
+op een disk zien staan. Als u de disk formatteert,  schrijft
+de diskdrive de sectoren  op  de  diskette.  Er  worden  ook
+checksums op de disk gezet, zodat de drive bij elke lees- of
+schrijfoperatie kan checken of alles  goed  is  gegaan.  Dat
+kost veel diskruimte, u houdt van de 1 MB &quot;slechts&quot;  720  kB
+over.
+
+Wij zullen ons in deze cursus niet bezighouden met wat  zich
+tussen de sectoren afspeelt. De grens ligt bij de  sectoren.
+Het is mogelijk om met directe I/O  communicatie  tussen  de
+sectoren te lezen/schrijven, dat wordt veel voor het  (ont-)
+beveiligen van diskettes gebruikt. Wij gaan daar niet verder
+op in.
+
+Er zijn een aantal  niveaus  waarop  je  een  diskette  kunt
+benaderen: sectoren, clusters en bestanden. We  beginnen  nu
+met sectoren.
+
+
+                 SECTOREN LEZEN EN SCHRIJVEN
+
+De BIOS routine voor het lezen  en  schrijven  van  sectoren
+doet bij gebruik  van  de  diskdrive  al  het  werk.  Als  u
+bijvoorbeeld een bestand wilt  lezen  geeft  u  de  computer
+daartoe opdracht via MSX DOS, Disk Basic of BDOS  calls.  In
+de diskrom bevinden zich routines die  alles  herleiden  tot
+het lezen en/of schrijven van sectoren. Die routines  roepen
+steeds de BIOS  routine  aan  om  een  sector  te  lezen  of
+te schrijven.
+
+De BIOS routine heet PHYDIO (Physical Disk I/O) en staat  op
+adres &amp;H144. De routine gebruikt de volgende registers:
+
+A:  drivenummer (A = 0, B = 1, etc.)
+B:  aantal sectoren
+C:  media ID (&amp;HF8 voor enkelz. of &amp;HF9 voor dubbelzijdig)
+HL: RAM adres
+DE: nummer van eerste sector
+
+U kunt met de C-flag aangeven of u wilt lezen of schrijven:
+
+NC: lezen
+C:  schrijven
+
+Nadat u met  LD  instrukties  de  registers  van  de  juiste
+waarden hebt voorzien kunt u de routine aanroepen met:
+
+CALL &amp;H144
+
+Alle registers worden veranderd. Als de  routine  terugkeert
+met de carry hoog, dan is er iets fout gegaan. B  bevat  het
+aantal nog te laden/saven sectoren en A bevat  de  foutcode.
+De volgende foutcodes zijn mogelijk:
+
+0   Protected
+2   Not ready
+4   Data error
+6   Seek error
+8   Record not found
+10  Write error
+12  Bad parameter
+14  Out of memory
+16  Overig
+
+Voor  alle  duidelijkheid  nog  even  een   voorbeeld.   Dit
+voorbeeld leest de bootsector van de disk in drive A  in  en
+zet die vanaf adres &amp;HD000.
+
+; DEMONSTRATIE PHYDIO
+
+ORG  &amp;HC000        ; startadres
+LD   A,0           ; drive A
+LD   BC,&amp;H01F9     ; 1 sector, dubbelzijdige disk (F9)
+LD   HL,&amp;HD000     ; startadres
+LD   DE,0          ; bootsector is sector 0
+OR   A             ; wis carry = lezen
+CALL &amp;H144         ; roep de routine aan
+RET  NC            ; klaar als geen fout
+CALL &amp;HC0          ; BEEP als fout
+RET
+
+
+                         FORMATTEREN
+
+De tweede en laatste BIOS call is FORMAT. Deze routine staat
+op adres &amp;H147 en doet precies hetzelfde als CALL FORMAT. De
+computer  vraagt  zoals  gebruikelijk  om  drive  en  aantal
+zijden. U roept de routine aan door  CALL  &amp;H147.  In  Basic
+kunt u in plaats van _FORMAT dus ook DEFUSR=&amp;H147:  U=USR(0)
+gebruiken.
+
+Bij het  formatteren  worden  er  sectoren  op  de  diskette
+geschreven. Bootsector, FAT en directory worden  ge‹nitiali-
+seerd.
+
+
+                        DE BOOTSECTOR
+
+De eerste sector van een diskette heet de bootsector, in het
+Nederlands  &quot;opstartsector&quot;.  Deze  sector  bevat   algemene
+informatie over de diskette en de opstartroutine.
+
+Als u de computer opstart met een disk in de drive, dan  zal
+de computer de bootsector inlezen en vanaf adres  &amp;HC000  in
+het  RAM  geheugen  zetten.  De  computer  geeft  daarna  de
+besturing over aan de routine die op adres &amp;HC01E begint.
+
+Het eerste stuk van de bootsector (0-&amp;H1D)  is  gereserveerd
+voor gegevens over de disk. De bytes 00-02 zijn een  erfenis
+van andere systemen waarop de disk kan draaien,  zij  hebben
+op  MSX  geen  betekenis.
+
+De  eerste  bytes  van  de  bootsector  hebben  de  volgende
+betekenis:
+
+------------------------------------------------------------
+00       &amp;HE9 of &amp;HEB (JUMP instruktie voor 8086 processor)
+01-02    Eventueel beginadres van de MS-DOS boot strap
+03-0A    8 ASCII tekens waarin normaal de merknaam van de
+         drive staat waarop de disk is geformatteerd
+0B-0C    Aantal bytes per sector (512)
+0D       Aantal sectoren per cluster (2)
+0E-0F    Aantal gereserveerde sectoren (2)
+10       Aantal FAT's (2)
+11-12    Maximum aantal files in de directory (112)
+13-14    Totaal aantal sectoren per diskette (720 of 1440)
+15       ID-byte (&amp;HF8 of &amp;HF9)
+16-17    Aantal sectoren per FAT (2 of 3)
+18-19    Aantal sectoren per track (9)
+1A-1B    Aantal magneetkoppen (= aantal zijdes, 1 of 2)
+1C-1D    Aantal &quot;verborgen&quot; sectoren (0)
+1E-?     Bootroutine
+------------------------------------------------------------
+
+Tussen haakjes staat steeds de standaardwaarde. De  diskette
+is behalve in sectoren ook nog eens  in  clusters  verdeeld.
+Een cluster bestaat uit twee sectoren. Er  kunnen  dus  1024
+bytes, oftewel 1 kB, in een cluster worden opgeslagen.
+
+U kunt in Basic met  het  commando  DSKF(drive)  het  aantal
+vrije clusters van een diskette opvragen. U zult merken  dat
+er bij een geformatteerde dubbelzijdige diskette geen 720 kB
+vrij is, zoals u zou verwachten. Nee, er is slechts 713  kB.
+Nu zult u denken: waar is die 7 kB gebleven? Het antwoord is
+heel simpel: de bootsector (1), FAT  (6)  en  directory  (7)
+gebruiken samen 14 sectoren. In die 7  kB  kunnen  dus  geen
+bestanden meer worden opgeslagen.
+
+Bij diskettes die door  Disk  Basic  V1.0  of  MSXDOS1  zijn
+geformatteerd 'kijkt' de bootroutine (die vanaf &amp;H1C  in  de
+bootsector staat) of MSXDOS1 op de disk aanwezig is. Als dat
+zo is, dan wordt MSXDOS1 vanaf &amp;H100  geladen  en  geeft  de
+computer de besturing over aan MSXDOS1.
+
+In het andere  geval  wordt  de  besturing  verder  door  de
+computer gaat, die zal proberen AUTOEXEC.BAS van de diskette
+te RUNnen. Als dat ook niet lukt, dan  springt  de  computer
+naar Basic.
+
+
+                    COMMERCIELE SOFTWARE
+
+Als u met een diskmonitor in de bootsector  van  commerci‰le
+software kijkt, dan zult  u  vaak  rare  dingen  aantreffen.
+Meestal staan er zeer vreemde dingen,  zoals  diskettes  met
+2367 zijdes (!!). De naam van het spel of het nummer van  de
+disk staan ook vaak in de bootsector. Kijkt u maar eens  met
+een sectormonitor in de bootsector van  Japanse  spellen.  U
+kunt dan ook zien  dat  Falcom  een  eigen  soort  directory
+gebruikt (zie bijvoorbeeld Ys III, Wanderers from Ys).
+
+U kunt van zulke diskettes vaak niet de  filelist  opvragen.
+Logisch, want de computer raakt aardig in de war als de  FAT
+volgens de bootsector uit 65536 sectoren bestaat!  U  krijgt
+dan bij een FILES of DSKF(0) opdracht  de  foutmelding  Disk
+I/O error. De disk is dan niet kapot, de diskrom kan  alleen
+niet de juiste opdracht uitvoeren.
+
+
+                      FAT EN DIRECTORY
+
+De volgende keer gaan we verder met de FAT en de  directory.
+Er zal dan een programma op de ClubGuide staan dat van  elke
+file op een disk niet alleen naam, extensie, tijd, datum  en
+filegrootte geeft, maar ook in welke clusters/  sectoren  de
+file staat. Dat is vooral handig om te weten als u  met  een
+diskmonitor in de file wilt gaan &quot;knoeien&quot;.
+
+Als u nog suggesties heeft voor deze cursus, dan kunt u  mij
+een briefje sturen.  Ik  ga  er  bijvoorbeeld  van  uit  dat
+iedereen wel een sectormonitor heeft. Laat het weten als dat
+niet zo is, dan plaats ik er alsnog  ‚‚n  op  de  ClubGuide.
+Stuur uw vragen, suggesties of opmerkingen naar:
+
+                       Stichting GENIC
+                     T.a.v. Stefan Boer
+                         Postbus 258
+                       8470 AE Wolvega
+
+                    Tot de volgende keer!
+
+                                              Stefan Boer
+
+    </pre>
+
+    <hr noShade>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="index.htm">Index</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_31.htm">Vorige</a></font></strong></p>
+    <p align="center"><strong><font face="Verdana,Arial,Helverica"><a href="topic_33.htm">Volgende</a></font></strong></td>
+  </tr>
+</table>
+</center></div>
+</body>
+</html>
