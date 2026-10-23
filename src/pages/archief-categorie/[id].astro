@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import IssueGrid from '../../components/IssueGrid.astro';
+import { getArchive } from '../../lib/archive';
+
+export async function getStaticPaths() {
+  return (await getArchive()).map(({ series, issues }) => ({
+    params: { id: series.id },
+    props: { series, issues },
+  }));
+}
+
+const { series, issues } = Astro.props;
+---
+
+<Base title={series.data.title}>
+  <p class="muted"><a href="/">Archief</a> /</p>
+  <h1>{series.data.title}</h1>
+  <p class="muted">{issues.length} nummers</p>
+  <IssueGrid issues={issues} eager={6} />
+</Base>

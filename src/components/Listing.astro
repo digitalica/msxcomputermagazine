@@ -1,0 +1,57 @@
+---
+import { pageLinks, webmsxUrl, type PageRef, type WebMSX } from '../lib/links';
+
+interface Props {
+  issue: { pdf?: string; reader?: number };
+  item: PageRef & { title: string; note?: string; webmsx?: WebMSX };
+}
+
+const { issue, item } = Astro.props;
+const links = pageLinks(issue, item);
+---
+
+<li class="listing">
+  <span class="title">
+    {item.title}
+    {item.note && <span class="muted"> – {item.note}</span>}
+  </span>
+  <span class="actions">
+    {item.page && <span class="page mono muted">p. {item.page}</span>}
+    {links.pdf && <a class="btn btn-sm" href={links.pdf} target="_blank">pdf</a>}
+    {links.reader && <a class="btn btn-sm" href={links.reader}>blader</a>}
+    {
+      item.webmsx && (
+        <a class="btn btn-sm btn-run" href={webmsxUrl(item.webmsx)} target="_blank" title="Start in WebMSX">
+          ▶ run
+        </a>
+      )
+    }
+  </span>
+</li>
+
+<style>
+  .listing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .title {
+    flex: 1 1 16rem;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .page {
+    min-width: 3.5em;
+    font-size: 0.8rem;
+  }
+</style>

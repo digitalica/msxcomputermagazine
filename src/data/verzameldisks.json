@@ -1,0 +1,62 @@
+[
+  {
+    "name": "MCM-A1_ArtGallery",
+    "thumb": "MCM_A1.png",
+    "photo": "MCM-A1.jpg",
+    "description": "Deze diskette bevat een keur van de in MCM gepubliceerde Art Gallery schermen",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/wp-content/uploads/2017/12/MCM-A1_ArtGallery.zip"
+    }
+  },
+  {
+    "name": "MCM-I1_Index",
+    "thumb": "MCM-l1.png",
+    "photo": "MCM-I1.jpg",
+    "description": "MCM Bladen index programma. v1.0 4 april 1992, MCM nummer 1-50. Ook beschikbaar via <a href=\"/index1-50/\">deze pagina</a>.",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/wp-content/uploads/2017/12/MCM-I1_Index.zip"
+    }
+  },
+  {
+    "name": "MCM-L1_MCM_Listingboekdiskette",
+    "thumb": "MCM_L1.png",
+    "photo": "MCM_L1.jpg",
+    "description": "Inhoud <a href=\"/archief/listingboek-1/\">Listingboek 1</a>",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/wp-content/uploads/2017/12/MCM-L1_MCM_Listingboekdiskette.zip"
+    }
+  },
+  {
+    "name": "MCM-MG01_Spellen",
+    "thumb": "MCM-MG01.png",
+    "photo": "MCM-MG01.jpg",
+    "description": "Collectie spel listings: YATHZE, LOCKIN, MYSTER, SCHAT, BEURS, VISSEN, SPACE, QBERT, PUCKY, JAKE, IJSFAB, VIPER, OTHELL, HAL,<br>\nBLAST, TAO, BREAK, LASERB, TAOOPL, TAO1, DPSHT, JUNGLE en ESCAPE.",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/wp-content/uploads/2017/12/MCM-MG01_Spellen.zip"
+    }
+  },
+  {
+    "name": "MCM-T1_Utilities",
+    "thumb": "MCM-T1.png",
+    "photo": "MCM-T1.jpg",
+    "description": "Collectie utilities: REMSP, KLAD, TAPDIR, GROLET, EDIT, DSKTYP, VARLST, LINLST, REFLST, SUPDIR, CTRLPL, MSXPRT, VARLN2, JOYSOR,<br>\nMSXMEM, INSERT, SHELL, SMSORT, SRTTM2, ALG31-ALG35, MSXBUG, DISASS, KOPPIE, DSORTB, DSORTC, PRSTAT, SETDRV, DATMAK, KOPPIE64, KOPPIE2D,<br>\nKEYIN, FDATE, FTIME, KILSPC, KILSPB, RAMDSK, RAMDISK.BIN, RDINST, MORE, DISKVW, DVINST, SYSTEM, TRNSFR, TRANSFER.COM, ASCTAB, PATCH,<br>\nID en ICP7.",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/wp-content/uploads/2017/12/MCM-T1_Utilities.zip"
+    }
+  },
+  {
+    "name": "MCM-W1_Toepassingen",
+    "thumb": "MCM-W1.png",
+    "photo": "MCM-W1.jpg",
+    "description": "Collectie diverse toepassingen: PLANET, SPRITE, MSXPEN, TYPLES, BCDMCM, MCM2BS, EDIT, TEKEN, KALEND, FCTUUR, SCHAATS, TRNSFR, EASPATCH.COM en SEPPAT.",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/wp-content/uploads/2017/12/MCM-W1_Toepassingen.zip"
+    }
+  }
+]

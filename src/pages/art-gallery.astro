@@ -1,0 +1,60 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import gallery from '../data/art-gallery.json';
+import { webmsxUrl } from '../lib/links';
+
+const page = (await getEntry('pages', 'art-gallery'))!;
+const { Content } = await render(page);
+---
+
+<Base title="Art Gallery" description="Art Gallery: de inzendingen van mooie MSX-plaatjes, direct te bekijken in WebMSX.">
+  <article class="prose" data-pagefind-body>
+    <h1>{page.data.title}</h1>
+    <Content />
+  </article>
+
+  <ul class="gallery">
+    {
+      gallery.map((entry) => (
+        <li>
+          <a class="btn btn-run" href={webmsxUrl(entry.webmsx)} target="_blank" title="Start in WebMSX">
+            ▶ <span class="mono">{entry.name.replace(/_/g, ' ')}</span>
+          </a>
+          {entry.corrupt && (
+            <span class="corrupt" title="Deels corrupte disk-image">
+              (*)
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 0.5rem 1rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gallery li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+
+  .gallery .btn {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .corrupt {
+    color: var(--warn);
+  }
+</style>

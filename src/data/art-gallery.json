@@ -1,0 +1,436 @@
+[
+  {
+    "name": "A._Caris_Meyel",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/A._Caris_Meyel.zip"
+    }
+  },
+  {
+    "name": "AG_40_D",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/AG_40_D.zip",
+      "run": "show"
+    }
+  },
+  {
+    "name": "ARTGAL_35",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/ARTGAL_35.zip",
+      "run": "show"
+    }
+  },
+  {
+    "name": "ARTGAL_40-C_41",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/ARTGAL_40-C_41.zip",
+      "run": "show"
+    }
+  },
+  {
+    "name": "Art_Gal_40_B",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Art_Gal_40_B.zip",
+      "run": "show"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Art_Gallery_Koert_van_Mensvoort",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Art_Gallery_Koert_van_Mensvoort.zip"
+    }
+  },
+  {
+    "name": "Art_Gallery_Koert_van_Mensvoort_2",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Art_Gallery_Koert_van_Mensvoort_2.zip"
+    }
+  },
+  {
+    "name": "Art_Gallery_Pictures_Marco_Willemsen",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Art_Gallery_Pictures_Marco_Willemsen.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Art_Gallery_erg_gekleurd_DEVILDOG",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Art_Gallery_erg_gekleurd_DEVILDOG.zip"
+    }
+  },
+  {
+    "name": "BB",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/BB.zip"
+    }
+  },
+  {
+    "name": "Blauwe_Single_Sided_TDK_disk_Computergek",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Blauwe_Single_Sided_TDK_disk_Computergek.zip"
+    }
+  },
+  {
+    "name": "Blauwe_Sony_doorgekraste_tekst",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Blauwe_Sony_doorgekraste_tekst.zip"
+    }
+  },
+  {
+    "name": "Blauwe_Verbatim_MSXDES",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Blauwe_Verbatim_MSXDES.zip"
+    }
+  },
+  {
+    "name": "COMPUTER_ART_Marcel_Krol_Langedijke",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/COMPUTER_ART_Marcel_Krol_Langedijke.zip"
+    }
+  },
+  {
+    "name": "Compbird_Peter_vd_Woude",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Compbird_Peter_vd_Woude.zip"
+    }
+  },
+  {
+    "name": "D.de_Waard_Oss",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/D.de_Waard_Oss.zip"
+    }
+  },
+  {
+    "name": "Designer.pic_M_vd_Pavert",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Designer.pic_M_vd_Pavert.zip"
+    }
+  },
+  {
+    "name": "E-J.D.v.Vliet_Schaakprogrammas_en_tekeningen_Tschai",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/E-J.D.v.Vliet_Schaakprogrammas_en_tekeningen_Tschai.zip"
+    }
+  },
+  {
+    "name": "Eiland_beest_grot",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Eiland_beest_grot.zip"
+    }
+  },
+  {
+    "name": "Floris_vd_Ven_Art_Gallery_Tip_Panda",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Floris_vd_Ven_Art_Gallery_Tip_Panda.zip"
+    }
+  },
+  {
+    "name": "Grijze_3M_Smidse",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Grijze_3M_Smidse.zip"
+    }
+  },
+  {
+    "name": "I.O.D._Rob_van_den_Bragt",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/I.O.D._Rob_van_den_Bragt.zip"
+    }
+  },
+  {
+    "name": "J.Isaacson_Haaksbergen",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/J.Isaacson_Haaksbergen.zip"
+    }
+  },
+  {
+    "name": "J.J.Hartman_Lage_Zwaluwe",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/J.J.Hartman_Lage_Zwaluwe.zip"
+    }
+  },
+  {
+    "name": "Jeroen_Timmers_Dronten_Diskette_2",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Jeroen_Timmers_Dronten_Diskette_2.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Lichtgrijze_merkloze_disk_met_geel_label_in_zakje",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Lichtgrijze_merkloze_disk_met_geel_label_in_zakje.zip"
+    }
+  },
+  {
+    "name": "MCMs_Art_Gallery_Hoofdred_CGP_Ronald_Egas…_ClubGuide_Picturedisk",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/MCMs_Art_Gallery_Hoofdred_CGP_Ronald_Egas..._ClubGuide_Picturedisk.zip"
+    }
+  },
+  {
+    "name": "MCMs_Art_Gallery_Jetsoft_Richard_Stoffer",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/MCMs_Art_Gallery_Jetsoft_Richard_Stoffer.zip"
+    }
+  },
+  {
+    "name": "MCMs_Art_Gallery_Lente_91_BCF",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/MCMs_Art_Gallery_Lente_91_BCF.zip"
+    }
+  },
+  {
+    "name": "MSX2_Screen_8_digis_A.W.vd.Putten_Wieringerwerf",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/MSX2_Screen_8_digis_A.W.vd.Putten_Wieringerwerf.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "MSX_Transport_Marielle_ARTGAL_52_rescued",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/MSX_Transport_Marielle_ARTGAL_52_rescued.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Martijn_van_der_Hoeden",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Martijn_van_der_Hoeden.zip"
+    }
+  },
+  {
+    "name": "Metallica_Ride_the_Lightning",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Metallica_Ride_the_Lightning.zip"
+    }
+  },
+  {
+    "name": "Peter-Paul_Hoogbruin",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Peter-Paul_Hoogbruin.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Plaatje_van_Queen_W._Schotanus_Balk",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Plaatje_van_Queen_W._Schotanus_Balk.zip"
+    }
+  },
+  {
+    "name": "R.de_Weerd_D._Middelbeek",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/R.de_Weerd_D._Middelbeek.zip"
+    }
+  },
+  {
+    "name": "Rien_de_Waal",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Rien_de_Waal.zip"
+    }
+  },
+  {
+    "name": "Rob_Schreuders_Hoogeveen",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Rob_Schreuders_Hoogeveen.zip"
+    }
+  },
+  {
+    "name": "Robin_Lee_FERRARI",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Robin_Lee_FERRARI.zip"
+    }
+  },
+  {
+    "name": "Roels_Guy_BERGLAND",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Roels_Guy_BERGLAND.zip"
+    }
+  },
+  {
+    "name": "Roels_Guy_BREAKOUT",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Roels_Guy_BREAKOUT.zip"
+    }
+  },
+  {
+    "name": "Roels_Guy_FORREST",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Roels_Guy_FORREST.zip"
+    }
+  },
+  {
+    "name": "Roels_Guy_KINGTUT",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Roels_Guy_KINGTUT.zip"
+    }
+  },
+  {
+    "name": "Ronald_Kok_Den_Haag",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Ronald_Kok_Den_Haag.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Ruud_Hendriks_en_Marco_Soyer_Nijmegen",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Ruud_Hendriks_en_Marco_Soyer_Nijmegen.zip"
+    }
+  },
+  {
+    "name": "Ruud_vd_Moosdijk_-kapot-",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Ruud_vd_Moosdijk_-kapot-.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Sander_Peters_Maastricht",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Sander_Peters_Maastricht.zip"
+    }
+  },
+  {
+    "name": "Schermbeelden_voor_Art_Gallery_door_Laurens_Rutten",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Schermbeelden_voor_Art_Gallery_door_Laurens_Rutten.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "Schermen_voor_Art_Gallery_door_Laurens_Rutten",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Schermen_voor_Art_Gallery_door_Laurens_Rutten.zip"
+    }
+  },
+  {
+    "name": "TEKENINGEN_DESIGNER+_H.NAAIJER",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/TEKENINGEN_DESIGNER _H.NAAIJER.zip"
+    }
+  },
+  {
+    "name": "Tekeningen_Designer+_H._Naaijer",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Tekeningen_Designer _H._Naaijer.zip"
+    }
+  },
+  {
+    "name": "Tekeningen_P._Hoogbruin",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Tekeningen_P._Hoogbruin.zip"
+    }
+  },
+  {
+    "name": "The_Art_Division_DEMO_DISK_Rolf_van_Deursen",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/The_Art_Division_DEMO_DISK_Rolf_van_Deursen.zip"
+    }
+  },
+  {
+    "name": "The_Face_R.Verkerk_E.Schuller",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/The_Face_R.Verkerk_E.Schuller.zip"
+    }
+  },
+  {
+    "name": "Twee_beelden_voor_MCMs_Art_Gallery_door_Laurens_Rutten",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Twee_beelden_voor_MCMs_Art_Gallery_door_Laurens_Rutten.zip"
+    }
+  },
+  {
+    "name": "Vier_Plaatjes_van_Flying_Bytes_voor_MCMs_Art_Gallery",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Vier_Plaatjes_van_Flying_Bytes_voor_MCMs_Art_Gallery.zip"
+    }
+  },
+  {
+    "name": "Voorbeeld_Tekeningen_H._Naaijer",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Voorbeeld_Tekeningen_H._Naaijer.zip"
+    },
+    "corrupt": true
+  },
+  {
+    "name": "W_Verhagen_AST-OBEL",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/W_Verhagen_AST-OBEL.zip"
+    }
+  },
+  {
+    "name": "Walter_van_Gastel_Roosendaal",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Walter_van_Gastel_Roosendaal.zip"
+    }
+  },
+  {
+    "name": "Wietze_W._Troost",
+    "webmsx": {
+      "machine": "MSX2E",
+      "disk": "/archief/disks/art-gallery/Wietze_W._Troost.zip"
+    }
+  }
+]

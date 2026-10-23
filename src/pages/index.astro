@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import IssueGrid from '../components/IssueGrid.astro';
+import { getArchive, seriesUrl } from '../lib/archive';
+
+const archive = await getArchive();
+const total = archive.reduce((n, s) => n + s.issues.length, 0);
+---
+
+<Base>
+  <section class="intro">
+    <h1>MSX Computer Magazine archief</h1>
+    <p class="lead">
+      Alle {total} nummers van MSX Computer Magazine, MS(X)DOS Computer Magazine, MSX Computer &amp; Club
+      Magazine en MCCW uit 1985 – 2000. Download ze als pdf, lees ze in de{' '}
+      <a href="/mcm-bladerkamer/">bladerkamer</a> of start de listings direct in WebMSX.
+    </p>
+  </section>
+
+  <nav class="series-nav" aria-label="Jaargangen">
+    {archive.map(({ series }) => <a href={`#${series.id}`}>{series.data.title}</a>)}
+  </nav>
+
+  {
+    archive.map(({ series, issues }, i) => (
+      <section class="series" id={series.id}>
+        <h2>
+          <a href={seriesUrl(series)}>{series.data.title}</a>
+          <span class="muted">{issues.length} nummers</span>
+        </h2>
+        <IssueGrid issues={issues} eager={i === 0 ? 6 : 0} />
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  .intro {
+    max-width: var(--narrow);
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: var(--ink-2);
+  }
+
+  .series-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0 1rem;
+    padding: 0.6rem 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    scrollbar-width: thin;
+  }
+
+  .series-nav a {
+    flex: none;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .series-nav a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .series {
+    scroll-margin-top: 4rem;
+  }
+
+  .series h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+
+  .series h2 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .series h2 a:hover {
+    color: var(--accent);
+  }
+
+  .series h2 .muted {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+</style>

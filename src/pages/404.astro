@@ -1,0 +1,15 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const page = (await getEntry('pages', 'oeps'))!;
+const { Content } = await render(page);
+---
+
+<Base title="Oeps, pagina niet gevonden">
+  <article class="prose">
+    <h1>Oeps! 404</h1>
+    <Content />
+    <p><a href="/">Terug naar het archief</a> of <a href="/search/">zoek</a> wat je zocht.</p>
+  </article>
+</Base>

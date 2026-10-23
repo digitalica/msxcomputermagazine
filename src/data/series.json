@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1_mcm-1985-1988",
+    "title": "MCM 1985 - 1988",
+    "order": 1
+  },
+  {
+    "id": "2_msxdos",
+    "title": "MS(X)Dos 1988 - 1990",
+    "order": 2
+  },
+  {
+    "id": "3_mcm-1990-1993",
+    "title": "MCM 1990 - 1993",
+    "order": 3
+  },
+  {
+    "id": "4_mccm",
+    "title": "MCCM 1993 - 1995",
+    "order": 4
+  },
+  {
+    "id": "5_mccm",
+    "title": "MCCM 1995 - 1997",
+    "order": 5
+  },
+  {
+    "id": "6_mccw",
+    "title": "MCCW 2000",
+    "order": 6
+  },
+  {
+    "id": "7_listingboeken",
+    "title": "Listingboeken",
+    "order": 7
+  }
+]

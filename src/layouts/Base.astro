@@ -1,0 +1,175 @@
+---
+import { Image } from 'astro:assets';
+import wammes from '../assets/wammes.jpg';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Use the full page width (page viewer). */
+  wide?: boolean;
+}
+
+const SITE_TITLE = 'MSX Computer Magazine archief (1985 – 1997)';
+const { title, description = 'Het complete archief van MSX Computer Magazine, MS(X)DOS Computer Magazine en MSX Computer & Club Magazine: alle nummers als pdf, met de listings direct te starten in WebMSX.' } = Astro.props;
+const fullTitle = title ? `${title} – ${SITE_TITLE}` : SITE_TITLE;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const nav = [
+  { href: '/', label: 'Archief' },
+  { href: '/mcm-bladerkamer/', label: 'Bladerkamer' },
+  { href: '/index1-50/', label: 'Index' },
+  { href: '/art-gallery/', label: 'Art Gallery' },
+  { href: '/mcm-verzameldisks/', label: 'Verzameldisks' },
+  { href: '/search/', label: 'Zoeken' },
+  { href: '/achtergrond/', label: 'Achtergrond' },
+  { href: '/contact/', label: 'Contact' },
+];
+const path = Astro.url.pathname;
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' || path.startsWith('/archief') : path.startsWith(href);
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.jpg" />
+    <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/feed.xml" />
+    <meta property="og:title" content={title ?? SITE_TITLE} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="visually-hidden" href="#main">Naar inhoud</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">
+          <Image src={wammes} alt="" width={56} height={38} loading="eager" />
+          <span>
+            <strong>MSX Computer Magazine</strong>
+            <small>archief 1985 – 1997</small>
+          </span>
+        </a>
+        <nav aria-label="Hoofdmenu">
+          <ul>
+            {
+              nav.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class:list={[!Astro.props.wide && 'container']}>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          MSX Computer Magazine archief · <a href="/contact/">contact &amp; disclaimer</a> ·{' '}
+          <a href="https://x.com/mcm_online" rel="me">@mcm_online</a> ·{' '}
+          <a href="/feed.xml">RSS</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 2rem;
+  }
+
+  .header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding-block: 0.75rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .brand img {
+    border-radius: 4px;
+  }
+
+  .brand span {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+
+  .brand small {
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a {
+    display: block;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  nav a:hover {
+    background: var(--paper-2);
+  }
+
+  nav a[aria-current='page'] {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  main {
+    min-height: 60vh;
+  }
+
+  .site-footer {
+    margin-top: 4rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink-2);
+    font-size: 0.9rem;
+  }
+
+  .site-footer a {
+    color: inherit;
+  }
+</style>

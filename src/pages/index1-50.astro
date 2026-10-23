@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro';
+import rows from '../data/index-1-50.json';
+import { getIssues, issueUrl } from '../lib/archive';
+import { readerUrl } from '../lib/links';
+
+// Index rows refer to the magazine number, which is the reader nr of an issue.
+const issueByNr = new Map((await getIssues()).filter((i) => i.data.reader).map((i) => [i.data.reader, i]));
+const kinds = [...new Set(rows.map((r) => r.soort).filter(Boolean))].sort((a, b) => a!.localeCompare(b!, 'nl'));
+---
+
+<Base
+  title="MCM Index 1-50"
+  description="Uitgebreide index van alle artikelen in MSX Computer Magazine nummer 1 t/m 50, met directe links naar de pagina’s."
+>
+  <div class="prose">
+    <h1>MCM Index 1-50</h1>
+    <p>
+      Een uitgebreide index van MCM nummer 1 t/m 50, indertijd verkocht voor 20 gulden via de MCM
+      Lezersservice maar nooit bijgewerkt. Echter te leuk om niet te delen via dit online archief. Klik op een
+      titel om de pagina in de bladerkamer te openen.
+    </p>
+  </div>
+
+  <form class="filters" role="search" onsubmit="return false">
+    <label>
+      Zoek
+      <input type="search" id="q" placeholder="titel, inhoud of trefwoord" autocomplete="off" />
+    </label>
+    <label>
+      Soort
+      <select id="kind">
+        <option value="">alle</option>
+        {kinds.map((k) => <option>{k}</option>)}
+      </select>
+    </label>
+    <span class="muted" id="count" aria-live="polite">{rows.length} artikelen</span>
+  </form>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nr</th>
+          <th>Pag</th>
+          <th>Titel en inhoud</th>
+          <th>Soort</th>
+          <th>Trefwoorden</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((r) => {
+            const issue = issueByNr.get(r.nr);
+            return (
+              <tr data-kind={r.soort ?? ''}>
+                <td class="mono">{issue ? <a href={issueUrl(issue)}>{r.nr}</a> : r.nr}</td>
+                <td class="mono">{r.pag}</td>
+                <td>
+                  <a href={readerUrl(r.nr, r.pag)}>{r.titel}</a>
+                  {r.inhoud && <div class="muted">{r.inhoud}</div>}
+                  {r.oeps && <div class="oeps">Oeps: {r.oeps}</div>}
+                </td>
+                <td>{r.soort}</td>
+                <td class="keywords">{r.trefwoorden}</td>
+              </tr>
+            );
+          })
+        }
+      </tbody>
+    </table>
+  </div>
+</Base>
+
+<script>
+  const q = document.querySelector<HTMLInputElement>('#q')!;
+  const kind = document.querySelector<HTMLSelectElement>('#kind')!;
+  const count = document.querySelector('#count')!;
+  const rows = [...document.querySelectorAll<HTMLTableRowElement>('tbody tr')].map((tr) => ({
+    tr,
+    text: tr.textContent!.toLowerCase(),
+  }));
+
+  function filter() {
+    const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    for (const { tr, text } of rows) {
+      const match = (!kind.value || tr.dataset.kind === kind.value) && words.every((w) => text.includes(w));
+      tr.hidden = !match;
+      if (match) shown++;
+    }
+    count.textContent = `${shown} artikelen`;
+  }
+
+  q.addEventListener('input', filter);
+  kind.addEventListener('change', filter);
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem 1rem;
+    margin: 1.5rem 0 1rem;
+  }
+
+  .filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+
+  .filters input,
+  .filters select {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+    font: inherit;
+  }
+
+  .filters input {
+    width: min(22rem, 80vw);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    font-size: 0.9rem;
+    min-width: 44rem;
+  }
+
+  .keywords {
+    font-size: 0.8rem;
+    color: var(--ink-2);
+  }
+
+  .oeps {
+    color: var(--warn);
+    font-size: 0.85rem;
+  }
+</style>

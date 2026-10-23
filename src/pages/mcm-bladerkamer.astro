@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import { getIssues } from '../lib/archive';
+
+const issues = (await getIssues()).filter((i) => i.data.reader);
+---
+
+<Base
+  title="MCM bladerkamer"
+  description="Blader en zoom door alle 6.500+ pagina’s van het MSX Computer Magazine-archief."
+>
+  <h1>MCM bladerkamer</h1>
+  <p class="intro">
+    Blader en zoom door alle 6.500+ pagina’s uit het MSX Computer Magazine-archief. Kies een nummer, of
+    gebruik de knop <em>full page</em> om beeldvullend te lezen (terug met Esc).
+  </p>
+
+  <form class="picker" method="get" action="/mcm-bladerkamer/">
+    <label>
+      Nummer
+      <select name="nr" id="nr">
+        {
+          issues.map((issue) => (
+            <option value={issue.data.reader}>{issue.data.title}</option>
+          ))
+        }
+      </select>
+    </label>
+    <label>
+      Pagina
+      <input type="number" name="pag" id="pag" min="1" max="100" value="1" inputmode="numeric" />
+    </label>
+    <button class="btn btn-primary" type="submit">Ga naar pagina</button>
+  </form>
+
+  {/* Same origin: the tile server sends no CORS headers. In dev/preview, /mcm_dzi/ is proxied (astro.config.mjs). */}
+  <div id="osd-container" data-tiles="/mcm_dzi/mcm_dzi.dzi"></div>
+</Base>
+
+<script>
+  import '../scripts/bladerkamer';
+
+  // Reflect ?nr=&pag= in the picker.
+  const params = new URLSearchParams(location.search);
+  const nr = document.querySelector<HTMLSelectElement>('#nr')!;
+  const pag = document.querySelector<HTMLInputElement>('#pag')!;
+  if (params.get('nr')) nr.value = params.get('nr')!;
+  if (params.get('pag')) pag.value = params.get('pag')!;
+</script>
+
+<style>
+  .intro {
+    max-width: var(--narrow);
+  }
+
+  .picker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .picker label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+
+  .picker select,
+  .picker input {
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.95rem;
+  }
+
+  .picker input {
+    width: 5.5rem;
+  }
+
+  #osd-container {
+    width: 100%;
+    height: 80vh;
+    min-height: 24rem;
+    border-radius: var(--radius);
+    background: #111;
+  }
+</style>

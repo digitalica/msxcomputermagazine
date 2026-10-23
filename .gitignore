@@ -1,0 +1,21 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# migration download cache (raw HTML of the old WordPress site)
+.cache/
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+
+# environment
+.env
+.env.*
+
+# editor / OS
+.DS_Store
+.idea/

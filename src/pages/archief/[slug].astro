@@ -1,0 +1,210 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Listing from '../../components/Listing.astro';
+import { getIssues, issueUrl, seriesUrl } from '../../lib/archive';
+import { pageLinks, pdfUrl, readerUrl, webmsxUrl } from '../../lib/links';
+
+export async function getStaticPaths() {
+  const issues = await getIssues();
+  return issues.map((issue, i) => ({
+    params: { slug: issue.id },
+    props: { issue, prev: issues[i - 1], next: issues[i + 1] },
+  }));
+}
+
+const { issue, prev, next } = Astro.props;
+const d = issue.data;
+const series = await getEntry(d.series);
+const { Content } = await render(issue);
+const subscription = d.subscriptionPage ? pageLinks(d, { page: d.subscriptionPage }) : undefined;
+const listingCount = d.sections.reduce((n, s) => n + s.items.length, 0);
+---
+
+<Base
+  title={`${series.data.title} ${d.title}`}
+  description={`${series.data.title}, ${d.title}: download als pdf, lees online${listingCount ? ` en start ${listingCount} listings in WebMSX` : ''}.`}
+>
+  <nav class="crumbs muted" aria-label="Kruimelpad">
+    <a href="/">Archief</a> / <a href={seriesUrl(series)}>{series.data.title}</a> /
+  </nav>
+
+  <article class="issue" data-pagefind-body data-pagefind-meta={`title:${series.data.title} ${d.title}`}>
+    <div class="cover">
+      <Image src={d.cover} alt={`Cover ${d.title}`} widths={[320, 640]} sizes="(max-width: 48rem) 70vw, 320px" loading="eager" />
+    </div>
+
+    <div class="details">
+      <h1>{d.title}</h1>
+      <p class="muted">{series.data.title}</p>
+
+      {
+        (d.pdf || d.reader) && (
+          <p class="main-actions">
+            {d.pdf && (
+              <a class="btn btn-primary" href={pdfUrl(d.pdf)} target="_blank">
+                Download pdf
+              </a>
+            )}
+            {d.reader && (
+              <a class="btn" href={readerUrl(d.reader)}>
+                Lees in de bladerkamer
+              </a>
+            )}
+          </p>
+        )
+      }
+
+      {
+        d.disks.length > 0 && (
+          <section>
+            <h2>{d.subscriptionPage !== undefined || d.disks.length > 1 ? 'Diskabonnement' : 'Disk'}</h2>
+            {subscription && (
+              <p class="muted">
+                Zie pagina {d.subscriptionPage} (<a href={subscription.pdf} target="_blank">pdf</a>
+                {subscription.reader && (
+                  <>
+                    {' '}
+                    of <a href={subscription.reader}>bladerkamer</a>
+                  </>
+                )}
+                ).
+              </p>
+            )}
+            <ul class="disks">
+              {d.disks.map((disk) => {
+                const links = pageLinks(d, disk);
+                return (
+                  <li>
+                    <a class="btn btn-run" href={webmsxUrl(disk.webmsx)} target="_blank" title="Start disk in WebMSX">
+                      ▶ <span class="mono">{disk.id}</span>
+                    </a>
+                    <span>
+                      {disk.description}
+                      {disk.note && <span class="muted"> {disk.note}</span>}
+                      {links.pdf && (
+                        <span class="muted">
+                          {' '}
+                          (p. {disk.page}: <a href={links.pdf} target="_blank">pdf</a>
+                          {links.reader && (
+                            <>
+                              , <a href={links.reader}>blader</a>
+                            </>
+                          )}
+                          )
+                        </span>
+                      )}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )
+      }
+
+      {
+        d.sections.map((section) => (
+          <section>
+            <h2>{section.title}</h2>
+            <ul class="listings">
+              {section.items.map((item) => (
+                <Listing issue={d} item={item} />
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <nav class="prev-next" aria-label="Vorig en volgend nummer">
+    {prev ? <a href={issueUrl(prev)}>← {prev.data.title}</a> : <span />}
+    {next && <a href={issueUrl(next)}>{next.data.title} →</a>}
+  </nav>
+</Base>
+
+<style>
+  .crumbs {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .issue {
+    display: grid;
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .cover {
+    position: sticky;
+    top: 1.5rem;
+  }
+
+  .cover img {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+  }
+
+  .details {
+    max-width: 48rem;
+  }
+
+  .details > .muted {
+    margin-top: 0;
+  }
+
+  .main-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .disks,
+  .listings {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .disks li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.35rem 0;
+  }
+
+  .disks .btn {
+    flex: none;
+    min-width: 6.5rem;
+  }
+
+  .prev-next {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 48rem) {
+    .issue {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .cover {
+      position: static;
+      max-width: 14rem;
+    }
+  }
+</style>
