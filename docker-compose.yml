@@ -7,11 +7,16 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      # new.* is for testing before the DNS switch
-      - "traefik.http.routers.msxcomputermagazine.rule=Host(`msxcomputermagazine.nl`) || Host(`new.msxcomputermagazine.nl`)"
+      - "traefik.http.routers.msxcomputermagazine.rule=Host(`msxcomputermagazine.nl`)"
       - "traefik.http.routers.msxcomputermagazine.entrypoints=websecure"
       - "traefik.http.routers.msxcomputermagazine.tls.certresolver=letsencrypt"
       - "traefik.http.services.msxcomputermagazine.loadbalancer.server.port=80"
+      # new.* for testing before the DNS switch; its own router, so it gets its
+      # own certificate while the apex domain still points to the old server
+      - "traefik.http.routers.msxcomputermagazine-new.rule=Host(`new.msxcomputermagazine.nl`)"
+      - "traefik.http.routers.msxcomputermagazine-new.entrypoints=websecure"
+      - "traefik.http.routers.msxcomputermagazine-new.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.msxcomputermagazine-new.service=msxcomputermagazine"
       # www → apex redirect
       - "traefik.http.routers.msxcomputermagazine-www.rule=Host(`www.msxcomputermagazine.nl`)"
       - "traefik.http.routers.msxcomputermagazine-www.entrypoints=websecure"
