@@ -91,4 +91,10 @@ const issues = (await getIssues()).filter((i) => i.data.reader);
     border-radius: var(--radius);
     background: #111;
   }
+
+  /* Undo the global img rules for OpenSeadragon's (stacked, overlaid) button images. */
+  #osd-container :global(img) {
+    display: inline;
+    max-width: none;
+  }
 </style>

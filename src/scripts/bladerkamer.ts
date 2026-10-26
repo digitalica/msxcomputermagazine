@@ -27,6 +27,8 @@ const container = document.getElementById('osd-container')!;
 const viewer = OpenSeadragon({
   element: container,
   tileSources: container.dataset.tiles!,
+  // navImages are full URLs; OpenSeadragon would otherwise prefix them with "/images/".
+  prefixUrl: '',
   navImages: {
     zoomIn: button('zoomin'),
     zoomOut: button('zoomout'),
