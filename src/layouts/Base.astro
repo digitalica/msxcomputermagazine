@@ -65,6 +65,7 @@ const isCurrent = (href: string) =>
             <small>archief 1985 – 1997</small>
           </span>
         </a>
+        <div class="header-end">
         <nav aria-label="Hoofdmenu">
           <ul>
             {
@@ -89,6 +90,7 @@ const isCurrent = (href: string) =>
             />
           </svg>
         </button>
+        </div>
       </div>
     </header>
 
@@ -206,7 +208,14 @@ const isCurrent = (href: string) =>
     font-weight: 600;
   }
 
+  .header-end {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .theme-toggle {
+    flex: none;
     display: grid;
     place-items: center;
     width: 2.25rem;
