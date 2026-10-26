@@ -16,24 +16,25 @@
   --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
   --wide: 76rem;
   --narrow: 46rem;
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #16151f;
-    --paper-2: #1e1d2a;
-    --card: #222131;
-    --ink: #ece9f5;
-    --ink-2: #a9a5bd;
-    --line: #363449;
-    --accent: #8f93ff;
-    --accent-ink: #12111a;
-    --accent-soft: #2a2a4d;
-    --run: #5fcf86;
-    --warn: #f0b45a;
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 14px rgb(0 0 0 / 0.3);
-  }
+/* Set by the theme script in Base.astro: the visitor's choice, else the
+   browser's preference. Without JavaScript the site stays light. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #16151f;
+  --paper-2: #1e1d2a;
+  --card: #222131;
+  --ink: #ece9f5;
+  --ink-2: #a9a5bd;
+  --line: #363449;
+  --accent: #8f93ff;
+  --accent-ink: #12111a;
+  --accent-soft: #2a2a4d;
+  --run: #5fcf86;
+  --warn: #f0b45a;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 14px rgb(0 0 0 / 0.3);
 }
 
 *,
