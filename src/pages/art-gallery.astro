@@ -18,7 +18,7 @@ const { Content } = await render(page);
     {
       gallery.map((entry) => (
         <li>
-          <a class="btn btn-run" href={webmsxUrl(entry.webmsx)} target="_blank" title="Start in WebMSX">
+          <a class="btn btn-primary" href={webmsxUrl(entry.webmsx)} target="_blank" title="Start in WebMSX">
             ▶ <span class="mono">{entry.name.replace(/_/g, ' ')}</span>
           </a>
           {entry.corrupt && (
