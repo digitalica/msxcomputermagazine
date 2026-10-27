@@ -4,7 +4,7 @@ title: Achtergrond
 
 ## Historie
 
-Toen de eerste MSX computers eind 1984 in Nederland verschenen, was er ook MSX Computer Magazine. MSX-jes waren home/hobby computers; en zo was het blad ook. Zelf programmeren was standaard: elke machine had immers MSX Basic aan boord. Een groot deel van de inhoud bestond dan ook uit listings, die de lezers konden overtypen om hun computertje allerlei taken te laten uitvoeren: vaak spelletjes, soms ook nuttiger zaken.
+<p class="lead">Toen de eerste MSX computers eind 1984 in Nederland verschenen, was er ook MSX Computer Magazine. MSX-jes waren home/hobby computers; en zo was het blad ook. Zelf programmeren was standaard: elke machine had immers MSX Basic aan boord. Een groot deel van de inhoud bestond dan ook uit listings, die de lezers konden overtypen om hun computertje allerlei taken te laten uitvoeren: vaak spelletjes, soms ook nuttiger zaken.</p>
 
 Via lezersbrieven, prijsvragen en andere uitdagingen werden lezers bij het blad betrokken. Menige listing uit MCM werd door een lezer ingezonden en die lezers gingen al snel meer voor het blad doen: brieven beantwoorden of zelf artikelen schrijven. Via MCM leerden MSX programmeurs uit allerlei hoeken en gaten van Nederland elkaar kennen en kregen ze toegang tot nieuwe hardware en vooral technische informatie. Zo was het opslaan van programma’s en data op cassettebandjes wel goedkoop maar traag, dus al snel verschenen systemen voor snellere opslag: bijvoorbeeld de Quickdisk en later zelfs echt diskettes.
 

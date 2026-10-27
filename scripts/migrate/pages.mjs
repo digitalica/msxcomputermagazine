@@ -11,6 +11,13 @@ export function makeTurndown() {
   const td = new TurndownService({ headingStyle: 'atx', bulletListMarker: '-', emDelimiter: '_' });
   td.keep(['table', 'iframe']);
   td.remove(['script', 'style']);
+  // Intro paragraphs ("lead") stay HTML, so they keep their larger style.
+  // Not with an image: Astro only resolves and optimizes Markdown images.
+  td.addRule('lead', {
+    filter: (node) =>
+      node.nodeName === 'P' && node.getAttribute('class') === 'lead' && !node.querySelector('img'),
+    replacement: (_content, node) => `\n\n${node.outerHTML}\n\n`,
+  });
   return td;
 }
 
@@ -37,7 +44,7 @@ export function cleanHtml(html, { imageDir, imageRef }) {
     $(img).replaceWith(`<img src="${imageRef}/${file}" alt="${$(img).attr('alt') ?? ''}">`);
   });
   $('.spacer-30, .clear').remove();
-  $('[class]').removeAttr('class');
+  $('[class]').not('p.lead').removeAttr('class');
   $('[style]').removeAttr('style');
   $('table [id]').removeAttr('id');
   // Unwrap bootstrap layout divs; their content is what matters.

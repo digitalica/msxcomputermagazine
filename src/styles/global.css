@@ -202,6 +202,13 @@ th {
   font-size: 0.875rem;
 }
 
+/* Intro paragraphs, larger like the old site's "lead" paragraphs. */
+.lead {
+  max-width: var(--narrow);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
 /* Markdown content */
 .prose {
   max-width: var(--narrow);

@@ -10,7 +10,7 @@ const issues = (await getIssues()).filter((i) => i.data.reader);
   description="Blader en zoom door alle 6.500+ pagina’s van het MSX Computer Magazine-archief."
 >
   <h1>MCM bladerkamer</h1>
-  <p class="intro">
+  <p class="lead">
     Blader en zoom door alle 6.500+ pagina’s uit het MSX Computer Magazine-archief. Kies een nummer, of
     gebruik de knop <em>full page</em> om beeldvullend te lezen (terug met Esc).
   </p>
@@ -49,10 +49,6 @@ const issues = (await getIssues()).filter((i) => i.data.reader);
 </script>
 
 <style>
-  .intro {
-    max-width: var(--narrow);
-  }
-
   .picker {
     display: flex;
     flex-wrap: wrap;
