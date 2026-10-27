@@ -45,6 +45,26 @@ const PAGES = {
 const report = [];
 const td = makeTurndown();
 
+/**
+ * Write a file only when its content changed. A running `astro dev` loses a
+ * content collection when its folder is deleted and recreated, so the
+ * migration updates files in place instead.
+ */
+async function update(file, content) {
+  try {
+    if ((await readFile(file, 'utf8')) === content) return;
+  } catch {}
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, content);
+}
+
+/** Remove the .md files in `dir` that are not in `keep`. */
+async function removeOthers(dir, keep) {
+  for (const f of await readdir(dir)) {
+    if (f.endsWith('.md') && !keep.has(f)) await rm(path.join(dir, f));
+  }
+}
+
 function markdownFile(data, body = '') {
   return `---\n${stringify(data, { lineWidth: 0 })}---\n${body ? `\n${body.trim()}\n` : ''}`;
 }
@@ -71,8 +91,8 @@ async function migrateIssues(order) {
   const missing = slugs.filter((s) => !order.includes(s));
   if (missing.length) report.push(`- Issues not on the home page (sorted last): ${missing.join(', ')}`);
 
-  await rm(OUT.issues, { recursive: true, force: true });
   await mkdir(OUT.issues, { recursive: true });
+  const written = new Set();
   for (const [i, url] of urls.entries()) {
     const slug = slugs[i];
     const warnings = [];
@@ -91,9 +111,11 @@ async function migrateIssues(order) {
       imageRef: '../../assets/pages',
     });
     for (const img of images) await download(img.url, img.file);
-    await writeFile(path.join(OUT.issues, `${slug}.md`), markdownFile(orderKeys(data), td.turndown(html)));
+    await update(path.join(OUT.issues, `${slug}.md`), markdownFile(orderKeys(data), td.turndown(html)));
+    written.add(`${slug}.md`);
     for (const w of warnings) report.push(`- \`${slug}\`: ${w}`);
   }
+  await removeOthers(OUT.issues, written);
   return urls.length;
 }
 
@@ -104,7 +126,6 @@ function orderKeys(d) {
 }
 
 async function migratePages() {
-  await rm(OUT.pages, { recursive: true, force: true });
   await mkdir(OUT.pages, { recursive: true });
   for (const [oldSlug, slug] of Object.entries(PAGES)) {
     const { title, $, $content } = pageContent(await fetchText(`${OLD_SITE}/${oldSlug}/`, { refresh }));
@@ -127,8 +148,9 @@ async function migratePages() {
     for (const img of images) await download(img.url, img.file);
     const data = { title };
     if (oldSlug !== slug) data.oldSlug = oldSlug;
-    await writeFile(path.join(OUT.pages, `${slug}.md`), markdownFile(data, td.turndown(clean)));
+    await update(path.join(OUT.pages, `${slug}.md`), markdownFile(data, td.turndown(clean)));
   }
+  await removeOthers(OUT.pages, new Set(Object.values(PAGES).map((slug) => `${slug}.md`)));
 }
 
 async function migrateIndex() {
@@ -138,7 +160,7 @@ async function migrateIndex() {
 }
 
 async function writeJson(file, data, indent = 2) {
-  await writeFile(path.join(OUT.data, file), JSON.stringify(data, null, indent) + '\n');
+  await update(path.join(OUT.data, file), JSON.stringify(data, null, indent) + '\n');
 }
 
 /** Files under /wp-content/ that the new site still links to (must stay on the server). */
