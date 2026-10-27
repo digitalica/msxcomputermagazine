@@ -105,6 +105,19 @@ h2 {
   margin: 2rem 0 0.75rem;
 }
 
+h3 {
+  font-size: 1.15rem;
+  margin: 1.75rem 0 0.5rem;
+}
+
+/* Minor headings (e.g. "Disclaimer" on the contact page); the browser
+   default would make them smaller than the body text. */
+h4,
+h5 {
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
 /* Body text is monospace already; no smaller size for code. */
 code,
 .mono {

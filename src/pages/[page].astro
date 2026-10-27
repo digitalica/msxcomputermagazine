@@ -20,3 +20,12 @@ const { Content } = await render(page);
     <Content />
   </article>
 </Base>
+
+<style>
+  /* Pages without an intro of their own (contact): the first paragraph is
+     the intro. */
+  article:not(:has(.lead)) :global(> p:first-of-type) {
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+</style>
