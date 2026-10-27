@@ -2,7 +2,8 @@
   --paper: #f6f1e6;
   --paper-2: #ece4d3;
   --card: #fffdf8;
-  --ink: #1f1d2b;
+  --ink: #1f1d2b; /* headings, titles */
+  --text: #524e48; /* body text: soft grey, like the old site's #555 */
   --ink-2: #57536a;
   --line: #d9cfbb;
   /* MSX Computer Magazine blue #70a6e1: as fill (with dark text), and a
@@ -15,8 +16,12 @@
   --warn: #9a5b00;
   --radius: 6px;
   --shadow: 0 1px 2px rgb(40 30 10 / 0.08), 0 4px 14px rgb(40 30 10 / 0.08);
-  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+  /* As on the old site: typewriter-like text (its custom CSS set the body to
+     Lucida Console), Roboto for headings and the menu (self-hosted, see
+     Base.astro). */
+  --font-text: 'Lucida Console', Monaco, monospace;
+  --font-heading: Roboto, Arial, Helvetica, sans-serif;
+  --mono: var(--font-text);
   --wide: 76rem;
   --narrow: 46rem;
   color-scheme: light;
@@ -30,6 +35,7 @@
   --paper-2: #1e1d2a;
   --card: #222131;
   --ink: #ece9f5;
+  --text: #c9c5d6;
   --ink-2: #a9a5bd;
   --line: #363449;
   --accent: #70a6e1;
@@ -52,8 +58,9 @@ html {
 body {
   margin: 0;
   background: var(--paper);
-  color: var(--ink);
-  font: 1rem/1.6 var(--font);
+  color: var(--text);
+  font: 0.9375rem/1.75 var(--font-text);
+  -webkit-font-smoothing: antialiased;
 }
 
 img {
@@ -78,7 +85,12 @@ a:hover {
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5 {
+  font-family: var(--font-heading);
+  color: var(--ink);
+  font-weight: 700;
   line-height: 1.2;
   text-wrap: balance;
 }
@@ -93,10 +105,10 @@ h2 {
   margin: 2rem 0 0.75rem;
 }
 
+/* Body text is monospace already; no smaller size for code. */
 code,
 .mono {
   font-family: var(--mono);
-  font-size: 0.9em;
 }
 
 table {
@@ -113,9 +125,9 @@ td {
 }
 
 th {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--ink-2);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .container {
@@ -152,7 +164,7 @@ th {
   background: var(--card);
   color: var(--ink);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
@@ -187,7 +199,7 @@ th {
 
 .btn-sm {
   padding: 0.15rem 0.45rem;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
 }
 
 /* Markdown content */

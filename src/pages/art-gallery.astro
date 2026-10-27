@@ -35,7 +35,7 @@ const { Content } = await render(page);
 <style>
   .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 28rem), 1fr));
     gap: 0.5rem 1rem;
     margin: 1.5rem 0 0;
     padding: 0;
@@ -49,12 +49,15 @@ const { Content } = await render(page);
     min-width: 0;
   }
 
+  /* Long names wrap instead of running into the next column. */
   .gallery .btn {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    min-width: 0;
+    white-space: normal;
+    text-align: left;
   }
 
   .corrupt {
+    flex: none;
     color: var(--warn);
   }
 </style>
