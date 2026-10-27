@@ -7,8 +7,10 @@ export const OLD_SITE = 'https://msxcomputermagazine.nl';
 const CACHE_DIR = path.resolve('.cache/html');
 
 function cacheFile(url) {
-  const rel = new URL(url).pathname.replace(/^\/|\/$/g, '').replace(/\//g, '__') || 'home';
-  return path.join(CACHE_DIR, `${rel}.html`);
+  const u = new URL(url);
+  const rel = u.pathname.replace(/^\/|\/$/g, '').replace(/\//g, '__') || 'home';
+  const query = u.search ? `__${u.search.slice(1).replace(/[^\w=-]+/g, '_')}` : '';
+  return path.join(CACHE_DIR, `${rel}${query}.html`);
 }
 
 async function exists(file) {
