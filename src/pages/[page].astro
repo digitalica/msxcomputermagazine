@@ -2,6 +2,7 @@
 // Plain Markdown pages. Pages that also render data (art-gallery,
 // mcm-verzameldisks) or replace the 404 (oeps) have their own templates.
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 
 export async function getStaticPaths() {
@@ -16,6 +17,7 @@ const { Content } = await render(page);
 
 <Base title={page.data.title}>
   <article class="prose" data-pagefind-body>
+    {page.data.image && <Image src={page.data.image} alt="" loading="eager" />}
     <h1>{page.data.title}</h1>
     <Content />
   </article>

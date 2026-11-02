@@ -1,5 +1,6 @@
 ---
 title: Achtergrond
+image: ../../assets/pages/billecia.jpg
 ---
 
 ## Historie

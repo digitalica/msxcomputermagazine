@@ -64,7 +64,13 @@ const issues = defineCollection({
 
 const pages = defineCollection({
   loader: glob({ pattern: '*.md', base: 'src/content/pages' }),
-  schema: z.object({ title: z.string(), oldSlug: z.string().optional() }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      oldSlug: z.string().optional(),
+      /** Featured image, shown above the title. */
+      image: image().optional(),
+    }),
 });
 
 export const collections = { series, issues, pages };

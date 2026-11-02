@@ -128,7 +128,7 @@ function orderKeys(d) {
 async function migratePages() {
   await mkdir(OUT.pages, { recursive: true });
   for (const [oldSlug, slug] of Object.entries(PAGES)) {
-    const { title, $, $content } = pageContent(await fetchText(`${OLD_SITE}/${oldSlug}/`, { refresh }));
+    const { title, image, $, $content } = pageContent(await fetchText(`${OLD_SITE}/${oldSlug}/`, { refresh }));
     if (slug === 'art-gallery') await writeJson('art-gallery.json', parseArtGallery($, $content));
     if (slug === 'mcm-verzameldisks') {
       const disks = parseVerzameldisks($, $content);
@@ -148,6 +148,11 @@ async function migratePages() {
     for (const img of images) await download(img.url, img.file);
     const data = { title };
     if (oldSlug !== slug) data.oldSlug = oldSlug;
+    if (image) {
+      const file = path.basename(new URL(image).pathname);
+      await download(image, path.join(OUT.pageImages, file));
+      data.image = `../../assets/pages/${file}`;
+    }
     await update(path.join(OUT.pages, `${slug}.md`), markdownFile(data, td.turndown(clean)));
   }
   await removeOthers(OUT.pages, new Set(Object.values(PAGES).map((slug) => `${slug}.md`)));

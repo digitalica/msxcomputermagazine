@@ -1,5 +1,6 @@
 ---
 title: Art Gallery
+image: ../../assets/pages/diskheader2.jpg
 ---
 
 ## Art Gallery bijdragen

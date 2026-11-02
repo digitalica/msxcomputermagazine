@@ -63,7 +63,9 @@ export function pageContent(html) {
   // The content often repeats the title as its first heading.
   const $first = $content.find('h1, h2, h4').first();
   if (squash($first.text()).toLowerCase() === title.toLowerCase()) $first.remove();
-  return { title, $, $content };
+  // The WordPress "featured image", shown above the content.
+  const image = $('img.wp-post-image').first().attr('src');
+  return { title, image, $, $content };
 }
 
 /** Art Gallery: one WebMSX link per row, "(*)" marks a partly corrupt disk. */
