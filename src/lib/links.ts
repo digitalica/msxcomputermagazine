@@ -23,7 +23,9 @@ export interface PageRef {
 }
 
 export function fileUrl(path: string): string {
-  return /^https?:\/\//.test(path) ? path : FILES_ORIGIN + encodeURI(path);
+  // "+" encoded too: WebMSX passes disk URLs unencoded to its download proxy,
+  // which would read a "+" as a space.
+  return /^https?:\/\//.test(path) ? path : FILES_ORIGIN + encodeURI(path).replace(/\+/g, '%2B');
 }
 
 export function pdfUrl(pdf: string, page?: number): string {
