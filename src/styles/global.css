@@ -232,6 +232,12 @@ th {
   margin: 1rem 0;
 }
 
+/* Page header image (WordPress "featured image"): full column width. */
+.prose img.featured {
+  width: 100%;
+  margin-top: 0;
+}
+
 .prose table {
   font-size: 0.95rem;
 }

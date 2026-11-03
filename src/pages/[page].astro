@@ -17,7 +17,7 @@ const { Content } = await render(page);
 
 <Base title={page.data.title}>
   <article class="prose" data-pagefind-body>
-    {page.data.image && <Image src={page.data.image} alt="" loading="eager" />}
+    {page.data.image && <Image src={page.data.image} alt="" loading="eager" class="featured" />}
     <h1>{page.data.title}</h1>
     <Content />
   </article>

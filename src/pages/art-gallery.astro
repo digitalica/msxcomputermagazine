@@ -11,7 +11,7 @@ const { Content } = await render(page);
 
 <Base title="Art Gallery" description="Art Gallery: de inzendingen van mooie MSX-plaatjes, direct te bekijken in WebMSX.">
   <article class="prose" data-pagefind-body>
-    {page.data.image && <Image src={page.data.image} alt="" loading="eager" />}
+    {page.data.image && <Image src={page.data.image} alt="" loading="eager" class="featured" />}
     <h1>{page.data.title}</h1>
     <Content />
   </article>
