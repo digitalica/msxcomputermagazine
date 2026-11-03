@@ -42,6 +42,9 @@ const PAGES = {
   oeps: 'oeps',
 };
 
+// Art Gallery entries whose disk image is empty (0 bytes); left out.
+const EMPTY_DISKS = new Set(['Designer.pic_M_vd_Pavert']);
+
 const report = [];
 const td = makeTurndown();
 
@@ -129,7 +132,10 @@ async function migratePages() {
   await mkdir(OUT.pages, { recursive: true });
   for (const [oldSlug, slug] of Object.entries(PAGES)) {
     const { title, image, $, $content } = pageContent(await fetchText(`${OLD_SITE}/${oldSlug}/`, { refresh }));
-    if (slug === 'art-gallery') await writeJson('art-gallery.json', parseArtGallery($, $content));
+    if (slug === 'art-gallery') {
+      const gallery = parseArtGallery($, $content).filter((e) => !EMPTY_DISKS.has(e.name));
+      await writeJson('art-gallery.json', gallery);
+    }
     if (slug === 'mcm-verzameldisks') {
       const disks = parseVerzameldisks($, $content);
       for (const d of disks) {
