@@ -71,7 +71,7 @@ same path.
 ## Deployment
 
 Every push to `main` builds `ghcr.io/digitalica/msxcomputermagazine:latest`.
-On the server:
+On the server (in /opt/docker/msxcomputermagazine):
 
 ```sh
 docker compose pull
