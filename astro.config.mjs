@@ -41,6 +41,8 @@ export default defineConfig({
   // Same URLs as the old WordPress site: /archief/mcm-1/ etc.
   trailingSlash: 'always',
   integrations: [sitemap()],
+  // Else the ClientRouter (cartoons) fetches links on hover, also the pdfs.
+  prefetch: false,
   redirects: {
     '/contact-2/': '/contact/',
     '/archief/': '/',

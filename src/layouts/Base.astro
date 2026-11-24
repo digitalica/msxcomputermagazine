@@ -117,17 +117,23 @@ const isCurrent = (href: string) =>
 
 <script>
   const root = document.documentElement;
-  const button = document.querySelector<HTMLButtonElement>('.theme-toggle')!;
   const dark = matchMedia('(prefers-color-scheme: dark)');
 
-  function apply(theme: string) {
-    root.dataset.theme = theme;
-    button.setAttribute('aria-pressed', String(theme === 'dark'));
+  function apply(theme: string, doc = document) {
+    doc.documentElement.dataset.theme = theme;
+    doc.querySelector('.theme-toggle')?.setAttribute('aria-pressed', String(theme === 'dark'));
   }
 
   apply(root.dataset.theme ?? 'light');
 
-  button.addEventListener('click', () => {
+  // Pages with the ClientRouter replace the document, without its theme, and
+  // run this script only once.
+  document.addEventListener('astro:before-swap', (e) => {
+    apply(root.dataset.theme ?? 'light', e.newDocument);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element).closest('.theme-toggle')) return;
     const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
     apply(theme);
     try {

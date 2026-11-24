@@ -1,6 +1,7 @@
 ---
 // The cartoons, one per page; /cartoons/ itself shows the first one.
 import { Image } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 import Base from '../../layouts/Base.astro';
 import { getIssues } from '../../lib/archive';
 import { cartoonUrl, getCartoons } from '../../lib/cartoons';
@@ -29,6 +30,12 @@ const next = cartoons[index + 1];
 const links = pageLinks(issue.data, { page: d.bladerkamerPage ?? d.page });
 // Same small image for the strip and for previous/next.
 const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
+// Fade out, then in: more visible than the default short crossfade.
+const step = {
+  old: { name: 'mcm-fade-out', duration: '220ms', easing: 'ease-in', fillMode: 'both' },
+  new: { name: 'mcm-fade-in', duration: '280ms', easing: 'ease-out', fillMode: 'both', delay: '160ms' },
+} as const;
+const fade = { forwards: step, backwards: step };
 ---
 
 <Base
@@ -37,7 +44,8 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
     ? 'De cartoons van Jeroen Engelberts uit MSX Computer Magazine en MS(X)DOS Computer Magazine.'
     : d.context.replace(/<[^>]+>/g, '')}
 >
-  <article class="museum" data-pagefind-body={landing ? undefined : true} data-pagefind-meta={`title:Cartoon: ${d.pieceName}`}>
+  <ClientRouter slot="head" />
+  <article class="museum" transition:name="museum" transition:animate={fade} data-pagefind-body={landing ? undefined : true} data-pagefind-meta={`title:Cartoon: ${d.pieceName}`}>
     <header>
       <p class="small">{d.magazineLine}</p>
       <p class="small" data-pagefind-ignore>
@@ -110,22 +118,30 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
       <script is:inline>
         // Directly after the strip, so it does not jump: keep its position
         // between pages, but always show the current cartoon.
+        // The ClientRouter runs this once, and swaps the strip on each step.
         {
-          const strip = document.querySelector('.thumbs');
           const KEY = 'cartoons-scroll';
-          try {
-            strip.scrollLeft = Number(sessionStorage.getItem(KEY) ?? 0);
-          } catch {}
-          const view = strip.getBoundingClientRect();
-          const thumb = strip.querySelector('[aria-current]').getBoundingClientRect();
-          if (thumb.left < view.left + 8 || thumb.right > view.right - 8) {
-            strip.scrollLeft += thumb.left - view.left - (view.width - thumb.width) / 2;
-          }
-          addEventListener('pagehide', () => {
+          const getStrip = () => document.querySelector('.thumbs');
+          const restore = () => {
+            const strip = getStrip();
             try {
-              sessionStorage.setItem(KEY, String(strip.scrollLeft));
+              strip.scrollLeft = Number(sessionStorage.getItem(KEY) ?? 0);
             } catch {}
-          });
+            const view = strip.getBoundingClientRect();
+            const thumb = strip.querySelector('[aria-current]').getBoundingClientRect();
+            if (thumb.left < view.left + 8 || thumb.right > view.right - 8) {
+              strip.scrollLeft += thumb.left - view.left - (view.width - thumb.width) / 2;
+            }
+          };
+          const save = () => {
+            try {
+              sessionStorage.setItem(KEY, String(getStrip().scrollLeft));
+            } catch {}
+          };
+          restore();
+          addEventListener('pagehide', save);
+          document.addEventListener('astro:before-swap', save);
+          document.addEventListener('astro:after-swap', restore);
         }
       </script>
     </nav>
@@ -150,11 +166,36 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
 </script>
 
 <style is:global>
-  /* Fade from cartoon to cartoon, where the browser supports it. */
-  @media (prefers-reduced-motion: no-preference) {
-    @view-transition {
-      navigation: auto;
+  /* Fade from cartoon to cartoon (transition:animate on .museum). */
+  @keyframes mcm-fade-out {
+    from {
+      opacity: 1;
     }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes mcm-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Only the fade: no morph, and the rest of the page changes at once. */
+  ::view-transition-group(museum) {
+    animation-duration: 0.01ms;
+  }
+
+  ::view-transition-old(root) {
+    display: none;
+  }
+
+  ::view-transition-new(root) {
+    animation: none;
   }
 </style>
 
@@ -163,10 +204,6 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
   .below {
     max-width: 58rem;
     margin-inline: auto;
-  }
-
-  .museum {
-    view-transition-name: museum;
   }
 
   header {
