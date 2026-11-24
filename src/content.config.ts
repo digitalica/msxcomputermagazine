@@ -73,4 +73,23 @@ const pages = defineCollection({
     }),
 });
 
-export const collections = { series, issues, pages };
+const cartoons = defineCollection({
+  // Made by scripts/sync-cartoons.mjs.
+  loader: file('src/data/cartoons.json'),
+  schema: ({ image }) =>
+    z.object({
+      slug: z.string(),
+      issue: z.number().int().positive(),
+      page: z.number().int().positive(),
+      /** Page in the page viewer, when inserts make it differ from the printed page number. */
+      bladerkamerPage: z.number().int().positive().optional(),
+      image: image(),
+      magazineLine: z.string(),
+      /** Title of the article or listing the cartoon was drawn for. */
+      pieceName: z.string(),
+      /** Text with <strong> as the only markup. */
+      context: z.string().refine((s) => !/[<>]/.test(s.replace(/<strong>[^<>]*<\/strong>/g, '')), 'Only <strong> is allowed'),
+    }),
+});
+
+export const collections = { series, issues, pages, cartoons };

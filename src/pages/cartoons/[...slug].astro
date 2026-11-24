@@ -1,0 +1,372 @@
+---
+// The cartoons, one per page; /cartoons/ itself shows the first one.
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { cartoonUrl, getCartoons } from '../../lib/cartoons';
+import { readerUrl } from '../../lib/links';
+
+export async function getStaticPaths() {
+  const cartoons = await getCartoons();
+  const paths = cartoons.map((cartoon, index) => ({
+    params: { slug: cartoon.data.slug as string | undefined },
+    props: { cartoons, index, landing: false },
+  }));
+  return [{ params: { slug: undefined }, props: { cartoons, index: 0, landing: true } }, ...paths];
+}
+
+const { cartoons, index, landing } = Astro.props;
+const cartoon = cartoons[index];
+const d = cartoon.data;
+const prev = cartoons[index - 1];
+const next = cartoons[index + 1];
+// Same small image for the strip and for previous/next.
+const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
+---
+
+<Base
+  title={landing ? 'Cartoons' : `${d.pieceName} – Cartoons`}
+  description={landing
+    ? 'De cartoons van Jeroen Engelberts uit MSX Computer Magazine en MS(X)DOS Computer Magazine.'
+    : d.context.replace(/<[^>]+>/g, '')}
+>
+  <article class="museum" data-pagefind-body={landing ? undefined : true} data-pagefind-meta={`title:Cartoon: ${d.pieceName}`}>
+    <header>
+      <p class="small">{d.magazineLine}</p>
+      <p class="small" data-pagefind-ignore>
+        <a href={readerUrl(d.issue, d.bladerkamerPage ?? d.page)}>[bekijk in de bladerkamer]</a>
+      </p>
+      <h1>{d.pieceName}</h1>
+      <p class="small" data-pagefind-ignore>{index + 1} / {cartoons.length}</p>
+    </header>
+
+    <div class="stage">
+      {
+        prev ? (
+          <a class="step prev" href={cartoonUrl(prev)} rel="prev" aria-label={`Vorige: ${prev.data.pieceName}`} data-pagefind-ignore>
+            <span class="peek"><Image src={prev.data.image} {...THUMB} /></span>
+            <span class="step-label">‹ Vorige</span>
+          </a>
+        ) : (
+          <span class="step prev disabled" aria-hidden="true" data-pagefind-ignore>
+            <span class="step-label">‹ Vorige</span>
+          </span>
+        )
+      }
+
+      <figure class="frame">
+        <Image
+          src={d.image}
+          alt={`Cartoon bij ${d.pieceName}`}
+          widths={[640, 1280]}
+          sizes="(max-width: 42rem) 90vw, 640px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+
+      {
+        next ? (
+          <a class="step next" href={cartoonUrl(next)} rel="next" aria-label={`Volgende: ${next.data.pieceName}`} data-pagefind-ignore>
+            <span class="peek"><Image src={next.data.image} {...THUMB} /></span>
+            <span class="step-label">Volgende ›</span>
+          </a>
+        ) : (
+          <span class="step next disabled" aria-hidden="true" data-pagefind-ignore>
+            <span class="step-label">Volgende ›</span>
+          </span>
+        )
+      }
+    </div>
+
+    <p class="context" set:html={d.context} />
+  </article>
+
+  <div class="below">
+    <nav aria-label="Alle cartoons">
+      <ul class="thumbs">
+        {
+          cartoons.map((item, i) => (
+            <li>
+              <a
+                href={cartoonUrl(item)}
+                aria-current={i === index ? 'page' : undefined}
+                aria-label={item.data.pieceName}
+                title={item.data.pieceName}
+              >
+                <Image src={item.data.image} {...THUMB} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <script is:inline>
+        // Directly after the strip, so it does not jump: keep its position
+        // between pages, but always show the current cartoon.
+        {
+          const strip = document.querySelector('.thumbs');
+          const KEY = 'cartoons-scroll';
+          try {
+            strip.scrollLeft = Number(sessionStorage.getItem(KEY) ?? 0);
+          } catch {}
+          const view = strip.getBoundingClientRect();
+          const thumb = strip.querySelector('[aria-current]').getBoundingClientRect();
+          if (thumb.left < view.left + 8 || thumb.right > view.right - 8) {
+            strip.scrollLeft += thumb.left - view.left - (view.width - thumb.width) / 2;
+          }
+          addEventListener('pagehide', () => {
+            try {
+              sessionStorage.setItem(KEY, String(strip.scrollLeft));
+            } catch {}
+          });
+        }
+      </script>
+    </nav>
+
+    <p class="small credit">
+      Cartoons uit MSX Computer Magazine 2 – 37, auteur{' '}
+      <a href="https://niceart.nl/over-nice-art/kunstenaars/jeroen-engelberts/" target="_blank">Jeroen Engelberts</a>
+    </p>
+  </div>
+</Base>
+
+<script>
+  // Arrow keys: previous and next cartoon. Not with a modifier (Alt+← is "back").
+  addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const rel = { ArrowLeft: 'prev', ArrowRight: 'next' }[e.key];
+    const link = rel && document.querySelector<HTMLAnchorElement>(`a.step[rel="${rel}"]`);
+    if (!link) return;
+    e.preventDefault();
+    link.click();
+  });
+</script>
+
+<style is:global>
+  /* Fade from cartoon to cartoon, where the browser supports it. */
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
+  }
+</style>
+
+<style>
+  .museum,
+  .below {
+    max-width: 58rem;
+    margin-inline: auto;
+  }
+
+  .museum {
+    view-transition-name: museum;
+  }
+
+  header {
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+
+  h1 {
+    margin: 0.35rem 0;
+    font-size: clamp(1.25rem, 2.8vw + 0.4vh, 2.1rem);
+  }
+
+  .small {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--ink-2);
+  }
+
+  .small a {
+    color: inherit;
+  }
+
+  .small a:hover {
+    color: var(--accent);
+  }
+
+  header .small a:not(:hover) {
+    text-decoration: none;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* The scans are white: the frame stays white in the dark theme too. */
+  .frame {
+    justify-self: center;
+    width: min(42rem, 100%);
+    height: clamp(14rem, 55dvh, 36rem);
+    margin: 0;
+    padding: clamp(0.65rem, 1.5vh, 1.25rem);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+
+  .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    width: 6.75rem;
+    height: clamp(5rem, 18dvh, 12rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  a.step:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .step.disabled {
+    height: auto;
+    opacity: 0.35;
+    box-shadow: none;
+  }
+
+  .peek {
+    flex: 1;
+    min-height: 0;
+    padding: 0.35rem;
+    background: #fff;
+  }
+
+  .peek img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.45;
+    transition: opacity 0.15s;
+  }
+
+  .step:hover .peek img {
+    opacity: 0.7;
+  }
+
+  .step-label {
+    padding: 0.3rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.7rem;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .disabled .step-label {
+    border-top: 0;
+  }
+
+  .context {
+    /* Room for the longest text, so the strip below stays in place. */
+    min-height: calc(4lh + 1.6rem + 2px);
+    margin: 0.85rem 0;
+    padding: 0.8rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    line-height: 1.55;
+  }
+
+  .thumbs {
+    display: flex;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0.25rem 0.2rem 0.5rem;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .thumbs li {
+    flex: none;
+  }
+
+  .thumbs a {
+    display: block;
+    width: clamp(3.5rem, 8vw, 4.75rem);
+    aspect-ratio: 5 / 4;
+    padding: 0.25rem;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: #fff;
+    opacity: 0.72;
+    transition: opacity 0.15s;
+  }
+
+  .thumbs a:hover,
+  .thumbs a[aria-current] {
+    border-color: var(--accent);
+    opacity: 1;
+  }
+
+  .thumbs a[aria-current] {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  .thumbs img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .credit {
+    margin-top: 0.75rem;
+    text-align: center;
+  }
+
+  @media (max-width: 42rem) {
+    .stage {
+      grid-template: 'frame frame' 'prev next' / 1fr 1fr;
+    }
+
+    .frame {
+      grid-area: frame;
+      height: clamp(12rem, 42dvh, 24rem);
+    }
+
+    .prev {
+      grid-area: prev;
+    }
+
+    .next {
+      grid-area: next;
+    }
+
+    .step {
+      width: 100%;
+      height: auto;
+    }
+
+    .step-label {
+      border-top: 0;
+      padding: 0.6rem;
+    }
+
+    .peek {
+      display: none;
+    }
+
+    .context {
+      min-height: 0;
+    }
+  }
+</style>
