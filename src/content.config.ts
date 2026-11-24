@@ -74,7 +74,6 @@ const pages = defineCollection({
 });
 
 const cartoons = defineCollection({
-  // Made by scripts/sync-cartoons.mjs.
   loader: file('src/data/cartoons.json'),
   schema: ({ image }) =>
     z.object({
