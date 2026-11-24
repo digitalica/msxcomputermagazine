@@ -2,23 +2,31 @@
 // The cartoons, one per page; /cartoons/ itself shows the first one.
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import { getIssues } from '../../lib/archive';
 import { cartoonUrl, getCartoons } from '../../lib/cartoons';
-import { readerUrl } from '../../lib/links';
+import { pageLinks } from '../../lib/links';
 
 export async function getStaticPaths() {
   const cartoons = await getCartoons();
-  const paths = cartoons.map((cartoon, index) => ({
-    params: { slug: cartoon.data.slug as string | undefined },
-    props: { cartoons, index, landing: false },
-  }));
-  return [{ params: { slug: undefined }, props: { cartoons, index: 0, landing: true } }, ...paths];
+  const issues = await getIssues();
+  const paths = cartoons.map((cartoon, index) => {
+    const issue = issues.find((i) => i.data.reader === cartoon.data.issue);
+    if (!issue) throw new Error(`No issue ${cartoon.data.issue} for cartoon ${cartoon.id}`);
+    return {
+      params: { slug: cartoon.data.slug as string | undefined },
+      props: { cartoons, issue, index, landing: false },
+    };
+  });
+  return [{ params: { slug: undefined }, props: { ...paths[0].props, landing: true } }, ...paths];
 }
 
-const { cartoons, index, landing } = Astro.props;
+const { cartoons, issue, index, landing } = Astro.props;
 const cartoon = cartoons[index];
 const d = cartoon.data;
 const prev = cartoons[index - 1];
 const next = cartoons[index + 1];
+// The page viewer and the pdf have the same page numbers.
+const links = pageLinks(issue.data, { page: d.bladerkamerPage ?? d.page });
 // Same small image for the strip and for previous/next.
 const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
 ---
@@ -33,7 +41,7 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
     <header>
       <p class="small">{d.magazineLine}</p>
       <p class="small" data-pagefind-ignore>
-        <a href={readerUrl(d.issue, d.bladerkamerPage ?? d.page)}>[bekijk in de bladerkamer]</a>
+        <a href={links.reader}>[bekijk in de bladerkamer]</a>{links.pdf && <Fragment> of in <a href={links.pdf} target="_blank">[pdf]</a></Fragment>}
       </p>
       <h1>{d.pieceName}</h1>
       <p class="small" data-pagefind-ignore>{index + 1} / {cartoons.length}</p>
@@ -185,6 +193,7 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
     color: var(--accent);
   }
 
+  /* The brackets mark these as links. */
   header .small a:not(:hover) {
     text-decoration: none;
   }
