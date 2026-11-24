@@ -51,7 +51,7 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
       {
         prev ? (
           <a class="step prev" href={cartoonUrl(prev)} rel="prev" aria-label={`Vorige: ${prev.data.pieceName}`} data-pagefind-ignore>
-            <span class="peek"><Image src={prev.data.image} {...THUMB} /></span>
+            <span class="peek"><Image src={prev.data.image} {...THUMB} alt="prev" /></span>
             <span class="step-label">‹ Vorige</span>
           </a>
         ) : (
@@ -64,7 +64,7 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
       <figure class="frame">
         <Image
           src={d.image}
-          alt={`Cartoon bij ${d.pieceName}`}
+          alt={`${d.pieceName}, cartoon uit ${d.magazineLine}`}
           widths={[640, 1280]}
           sizes="(max-width: 42rem) 90vw, 640px"
           loading="eager"
@@ -75,7 +75,7 @@ const THUMB = { width: 240, sizes: '120px', alt: '' } as const;
       {
         next ? (
           <a class="step next" href={cartoonUrl(next)} rel="next" aria-label={`Volgende: ${next.data.pieceName}`} data-pagefind-ignore>
-            <span class="peek"><Image src={next.data.image} {...THUMB} /></span>
+            <span class="peek"><Image src={next.data.image} {...THUMB} alt="next" /></span>
             <span class="step-label">Volgende ›</span>
           </a>
         ) : (
